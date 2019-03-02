@@ -9,6 +9,7 @@
         "lint": "tslint -p tsconfig.json -c tslint.json"
     },
     "dependencies": {
+        "lodash": "^4.17.11",
         "md5": "^2.2.1",
         "npmlog": "^4.1.2",
         "puppeteer": "^1.11.0",
@@ -17,6 +18,7 @@
         "typescript": "^3.2.4"
     },
     "devDependencies": {
+        "@types/lodash": "^4.14.121",
         "@types/npmlog": "^4.1.1",
         "@types/puppeteer": "^1.11.2",
         "@types/rimraf": "^2.0.2",
