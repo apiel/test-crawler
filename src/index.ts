@@ -9,12 +9,15 @@ import { trim } from 'lodash';
 const BASE_URL = 'https://www.zooplus.de/tierarzt';
 const PAGES_FOLDER = `${__dirname}/../pages`;
 const MAX_HISTORY = 2;
+const TIMEOUT = 10000; // 10 sec
 
 const urlsQueue: string[] = [];
 const urlsDone: string[] = [];
 
 async function loadPage(url: string, distFolder: string) {
     let hrefs: string[];
+    const filename = `${distFolder}/${md5(url)}`;
+
     const browser = await launch({
         // headless: false,
     });
@@ -23,10 +26,9 @@ async function loadPage(url: string, distFolder: string) {
     try {
         await page.goto(url, {
             waitUntil: 'networkidle2',
-            timeout: 10000, // 10sec -> Need to fix { TimeoutError: Navigation Timeout Exceeded: 3000ms exceeded at Promise.then
+            timeout: TIMEOUT,
         });
         const html = await page.content();
-        const filename = `${distFolder}/${md5(url)}`;
         await promisify(writeFile)(`${filename}.html`, html);
         await page.screenshot({ path: `${filename}.png`, fullPage: true });
         hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
@@ -34,10 +36,15 @@ async function loadPage(url: string, distFolder: string) {
         const urls = hrefs.filter(href => href.indexOf(BASE_URL) === 0);
         addUrls(urls);
     } catch (err) {
-        error('ERR', err);
+        await handleError(err, filename);
     }
-
     await browser.close();
+    info('browser closed', url);
+}
+
+async function handleError(err: any, filename: string) {
+    error('Load page error', err);
+    await promisify(writeFile)(`${filename}.error`, JSON.stringify(err, null, 4));
 }
 
 function addUrls(urls: string[]) {
@@ -48,26 +55,27 @@ function addUrls(urls: string[]) {
         }
     });
     if (count > 0) {
-        info('Add urls', `${count}, queue size ${urlsQueue.length}`);
+        info('Add urls', `found ${urls.length}, add ${count}, queue size ${urlsQueue.length}`);
     }
 }
 
 function addToQueue(url: string): boolean {
-    const _url = trim(url, '/#');
-    if (urlsQueue.indexOf(_url) === -1 && urlsDone.indexOf(_url) === -1) {
-        urlsQueue.push(_url);
-        return false;
+    const url2 = trim(url, '/#?&');
+    if (urlsQueue.indexOf(url2) === -1 && urlsDone.indexOf(url2) === -1) {
+        urlsQueue.push(url2);
+        return true;
     }
-    return true;
+    return false;
 }
 
 async function consumeQueue(distFolder: string) {
     while (urlsQueue.length) {
-        const [url] = urlsQueue.splice(0);
+        const [url] = urlsQueue.splice(0, 1);
         info('Crawl', url);
         urlsDone.push(url);
         await loadPage(url, distFolder);
     }
+    info('no more url in queue', JSON.stringify(urlsQueue));
 }
 
 function cleanHistory() {
