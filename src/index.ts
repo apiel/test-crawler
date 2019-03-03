@@ -10,9 +10,11 @@ const BASE_URL = 'https://www.zooplus.de/tierarzt';
 const PAGES_FOLDER = `${__dirname}/../pages`;
 const MAX_HISTORY = 2;
 const TIMEOUT = 10000; // 10 sec
+const CONSUMER_COUNT = 5;
 
 const urlsQueue: string[] = [];
 const urlsDone: string[] = [];
+let consumerRunning = 0;
 
 async function loadPage(url: string, distFolder: string) {
     let hrefs: string[];
@@ -34,7 +36,7 @@ async function loadPage(url: string, distFolder: string) {
         hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
 
         const urls = hrefs.filter(href => href.indexOf(BASE_URL) === 0);
-        addUrls(urls);
+        addUrls(urls, distFolder);
     } catch (err) {
         await handleError(err, filename);
     }
@@ -47,10 +49,10 @@ async function handleError(err: any, filename: string) {
     await promisify(writeFile)(`${filename}.error`, JSON.stringify(err, null, 4));
 }
 
-function addUrls(urls: string[]) {
+function addUrls(urls: string[], distFolder: string) {
     let count = 0;
     urls.forEach(url => {
-        if (addToQueue(url)) {
+        if (addToQueue(url, distFolder)) {
             count++;
         }
     });
@@ -59,16 +61,21 @@ function addUrls(urls: string[]) {
     }
 }
 
-function addToQueue(url: string): boolean {
+function addToQueue(url: string, distFolder: string): boolean {
     const url2 = trim(url, '/#?&');
     if (urlsQueue.indexOf(url2) === -1 && urlsDone.indexOf(url2) === -1) {
         urlsQueue.push(url2);
+        if (consumerRunning < CONSUMER_COUNT) {
+            consumeQueue(distFolder);
+        }
         return true;
     }
     return false;
 }
 
 async function consumeQueue(distFolder: string) {
+    consumerRunning++;
+    info('start consumer', `${consumerRunning}`);
     while (urlsQueue.length) {
         const [url] = urlsQueue.splice(0, 1);
         info('Crawl', url);
@@ -76,6 +83,8 @@ async function consumeQueue(distFolder: string) {
         await loadPage(url, distFolder);
     }
     info('no more url in queue', JSON.stringify(urlsQueue));
+    consumerRunning--;
+    info('stop consumer', `${consumerRunning}`);
 }
 
 function cleanHistory() {
@@ -94,8 +103,7 @@ function start() {
     const distFolder = `${PAGES_FOLDER}/${timestamp}`;
     info('Dist folder', distFolder);
     mkdirSync(distFolder);
-    addToQueue(BASE_URL);
-    consumeQueue(distFolder);
+    addToQueue(BASE_URL, distFolder);
 }
 
 start();
