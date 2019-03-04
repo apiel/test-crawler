@@ -14,6 +14,7 @@ import {
     TIMEOUT,
     USER_AGENT,
 } from '../config';
+import { getFolders } from '../utils';
 
 const urlsQueue: string[] = [];
 const urlsDone: string[] = [];
@@ -96,8 +97,7 @@ async function consumeQueue(distFolder: string) {
 }
 
 function cleanHistory() {
-    const folders = readdirSync(PAGES_FOLDER);
-    folders.sort();
+    const folders = getFolders();
     const cleanUp = folders.slice(0, -(MAX_HISTORY - 1));
     cleanUp.forEach((folder) => {
         info('Clean up history', folder);

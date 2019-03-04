@@ -1,6 +1,7 @@
 import { info } from 'npmlog';
 
 import { crawl } from './crawl';
+import { parse } from './parse';
 import { PAGES_FOLDER } from './config';
 
 async function start() {
@@ -9,8 +10,9 @@ async function start() {
     info('Dist folder', distFolder);
 
     const urls = await crawl(distFolder);
-
     info('Done', `${urls.length} urls found.`);
+
+    await parse();
 }
 
 start();
