@@ -15,15 +15,22 @@ import {
     USER_AGENT,
 } from '../config';
 import { getFolders } from '../utils';
+import { PageData } from '../typing';
 
 const urlsQueue: string[] = [];
 const urlsDone: string[] = [];
 let consumerRunning = 0;
 let resolver: any;
 
+function saveData(filepath: string, pageData: PageData) {
+    return writeFile(`${filepath}.json`, JSON.stringify(pageData, null, 4));
+}
+
 async function loadPage(url: string, distFolder: string) {
     let hrefs: string[];
-    const filename = `${distFolder}/${md5(url)}`; // we could add part of the url after the md5
+    const id = md5(url);
+    const filepath = `${distFolder}/${id}`; // we could add part of the url after the md5
+    await saveData(filepath, { url, id });
 
     const browser = await launch({
         // headless: false,
@@ -37,22 +44,20 @@ async function loadPage(url: string, distFolder: string) {
             timeout: TIMEOUT,
         });
         const html = await page.content();
-        await writeFile(`${filename}.html`, html);
+        await writeFile(`${filepath}.html`, html);
 
         const performance = JSON.parse(await page.evaluate(
             () => JSON.stringify(window.performance),
         ));
-        await writeFile(`${filename}.json`, JSON.stringify({
-            url,
-            performance,
-        }, null, 4));
-        await page.screenshot({ path: `${filename}.png`, fullPage: true });
+        await saveData(filepath, { url, id, performance });
+
+        await page.screenshot({ path: `${filepath}.png`, fullPage: true });
         hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
 
         const urls = hrefs.filter(href => href.indexOf(BASE_URL) === 0);
         addUrls(urls, distFolder);
     } catch (err) {
-        await handleError(err, filename);
+        await handleError(err, filepath);
     }
     await browser.close();
     info('browser closed', url);
