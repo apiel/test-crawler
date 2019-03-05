@@ -23,7 +23,7 @@ let resolver: any;
 
 async function loadPage(url: string, distFolder: string) {
     let hrefs: string[];
-    const filename = `${distFolder}/${md5(url)}`;
+    const filename = `${distFolder}/${md5(url)}`; // we could add part of the url after the md5
 
     const browser = await launch({
         // headless: false,
@@ -38,6 +38,14 @@ async function loadPage(url: string, distFolder: string) {
         });
         const html = await page.content();
         await promisify(writeFile)(`${filename}.html`, html);
+
+        const performance = JSON.parse(await page.evaluate(
+            () => JSON.stringify(window.performance),
+        ));
+        await promisify(writeFile)(`${filename}.json`, JSON.stringify({
+            url,
+            performance,
+        }, null, 4));
         await page.screenshot({ path: `${filename}.png`, fullPage: true });
         hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
 
