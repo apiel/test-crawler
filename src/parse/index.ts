@@ -2,22 +2,28 @@ import { info } from 'npmlog';
 import { getFolders } from '../utils';
 import { PAGES_FOLDER } from '../config';
 import { diffChars, createTwoFilesPatch } from 'diff';
+import { PNG } from 'pngjs';
 
 import { extname } from 'path';
-import { readJson, readFile, readdir, pathExists } from 'fs-extra';
+import { readJson, readFile, readdir, pathExists, createReadStream, writeFile } from 'fs-extra';
 import { PageData } from '../typing';
+
+// import * as pixelmatch from 'pixelmatch';
+const pixelmatch = require('pixelmatch'); // tslint:disable-line
 
 let matchCount = 0;
 let htmlCount = 0;
 let newCount = 0;
 let errorCount = 0;
+let pngCount = 0;
+let pngDiffCount = 0;
 
 function loadJson(file: string): Promise<PageData> {
     const jsonFile = `${file.split('.').slice(0, -1).join('.')}.json`;
     return readJson(jsonFile);
 }
 
-async function parseHtml({id, url}: PageData, lastFile: string, previousFile: string) {
+async function parseHtml({ id, url }: PageData, lastFile: string, previousFile: string) {
     htmlCount++;
     if (await pathExists(previousFile)) {
         const actual = (await readFile(lastFile)).toString();
@@ -34,10 +40,41 @@ async function parseHtml({id, url}: PageData, lastFile: string, previousFile: st
     }
 }
 
-async function parseError({id, url}: PageData) {
+async function parseError({ id, url }: PageData) {
     // info('Got some error', url, id);
     errorCount++;
     // could check for previous file
+}
+
+async function parsePng({ id, url }: PageData, lastFile: string, previousFile: string) {
+    pngCount++;
+    const actual = await readFile(lastFile);
+    const expected = await readFile(previousFile);
+    const rawActual = PNG.sync.read(actual);
+    const rawExpected = PNG.sync.read(expected);
+
+    const { width, height } = rawActual;
+    const diffImage = new PNG({ width, height });
+
+    const diffPixelCount = pixelmatch(
+        rawActual.data,
+        rawExpected.data,
+        diffImage.data,
+        width,
+        height,
+    );
+
+    const totalPixels = width * height;
+    const diffRatio = diffPixelCount / totalPixels;
+    info('PNG', id, url, `diff ratio: ${diffRatio}`);
+
+    if (diffRatio) {
+        const buffer = PNG.sync.write(diffImage, { colorType: 6 });
+        const diffFile = `${lastFile}.diff.png`;
+        writeFile(diffFile, buffer);
+        info('PNG', id, url, 'diff file:', diffFile);
+        pngDiffCount++;
+    }
 }
 
 export async function parse() {
@@ -55,8 +92,12 @@ export async function parse() {
         } else if (extension === '.html') {
             const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
             await parseHtml(data, lastFile, previousFile);
+        } else if (extension === '.png') {
+            const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
+            await parsePng(data, lastFile, previousFile);
         }
     }
     info('Html matching', `${matchCount} of ${htmlCount}, ${newCount} new files.`);
+    info('PNG matching', `${pngCount} of ${pngDiffCount}`);
     info('Error count', `${errorCount}`);
 }
