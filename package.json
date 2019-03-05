@@ -9,8 +9,7 @@
         "lint": "tslint -p tsconfig.json -c tslint.json"
     },
     "dependencies": {
-        "@types/jest-diff": "^20.0.1",
-        "jest-diff": "^24.0.0",
+        "diff": "^4.0.1",
         "lodash": "^4.17.11",
         "md5": "^2.2.1",
         "npmlog": "^4.1.2",
@@ -20,6 +19,7 @@
         "typescript": "^3.2.4"
     },
     "devDependencies": {
+        "@types/diff": "^4.0.1",
         "@types/lodash": "^4.14.121",
         "@types/npmlog": "^4.1.1",
         "@types/puppeteer": "^1.11.2",
