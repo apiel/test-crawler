@@ -2,6 +2,7 @@ import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
 import { writeFile, mkdirSync, readdirSync } from 'fs';
 import { promisify } from 'util';
+
 import * as md5 from 'md5';
 import * as rimraf from 'rimraf';
 import { trim } from 'lodash';

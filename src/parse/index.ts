@@ -1,10 +1,16 @@
 import { info } from 'npmlog';
 import { getFolders } from '../utils';
-import { readdirSync, readFileSync, existsSync } from 'fs';
+// import { readdirSync, readFileSync, existsSync, readFile } from 'fs';
 import { PAGES_FOLDER } from '../config';
 import { diffChars, createTwoFilesPatch } from 'diff';
 
 import { extname } from 'path';
+import { readJson, readFile, readdir, pathExists } from 'fs-extra';
+
+export function loadJson(file: string): Promise<any> {
+    const jsonFile = `${file.split('.').slice(0, -1).join('.')}.json`;
+    return readJson(jsonFile);
+}
 
 export async function parse() {
     info('Parse result', 'start');
@@ -13,17 +19,17 @@ export async function parse() {
     let htmlCount = 0;
     const [last, previous] = getFolders().reverse();
 
-    const files = readdirSync(`${PAGES_FOLDER}/${last}`);
-    files.forEach((file) => {
+    const files = await readdir(`${PAGES_FOLDER}/${last}`);
+    for (const file of files) {
         const lastFile = `${PAGES_FOLDER}/${last}/${file}`;
         const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
         const extension = extname(lastFile);
         // if .error
         if (extension === '.html') {
             htmlCount++;
-            if (existsSync(previousFile)) {
-                const actual = readFileSync(`${PAGES_FOLDER}/${last}/${file}`).toString();
-                const expected = readFileSync(`${PAGES_FOLDER}/${previous}/${file}`).toString();
+            if (await pathExists(previousFile)) {
+                const actual = await readFile(`${PAGES_FOLDER}/${last}/${file}`).toString();
+                const expected = await readFile(`${PAGES_FOLDER}/${previous}/${file}`).toString();
                 if (diffChars(actual, expected).length > 1) {
                     const result = createTwoFilesPatch('old', 'new', expected, actual);
                     info('Html diff', file, result);
@@ -34,6 +40,6 @@ export async function parse() {
                 info('Html diff', file, 'new file');
             }
         }
-    });
+    }
     info('Html matching', `${matchCount} of ${htmlCount}`);
 }
