@@ -1,7 +1,6 @@
 import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
-import { writeFile, mkdirSync, readdirSync } from 'fs';
-import { promisify } from 'util';
+import { writeFile, mkdir, readdir } from 'fs-extra';
 
 import * as md5 from 'md5';
 import * as rimraf from 'rimraf';
@@ -38,12 +37,12 @@ async function loadPage(url: string, distFolder: string) {
             timeout: TIMEOUT,
         });
         const html = await page.content();
-        await promisify(writeFile)(`${filename}.html`, html);
+        await writeFile(`${filename}.html`, html);
 
         const performance = JSON.parse(await page.evaluate(
             () => JSON.stringify(window.performance),
         ));
-        await promisify(writeFile)(`${filename}.json`, JSON.stringify({
+        await writeFile(`${filename}.json`, JSON.stringify({
             url,
             performance,
         }, null, 4));
@@ -61,7 +60,7 @@ async function loadPage(url: string, distFolder: string) {
 
 async function handleError(err: any, filename: string) {
     error('Load page error', err);
-    await promisify(writeFile)(`${filename}.error`, JSON.stringify(err, null, 4));
+    await writeFile(`${filename}.error`, JSON.stringify(err, null, 4));
 }
 
 function addUrls(urls: string[], distFolder: string) {
@@ -116,7 +115,7 @@ function cleanHistory() {
 
 export async function crawl(distFolder: string): Promise<string[]> {
     cleanHistory();
-    mkdirSync(distFolder);
+    await mkdir(distFolder);
 
     const promise = new Promise((resolve, reject) => {
         resolver = resolve;

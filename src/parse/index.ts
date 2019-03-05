@@ -1,6 +1,5 @@
 import { info } from 'npmlog';
 import { getFolders } from '../utils';
-// import { readdirSync, readFileSync, existsSync, readFile } from 'fs';
 import { PAGES_FOLDER } from '../config';
 import { diffChars, createTwoFilesPatch } from 'diff';
 
