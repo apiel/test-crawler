@@ -17,6 +17,8 @@ let newCount = 0;
 let errorCount = 0;
 let pngCount = 0;
 let pngDiffCount = 0;
+const htmlDiff = [];
+const pngDiff = [];
 
 function loadJson(file: string): Promise<PageData> {
     const jsonFile = `${file.split('.').slice(0, -1).join('.')}.json`;
@@ -31,6 +33,7 @@ async function parseHtml({ id, url }: PageData, lastFile: string, previousFile: 
         if (diffChars(actual, expected).length > 1) {
             const result = createTwoFilesPatch('old', 'new', expected, actual);
             info('Html diff', url, id, result);
+            htmlDiff.push({ url, id, result });
         } else {
             matchCount++;
         }
@@ -74,6 +77,7 @@ async function parsePng({ id, url }: PageData, lastFile: string, previousFile: s
         writeFile(diffFile, buffer);
         info('PNG', id, url, 'diff file:', diffFile);
         pngDiffCount++;
+        pngDiff.push({ url, id, diffFile, diffRatio });
     }
 }
 
@@ -100,4 +104,14 @@ export async function parse() {
     info('Html matching', `${matchCount} of ${htmlCount}, ${newCount} new files.`);
     info('PNG matching', `${pngCount} of ${pngDiffCount}`);
     info('Error count', `${errorCount}`);
+    writeFile(`${PAGES_FOLDER}/${last}/_result_.json`, JSON.stringify({
+        matchCount,
+        htmlCount,
+        newCount,
+        errorCount,
+        pngCount,
+        pngDiffCount,
+        htmlDiff,
+        pngDiff,
+    }, null, 4));
 }
