@@ -1,4 +1,4 @@
-import { info } from 'npmlog';
+import { info, error } from 'npmlog';
 import { getFolders } from '../utils';
 import { PAGES_FOLDER } from '../config';
 import { PNG } from 'pngjs';
@@ -90,14 +90,18 @@ export async function parse() {
         const extension = extname(lastFile);
         const data = await loadJson(lastFile);
 
-        if (extension === '.error') {
-            await parseError(data);
-        } else if (extension === '.html') {
-            const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
-            await parseHtml(data, lastFile, previousFile);
-        } else if (extension === '.png') {
-            const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
-            await parsePng(data, lastFile, previousFile);
+        try {
+            if (extension === '.error') {
+                await parseError(data);
+            } else if (extension === '.html') {
+                const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
+                await parseHtml(data, lastFile, previousFile);
+            } else if (extension === '.png') {
+                const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
+                await parsePng(data, lastFile, previousFile);
+            }
+        } catch (err) {
+            error('Parse', 'we need to handle error', JSON.stringify(error, null, 4));
         }
     }
     info('Html matching', `${matchCount} of ${htmlCount}, ${newCount} new files.`);
