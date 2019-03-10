@@ -1,11 +1,11 @@
 import { info } from 'npmlog';
 import { getFolders } from '../utils';
 import { PAGES_FOLDER } from '../config';
-import { diffChars, createTwoFilesPatch } from 'diff';
 import { PNG } from 'pngjs';
+import { shell } from 'execa';
 
 import { extname } from 'path';
-import { readJson, readFile, readdir, pathExists, createReadStream, writeFile } from 'fs-extra';
+import { readJson, readFile, readdir, pathExists, writeFile } from 'fs-extra';
 import { PageData } from '../typing';
 
 // import * as pixelmatch from 'pixelmatch';
@@ -28,13 +28,12 @@ function loadJson(file: string): Promise<PageData> {
 async function parseHtml({ id, url }: PageData, lastFile: string, previousFile: string) {
     htmlCount++;
     if (await pathExists(previousFile)) {
-        const actual = (await readFile(lastFile)).toString();
-        const expected = (await readFile(previousFile)).toString();
-        if (diffChars(actual, expected).length > 1) {
-            const result = createTwoFilesPatch('old', 'new', expected, actual);
-            info('Html diff', url, id, result);
-            htmlDiff.push({ url, id, result });
+        const { stdout } = await shell(`diff ${previousFile} ${lastFile}`);
+        if (stdout.length) {
+            info('Html diff', url, id, stdout);
+            htmlDiff.push({ url, id, stdout });
         } else {
+            info('Html diff', url, id, 'no diff');
             matchCount++;
         }
     } else {
