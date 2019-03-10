@@ -26,7 +26,7 @@ function saveData(filepath: string, pageData: PageData) {
     return writeFile(`${filepath}.json`, JSON.stringify(pageData, null, 4));
 }
 
-async function loadPage(url: string, distFolder: string) {
+async function loadPage(url: string, distFolder: string, retry: number = 0) {
     let hrefs: string[];
     const id = md5(url);
     const filepath = `${distFolder}/${id}`; // we could add part of the url after the md5
@@ -58,6 +58,10 @@ async function loadPage(url: string, distFolder: string) {
         addUrls(urls, distFolder);
     } catch (err) {
         await handleError(err, filepath);
+        if (retry < 2) {
+            info('retry crawl', url);
+            await loadPage(url, distFolder, retry + 1);
+        }
     }
     await browser.close();
     info('browser closed', url);
