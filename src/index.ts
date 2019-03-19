@@ -16,3 +16,5 @@ async function start() {
 }
 
 start();
+
+// need to parse in parallel of crwaling

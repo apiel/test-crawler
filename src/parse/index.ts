@@ -1,4 +1,4 @@
-import { info, error } from 'npmlog';
+import { info, error, warn } from 'npmlog';
 import { getFolders } from '../utils';
 import { PAGES_FOLDER } from '../config';
 import { PNG } from 'pngjs';
@@ -28,7 +28,9 @@ function loadJson(file: string): Promise<PageData> {
 async function parseHtml({ id, url }: PageData, lastFile: string, previousFile: string) {
     htmlCount++;
     if (await pathExists(previousFile)) {
-        const { stdout } = await shell(`diff ${previousFile} ${lastFile}`);
+        const { stdout } = await shell(`diff -u ${previousFile} ${lastFile}`);
+        // console.log('stdout', stdout);
+        // console.log('cmd', `diff -u ${previousFile} ${lastFile}`);
         if (stdout.length) {
             info('Html diff', url, id, stdout);
             htmlDiff.push({ url, id, stdout });
@@ -94,14 +96,15 @@ export async function parse() {
             if (extension === '.error') {
                 await parseError(data);
             } else if (extension === '.html') {
-                const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
-                await parseHtml(data, lastFile, previousFile);
+                warn('Parse html', 'skip html diff for the moment');
+                // const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
+                // await parseHtml(data, lastFile, previousFile);
             } else if (extension === '.png') {
                 const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
                 await parsePng(data, lastFile, previousFile);
             }
         } catch (err) {
-            error('Parse', 'we need to handle error', JSON.stringify(error, null, 4));
+            error('Parse', 'we need to handle error', JSON.stringify(err, null, 4));
         }
     }
     info('Html matching', `${matchCount} of ${htmlCount}, ${newCount} new files.`);
