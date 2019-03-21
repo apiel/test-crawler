@@ -17,11 +17,9 @@ async function parsePng(lastFile: string, previousFile: string) {
     const diffImage = new PNG({ width, height });
 
     const diffPixelCount = pixelmatch(
-        rawActual.data,
-        rawExpected.data,
-        diffImage.data,
-        width,
-        height,
+        rawActual,
+        rawExpected,
+        diffImage,
     );
 
     const totalPixels = width * height;

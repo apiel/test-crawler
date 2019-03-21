@@ -3,18 +3,36 @@ export interface Options {
     includeAA?: boolean;
 }
 
+export interface Color {
+    r: number;
+    g: number;
+    b: number;
+}
+
+export interface Zone {
+    xMin: number;
+    yMin: number;
+    xMax: number;
+    yMax: number;
+}
+
+export interface Image {
+    data: Buffer;
+    width: number;
+    height: number;
+}
+
 export function pixelmatch(
-    img1: Buffer,
-    img2: Buffer,
-    output: Buffer,
-    width: number,
-    height: number,
+    img1: Image,
+    img2: Image,
+    output: Image,
     options: Options = {},
 ) {
-    if (img1.length !== img2.length) {
+    if (img1.data.length !== img2.data.length) {
         throw new Error('Image sizes do not match.');
     }
 
+    const { width, height } = img1;
     const threshold = options.threshold === undefined ? 0.1 : options.threshold;
 
     // maximum acceptable square distance between two colors;
@@ -33,24 +51,20 @@ export function pixelmatch(
 
             // the color difference is above the threshold
             if (delta > maxDelta) {
-                const isAntiAliasing = antialiased(img1, x, y, width, height, img2)
-                    || antialiased(img2, x, y, width, height, img1);
-
-                // if (isAntiAliasing) {
-                //     addPixelDiff(x, y);
-                // }
+                const isAntiAliasing = antialiased(img1, x, y, img2)
+                    || antialiased(img2, x, y, img1);
 
                 // check it's a real rendering difference or just anti-aliasing
                 if (!options.includeAA && isAntiAliasing) {
                     // one of the pixels is anti-aliasing; draw as yellow and do not count as difference
                     if (output) {
-                        drawPixel(output, pos, 255, 255, 0);
+                        drawPixel(output, pos, { r: 255, g: 255, b: 0 });
                     }
 
                 } else {
                     // found substantial difference not caused by anti-aliasing; draw it as red
                     if (output) {
-                        drawPixel(output, pos, 255, 0, 0);
+                        drawPixel(output, pos, { r: 255, g: 0, b: 0 });
                     }
                     addPixelDiff(x, y);
                     diff++;
@@ -59,13 +73,12 @@ export function pixelmatch(
             } else if (output) {
                 // pixels are similar; draw background as grayscale image blended with white
                 const val = grayPixel(img1, pos, 0.1);
-                drawPixel(output, pos, val, val, val);
+                drawPixel(output, pos, { r: val, g: val, b: val });
             }
         }
     }
 
-    getDiffZone(width, output);
-    getDiffZone2(width, output);
+    getDiffZone(output);
 
     // return the number of different pixels
     return diff;
@@ -75,13 +88,12 @@ export function pixelmatch(
 // based on "Anti-aliased Pixel and Intensity Slope Detector" paper by V. Vysniauskas, 2009
 
 export function antialiased(
-    img: Buffer,
+    img: Image,
     xMin: number,
     yMin: number,
-    width: number,
-    height: number,
-    img2: Buffer,
+    img2: Image,
 ) {
+    const { width, height } = img;
     const x0 = Math.max(xMin - 1, 0);
     const y0 = Math.max(yMin - 1, 0);
     const xMax = Math.min(xMin + 1, width - 1);
@@ -135,12 +147,12 @@ export function antialiased(
 
     // if either the darkest or the brightest pixel has 3+ equal siblings in both images
     // (definitely not anti-aliased), this pixel is anti-aliased
-    return (hasManySiblings(img, minX, minY, width, height) && hasManySiblings(img2, minX, minY, width, height)) ||
-        (hasManySiblings(img, maxX, maxY, width, height) && hasManySiblings(img2, maxX, maxY, width, height));
+    return (hasManySiblings(img, minX, minY) && hasManySiblings(img2, minX, minY)) ||
+        (hasManySiblings(img, maxX, maxY) && hasManySiblings(img2, maxX, maxY));
 }
 
 // check if a pixel has 3+ adjacent pixels of the same color.
-export function hasManySiblings(img: Buffer, xMin: number, yMin: number, width: number, height: number) {
+export function hasManySiblings({ data, width, height }: Image, xMin: number, yMin: number) {
     const x0 = Math.max(xMin - 1, 0);
     const y0 = Math.max(yMin - 1, 0);
     const xMax = Math.min(xMin + 1, width - 1);
@@ -156,10 +168,10 @@ export function hasManySiblings(img: Buffer, xMin: number, yMin: number, width: 
             }
 
             const pos2 = (y * width + x) * 4;
-            if (img[pos] === img[pos2] &&
-                img[pos + 1] === img[pos2 + 1] &&
-                img[pos + 2] === img[pos2 + 2] &&
-                img[pos + 3] === img[pos2 + 3]) {
+            if (data[pos] === data[pos2] &&
+                data[pos + 1] === data[pos2 + 1] &&
+                data[pos + 2] === data[pos2 + 2] &&
+                data[pos + 3] === data[pos2 + 3]) {
                 zeroes++;
             }
 
@@ -175,16 +187,16 @@ export function hasManySiblings(img: Buffer, xMin: number, yMin: number, width: 
 // calculate color difference according to the paper "Measuring perceived color difference
 // using YIQ NTSC transmission color space in mobile applications" by Y. Kotsarenko and F. Ramos
 
-function colorDelta(img1: Buffer, img2: Buffer, k: number, m: number, yOnly?: boolean) {
-    let r1 = img1[k + 0];
-    let g1 = img1[k + 1];
-    let b1 = img1[k + 2];
-    let a1 = img1[k + 3];
+function colorDelta(img1: Image, img2: Image, k: number, m: number, yOnly?: boolean) {
+    let r1 = img1.data[k + 0];
+    let g1 = img1.data[k + 1];
+    let b1 = img1.data[k + 2];
+    let a1 = img1.data[k + 3];
 
-    let r2 = img2[m + 0];
-    let g2 = img2[m + 1];
-    let b2 = img2[m + 2];
-    let a2 = img2[m + 3];
+    let r2 = img2.data[m + 0];
+    let g2 = img2.data[m + 1];
+    let b2 = img2.data[m + 2];
+    let a2 = img2.data[m + 3];
 
     if (a1 === a2 && r1 === r2 && g1 === g2 && b1 === b2) {
         return 0;
@@ -204,37 +216,37 @@ function colorDelta(img1: Buffer, img2: Buffer, k: number, m: number, yOnly?: bo
         b2 = blend(b2, a2);
     }
 
-    const y = rgb2y(r1, g1, b1) - rgb2y(r2, g2, b2);
+    const y = rgb2y({ r: r1, g: g1, b: b1 }) - rgb2y({ r: r2, g: g2, b: b2 });
 
     if (yOnly) { return y; } // brightness difference only
 
-    const i = rgb2i(r1, g1, b1) - rgb2i(r2, g2, b2);
-    const q = rgb2q(r1, g1, b1) - rgb2q(r2, g2, b2);
+    const i = rgb2i({ r: r1, g: g1, b: b1 }) - rgb2i({ r: r2, g: g2, b: b2 });
+    const q = rgb2q({ r: r1, g: g1, b: b1 }) - rgb2q({ r: r2, g: g2, b: b2 });
 
     return 0.5053 * y * y + 0.299 * i * i + 0.1957 * q * q;
 }
 
-function rgb2y(r: number, g: number, b: number) { return r * 0.29889531 + g * 0.58662247 + b * 0.11448223; }
-function rgb2i(r: number, g: number, b: number) { return r * 0.59597799 - g * 0.27417610 - b * 0.32180189; }
-function rgb2q(r: number, g: number, b: number) { return r * 0.21147017 - g * 0.52261711 + b * 0.31114694; }
+function rgb2y({ r, g, b }: Color) { return r * 0.29889531 + g * 0.58662247 + b * 0.11448223; }
+function rgb2i({ r, g, b }: Color) { return r * 0.59597799 - g * 0.27417610 - b * 0.32180189; }
+function rgb2q({ r, g, b }: Color) { return r * 0.21147017 - g * 0.52261711 + b * 0.31114694; }
 
 // blend semi-transparent color with white
 function blend(c: number, a: number) {
     return 255 + (c - 255) * a;
 }
 
-function drawPixel(output: Buffer, pos: number, r: number, g: number, b: number) {
-    output[pos + 0] = r;
-    output[pos + 1] = g;
-    output[pos + 2] = b;
-    output[pos + 3] = 255;
+function drawPixel(image: Image, pos: number, { r, g, b }: Color) {
+    image.data[pos + 0] = r;
+    image.data[pos + 1] = g;
+    image.data[pos + 2] = b;
+    image.data[pos + 3] = 255;
 }
 
-function grayPixel(img: Buffer, i: number, alpha: number) {
-    const r = img[i + 0];
-    const g = img[i + 1];
-    const b = img[i + 2];
-    return blend(rgb2y(r, g, b), alpha * img[i + 3] / 255);
+function grayPixel(image: Image, i: number, alpha: number) {
+    const r = image.data[i + 0];
+    const g = image.data[i + 1];
+    const b = image.data[i + 2];
+    return blend(rgb2y({ r, g, b }), alpha * image.data[i + 3] / 255);
 }
 
 const pixelDiff: Array<{ x: number, y: number }> = [];
@@ -243,14 +255,7 @@ function addPixelDiff(x: number, y: number) {
     pixelDiff.push({ x, y });
 }
 
-interface Zone {
-    xMin: number;
-    yMin: number;
-    xMax: number;
-    yMax: number;
-}
-
-function getDiffZone2(width: number, output: Buffer) {
+function getDiffZone(output: Image) {
     const SPACING = 10;
     const zones: Zone[] = [];
     pixelDiff.forEach(({ x, y }) => {
@@ -282,9 +287,9 @@ function getDiffZone2(width: number, output: Buffer) {
     const groupedZones = groupOverlappingZone(zones);
     console.log('groupedZones', groupedZones);
 
-    groupedZones.forEach(zone => {
-        drawRect(zone, width, output);
-    });
+    if (output) {
+        drawZones(groupedZones, output);
+    }
 }
 
 function groupOverlappingZone(zones: Zone[]) {
@@ -317,40 +322,33 @@ function zoneOverlap(zoneA: Zone, zoneB: Zone): boolean {
         && zoneB.yMin < zoneA.yMax;
 }
 
-function getDiffZone(width: number, output: Buffer) {
-    const xx = pixelDiff.map(({ x }) => x);
-    const yy = pixelDiff.map(({ y }) => y);
-    const zone = {
-        xMin: Math.min(...xx),
-        xMax: Math.max(...xx),
-        yMin: Math.min(...yy),
-        yMax: Math.max(...yy),
-    };
-    console.log('zone', zone);
-    // drawRect(zone.xMin, zone.yMin, zone.xMax - zone.xMin, zone.yMax - zone.yMin, width, output);
+function drawZones(zones: Zone[], output: Image) {
+    zones.forEach(zone => {
+        drawZone(zone, output);
+    });
 }
 
-function drawRect(zone: Zone, width: number, output: Buffer) {
-    drawLine(zone.xMin, zone.yMin, zone.xMax, zone.yMin, width, output);
-    drawLine(zone.xMax, zone.yMin, zone.xMax, zone.yMax, width, output);
-    drawLine(zone.xMin, zone.yMax, zone.xMax, zone.yMax, width, output);
-    drawLine(zone.xMin, zone.yMin, zone.xMin, zone.yMax, width, output);
+function drawZone(zone: Zone, output: Image) {
+    drawLine(zone.xMin, zone.yMin, zone.xMax, zone.yMin, output);
+    drawLine(zone.xMax, zone.yMin, zone.xMax, zone.yMax, output);
+    drawLine(zone.xMin, zone.yMax, zone.xMax, zone.yMax, output);
+    drawLine(zone.xMin, zone.yMin, zone.xMin, zone.yMax, output);
 }
 
-function drawLine(x0: number, y0: number, xMin: number, yMin: number, width: number, output: Buffer) {
-    const dx = Math.abs(xMin - x0);
-    const dy = Math.abs(yMin - y0);
-    const sx = (x0 < xMin) ? 1 : -1;
-    const sy = (y0 < yMin) ? 1 : -1;
+function drawLine(x0: number, y0: number, x1: number, y1: number, output: Image) {
+    const dx = Math.abs(x1 - x0);
+    const dy = Math.abs(y1 - y0);
+    const sx = (x0 < x1) ? 1 : -1;
+    const sy = (y0 < y1) ? 1 : -1;
     let err = dx - dy;
 
     while (true) {
 
-        const pos = (y0 * width + x0) * 4;
+        const pos = (y0 * output.width + x0) * 4;
 
-        drawPixel(output, pos, 0, 250, 0);
+        drawPixel(output, pos, { r: 0, g: 250, b: 0 });
 
-        if ((x0 === xMin) && (y0 === yMin)) {
+        if ((x0 === x1) && (y0 === y1)) {
             break;
         }
 
