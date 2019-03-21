@@ -76,18 +76,18 @@ export function pixelmatch(
 
 export function antialiased(
     img: Buffer,
-    x1: number,
-    y1: number,
+    xMin: number,
+    yMin: number,
     width: number,
     height: number,
     img2: Buffer,
 ) {
-    const x0 = Math.max(x1 - 1, 0);
-    const y0 = Math.max(y1 - 1, 0);
-    const x2 = Math.min(x1 + 1, width - 1);
-    const y2 = Math.min(y1 + 1, height - 1);
-    const pos = (y1 * width + x1) * 4;
-    let zeroes = x1 === x0 || x1 === x2 || y1 === y0 || y1 === y2 ? 1 : 0;
+    const x0 = Math.max(xMin - 1, 0);
+    const y0 = Math.max(yMin - 1, 0);
+    const xMax = Math.min(xMin + 1, width - 1);
+    const yMax = Math.min(yMin + 1, height - 1);
+    const pos = (yMin * width + xMin) * 4;
+    let zeroes = xMin === x0 || xMin === xMax || yMin === y0 || yMin === yMax ? 1 : 0;
     let min = 0;
     let max = 0;
     let minX: number;
@@ -96,9 +96,9 @@ export function antialiased(
     let maxY: number;
 
     // go through 8 adjacent pixels
-    for (let x = x0; x <= x2; x++) {
-        for (let y = y0; y <= y2; y++) {
-            if (x === x1 && y === y1) {
+    for (let x = x0; x <= xMax; x++) {
+        for (let y = y0; y <= yMax; y++) {
+            if (x === xMin && y === yMin) {
                 continue;
             }
 
@@ -140,18 +140,18 @@ export function antialiased(
 }
 
 // check if a pixel has 3+ adjacent pixels of the same color.
-export function hasManySiblings(img: Buffer, x1: number, y1: number, width: number, height: number) {
-    const x0 = Math.max(x1 - 1, 0);
-    const y0 = Math.max(y1 - 1, 0);
-    const x2 = Math.min(x1 + 1, width - 1);
-    const y2 = Math.min(y1 + 1, height - 1);
-    const pos = (y1 * width + x1) * 4;
-    let zeroes = x1 === x0 || x1 === x2 || y1 === y0 || y1 === y2 ? 1 : 0;
+export function hasManySiblings(img: Buffer, xMin: number, yMin: number, width: number, height: number) {
+    const x0 = Math.max(xMin - 1, 0);
+    const y0 = Math.max(yMin - 1, 0);
+    const xMax = Math.min(xMin + 1, width - 1);
+    const yMax = Math.min(yMin + 1, height - 1);
+    const pos = (yMin * width + xMin) * 4;
+    let zeroes = xMin === x0 || xMin === xMax || yMin === y0 || yMin === yMax ? 1 : 0;
 
     // go through 8 adjacent pixels
-    for (let x = x0; x <= x2; x++) {
-        for (let y = y0; y <= y2; y++) {
-            if (x === x1 && y === y1) {
+    for (let x = x0; x <= xMax; x++) {
+        for (let y = y0; y <= yMax; y++) {
+            if (x === xMin && y === yMin) {
                 continue;
             }
 
@@ -243,10 +243,17 @@ function addPixelDiff(x: number, y: number) {
     pixelDiff.push({ x, y });
 }
 
+interface Zone {
+    xMin: number;
+    yMin: number;
+    xMax: number;
+    yMax: number;
+}
+
 function getDiffZone2(width: number, output: Buffer) {
     const SPACING = 10;
-    const zones: Array<{ xMin: number, yMin: number, xMax: number, yMax: number }> = [];
-    pixelDiff.forEach(({x, y}) => {
+    const zones: Zone[] = [];
+    pixelDiff.forEach(({ x, y }) => {
         let hasZone = false;
         zones.forEach(({ xMin, yMin, xMax, yMax }, index) => {
             if (x > xMin - SPACING && x < xMax + SPACING && y > yMin - SPACING && y < yMax + SPACING) {
@@ -261,10 +268,6 @@ function getDiffZone2(width: number, output: Buffer) {
             }
         });
         if (!hasZone) {
-            // console.log('zones', x, y, zones);
-            // if (zones.length > 0) {
-            //     process.exit();
-            // }
             zones.push({
                 xMin: x,
                 xMax: x,
@@ -274,8 +277,44 @@ function getDiffZone2(width: number, output: Buffer) {
         }
     });
 
-    console.log('zones', zones);
-    // console.log('pixelDiff', pixelDiff);
+    // console.log('zones', zones);
+
+    const groupedZones = groupOverlappingZone(zones);
+    console.log('groupedZones', groupedZones);
+
+    groupedZones.forEach(zone => {
+        drawRect(zone, width, output);
+    });
+}
+
+function groupOverlappingZone(zones: Zone[]) {
+    const groupedZones: Zone[] = [];
+    let newZone: Zone;
+    zones.forEach((zone, index) => {
+        if (!newZone) {
+            newZone = zone;
+        } else if (zoneOverlap(newZone, zone)) {
+            newZone = {
+                xMin: Math.min(zone.xMin, newZone.xMin),
+                xMax: Math.max(zone.xMax, newZone.xMax),
+                yMin: Math.min(zone.yMin, newZone.yMin),
+                yMax: Math.max(zone.yMax, newZone.yMax),
+            };
+        } else {
+            groupedZones.push(newZone);
+            newZone = zone;
+        }
+    });
+    groupedZones.push(newZone);
+
+    return groupedZones;
+}
+
+function zoneOverlap(zoneA: Zone, zoneB: Zone): boolean {
+    return zoneA.xMin < zoneB.xMax
+        && zoneB.xMin < zoneA.xMax
+        && zoneA.yMin < zoneB.yMax
+        && zoneB.yMin < zoneA.yMax;
 }
 
 function getDiffZone(width: number, output: Buffer) {
@@ -288,35 +327,30 @@ function getDiffZone(width: number, output: Buffer) {
         yMax: Math.max(...yy),
     };
     console.log('zone', zone);
-    drawRect(zone.xMin, zone.yMin, zone.xMax - zone.xMin, zone.yMax - zone.yMin, width, output);
+    // drawRect(zone.xMin, zone.yMin, zone.xMax - zone.xMin, zone.yMax - zone.yMin, width, output);
 }
 
-function drawRect(x: number, y: number, w: number, h: number, width: number, output: Buffer) {
-    const topLeft = { x, y };
-    const topRight = { x: x + w - 1, y };
-    const bottomRight = { x: topRight.x, y: y + h - 1 };
-    const bottomLeft = { x, y: bottomRight.y };
-
-    drawLine(topLeft.x, topLeft.y, topRight.x, topRight.y, width, output);
-    drawLine(topRight.x, topRight.y, bottomRight.x, bottomRight.y, width, output);
-    drawLine(bottomRight.x, bottomRight.y, bottomLeft.x, bottomLeft.y, width, output);
-    drawLine(bottomLeft.x, bottomLeft.y, topLeft.x, topLeft.y, width, output);
+function drawRect(zone: Zone, width: number, output: Buffer) {
+    drawLine(zone.xMin, zone.yMin, zone.xMax, zone.yMin, width, output);
+    drawLine(zone.xMax, zone.yMin, zone.xMax, zone.yMax, width, output);
+    drawLine(zone.xMin, zone.yMax, zone.xMax, zone.yMax, width, output);
+    drawLine(zone.xMin, zone.yMin, zone.xMin, zone.yMax, width, output);
 }
 
-function drawLine(x0: number, y0: number, x1: number, y1: number, width: number, output: Buffer) {
-    const dx = Math.abs(x1 - x0);
-    const dy = Math.abs(y1 - y0);
-    const sx = (x0 < x1) ? 1 : -1;
-    const sy = (y0 < y1) ? 1 : -1;
+function drawLine(x0: number, y0: number, xMin: number, yMin: number, width: number, output: Buffer) {
+    const dx = Math.abs(xMin - x0);
+    const dy = Math.abs(yMin - y0);
+    const sx = (x0 < xMin) ? 1 : -1;
+    const sy = (y0 < yMin) ? 1 : -1;
     let err = dx - dy;
 
     while (true) {
 
         const pos = (y0 * width + x0) * 4;
 
-        drawPixel(output, pos, 250, 250, 0);
+        drawPixel(output, pos, 0, 250, 0);
 
-        if ((x0 === x1) && (y0 === y1)) {
+        if ((x0 === xMin) && (y0 === yMin)) {
             break;
         }
 
