@@ -3,6 +3,9 @@ export interface Options {
     includeAntiAliasing?: boolean;
     drawPixelDiff?: boolean;
     drawZonesDiff?: boolean;
+    zoneColor?: Color;
+    antiAliasingColor?: Color;
+    pixelDiffColor?: Color;
 }
 
 export interface Color {

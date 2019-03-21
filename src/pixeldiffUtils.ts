@@ -1,4 +1,65 @@
-import { Image, Color } from './pixeldiffTypes';
+import { Image, Color, Zone } from './pixeldiffTypes';
+
+export function groupOverlappingZone(zones: Zone[]) {
+    const groupedZones: Zone[] = [];
+    let newZone: Zone;
+    zones.forEach((zone, index) => {
+        if (!newZone) {
+            newZone = zone;
+        } else if (zoneOverlap(newZone, zone)) {
+            newZone = {
+                xMin: Math.min(zone.xMin, newZone.xMin),
+                xMax: Math.max(zone.xMax, newZone.xMax),
+                yMin: Math.min(zone.yMin, newZone.yMin),
+                yMax: Math.max(zone.yMax, newZone.yMax),
+            };
+        } else {
+            groupedZones.push(newZone);
+            newZone = zone;
+        }
+    });
+    groupedZones.push(newZone);
+
+    return groupedZones;
+}
+
+export function zoneOverlap(zoneA: Zone, zoneB: Zone): boolean {
+    return zoneA.xMin < zoneB.xMax
+        && zoneB.xMin < zoneA.xMax
+        && zoneA.yMin < zoneB.yMax
+        && zoneB.yMin < zoneA.yMax;
+}
+
+export function getDiffZone(pixelDiff: Array<{ x: number, y: number }>) {
+    const SPACING = 10;
+    const zones: Zone[] = [];
+    pixelDiff.forEach(({ x, y }) => {
+        let hasZone = false;
+        zones.forEach(({ xMin, yMin, xMax, yMax }, index) => {
+            if (x > xMin - SPACING && x < xMax + SPACING && y > yMin - SPACING && y < yMax + SPACING) {
+                zones[index] = {
+                    xMin: Math.min(x, xMin),
+                    xMax: Math.max(x, xMax),
+                    yMin: Math.min(y, yMin),
+                    yMax: Math.max(y, yMax),
+                };
+                hasZone = true;
+                return;
+            }
+        });
+        if (!hasZone) {
+            zones.push({
+                xMin: x,
+                xMax: x,
+                yMin: y,
+                yMax: y,
+            });
+        }
+    });
+
+    const groupedZones = groupOverlappingZone(zones);
+    return groupedZones;
+}
 
 export function grayPixel(image: Image, i: number, alpha: number) {
     const r = image.data[i + 0];
