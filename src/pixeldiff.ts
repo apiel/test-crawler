@@ -1,26 +1,14 @@
-export interface Options {
-    threshold?: number;
-    includeAA?: boolean;
-}
+import { Image, Color, Options, Zone } from './pixeldiffTypes';
+import { colorDelta, antialiased, blend, rgb2y, grayPixel } from './pixeldiffUtils';
 
-export interface Color {
-    r: number;
-    g: number;
-    b: number;
-}
+const defaultOptions: Options = {
+    threshold: 0.1,
+    includeAntiAliasing: false,
+    drawPixelDiff: true,
+    drawZonesDiff: true,
+};
 
-export interface Zone {
-    xMin: number;
-    yMin: number;
-    xMax: number;
-    yMax: number;
-}
-
-export interface Image {
-    data: Buffer;
-    width: number;
-    height: number;
-}
+const pixelDiff: Array<{ x: number, y: number }> = [];
 
 export function pixelmatch(
     img1: Image,
@@ -33,7 +21,7 @@ export function pixelmatch(
     }
 
     const { width, height } = img1;
-    const threshold = options.threshold === undefined ? 0.1 : options.threshold;
+    const { threshold, includeAntiAliasing, drawPixelDiff, drawZonesDiff } = { ...defaultOptions, ...options };
 
     // maximum acceptable square distance between two colors;
     // 35215 is the maximum possible value for the YIQ difference metric
@@ -55,18 +43,18 @@ export function pixelmatch(
                     || antialiased(img2, x, y, img1);
 
                 // check it's a real rendering difference or just anti-aliasing
-                if (!options.includeAA && isAntiAliasing) {
+                if (!includeAntiAliasing && isAntiAliasing) {
                     // one of the pixels is anti-aliasing; draw as yellow and do not count as difference
-                    if (output) {
+                    if (output && drawPixelDiff) {
                         drawPixel(output, pos, { r: 255, g: 255, b: 0 });
                     }
 
                 } else {
                     // found substantial difference not caused by anti-aliasing; draw it as red
-                    if (output) {
+                    if (output && drawPixelDiff) {
                         drawPixel(output, pos, { r: 255, g: 0, b: 0 });
                     }
-                    addPixelDiff(x, y);
+                    pixelDiff.push({ x, y });
                     diff++;
                 }
 
@@ -78,184 +66,23 @@ export function pixelmatch(
         }
     }
 
-    getDiffZone(output);
+    const zones = getDiffZone();
+    if (output && drawZonesDiff) {
+        drawZones(zones, output);
+    }
 
     // return the number of different pixels
-    return diff;
+    return { diff, zones };
 }
 
-// check if a pixel is likely a part of anti-aliasing;
-// based on "Anti-aliased Pixel and Intensity Slope Detector" paper by V. Vysniauskas, 2009
-
-export function antialiased(
-    img: Image,
-    xMin: number,
-    yMin: number,
-    img2: Image,
-) {
-    const { width, height } = img;
-    const x0 = Math.max(xMin - 1, 0);
-    const y0 = Math.max(yMin - 1, 0);
-    const xMax = Math.min(xMin + 1, width - 1);
-    const yMax = Math.min(yMin + 1, height - 1);
-    const pos = (yMin * width + xMin) * 4;
-    let zeroes = xMin === x0 || xMin === xMax || yMin === y0 || yMin === yMax ? 1 : 0;
-    let min = 0;
-    let max = 0;
-    let minX: number;
-    let minY: number;
-    let maxX: number;
-    let maxY: number;
-
-    // go through 8 adjacent pixels
-    for (let x = x0; x <= xMax; x++) {
-        for (let y = y0; y <= yMax; y++) {
-            if (x === xMin && y === yMin) {
-                continue;
-            }
-
-            // brightness delta between the center pixel and adjacent one
-            const delta = colorDelta(img, img, pos, (y * width + x) * 4, true);
-
-            // count the number of equal, darker and brighter adjacent pixels
-            if (delta === 0) {
-                zeroes++;
-                // if found more than 2 equal siblings, it's definitely not anti-aliasing
-                if (zeroes > 2) {
-                    return false;
-                }
-
-                // remember the darkest pixel
-            } else if (delta < min) {
-                min = delta;
-                minX = x;
-                minY = y;
-
-                // remember the brightest pixel
-            } else if (delta > max) {
-                max = delta;
-                maxX = x;
-                maxY = y;
-            }
-        }
-    }
-
-    // if there are no both darker and brighter pixels among siblings, it's not anti-aliasing
-    if (min === 0 || max === 0) {
-        return false;
-    }
-
-    // if either the darkest or the brightest pixel has 3+ equal siblings in both images
-    // (definitely not anti-aliased), this pixel is anti-aliased
-    return (hasManySiblings(img, minX, minY) && hasManySiblings(img2, minX, minY)) ||
-        (hasManySiblings(img, maxX, maxY) && hasManySiblings(img2, maxX, maxY));
-}
-
-// check if a pixel has 3+ adjacent pixels of the same color.
-export function hasManySiblings({ data, width, height }: Image, xMin: number, yMin: number) {
-    const x0 = Math.max(xMin - 1, 0);
-    const y0 = Math.max(yMin - 1, 0);
-    const xMax = Math.min(xMin + 1, width - 1);
-    const yMax = Math.min(yMin + 1, height - 1);
-    const pos = (yMin * width + xMin) * 4;
-    let zeroes = xMin === x0 || xMin === xMax || yMin === y0 || yMin === yMax ? 1 : 0;
-
-    // go through 8 adjacent pixels
-    for (let x = x0; x <= xMax; x++) {
-        for (let y = y0; y <= yMax; y++) {
-            if (x === xMin && y === yMin) {
-                continue;
-            }
-
-            const pos2 = (y * width + x) * 4;
-            if (data[pos] === data[pos2] &&
-                data[pos + 1] === data[pos2 + 1] &&
-                data[pos + 2] === data[pos2 + 2] &&
-                data[pos + 3] === data[pos2 + 3]) {
-                zeroes++;
-            }
-
-            if (zeroes > 2) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-// calculate color difference according to the paper "Measuring perceived color difference
-// using YIQ NTSC transmission color space in mobile applications" by Y. Kotsarenko and F. Ramos
-
-function colorDelta(img1: Image, img2: Image, k: number, m: number, yOnly?: boolean) {
-    let r1 = img1.data[k + 0];
-    let g1 = img1.data[k + 1];
-    let b1 = img1.data[k + 2];
-    let a1 = img1.data[k + 3];
-
-    let r2 = img2.data[m + 0];
-    let g2 = img2.data[m + 1];
-    let b2 = img2.data[m + 2];
-    let a2 = img2.data[m + 3];
-
-    if (a1 === a2 && r1 === r2 && g1 === g2 && b1 === b2) {
-        return 0;
-    }
-
-    if (a1 < 255) {
-        a1 /= 255;
-        r1 = blend(r1, a1);
-        g1 = blend(g1, a1);
-        b1 = blend(b1, a1);
-    }
-
-    if (a2 < 255) {
-        a2 /= 255;
-        r2 = blend(r2, a2);
-        g2 = blend(g2, a2);
-        b2 = blend(b2, a2);
-    }
-
-    const y = rgb2y({ r: r1, g: g1, b: b1 }) - rgb2y({ r: r2, g: g2, b: b2 });
-
-    if (yOnly) { return y; } // brightness difference only
-
-    const i = rgb2i({ r: r1, g: g1, b: b1 }) - rgb2i({ r: r2, g: g2, b: b2 });
-    const q = rgb2q({ r: r1, g: g1, b: b1 }) - rgb2q({ r: r2, g: g2, b: b2 });
-
-    return 0.5053 * y * y + 0.299 * i * i + 0.1957 * q * q;
-}
-
-function rgb2y({ r, g, b }: Color) { return r * 0.29889531 + g * 0.58662247 + b * 0.11448223; }
-function rgb2i({ r, g, b }: Color) { return r * 0.59597799 - g * 0.27417610 - b * 0.32180189; }
-function rgb2q({ r, g, b }: Color) { return r * 0.21147017 - g * 0.52261711 + b * 0.31114694; }
-
-// blend semi-transparent color with white
-function blend(c: number, a: number) {
-    return 255 + (c - 255) * a;
-}
-
-function drawPixel(image: Image, pos: number, { r, g, b }: Color) {
+export function drawPixel(image: Image, pos: number, { r, g, b }: Color) {
     image.data[pos + 0] = r;
     image.data[pos + 1] = g;
     image.data[pos + 2] = b;
     image.data[pos + 3] = 255;
 }
 
-function grayPixel(image: Image, i: number, alpha: number) {
-    const r = image.data[i + 0];
-    const g = image.data[i + 1];
-    const b = image.data[i + 2];
-    return blend(rgb2y({ r, g, b }), alpha * image.data[i + 3] / 255);
-}
-
-const pixelDiff: Array<{ x: number, y: number }> = [];
-function addPixelDiff(x: number, y: number) {
-    // console.log('addPixel diff', x, y);
-    pixelDiff.push({ x, y });
-}
-
-function getDiffZone(output: Image) {
+export function getDiffZone() {
     const SPACING = 10;
     const zones: Zone[] = [];
     pixelDiff.forEach(({ x, y }) => {
@@ -282,14 +109,8 @@ function getDiffZone(output: Image) {
         }
     });
 
-    // console.log('zones', zones);
-
     const groupedZones = groupOverlappingZone(zones);
-    console.log('groupedZones', groupedZones);
-
-    if (output) {
-        drawZones(groupedZones, output);
-    }
+    return groupedZones;
 }
 
 function groupOverlappingZone(zones: Zone[]) {

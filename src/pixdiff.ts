@@ -16,15 +16,16 @@ async function parsePng(lastFile: string, previousFile: string) {
     const { width, height } = rawActual;
     const diffImage = new PNG({ width, height });
 
-    const diffPixelCount = pixelmatch(
+    const { diff, zones } = pixelmatch(
         rawActual,
         rawExpected,
         diffImage,
     );
 
     const totalPixels = width * height;
-    const diffRatio = diffPixelCount / totalPixels;
+    const diffRatio = diff / totalPixels;
     info('PNG', `diff ratio: ${diffRatio}`);
+    info('PNG', 'zone', zones);
 
     if (diffRatio) {
         const buffer = PNG.sync.write(diffImage, { colorType: 6 });
