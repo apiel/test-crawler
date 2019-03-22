@@ -3,13 +3,11 @@ import { getFolders } from '../utils';
 import { PAGES_FOLDER } from '../config';
 import { PNG } from 'pngjs';
 import { shell } from 'execa';
+import { pixdiff } from 'pixdiff';
 
 import { extname } from 'path';
 import { readJson, readFile, readdir, pathExists, writeFile } from 'fs-extra';
 import { PageData } from '../typing';
-
-// import * as pixelmatch from 'pixelmatch';
-const pixelmatch = require('pixelmatch'); // tslint:disable-line
 
 let matchCount = 0;
 let htmlCount = 0;
@@ -60,17 +58,16 @@ async function parsePng({ id, url }: PageData, lastFile: string, previousFile: s
     const { width, height } = rawActual;
     const diffImage = new PNG({ width, height });
 
-    const diffPixelCount = pixelmatch(
-        rawActual.data,
-        rawExpected.data,
-        diffImage.data,
-        width,
-        height,
+    const { diff, zones } = pixdiff(
+        rawActual,
+        rawExpected,
+        diffImage,
     );
 
     const totalPixels = width * height;
-    const diffRatio = diffPixelCount / totalPixels;
+    const diffRatio = diff / totalPixels;
     info('PNG', id, url, `diff ratio: ${diffRatio}`);
+    info('PNG', 'zone', zones);
 
     if (diffRatio) {
         const buffer = PNG.sync.write(diffImage, { colorType: 6 });

@@ -1,7 +1,7 @@
 import { PNG } from 'pngjs';
 import { readFile, writeFile } from 'fs-extra';
 
-import { pixelmatch } from '../src';
+import { pixdiff } from '../src';
 
 async function parsePng(lastFile: string, previousFile: string) {
     const actual = await readFile(lastFile);
@@ -12,7 +12,7 @@ async function parsePng(lastFile: string, previousFile: string) {
     const { width, height } = rawActual;
     const diffImage = new PNG({ width, height });
 
-    const { diff, zones } = pixelmatch(
+    const { diff, zones } = pixdiff(
         rawActual,
         rawExpected,
         diffImage,

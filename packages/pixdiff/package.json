@@ -1,5 +1,5 @@
 {
-    "name": "test-crawler-server",
+    "name": "pixdiff",
     "version": "1.0.0",
     "main": "src/index.ts",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",

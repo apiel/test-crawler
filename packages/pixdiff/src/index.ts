@@ -20,7 +20,7 @@ const defaultOptions: Options = {
     pixelDiffColor: { r: 255, g: 0, b: 0 },
 };
 
-export function pixelmatch(
+export function pixdiff(
     img1: Image,
     img2: Image,
     output: Image,

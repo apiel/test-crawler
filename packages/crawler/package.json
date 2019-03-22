@@ -6,7 +6,6 @@
     "license": "MIT",
     "scripts": {
         "start": "ts-node src/index.ts",
-        "pixdiff": "ts-node src/pixdiff.ts",
         "lint": "tslint -p tsconfig.json -c tslint.json"
     },
     "dependencies": {
@@ -15,7 +14,7 @@
         "lodash": "^4.17.11",
         "md5": "^2.2.1",
         "npmlog": "^4.1.2",
-        "pixelmatch": "^4.0.2",
+        "pixdiff": "^1.0.0",
         "pngjs": "^3.3.3",
         "puppeteer": "^1.11.0",
         "rimraf": "^2.6.3",
@@ -27,7 +26,6 @@
         "@types/fs-extra": "^5.0.5",
         "@types/lodash": "^4.14.121",
         "@types/npmlog": "^4.1.1",
-        "@types/pixelmatch": "^4.0.0",
         "@types/pngjs": "^3.3.2",
         "@types/puppeteer": "^1.11.2",
         "@types/rimraf": "^2.0.2",
