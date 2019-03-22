@@ -1,36 +1,11 @@
 {
-    "name": "test-crawler",
-    "version": "1.0.0",
-    "main": "src/index.ts",
-    "author": "Alexandre Piel <alexandre.piel@gmail.com>",
-    "license": "MIT",
-    "scripts": {
-        "start": "ts-node src/index.ts",
-        "pixdiff": "ts-node src/pixdiff.ts",
-        "lint": "tslint -p tsconfig.json -c tslint.json"
-    },
-    "dependencies": {
-        "execa": "^1.0.0",
-        "fs-extra": "^7.0.1",
-        "lodash": "^4.17.11",
-        "md5": "^2.2.1",
-        "npmlog": "^4.1.2",
-        "pixelmatch": "^4.0.2",
-        "pngjs": "^3.3.3",
-        "puppeteer": "^1.11.0",
-        "rimraf": "^2.6.3",
-        "ts-node": "^8.0.2",
-        "typescript": "^3.2.4"
-    },
-    "devDependencies": {
-        "@types/execa": "^0.9.0",
-        "@types/fs-extra": "^5.0.5",
-        "@types/lodash": "^4.14.121",
-        "@types/npmlog": "^4.1.1",
-        "@types/pixelmatch": "^4.0.0",
-        "@types/pngjs": "^3.3.2",
-        "@types/puppeteer": "^1.11.2",
-        "@types/rimraf": "^2.0.2",
-        "tslint": "^5.12.1"
-    }
+  "name": "test-crawler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:apiel/test-crawler.git",
+  "author": "Alexandre Piel <alexandre.piel@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lerna": "^3.13.1"
+  }
 }

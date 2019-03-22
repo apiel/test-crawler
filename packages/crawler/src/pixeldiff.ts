@@ -56,6 +56,12 @@ export function pixelmatch(
             // squared YUV distance between colors at this pixel position
             const delta = colorDelta(img1, img2, pos, pos);
 
+            if (output) {
+                // pixels are similar; draw background as grayscale image blended with white
+                const val = grayPixel(img1, pos, 0.1);
+                drawPixel(output, pos, { r: val, g: val, b: val });
+            }
+
             // the color difference is above the threshold
             if (delta > maxDelta) {
                 const isAntiAliasing = antialiased(img1, x, y, img2)
@@ -77,10 +83,6 @@ export function pixelmatch(
                     diff++;
                 }
 
-            } else if (output) {
-                // pixels are similar; draw background as grayscale image blended with white
-                const val = grayPixel(img1, pos, 0.1);
-                drawPixel(output, pos, { r: val, g: val, b: val });
             }
         }
     }
