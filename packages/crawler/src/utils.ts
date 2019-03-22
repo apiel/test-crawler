@@ -1,9 +1,14 @@
 import { readdirSync } from 'fs';
-import { PAGES_FOLDER } from './config';
+import { join } from 'path';
+import { CRAWL_FOLDER } from './config';
 
 export function getFolders() {
-    const folders = readdirSync(PAGES_FOLDER);
+    const folders = readdirSync(CRAWL_FOLDER);
     folders.sort();
 
     return folders;
 }
+
+export const getFilePath = (id: string, distFolder: string) => (extension: string) => {
+    return join(distFolder, `${id}.${extension}`);
+};

@@ -1,6 +1,6 @@
 import { info, error, warn } from 'npmlog';
-import { getFolders } from '../utils';
-import { PAGES_FOLDER } from '../config';
+import { getFolders, getFilePath } from '../utils';
+import { CRAWL_FOLDER, BASE_FOLDER } from '../config';
 import { PNG } from 'pngjs';
 import { shell } from 'execa';
 import { pixdiff } from 'pixdiff';
@@ -79,42 +79,13 @@ async function parsePng({ id, url }: PageData, lastFile: string, previousFile: s
     }
 }
 
-export async function parse() {
-    info('Parse result', 'start');
-    const [last, previous] = getFolders().reverse();
-
-    const files = await readdir(`${PAGES_FOLDER}/${last}`);
-    for (const file of files) {
-        const lastFile = `${PAGES_FOLDER}/${last}/${file}`;
-        const extension = extname(lastFile);
-        const data = await loadJson(lastFile);
-
-        try {
-            if (extension === '.error') {
-                await parseError(data);
-            } else if (extension === '.html') {
-                warn('Parse html', 'skip html diff for the moment');
-                // const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
-                // await parseHtml(data, lastFile, previousFile);
-            } else if (extension === '.png') {
-                const previousFile = `${PAGES_FOLDER}/${previous}/${file}`;
-                await parsePng(data, lastFile, previousFile);
-            }
-        } catch (err) {
-            error('Parse', 'we need to handle error', JSON.stringify(err, null, 4));
-        }
+export async function prepare(id: string, distFolder: string) {
+    const basePath = getFilePath(id, BASE_FOLDER);
+    const filePath = getFilePath(id, distFolder);
+    const data = await loadJson(filePath('json'));
+    if (await pathExists(basePath('png'))) {
+        await parsePng(data, filePath('png'), basePath('png'));
+    } else {
+        info('DIFF', 'new png');
     }
-    info('Html matching', `${matchCount} of ${htmlCount}, ${newCount} new files.`);
-    info('PNG matching', `${pngCount} of ${pngDiffCount}`);
-    info('Error count', `${errorCount}`);
-    writeFile(`${PAGES_FOLDER}/${last}/_result_.json`, JSON.stringify({
-        matchCount,
-        htmlCount,
-        newCount,
-        errorCount,
-        pngCount,
-        pngDiffCount,
-        htmlDiff,
-        pngDiff,
-    }, null, 4));
 }

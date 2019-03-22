@@ -1,6 +1,7 @@
 import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
-import { writeFile, mkdir, readdir } from 'fs-extra';
+import { writeFile, mkdir } from 'fs-extra';
+import { join } from 'path';
 
 import * as md5 from 'md5';
 import * as rimraf from 'rimraf';
@@ -10,27 +11,28 @@ import {
     BASE_URL,
     CONSUMER_COUNT,
     MAX_HISTORY,
-    PAGES_FOLDER,
     TIMEOUT,
     USER_AGENT,
+    CRAWL_FOLDER,
 } from '../config';
-import { getFolders } from '../utils';
+import { getFolders, getFilePath } from '../utils';
 import { PageData } from '../typing';
+import { prepare } from '../diff';
 
 const urlsQueue: string[] = [];
 const urlsDone: string[] = [];
 let consumerRunning = 0;
 let resolver: any;
 
-function saveData(filepath: string, pageData: PageData) {
-    return writeFile(`${filepath}.json`, JSON.stringify(pageData, null, 4));
+function saveData(file: string, pageData: PageData) {
+    return writeFile(file, JSON.stringify(pageData, null, 4));
 }
 
 async function loadPage(url: string, distFolder: string, retry: number = 0) {
     let hrefs: string[];
     const id = md5(url);
-    const filepath = `${distFolder}/${id}`; // we could add part of the url after the md5
-    await saveData(filepath, { url, id });
+    const filePath = getFilePath(id, distFolder);
+    await saveData(filePath('json'), { url, id });
 
     const browser = await launch({
         // headless: false,
@@ -44,20 +46,22 @@ async function loadPage(url: string, distFolder: string, retry: number = 0) {
             timeout: TIMEOUT,
         });
         const html = await page.content();
-        await writeFile(`${filepath}.html`, html);
+        await writeFile(filePath('html'), html);
 
         const performance = JSON.parse(await page.evaluate(
             () => JSON.stringify(window.performance),
         ));
-        await saveData(filepath, { url, id, performance });
+        await saveData(filePath('json'), { url, id, performance });
 
-        await page.screenshot({ path: `${filepath}.png`, fullPage: true });
+        await page.screenshot({ path: filePath('png'), fullPage: true });
         hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
 
         const urls = hrefs.filter(href => href.indexOf(BASE_URL) === 0);
         addUrls(urls, distFolder);
+
+        await prepare(id, distFolder);
     } catch (err) {
-        await handleError(err, filepath);
+        await handleError(err, filePath('error'));
         if (retry < 2) {
             info('retry crawl', url);
             await loadPage(url, distFolder, retry + 1);
@@ -67,9 +71,9 @@ async function loadPage(url: string, distFolder: string, retry: number = 0) {
     info('browser closed', url);
 }
 
-async function handleError(err: any, filename: string) {
+async function handleError(err: any, file: string) {
     error('Load page error', err);
-    await writeFile(`${filename}.error`, JSON.stringify(err, null, 4));
+    await writeFile(file, JSON.stringify(err, null, 4));
 }
 
 function addUrls(urls: string[], distFolder: string) {
@@ -118,12 +122,15 @@ function cleanHistory() {
     const cleanUp = folders.slice(0, -(MAX_HISTORY - 1));
     cleanUp.forEach((folder) => {
         info('Clean up history', folder);
-        rimraf.sync(`${PAGES_FOLDER}/${folder}`);
+        rimraf.sync(join(CRAWL_FOLDER, folder));
     });
 }
 
-export async function crawl(distFolder: string): Promise<string[]> {
+export async function crawl(): Promise<string[]> {
     cleanHistory();
+
+    const distFolder = join(CRAWL_FOLDER, (Math.floor(Date.now() / 1000)).toString());
+    info('Dist folder', distFolder);
     await mkdir(distFolder);
 
     const promise = new Promise((resolve, reject) => {

@@ -11,7 +11,7 @@ const Item = ({ match }) => {
       <h2>
         {item.name}
       </h2>
-      <img src={item.avatar} alt={item.name} />
+      {/* <img src={item.avatar} alt={item.name} /> */}
       <p>{item.text}</p>
       <p>{item.address}, {item.city}, {item.country}</p>
     </div>

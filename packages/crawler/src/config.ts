@@ -1,6 +1,7 @@
 // export const BASE_URL = 'https://www.zooplus.de/tierarzt/alsdorf';
 export const BASE_URL = 'http://localhost:3000/';
-export const PAGES_FOLDER = `${__dirname}/../pages`;
+export const CRAWL_FOLDER = `${__dirname}/../pages/crawl`;
+export const BASE_FOLDER = `${__dirname}/../pages/base`;
 export const MAX_HISTORY = 2;
 export const TIMEOUT = 10000; // 10 sec
 export const CONSUMER_COUNT = 5;
