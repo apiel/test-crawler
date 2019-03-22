@@ -6,7 +6,7 @@ const buttonStyle = {
     marginTop: 10,
 }
 
-export const Page = () => (
+export const New = () => (
     <>
         <Input addonBefore="URL" defaultValue="http://127.0.0.1:3005/" />
         <Button type="primary" icon="caret-right" style={buttonStyle}>Start</Button>
