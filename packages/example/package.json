@@ -12,7 +12,7 @@
   },
   "scripts": {
     "static": "cd pages && http-server -p 4000",
-    "start": "react-scripts start",
+    "start": "PORT=3005 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
