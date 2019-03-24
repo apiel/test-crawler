@@ -5,6 +5,7 @@
 
 type Crawler {
   url: String!
+  timestamp: Float!
 }
 
 input CrawlerInput {
@@ -16,5 +17,5 @@ type Mutation {
 }
 
 type Query {
-  crawlers: [Crawler!]!
+  getCrawlers: [Crawler!]!
 }

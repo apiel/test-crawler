@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
 import { New } from './New';
 import { History } from './History';
+import MenuHistory from './MenuHistory';
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -33,18 +34,14 @@ const App = () => (
                 <Title level={3} style={titleStyle}>
                     <Icon type="eye" /> Test-crawler
                 </Title>
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+                <Menu theme="dark" mode="inline">
                     <Menu.Item key="1">
                         <Icon type="plus" />
                         <span className="nav-text">New</span>
                         <Link to="/" />
                     </Menu.Item>
-                    <Menu.Item key="2">
-                        <Icon type="check" />
-                        <span className="nav-text">Hist</span>
-                        <Link to="/history/2" />
-                    </Menu.Item>
                 </Menu>
+                <MenuHistory />
             </Sider>
             <Content style={contentStyle}>
                 <Route path="/" exact component={New} />

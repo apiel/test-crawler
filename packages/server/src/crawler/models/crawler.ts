@@ -4,4 +4,7 @@ import { Field, ID, ObjectType } from 'type-graphql';
 export class Crawler {
   @Field()
   url: string;
+
+  @Field()
+  timestamp: number;
 }

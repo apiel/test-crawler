@@ -8,7 +8,7 @@ export class CrawlerResolver {
     constructor(private readonly crawlerService: CrawlerService) {}
 
     @Query(() => [Crawler])
-    crawlers(): Promise<Crawler[]> {
+    getCrawlers(): Promise<Crawler[]> {
         return this.crawlerService.getAll();
     }
 
