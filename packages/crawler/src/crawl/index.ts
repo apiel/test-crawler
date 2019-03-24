@@ -1,11 +1,10 @@
 import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
-import { writeFile, mkdir } from 'fs-extra';
+import { writeFile, mkdir, pathExists, readdir, writeJson, readJSON, move } from 'fs-extra';
 import { join } from 'path';
 
 import * as md5 from 'md5';
 import * as rimraf from 'rimraf';
-import { trim } from 'lodash';
 
 import {
     BASE_URL,
@@ -18,21 +17,18 @@ import {
 import { getFolders, getFilePath } from '../utils';
 import { PageData } from '../typing';
 import { prepare } from '../diff';
+import { promisify } from 'util';
 
-const urlsQueue: string[] = [];
-const urlsDone: string[] = [];
 let consumerRunning = 0;
-let resolver: any;
 
 function saveData(file: string, pageData: PageData) {
-    return writeFile(file, JSON.stringify(pageData, null, 4));
+    return writeJson(file, pageData, { spaces: 4 });
 }
 
-async function loadPage(url: string, distFolder: string, retry: number = 0) {
+async function loadPage(id: string, url: string, distFolder: string, retry: number = 0) {
+    consumerRunning++;
     let hrefs: string[];
-    const id = md5(url);
     const filePath = getFilePath(id, distFolder);
-    await saveData(filePath('json'), { url, id });
 
     const browser = await launch({
         // headless: false,
@@ -64,11 +60,13 @@ async function loadPage(url: string, distFolder: string, retry: number = 0) {
         await handleError(err, filePath('error'));
         if (retry < 2) {
             info('retry crawl', url);
-            await loadPage(url, distFolder, retry + 1);
+            await loadPage(id, url, distFolder, retry + 1);
         }
+        consumerRunning--;
     }
     await browser.close();
     info('browser closed', url);
+    consumerRunning--;
 }
 
 async function handleError(err: any, file: string) {
@@ -84,37 +82,41 @@ function addUrls(urls: string[], distFolder: string) {
         }
     });
     if (count > 0) {
-        info('Add urls', `found ${urls.length}, add ${count}, queue size ${urlsQueue.length}`);
+        info('Add urls', `found ${urls.length}, add ${count}`);
     }
 }
 
-function addToQueue(url: string, distFolder: string): boolean {
-    const url2 = trim(url, '/#?&');
-    if (urlsQueue.indexOf(url2) === -1 && urlsDone.indexOf(url2) === -1) {
-        urlsQueue.push(url2);
-        if (consumerRunning < CONSUMER_COUNT) {
-            consumeQueue(distFolder);
-        }
+async function addToQueue(url: string, distFolder: string): Promise<boolean> {
+    const id = md5(url);
+    const histFile = getFilePath(id, distFolder)('json');
+    const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
+
+    if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
+        await saveData(queueFile, { url, id });
         return true;
     }
     return false;
 }
 
 async function consumeQueue(distFolder: string) {
-    consumerRunning++;
     info('start consumer', `${consumerRunning}`);
-    while (urlsQueue.length) {
-        const [url] = urlsQueue.splice(0, 1);
-        info('Crawl', url);
-        urlsDone.push(url);
-        await loadPage(url, distFolder);
-    }
-    info('no more url in queue', JSON.stringify(urlsQueue));
-    consumerRunning--;
-    info('stop consumer', `${consumerRunning}`);
-    if (consumerRunning === 0) {
-        resolver();
-    }
+    const queueFolder = getQueueFolder(distFolder);
+    const sleep = promisify(setTimeout);
+    do {
+        if (consumerRunning < CONSUMER_COUNT) {
+            const [file] = await readdir(queueFolder);
+            if (file) {
+                info('Crawl', file);
+                const queueFile = join(queueFolder, file);
+                const { id, url } = await readJSON(queueFile);
+                const filePath = getFilePath(id, distFolder);
+                await move(queueFile, filePath('json'));
+                loadPage(id, url, distFolder);
+            }
+        } else {
+            await sleep(200);
+        }
+    } while (true);
 }
 
 function cleanHistory() {
@@ -126,18 +128,18 @@ function cleanHistory() {
     });
 }
 
-export async function crawl(): Promise<string[]> {
+function getQueueFolder(distFolder: string) {
+    return join(distFolder, 'queue');
+}
+
+export async function crawl() {
     cleanHistory();
 
     const distFolder = join(CRAWL_FOLDER, (Math.floor(Date.now() / 1000)).toString());
     info('Dist folder', distFolder);
     await mkdir(distFolder);
+    await mkdir(getQueueFolder(distFolder));
 
-    const promise = new Promise((resolve, reject) => {
-        resolver = resolve;
-        addToQueue(BASE_URL, distFolder);
-    });
-    await promise;
-
-    return urlsDone;
+    await addToQueue(BASE_URL, distFolder);
+    await consumeQueue(distFolder);
 }
