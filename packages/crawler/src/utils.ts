@@ -1,6 +1,8 @@
 import { readdirSync } from 'fs';
 import { join } from 'path';
-import { CRAWL_FOLDER } from './config';
+import { config } from './config';
+
+const { CRAWL_FOLDER } = config;
 
 export function getFolders() {
     const folders = readdirSync(CRAWL_FOLDER);

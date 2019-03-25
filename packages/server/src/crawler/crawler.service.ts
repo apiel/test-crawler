@@ -11,12 +11,15 @@ export class CrawlerService {
 
     async start(crawler: CrawlerInput): Promise<Crawler> {
         console.log('start crawler', crawler);
-        return;
+        // return;
+        return {
+            ...crawler,
+            timestamp: 12313124,
+        };
     }
 
     async getAll(): Promise<Crawler[]> {
         const folders = await readdir(this.configService.config.CRAWL_FOLDER);
-        console.log('folders', folders);
         const crawlers: Crawler[] = await Promise.all(
             folders.map(folder => readJSON(join(
                 this.configService.config.CRAWL_FOLDER,

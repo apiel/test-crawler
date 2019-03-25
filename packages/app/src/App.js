@@ -6,9 +6,10 @@ import Typography from 'antd/lib/typography';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import './App.css';
-import { New } from './New';
+import New from './New';
 import { History } from './History';
 import MenuHistory from './MenuHistory';
+import { getHomeRoute, getHistoryRoute } from './routes';
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -44,8 +45,8 @@ const App = () => (
                 <MenuHistory />
             </Sider>
             <Content style={contentStyle}>
-                <Route path="/" exact component={New} />
-                <Route path="/history/:id" component={History} />
+                <Route path={getHomeRoute()} exact component={New} />
+                <Route path={getHistoryRoute(':id')} component={History} />
             </Content>
         </Layout>
     </Router>
