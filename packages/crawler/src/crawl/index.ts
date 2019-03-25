@@ -6,20 +6,18 @@ import { join } from 'path';
 import * as md5 from 'md5';
 import * as rimraf from 'rimraf';
 
-import { config } from '../config';
-import { getFolders, getFilePath } from '../utils';
-import { PageData } from '../typing';
-import { prepare } from '../diff';
-import { promisify } from 'util';
-
-const {
+import {
     BASE_URL,
     CONSUMER_COUNT,
     MAX_HISTORY,
     TIMEOUT,
     USER_AGENT,
     CRAWL_FOLDER,
-} = config;
+} from '../../lib/config';
+import { getFolders, getFilePath } from '../utils';
+import { PageData } from '../typing';
+import { prepare } from '../diff';
+import { promisify } from 'util';
 
 let consumerRunning = 0;
 

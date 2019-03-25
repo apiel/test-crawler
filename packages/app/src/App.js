@@ -1,14 +1,13 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
-import Menu from 'antd/lib/menu';
 import Layout from 'antd/lib/layout';
 import Typography from 'antd/lib/typography';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import New from './New';
 import { History } from './History';
-import MenuHistory from './MenuHistory';
+import SideMenu from './SideMenu';
 import { getHomeRoute, getHistoryRoute } from './routes';
 
 const { Sider, Content } = Layout;
@@ -35,14 +34,7 @@ const App = () => (
                 <Title level={3} style={titleStyle}>
                     <Icon type="eye" /> Test-crawler
                 </Title>
-                <Menu theme="dark" mode="inline">
-                    <Menu.Item key="1">
-                        <Icon type="plus" />
-                        <span className="nav-text">New</span>
-                        <Link to="/" />
-                    </Menu.Item>
-                </Menu>
-                <MenuHistory />
+                <SideMenu />
             </Sider>
             <Content style={contentStyle}>
                 <Route path={getHomeRoute()} exact component={New} />

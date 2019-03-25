@@ -1,13 +1,11 @@
 import { info } from 'npmlog';
 import { getFilePath } from '../utils';
-import { config } from '../config';
+import { BASE_FOLDER } from '../../lib/config';
 import { PNG } from 'pngjs';
 import { pixdiff } from 'pixdiff';
 
 import { readJson, readFile, pathExists, writeFile } from 'fs-extra';
 import { PageData } from '../typing';
-
-const { BASE_FOLDER } = config;
 
 const pngDiff = [];
 

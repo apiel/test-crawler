@@ -7,10 +7,16 @@ import { Link } from 'react-router-dom';
 import { unix } from 'moment';
 
 import GET_CRAWLERS from './gql/query/getCrawlers';
+import { getHomeRoute, getHistoryRoute } from './routes';
 
-const MenuHistory = ({ data: { getCrawlers } }) => {
+const SideMenu = ({ data: { getCrawlers } }) => {
     return (
         <Menu theme="dark" mode="inline">
+            <Menu.Item key="1">
+                <Icon type="plus" />
+                <span className="nav-text">New</span>
+                <Link to={getHomeRoute()} />
+            </Menu.Item>
             {getCrawlers && getCrawlers.map(({ timestamp }) => (
                 <Menu.Item key={timestamp}>
                     <Icon type="check" />
@@ -20,15 +26,15 @@ const MenuHistory = ({ data: { getCrawlers } }) => {
                                            .calendar()
                         }
                     </span>
-                    <Link to={ `/history/${timestamp}` } />
+                    <Link to={getHistoryRoute(timestamp)} />
                 </Menu.Item>
             ))}
         </Menu>
     );
 }
 
-MenuHistory.propTypes = {
+SideMenu.propTypes = {
     client: PropTypes.object.isRequired,
 };
 
-export default graphql(GET_CRAWLERS)(withApollo(MenuHistory));
+export default graphql(GET_CRAWLERS)(withApollo(SideMenu));
