@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { CrawlerModule } from './crawler/crawler.module';
-import { ConfigModule } from './config/config.module';
 
 @Module({
     imports: [
@@ -10,7 +9,6 @@ import { ConfigModule } from './config/config.module';
             autoSchemaFile: 'schema.gql',
         }),
         CrawlerModule,
-        ConfigModule,
     ],
     controllers: [],
     providers: [],

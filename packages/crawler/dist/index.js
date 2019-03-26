@@ -11,9 +11,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("./config");
-exports.getAllCrawlers = () => __awaiter(this, void 0, void 0, function* () {
-    const folders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
-    const crawlers = yield Promise.all(folders.map(folder => fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, folder, '_.json'))));
-    return crawlers;
-});
+class CrawlerProvider {
+    getAllCrawlers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const folders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
+            const crawlers = yield Promise.all(folders.map(folder => fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, folder, '_.json'))));
+            return crawlers;
+        });
+    }
+}
+exports.CrawlerProvider = CrawlerProvider;
 //# sourceMappingURL=index.js.map
