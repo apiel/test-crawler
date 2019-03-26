@@ -1,7 +1,11 @@
-import { Field, ID, ObjectType } from 'type-graphql';
+import { Field, ObjectType, ID } from 'type-graphql';
+import { Crawler as CrawlerInterface } from 'test-crawler-lib';
 
 @ObjectType()
-export class Crawler { // should extend from lib
+export class Crawler implements CrawlerInterface {
+  @Field(() => ID)
+  id: string;
+
   @Field()
   url: string;
 

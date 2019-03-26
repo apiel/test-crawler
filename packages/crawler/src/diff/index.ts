@@ -5,7 +5,7 @@ import { PNG } from 'pngjs';
 import { pixdiff } from 'pixdiff';
 
 import { readJson, readFile, pathExists, writeFile } from 'fs-extra';
-import { PageData } from '../typing';
+import { PageData } from '../../lib/typing';
 
 const pngDiff = [];
 

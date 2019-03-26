@@ -3,7 +3,12 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Config {
+  MAX_HISTORY: Float!
+}
+
 type Crawler {
+  id: ID!
   url: String!
   timestamp: Float!
 }
@@ -13,9 +18,14 @@ input CrawlerInput {
 }
 
 type Mutation {
-  startCrawler(crawler: CrawlerInput!): Crawler!
+  startCrawler(crawler: CrawlerInput!): StartCrawler!
 }
 
 type Query {
   getCrawlers: [Crawler!]!
+}
+
+type StartCrawler {
+  crawler: Crawler!
+  config: Config!
 }

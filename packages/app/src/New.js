@@ -6,6 +6,7 @@ import notification from 'antd/lib/notification';
 import { graphql } from 'react-apollo';
 
 import START_CRAWLER from './gql/mutation/startCrawler';
+import GET_CRAWLERS from './gql/query/getCrawlers';
 import { getHistoryRoute } from './routes';
 
 const buttonStyle = {
@@ -16,23 +17,30 @@ export class New extends React.Component {
     start = async (input) => {
         const { mutate, history } = this.props;
         try {
-            // should we show loading and deactivate btn
-            const { data: { startCrawler: { timestamp }}} = await mutate({
+            // should we show loading and deactivate btn --> this.props.form.isSubmitting()
+            const { data: { startCrawler: { crawler: { timestamp } } } } = await mutate({
                 variables: { input },
+                update: (store, { data: { startCrawler: { crawler, config: { MAX_HISTORY } } } }) => {
+                    const query = GET_CRAWLERS;
+                    const { getCrawlers } = store.readQuery({ query });
+                    store.writeQuery({
+                        query, data: {
+                            getCrawlers: [crawler, ...getCrawlers].slice(0, MAX_HISTORY),
+                        }
+                    });
+                },
             });
-            console.log('mutate sent', timestamp);
             history.push(getHistoryRoute(timestamp));
         } catch (error) {
             notification['error']({
                 message: 'Something went wrong!',
                 description: error.toString(),
-              });
+            });
         }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('props', this.props);
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.start(values);

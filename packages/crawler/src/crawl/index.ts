@@ -1,29 +1,19 @@
 import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
-import { writeFile, mkdir, pathExists, readdir, writeJson, readJSON, move } from 'fs-extra';
+import { writeFile, readdir, readJSON, move } from 'fs-extra';
 import { join } from 'path';
-
-import * as md5 from 'md5';
-import * as rimraf from 'rimraf';
+import { promisify } from 'util';
 
 import {
     BASE_URL,
     CONSUMER_COUNT,
-    MAX_HISTORY,
     TIMEOUT,
     USER_AGENT,
-    CRAWL_FOLDER,
 } from '../../lib/config';
-import { getFolders, getFilePath } from '../utils';
-import { PageData } from '../typing';
+import { getFilePath, saveData, addToQueue, getQueueFolder } from '../../lib/utils';
 import { prepare } from '../diff';
-import { promisify } from 'util';
 
 let consumerRunning = 0;
-
-function saveData(file: string, pageData: PageData) {
-    return writeJson(file, pageData, { spaces: 4 });
-}
 
 async function loadPage(id: string, url: string, distFolder: string, retry: number = 0) {
     consumerRunning++;
@@ -86,18 +76,8 @@ function addUrls(urls: string[], distFolder: string) {
     }
 }
 
-async function addToQueue(url: string, distFolder: string): Promise<boolean> {
-    const id = md5(url);
-    const histFile = getFilePath(id, distFolder)('json');
-    const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
-
-    if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
-        await saveData(queueFile, { url, id });
-        return true;
-    }
-    return false;
-}
-
+// shoudl became consumeQueues and dont be to specific distFolder
+// then we need another function to get next file to crawl: pickFromQueues()
 async function consumeQueue(distFolder: string) {
     info('start consumer', `${consumerRunning}`);
     const queueFolder = getQueueFolder(distFolder);
@@ -119,27 +99,10 @@ async function consumeQueue(distFolder: string) {
     } while (true);
 }
 
-function cleanHistory() {
-    const folders = getFolders();
-    const cleanUp = folders.slice(0, -(MAX_HISTORY - 1));
-    cleanUp.forEach((folder) => {
-        info('Clean up history', folder);
-        rimraf.sync(join(CRAWL_FOLDER, folder));
-    });
-}
-
-function getQueueFolder(distFolder: string) {
-    return join(distFolder, 'queue');
-}
+// all the following should go away
 
 export async function crawl() {
-    cleanHistory();
-
-    const distFolder = join(CRAWL_FOLDER, (Math.floor(Date.now() / 1000)).toString());
-    info('Dist folder', distFolder);
-    await mkdir(distFolder);
-    await mkdir(getQueueFolder(distFolder));
-
-    await addToQueue(BASE_URL, distFolder);
-    await consumeQueue(distFolder);
+    // need to go in each pages/ folders
+    // but right now consumeQueue loop for ever :-/
+    // await consumeQueue(distFolder);
 }

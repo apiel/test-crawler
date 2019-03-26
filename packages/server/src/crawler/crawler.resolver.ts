@@ -2,6 +2,7 @@ import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CrawlerInput } from './dto/crawler.input';
 import { Crawler } from './models/crawler';
 import { CrawlerService } from './crawler.service';
+import { StartCrawler } from './models/startCrawler';
 
 @Resolver(() => Crawler)
 export class CrawlerResolver {
@@ -12,10 +13,10 @@ export class CrawlerResolver {
         return this.crawlerService.getAll();
     }
 
-    @Mutation(() => Crawler)
+    @Mutation(() => StartCrawler)
     startCrawler(
         @Args('crawler') crawler: CrawlerInput,
-    ): Promise<Crawler> {
+    ): Promise<StartCrawler> {
         return this.crawlerService.start(crawler);
     }
 }

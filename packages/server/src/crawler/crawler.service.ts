@@ -3,18 +3,14 @@ import { CrawlerProvider } from 'test-crawler-lib';
 
 import { CrawlerInput } from './dto/crawler.input';
 import { Crawler } from './models/crawler';
+import { StartCrawler } from './models/startCrawler';
 
 @Injectable()
 export class CrawlerService {
     constructor(private readonly crawlerProvider: CrawlerProvider) { }
 
-    async start(crawler: CrawlerInput): Promise<Crawler> {
-        console.log('start crawler', crawler);
-        // return;
-        return {
-            ...crawler,
-            timestamp: 12313124,
-        };
+    start(crawlerInput: CrawlerInput): Promise<StartCrawler> {
+        return this.crawlerProvider.startCrawler(crawlerInput);
     }
 
     getAll(): Promise<Crawler[]> {

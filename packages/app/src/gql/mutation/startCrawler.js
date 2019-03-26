@@ -5,7 +5,12 @@ import SelectCrawler from '../fragment/crawler';
 const template = gql`
 mutation StartCrawler($input: CrawlerInput!){
     startCrawler(crawler: $input) {
-      ...SelectCrawler
+        crawler {
+            ...SelectCrawler
+        }
+        config {
+            MAX_HISTORY
+        }
     }
 }
 ${SelectCrawler}

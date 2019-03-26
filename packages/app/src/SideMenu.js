@@ -12,23 +12,25 @@ import { getHomeRoute, getHistoryRoute } from './routes';
 const SideMenu = ({ data: { getCrawlers } }) => {
     return (
         <Menu theme="dark" mode="inline">
-            <Menu.Item key="1">
+            <Menu.Item key="new">
                 <Icon type="plus" />
                 <span className="nav-text">New</span>
                 <Link to={getHomeRoute()} />
             </Menu.Item>
-            {getCrawlers && getCrawlers.map(({ timestamp }) => (
-                <Menu.Item key={timestamp}>
-                    <Icon type="check" />
-                    <span className="nav-text">
-                        {
-                            unix(timestamp)//.format('YYYY.DD.MM HH:mm')
-                                           .calendar()
-                        }
-                    </span>
-                    <Link to={getHistoryRoute(timestamp)} />
-                </Menu.Item>
-            ))}
+            {getCrawlers &&
+                getCrawlers.sort(({ timestamp: a }, { timestamp: b }) => b - a)
+                    .map(({ timestamp, url, id }) => (
+                        <Menu.Item key={`crawler-${id}`} title={url}>
+                            <Icon type="check" />
+                            <span className="nav-text">
+                                {
+                                    unix(timestamp)//.format('YYYY.DD.MM HH:mm')
+                                        .calendar()
+                                }
+                            </span>
+                            <Link to={getHistoryRoute(timestamp)} />
+                        </Menu.Item>
+                    ))}
         </Menu>
     );
 }
