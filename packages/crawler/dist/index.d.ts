@@ -14,6 +14,7 @@ export interface StartCrawler {
     };
 }
 export declare class CrawlerProvider {
+    getCrawler(timestamp: string): Promise<Crawler>;
     getAllCrawlers(): Promise<Crawler[]>;
     startCrawler(crawlerInput: CrawlerInput): Promise<StartCrawler>;
     private cleanHistory;

@@ -27,6 +27,14 @@ export interface StartCrawler {
 }
 
 export class CrawlerProvider {
+    getCrawler(timestamp: string): Promise<Crawler> {
+        return readJSON(join(
+            CRAWL_FOLDER,
+            timestamp.toString(),
+            '_.json',
+        ));
+    }
+
     async getAllCrawlers(): Promise<Crawler[]> {
         const folders = await readdir(CRAWL_FOLDER);
         const crawlers: Crawler[] = await Promise.all(

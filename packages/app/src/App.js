@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import New from './New';
-import { History } from './History';
+import History from './History';
 import SideMenu from './SideMenu';
 import { getHomeRoute, getHistoryRoute } from './routes';
 
@@ -38,7 +38,7 @@ const App = () => (
             </Sider>
             <Content style={contentStyle}>
                 <Route path={getHomeRoute()} exact component={New} />
-                <Route path={getHistoryRoute(':id')} component={History} />
+                <Route path={getHistoryRoute(':timestamp')} component={History} />
             </Content>
         </Layout>
     </Router>

@@ -8,6 +8,13 @@ import { StartCrawler } from './models/startCrawler';
 export class CrawlerResolver {
     constructor(private readonly crawlerService: CrawlerService) {}
 
+    @Query(() => Crawler)
+    getCrawler(
+        @Args('timestamp') timestamp: string,
+    ): Promise<Crawler> {
+        return this.crawlerService.getOne(timestamp);
+    }
+
     @Query(() => [Crawler])
     getCrawlers(): Promise<Crawler[]> {
         return this.crawlerService.getAll();

@@ -22,6 +22,7 @@ type Mutation {
 }
 
 type Query {
+  getCrawler(timestamp: String!): Crawler!
   getCrawlers: [Crawler!]!
 }
 

@@ -16,4 +16,8 @@ export class CrawlerService {
     getAll(): Promise<Crawler[]> {
         return this.crawlerProvider.getAllCrawlers();
     }
+
+    getOne(timestamp: string): Promise<Crawler> {
+        return this.crawlerProvider.getCrawler(timestamp);
+    }
 }

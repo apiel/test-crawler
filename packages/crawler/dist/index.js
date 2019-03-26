@@ -17,6 +17,9 @@ const utils_1 = require("./utils");
 const config = require("./config");
 exports.getConfig = () => config;
 class CrawlerProvider {
+    getCrawler(timestamp) {
+        return fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, timestamp.toString(), '_.json'));
+    }
     getAllCrawlers() {
         return __awaiter(this, void 0, void 0, function* () {
             const folders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);

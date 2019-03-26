@@ -1,2 +1,2 @@
 export const getHomeRoute = () => '/';
-export const getHistoryRoute = (id) => `/history/${id}`;
+export const getHistoryRoute = (timestamp) => `/history/${timestamp}`;
