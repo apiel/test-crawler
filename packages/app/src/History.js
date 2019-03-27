@@ -5,11 +5,15 @@ import { graphql, withApollo } from 'react-apollo';
 
 import GET_CRAWLER from './gql/query/getCrawler';
 import { timestampToString } from './utils';
+import Pages from './Pages';
 
 export const History = ({ data: { getCrawler } }) => getCrawler ? (
-    <Card title={timestampToString(getCrawler.timestamp)}>
-        <p>{getCrawler.url}</p>
-    </Card>
+    <>
+        <Card title={timestampToString(getCrawler.timestamp)}>
+            <p>{getCrawler.url}</p>
+        </Card>
+        <Pages timestamp={getCrawler.timestamp} />
+    </>
 ) : <Spin />;
 
 export default graphql(GET_CRAWLER, {
