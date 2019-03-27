@@ -11,7 +11,7 @@
     "react": "^16.8.5",
     "react-apollo": "^2.5.2",
     "react-dom": "^16.8.5",
-    "react-measure": "^2.2.4",
+    "react-masonry-component": "^6.2.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8"
   },
