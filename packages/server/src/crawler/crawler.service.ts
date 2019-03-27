@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CrawlerProvider } from 'test-crawler-lib';
+import * as sharp from 'sharp';
 
 import { CrawlerInput } from './dto/crawler.input';
 import { Crawler } from './models/crawler';
@@ -24,5 +25,10 @@ export class CrawlerService {
 
     getPages(timestamp: string): Promise<PageData[]> {
         return this.crawlerProvider.getPages(timestamp);
+    }
+
+    async thumbnail(timestamp: string, id: string): Promise<Buffer> {
+        const image = await this.crawlerProvider.image(timestamp, id);
+        return sharp(image).resize(300).toBuffer();
     }
 }

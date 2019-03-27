@@ -17,6 +17,11 @@ const utils_1 = require("./utils");
 const config = require("./config");
 exports.getConfig = () => config;
 class CrawlerProvider {
+    image(timestamp, id) {
+        const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
+        const filePath = utils_1.getFilePath(id, folder);
+        return fs_extra_1.readFile(filePath('png'));
+    }
     getPages(timestamp) {
         return __awaiter(this, void 0, void 0, function* () {
             const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
