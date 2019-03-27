@@ -3,7 +3,7 @@ import { info } from 'npmlog';
 import { crawl } from './crawl';
 
 async function start() {
-    const urls = await crawl();
+    await crawl();
 }
 
 start();

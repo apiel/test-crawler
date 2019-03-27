@@ -17,8 +17,16 @@ const utils_1 = require("./utils");
 const config = require("./config");
 exports.getConfig = () => config;
 class CrawlerProvider {
+    getPages(timestamp) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
+            const files = yield fs_extra_1.readdir(folder);
+            return Promise.all(files.filter(file => path_1.extname(file) === '.json')
+                .map(file => fs_extra_1.readJSON(path_1.join(folder, file))));
+        });
+    }
     getCrawler(timestamp) {
-        return fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, timestamp.toString(), '_.json'));
+        return fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, timestamp, '_.json'));
     }
     getAllCrawlers() {
         return __awaiter(this, void 0, void 0, function* () {

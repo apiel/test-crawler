@@ -1,5 +1,5 @@
 import { readdir, readJSON, mkdir, writeJSON } from 'fs-extra';
-import { join } from 'path';
+import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
 
@@ -7,32 +7,24 @@ import { CRAWL_FOLDER, MAX_HISTORY } from './config';
 import { getFolders, addToQueue, getQueueFolder } from './utils';
 
 import * as config from './config';
+import { Crawler, CrawlerInput, StartCrawler, PageData } from './typing';
+
+export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance, Timing } from './typing';
 
 export const getConfig = () => config;
 
-export interface CrawlerInput {
-    url: string;
-}
-
-export interface Crawler extends CrawlerInput {
-    id: string;
-    timestamp: number;
-}
-
-export interface StartCrawler {
-    crawler: Crawler;
-    config: {
-        MAX_HISTORY: number;
-    };
-}
-
 export class CrawlerProvider {
+    async getPages(timestamp: string): Promise<PageData[]> {
+        const folder = join(CRAWL_FOLDER, timestamp);
+        const files = await readdir(folder);
+        return Promise.all(
+            files.filter(file => extname(file) === '.json')
+                .map(file => readJSON(join(folder, file))),
+        );
+    }
+
     getCrawler(timestamp: string): Promise<Crawler> {
-        return readJSON(join(
-            CRAWL_FOLDER,
-            timestamp.toString(),
-            '_.json',
-        ));
+        return readJSON(join(CRAWL_FOLDER, timestamp, '_.json'));
     }
 
     async getAllCrawlers(): Promise<Crawler[]> {
@@ -64,7 +56,7 @@ export class CrawlerProvider {
 
         const addedToqueue = await addToQueue(crawlerInput.url, distFolder);
         if (!addedToqueue) {
-            throw(new Error('Something went wrong while adding job to queue'));
+            throw (new Error('Something went wrong while adding job to queue'));
         }
         return {
             crawler,
@@ -80,8 +72,3 @@ export class CrawlerProvider {
         });
     }
 }
-
-// const crawlers: Crawler[] = await Promise.all(
-//     folders.filter(file => extname(file) === '.json')
-//            .map(file => readJSON(file)),
-// );

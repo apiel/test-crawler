@@ -8,6 +8,7 @@ import {
     groupOverlappingZone,
 } from './utils';
 
+export { Image, Color, Options, Zone };
 export { zoneOverlap, groupOverlappingZone };
 
 const defaultOptions: Options = {

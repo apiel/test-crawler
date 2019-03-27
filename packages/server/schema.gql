@@ -21,9 +21,16 @@ type Mutation {
   startCrawler(crawler: CrawlerInput!): StartCrawler!
 }
 
+type PageData {
+  id: ID!
+  url: String!
+  pixelDiffRatio: Float
+}
+
 type Query {
   getCrawler(timestamp: String!): Crawler!
   getCrawlers: [Crawler!]!
+  getPages(timestamp: String!): [PageData!]!
 }
 
 type StartCrawler {

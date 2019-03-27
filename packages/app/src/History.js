@@ -1,16 +1,16 @@
 import React from 'react';
-
-import GET_CRAWLER from './gql/query/getCrawler';
+import Card from 'antd/lib/card';
+import Spin from 'antd/lib/spin';
 import { graphql, withApollo } from 'react-apollo';
 
-export const History = ({ data: { getCrawler } }) => (
-    <>
-        History
-            {getCrawler && <div>
-            <p>{getCrawler.url}</p>
-        </div>}
-    </>
-);
+import GET_CRAWLER from './gql/query/getCrawler';
+import { timestampToString } from './utils';
+
+export const History = ({ data: { getCrawler } }) => getCrawler ? (
+    <Card title={timestampToString(getCrawler.timestamp)}>
+        <p>{getCrawler.url}</p>
+    </Card>
+) : <Spin />;
 
 export default graphql(GET_CRAWLER, {
     options: props => {

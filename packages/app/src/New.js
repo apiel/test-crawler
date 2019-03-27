@@ -49,7 +49,7 @@ export class New extends React.Component {
     }
 
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator, isSubmitting } = this.props.form;
         // console.log('this.props.form', this.props.form);
         // console.log('this.props', this.props);
         return (
@@ -67,6 +67,7 @@ export class New extends React.Component {
                     icon="caret-right"
                     style={buttonStyle}
                     htmlType="submit"
+                    loading={isSubmitting()}
                 >
                     Start
                 </Button>

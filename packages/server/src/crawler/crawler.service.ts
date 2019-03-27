@@ -4,6 +4,7 @@ import { CrawlerProvider } from 'test-crawler-lib';
 import { CrawlerInput } from './dto/crawler.input';
 import { Crawler } from './models/crawler';
 import { StartCrawler } from './models/startCrawler';
+import { PageData } from './models/page';
 
 @Injectable()
 export class CrawlerService {
@@ -19,5 +20,9 @@ export class CrawlerService {
 
     getOne(timestamp: string): Promise<Crawler> {
         return this.crawlerProvider.getCrawler(timestamp);
+    }
+
+    getPages(timestamp: string): Promise<PageData[]> {
+        return this.crawlerProvider.getPages(timestamp);
     }
 }

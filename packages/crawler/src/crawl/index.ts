@@ -9,6 +9,7 @@ import {
     CONSUMER_COUNT,
     TIMEOUT,
     USER_AGENT,
+    CRAWL_FOLDER,
 } from '../../lib/config';
 import { getFilePath, saveData, addToQueue, getQueueFolder } from '../../lib/utils';
 import { prepare } from '../diff';
@@ -33,6 +34,8 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         });
         const html = await page.content();
         await writeFile(filePath('html'), html);
+
+        console.log('to use: page.metrics', await page.metrics());
 
         const performance = JSON.parse(await page.evaluate(
             () => JSON.stringify(window.performance),
@@ -76,21 +79,33 @@ function addUrls(urls: string[], distFolder: string) {
     }
 }
 
+async function pickFromQueues() {
+    const pagesFolders = await readdir(CRAWL_FOLDER);
+    for (const pagesFolder of pagesFolders) {
+        const distFolder = join(CRAWL_FOLDER, pagesFolder);
+        const queueFolder = getQueueFolder(distFolder);
+        const [file] = await readdir(queueFolder);
+        if (file) {
+            info('Crawl', file);
+            const queueFile = join(queueFolder, file);
+            const { id, url } = await readJSON(queueFile);
+            const filePath = getFilePath(id, distFolder);
+            await move(queueFile, filePath('json'));
+            return { id, url, distFolder };
+        }
+    }
+}
+
 // shoudl became consumeQueues and dont be to specific distFolder
 // then we need another function to get next file to crawl: pickFromQueues()
-async function consumeQueue(distFolder: string) {
-    info('start consumer', `${consumerRunning}`);
-    const queueFolder = getQueueFolder(distFolder);
+async function consumeQueues() {
+    info('start consumers', `${consumerRunning}`);
     const sleep = promisify(setTimeout);
     do {
         if (consumerRunning < CONSUMER_COUNT) {
-            const [file] = await readdir(queueFolder);
-            if (file) {
-                info('Crawl', file);
-                const queueFile = join(queueFolder, file);
-                const { id, url } = await readJSON(queueFile);
-                const filePath = getFilePath(id, distFolder);
-                await move(queueFile, filePath('json'));
+            const toCrawl = await pickFromQueues();
+            if (toCrawl) {
+                const { id, url, distFolder } = toCrawl;
                 loadPage(id, url, distFolder);
             }
         } else {
@@ -102,7 +117,5 @@ async function consumeQueue(distFolder: string) {
 // all the following should go away
 
 export async function crawl() {
-    // need to go in each pages/ folders
-    // but right now consumeQueue loop for ever :-/
-    // await consumeQueue(distFolder);
+    await consumeQueues();
 }

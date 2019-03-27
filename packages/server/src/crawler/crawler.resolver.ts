@@ -3,6 +3,7 @@ import { CrawlerInput } from './dto/crawler.input';
 import { Crawler } from './models/crawler';
 import { CrawlerService } from './crawler.service';
 import { StartCrawler } from './models/startCrawler';
+import { PageData } from './models/page';
 
 @Resolver(() => Crawler)
 export class CrawlerResolver {
@@ -25,5 +26,12 @@ export class CrawlerResolver {
         @Args('crawler') crawler: CrawlerInput,
     ): Promise<StartCrawler> {
         return this.crawlerService.start(crawler);
+    }
+
+    @Query(() => [PageData])
+    getPages(
+        @Args('timestamp') timestamp: string,
+    ): Promise<PageData[]> {
+        return this.crawlerService.getPages(timestamp);
     }
 }

@@ -4,10 +4,10 @@ import { graphql, withApollo } from 'react-apollo';
 import Icon from 'antd/lib/icon';
 import Menu from 'antd/lib/menu';
 import { Link } from 'react-router-dom';
-import { unix } from 'moment';
 
 import GET_CRAWLERS from './gql/query/getCrawlers';
 import { getHomeRoute, getHistoryRoute } from './routes';
+import { timestampToString } from './utils';
 
 const SideMenu = ({ data: { getCrawlers } }) => {
     return (
@@ -23,10 +23,7 @@ const SideMenu = ({ data: { getCrawlers } }) => {
                         <Menu.Item key={`crawler-${id}`} title={url}>
                             <Icon type="check" />
                             <span className="nav-text">
-                                {
-                                    unix(timestamp)//.format('YYYY.DD.MM HH:mm')
-                                        .calendar()
-                                }
+                                { timestampToString(timestamp) }
                             </span>
                             <Link to={getHistoryRoute(timestamp)} />
                         </Menu.Item>
