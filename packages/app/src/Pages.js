@@ -12,7 +12,8 @@ const cardStyle = {
 };
 
 const coverStyle = {
-    textAlign: 'center'
+    textAlign: 'center',
+    // borderBottom: '1px solid #888',
 }
 
 const imgStyle = {

@@ -1,17 +1,18 @@
 import React from 'react';
-import Card from 'antd/lib/card';
 import Spin from 'antd/lib/spin';
+import Typography from 'antd/lib/typography';
 import { graphql, withApollo } from 'react-apollo';
 
 import GET_CRAWLER from './gql/query/getCrawler';
 import { timestampToString } from './utils';
 import Pages from './Pages';
 
+const { Title } = Typography;
+
 export const History = ({ data: { getCrawler } }) => getCrawler ? (
     <>
-        <Card title={timestampToString(getCrawler.timestamp)}>
-            <p>{getCrawler.url}</p>
-        </Card>
+        <Title level={3}>{timestampToString(getCrawler.timestamp)}</Title>
+        <p>{getCrawler.url}</p>
         <Pages timestamp={getCrawler.timestamp} />
     </>
 ) : <Spin />;
