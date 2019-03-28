@@ -7,6 +7,7 @@ import { graphql, withApollo } from 'react-apollo';
 import Masonry from 'react-masonry-component';
 
 import GET_PAGES from './gql/query/getPages';
+import PagesActionPin from './PagesActionPin';
 
 const cardStyle = {
     width: 320,
@@ -49,9 +50,10 @@ export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
                 )}
                 actions={[
                     <Icon type="check" />,
-                    <Icon type="pushpin" title="pin as reference for comparison" />,
+                    // <Icon type="pushpin" title="pin as reference for comparison" />,
+                    <PagesActionPin timestamp={timestamp} id={id} />,
                     // <Icon type="scissor" title="" />,
-                    <Icon type="ellipsis" title="more" />
+                    <Icon type="ellipsis" title="more" />,
                 ]}
             >
                 <p><Icon type="link" /> <a href={url}>{url}</a></p>

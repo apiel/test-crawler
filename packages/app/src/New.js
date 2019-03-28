@@ -88,5 +88,4 @@ export class New extends React.Component {
     }
 }
 
-
 export default graphql(START_CRAWLER)(Form.create({ name: 'start_crawler' })(New));

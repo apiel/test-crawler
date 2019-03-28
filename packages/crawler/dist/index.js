@@ -17,6 +17,24 @@ const utils_1 = require("./utils");
 const config = require("./config");
 exports.getConfig = () => config;
 class CrawlerProvider {
+    copyFile(filePath, basePath, extension) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const file = filePath(extension);
+            if (yield fs_extra_1.pathExists(file)) {
+                yield fs_extra_1.copy(file, basePath(extension), { overwrite: true });
+            }
+        });
+    }
+    copyToBase(timestamp, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
+            const filePath = utils_1.getFilePath(id, folder);
+            const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
+            yield this.copyFile(filePath, basePath, 'png');
+            yield this.copyFile(filePath, basePath, 'html');
+            yield this.copyFile(filePath, basePath, 'json');
+        });
+    }
     image(timestamp, id) {
         const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
         const filePath = utils_1.getFilePath(id, folder);

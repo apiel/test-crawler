@@ -1,10 +1,10 @@
-import { readdir, readJSON, mkdir, writeJSON, readFile } from 'fs-extra';
+import { readdir, readJSON, mkdir, writeJSON, readFile, pathExists, copy } from 'fs-extra';
 import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
 
-import { CRAWL_FOLDER, MAX_HISTORY } from './config';
-import { getFolders, addToQueue, getQueueFolder, getFilePath } from './utils';
+import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER } from './config';
+import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
 
 import * as config from './config';
 import { Crawler, CrawlerInput, StartCrawler, PageData } from './typing';
@@ -14,6 +14,22 @@ export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance,
 export const getConfig = () => config;
 
 export class CrawlerProvider {
+    private async copyFile(filePath: FilePath, basePath: FilePath, extension: string) {
+        const file = filePath(extension);
+        if (await pathExists(file)) {
+            await copy(file, basePath(extension), { overwrite: true });
+        }
+    }
+
+    async copyToBase(timestamp: string, id: string) {
+        const folder = join(CRAWL_FOLDER, timestamp);
+        const filePath = getFilePath(id, folder);
+        const basePath = getFilePath(id, BASE_FOLDER);
+        await this.copyFile(filePath, basePath, 'png');
+        await this.copyFile(filePath, basePath, 'html');
+        await this.copyFile(filePath, basePath, 'json');
+    }
+
     image(timestamp: string, id: string): Promise<Buffer> {
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);

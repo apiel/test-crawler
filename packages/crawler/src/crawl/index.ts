@@ -1,4 +1,4 @@
-import { launch, Viewport } from 'puppeteer';
+import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
 import { writeFile, readdir, readJSON, move } from 'fs-extra';
 import { join } from 'path';

@@ -21,6 +21,7 @@ input CrawlerInput {
 
 type Mutation {
   startCrawler(crawler: CrawlerInput!): StartCrawler!
+  pin(id: String!, timestamp: String!): Success!
 }
 
 type PageData {
@@ -48,6 +49,10 @@ type Query {
 type StartCrawler {
   crawler: Crawler!
   config: Config!
+}
+
+type Success {
+  success: Boolean!
 }
 
 type ViewPort {

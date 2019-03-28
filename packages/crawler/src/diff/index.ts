@@ -1,5 +1,5 @@
 import { info } from 'npmlog';
-import { getFilePath, FilePath } from '../utils';
+import { getFilePath, FilePath } from '../../lib/utils';
 import { BASE_FOLDER } from '../../lib/config';
 import { PNG } from 'pngjs';
 import { pixdiff } from 'pixdiff';

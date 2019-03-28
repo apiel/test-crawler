@@ -4,6 +4,7 @@ import { Crawler } from './models/crawler.model';
 import { CrawlerService } from './crawler.service';
 import { StartCrawler } from './models/startCrawler.model';
 import { PageData } from './models/page.model';
+import { Success } from './models/success.model';
 
 @Resolver(() => Crawler)
 export class CrawlerResolver {
@@ -21,6 +22,13 @@ export class CrawlerResolver {
         return this.crawlerService.getAll();
     }
 
+    @Query(() => [PageData])
+    getPages(
+        @Args('timestamp') timestamp: string,
+    ): Promise<PageData[]> {
+        return this.crawlerService.getPages(timestamp);
+    }
+
     @Mutation(() => StartCrawler)
     startCrawler(
         @Args('crawler') crawler: CrawlerInput,
@@ -28,10 +36,12 @@ export class CrawlerResolver {
         return this.crawlerService.start(crawler);
     }
 
-    @Query(() => [PageData])
-    getPages(
+    @Mutation(() => Success)
+    async pin(
         @Args('timestamp') timestamp: string,
-    ): Promise<PageData[]> {
-        return this.crawlerService.getPages(timestamp);
+        @Args('id') id: string,
+    ): Promise<Success> {
+        await this.crawlerService.pin(timestamp, id);
+        return { success: true };
     }
 }
