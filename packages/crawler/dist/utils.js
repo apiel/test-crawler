@@ -29,7 +29,7 @@ function addToQueue(url, distFolder) {
         const histFile = exports.getFilePath(id, distFolder)('json');
         const queueFile = exports.getFilePath(id, getQueueFolder(distFolder))('json');
         if (!(yield fs_extra_1.pathExists(queueFile)) && !(yield fs_extra_1.pathExists(histFile))) {
-            yield saveData(queueFile, { url, id });
+            yield savePageInfo(queueFile, { url, id });
             return true;
         }
         return false;
@@ -40,8 +40,8 @@ function getQueueFolder(distFolder) {
     return path_1.join(distFolder, 'queue');
 }
 exports.getQueueFolder = getQueueFolder;
-function saveData(file, pageData) {
+function savePageInfo(file, pageData) {
     return fs_extra_1.writeJson(file, pageData, { spaces: 4 });
 }
-exports.saveData = saveData;
+exports.savePageInfo = savePageInfo;
 //# sourceMappingURL=utils.js.map

@@ -1,5 +1,6 @@
 import { Zone } from 'pixdiff';
 import { Viewport } from 'puppeteer';
+export { Viewport, Zone };
 export interface CrawlerInput {
     url: string;
     viewport: Viewport;
@@ -14,12 +15,18 @@ export interface StartCrawler {
         MAX_HISTORY: number;
     };
 }
+export interface PngDiffData {
+    pixelDiffRatio: number;
+    zones: Zone[];
+}
 export interface PageData {
     id: string;
     url: string;
     performance?: Performance;
-    pixelDiffRatio?: number;
-    pngDiffZone?: Zone[];
+    png?: {
+        width: number;
+        diff?: PngDiffData;
+    };
 }
 export interface Performance {
     timeOrigin: number;

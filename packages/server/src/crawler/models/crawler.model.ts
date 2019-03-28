@@ -1,5 +1,6 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import { Crawler as CrawlerInterface } from 'test-crawler-lib';
+import { ViewPort } from './viewport.model';
 
 @ObjectType()
 export class Crawler implements CrawlerInterface {
@@ -11,4 +12,7 @@ export class Crawler implements CrawlerInterface {
 
   @Field()
   timestamp: number;
+
+  @Field()
+  viewport: ViewPort;
 }

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
-exports.BASE_URL = 'http://localhost:3005/';
 exports.PAGES_FOLDER = path_1.join(__dirname, '../pages');
 exports.CRAWL_FOLDER = path_1.join(exports.PAGES_FOLDER, 'crawl');
 exports.BASE_FOLDER = path_1.join(exports.PAGES_FOLDER, 'base');

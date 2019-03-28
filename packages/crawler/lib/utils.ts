@@ -23,7 +23,7 @@ export async function addToQueue(url: string, distFolder: string): Promise<boole
     const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
 
     if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
-        await saveData(queueFile, { url, id });
+        await savePageInfo(queueFile, { url, id });
         return true;
     }
     return false;
@@ -33,6 +33,6 @@ export function getQueueFolder(distFolder: string) {
     return join(distFolder, 'queue');
 }
 
-export function saveData(file: string, pageData: PageData) {
+export function savePageInfo(file: string, pageData: PageData) {
     return writeJson(file, pageData, { spaces: 4 });
 }

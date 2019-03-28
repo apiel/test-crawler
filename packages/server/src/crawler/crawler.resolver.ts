@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { CrawlerInput } from './dto/crawler.input';
-import { Crawler } from './models/crawler';
+import { Crawler } from './models/crawler.model';
 import { CrawlerService } from './crawler.service';
-import { StartCrawler } from './models/startCrawler';
-import { PageData } from './models/page';
+import { StartCrawler } from './models/startCrawler.model';
+import { PageData } from './models/page.model';
 
 @Resolver(() => Crawler)
 export class CrawlerResolver {

@@ -1,4 +1,3 @@
-export declare const BASE_URL = "http://localhost:3005/";
 export declare const PAGES_FOLDER: string;
 export declare const CRAWL_FOLDER: string;
 export declare const BASE_FOLDER: string;

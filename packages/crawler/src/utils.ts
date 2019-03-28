@@ -11,6 +11,7 @@ export function getFolders() {
     return folders;
 }
 
-export const getFilePath = (id: string, distFolder: string) => (extension: string) => {
+export type FilePath = (extension: string) => string;
+export const getFilePath = (id: string, distFolder: string): FilePath => (extension: string) => {
     return join(distFolder, `${id}.${extension}`);
 };

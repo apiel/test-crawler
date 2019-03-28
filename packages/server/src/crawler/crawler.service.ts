@@ -3,9 +3,9 @@ import { CrawlerProvider } from 'test-crawler-lib';
 import * as sharp from 'sharp';
 
 import { CrawlerInput } from './dto/crawler.input';
-import { Crawler } from './models/crawler';
-import { StartCrawler } from './models/startCrawler';
-import { PageData } from './models/page';
+import { Crawler } from './models/crawler.model';
+import { StartCrawler } from './models/startCrawler.model';
+import { PageData } from './models/page.model';
 
 @Injectable()
 export class CrawlerService {

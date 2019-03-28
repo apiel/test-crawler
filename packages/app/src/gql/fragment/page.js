@@ -4,7 +4,18 @@ const fragment = gql`
     fragment SelectPage on PageData {
         id
         url
-        pixelDiffRatio
+        png {
+            width
+            diff {
+                pixelDiffRatio
+                zones {
+                    xMin
+                    yMin
+                    xMax
+                    yMax
+                }
+            }
+        }
     }
 `;
 

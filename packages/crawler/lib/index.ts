@@ -9,7 +9,7 @@ import { getFolders, addToQueue, getQueueFolder, getFilePath } from './utils';
 import * as config from './config';
 import { Crawler, CrawlerInput, StartCrawler, PageData } from './typing';
 
-export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance, Timing } from './typing';
+export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance, Timing, Viewport, PngDiffData, Zone } from './typing';
 
 export const getConfig = () => config;
 

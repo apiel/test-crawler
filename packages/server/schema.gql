@@ -11,19 +11,12 @@ type Crawler {
   id: ID!
   url: String!
   timestamp: Float!
+  viewport: ViewPort!
 }
 
 input CrawlerInput {
   url: String!
-  viewport: CrawlerViewPortInput!
-}
-
-input CrawlerViewPortInput {
-  width: Float = 800
-  height: Float = 600
-  isMobile: Boolean
-  hasTouch: Boolean
-  isLandscape: Boolean
+  viewport: ViewPortInput!
 }
 
 type Mutation {
@@ -33,7 +26,17 @@ type Mutation {
 type PageData {
   id: ID!
   url: String!
-  pixelDiffRatio: Float
+  png: Png
+}
+
+type Png {
+  width: Float!
+  diff: PngDiffData
+}
+
+type PngDiffData {
+  pixelDiffRatio: Float!
+  zones: [Zone!]!
 }
 
 type Query {
@@ -45,4 +48,27 @@ type Query {
 type StartCrawler {
   crawler: Crawler!
   config: Config!
+}
+
+type ViewPort {
+  width: Float
+  height: Float
+  isMobile: Boolean
+  hasTouch: Boolean
+  isLandscape: Boolean
+}
+
+input ViewPortInput {
+  width: Float = 800
+  height: Float = 600
+  isMobile: Boolean
+  hasTouch: Boolean
+  isLandscape: Boolean
+}
+
+type Zone {
+  xMin: Float!
+  yMin: Float!
+  xMax: Float!
+  yMax: Float!
 }

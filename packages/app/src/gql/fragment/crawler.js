@@ -5,6 +5,13 @@ const fragment = gql`
         id
         url
         timestamp
+        viewport {
+            width
+            height
+            isMobile
+            hasTouch
+            isLandscape
+        }
     }
 `;
 

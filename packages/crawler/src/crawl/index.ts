@@ -5,13 +5,12 @@ import { join } from 'path';
 import { promisify } from 'util';
 
 import {
-    BASE_URL,
     CONSUMER_COUNT,
     TIMEOUT,
     USER_AGENT,
     CRAWL_FOLDER,
 } from '../../lib/config';
-import { getFilePath, saveData, addToQueue, getQueueFolder } from '../../lib/utils';
+import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from '../../lib/utils';
 import { prepare } from '../diff';
 import { Crawler } from '../../lib/typing';
 
@@ -22,7 +21,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     let hrefs: string[];
     const filePath = getFilePath(id, distFolder);
 
-    const { viewport }: Crawler = await readJSON(join(distFolder, '_.json'));
+    const { viewport, url: baseUrl }: Crawler = await readJSON(join(distFolder, '_.json'));
 
     const browser = await launch({
         // headless: false,
@@ -58,12 +57,14 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         const performance = JSON.parse(await page.evaluate(
             () => JSON.stringify(window.performance),
         ));
-        await saveData(filePath('json'), { url, id, performance });
 
         await page.screenshot({ path: filePath('png'), fullPage: true });
         hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
 
-        const urls = hrefs.filter(href => href.indexOf(BASE_URL) === 0);
+        const png = { width: viewport.width };
+        await savePageInfo(filePath('json'), { url, id, performance, png });
+
+        const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
         addUrls(urls, distFolder);
 
         await prepare(id, distFolder);
