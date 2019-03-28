@@ -38,7 +38,7 @@ const iconTheme = ''; // twoTone
 
 export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
     <Masonry style={masonryStyle} options={masonryOptions}>
-        {getPages.map(({ id, url, png, diff }) => (
+        {getPages.map(({ id, url, png }) => (
             <Card
                 key={id}
                 hoverable
@@ -58,9 +58,9 @@ export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
             >
                 <p><Icon type="link" /> <a href={url}>{url}</a></p>
                 {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
-                {png && !diff && <div><Icon type="picture" theme={iconTheme} /> New screenshot <Tag color="green">New</Tag></div>}
-                {diff && <>
-                    <p><b>Pixel diff ratio:</b> {diff.pixelDiffRatio}</p>
+                {png && !png.diff && <div><Icon type="picture" theme={iconTheme} /> New screenshot <Tag color="green">New</Tag></div>}
+                {png && png.diff && <>
+                    <p><Icon type="picture" theme={iconTheme} /> Pixel diff ratio: {png.diff.pixelDiffRatio}</p>
                 </>}
             </Card>
         ))}

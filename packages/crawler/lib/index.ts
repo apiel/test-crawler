@@ -1,4 +1,4 @@
-import { readdir, readJSON, mkdir, writeJSON, readFile, pathExists, copy } from 'fs-extra';
+import { readdir, readJSON, mkdir, writeJSON, readFile, pathExists, copy, readJson } from 'fs-extra';
 import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
@@ -21,13 +21,23 @@ export class CrawlerProvider {
         }
     }
 
-    async copyToBase(timestamp: string, id: string) {
+    async copyToBase(timestamp: string, id: string): Promise<PageData> {
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const basePath = getFilePath(id, BASE_FOLDER);
+
+        const data: PageData = await readJson(filePath('json'));
+        data.png.diff = {
+            pixelDiffRatio: 0,
+            zones: [],
+        };
+        await writeJSON(filePath('json'), data);
+
         await this.copyFile(filePath, basePath, 'png');
         await this.copyFile(filePath, basePath, 'html');
         await this.copyFile(filePath, basePath, 'json');
+
+        return data;
     }
 
     image(timestamp: string, id: string): Promise<Buffer> {

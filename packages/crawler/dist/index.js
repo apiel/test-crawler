@@ -30,9 +30,16 @@ class CrawlerProvider {
             const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
+            const data = yield fs_extra_1.readJson(filePath('json'));
+            data.png.diff = {
+                pixelDiffRatio: 0,
+                zones: [],
+            };
+            yield fs_extra_1.writeJSON(filePath('json'), data);
             yield this.copyFile(filePath, basePath, 'png');
             yield this.copyFile(filePath, basePath, 'html');
             yield this.copyFile(filePath, basePath, 'json');
+            return data;
         });
     }
     image(timestamp, id) {

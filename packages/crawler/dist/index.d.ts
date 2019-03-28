@@ -5,7 +5,7 @@ export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance,
 export declare const getConfig: () => typeof config;
 export declare class CrawlerProvider {
     private copyFile;
-    copyToBase(timestamp: string, id: string): Promise<void>;
+    copyToBase(timestamp: string, id: string): Promise<PageData>;
     image(timestamp: string, id: string): Promise<Buffer>;
     getPages(timestamp: string): Promise<PageData[]>;
     getCrawler(timestamp: string): Promise<Crawler>;

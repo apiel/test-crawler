@@ -36,12 +36,11 @@ export class CrawlerResolver {
         return this.crawlerService.start(crawler);
     }
 
-    @Mutation(() => Success)
-    async pin(
+    @Mutation(() => PageData)
+    pin(
         @Args('timestamp') timestamp: string,
         @Args('id') id: string,
-    ): Promise<Success> {
-        await this.crawlerService.pin(timestamp, id);
-        return { success: true };
+    ): Promise<PageData> {
+        return this.crawlerService.pin(timestamp, id);
     }
 }

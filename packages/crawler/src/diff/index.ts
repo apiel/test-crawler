@@ -7,11 +7,6 @@ import { pixdiff } from 'pixdiff';
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
 import { PageData } from '../../lib/typing';
 
-function loadJson(file: string): Promise<PageData> {
-    const jsonFile = `${file.split('.').slice(0, -1).join('.')}.json`;
-    return readJson(jsonFile);
-}
-
 async function parsePng(data: PageData, filePath: FilePath, baseFile: string) {
     const file = filePath('png');
     const { id, url } = data;
@@ -51,7 +46,7 @@ async function parsePng(data: PageData, filePath: FilePath, baseFile: string) {
 export async function prepare(id: string, distFolder: string) {
     const basePath = getFilePath(id, BASE_FOLDER);
     const filePath = getFilePath(id, distFolder);
-    const data = await loadJson(filePath('json'));
+    const data = await readJson(filePath('json'));
     if (await pathExists(basePath('png'))) {
         await parsePng(data, filePath, basePath('png'));
     } else {

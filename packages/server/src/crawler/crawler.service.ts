@@ -32,7 +32,7 @@ export class CrawlerService {
         return sharp(image).resize(300).toBuffer();
     }
 
-    pin(timestamp: string, id: string): Promise<void> {
+    pin(timestamp: string, id: string): Promise<PageData> {
         return this.crawlerProvider.copyToBase(timestamp, id);
     }
 }
