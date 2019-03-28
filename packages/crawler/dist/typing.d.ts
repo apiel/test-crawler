@@ -1,6 +1,8 @@
 import { Zone } from 'pixdiff';
+import { Viewport } from 'puppeteer';
 export interface CrawlerInput {
     url: string;
+    viewport: Viewport;
 }
 export interface Crawler extends CrawlerInput {
     id: string;

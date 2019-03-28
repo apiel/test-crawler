@@ -49,6 +49,7 @@ export class CrawlerProvider {
         await this.cleanHistory();
         const timestamp = Math.floor(Date.now() / 1000);
         const id = md5(`${timestamp}-${crawlerInput.url}`);
+
         const crawler: Crawler = {
             ...crawlerInput,
             timestamp,

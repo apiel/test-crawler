@@ -15,6 +15,15 @@ type Crawler {
 
 input CrawlerInput {
   url: String!
+  viewport: CrawlerViewPortInput!
+}
+
+input CrawlerViewPortInput {
+  width: Float = 800
+  height: Float = 600
+  isMobile: Boolean
+  hasTouch: Boolean
+  isLandscape: Boolean
 }
 
 type Mutation {

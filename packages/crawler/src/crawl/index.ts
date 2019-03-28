@@ -1,4 +1,4 @@
-import { launch } from 'puppeteer';
+import { launch, Viewport } from 'puppeteer';
 import { error, info } from 'npmlog';
 import { writeFile, readdir, readJSON, move } from 'fs-extra';
 import { join } from 'path';
@@ -13,6 +13,7 @@ import {
 } from '../../lib/config';
 import { getFilePath, saveData, addToQueue, getQueueFolder } from '../../lib/utils';
 import { prepare } from '../diff';
+import { Crawler } from '../../lib/typing';
 
 let consumerRunning = 0;
 
@@ -21,11 +22,14 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     let hrefs: string[];
     const filePath = getFilePath(id, distFolder);
 
+    const { viewport }: Crawler = await readJSON(join(distFolder, '_.json'));
+
     const browser = await launch({
         // headless: false,
     });
     const page = await browser.newPage();
-    await page.setUserAgent(USER_AGENT);
+    await page.setUserAgent(USER_AGENT); // this should be configurable from crawler file _.json
+    await page.setViewport(viewport);
 
     try {
         await page.goto(url, {
@@ -35,7 +39,21 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         const html = await page.content();
         await writeFile(filePath('html'), html);
 
-        console.log('to use: page.metrics', await page.metrics());
+        // to implement
+        // console.log('to use: page.metrics', await page.metrics());
+        // { Timestamp: 4597.10704,
+        //     Documents: 2,
+        //     Frames: 1,
+        //     JSEventListeners: 24,
+        //     Nodes: 64,
+        //     LayoutCount: 2,
+        //     RecalcStyleCount: 4,
+        //     LayoutDuration: 0.370643,
+        //     RecalcStyleDuration: 0.065919,
+        //     ScriptDuration: 0.658299,
+        //     TaskDuration: 1.463009,
+        //     JSHeapUsedSize: 17742472,
+        //     JSHeapTotalSize: 36044800 }
 
         const performance = JSON.parse(await page.evaluate(
             () => JSON.stringify(window.performance),
