@@ -1,6 +1,8 @@
 import React from 'react';
 import Card from 'antd/lib/card';
 import Spin from 'antd/lib/spin';
+import Tag from 'antd/lib/tag';
+import Icon from 'antd/lib/icon';
 import { graphql, withApollo } from 'react-apollo';
 import Masonry from 'react-masonry-component';
 
@@ -31,21 +33,33 @@ const masonryOptions = {
     fitWidth: true,
 }
 
+const iconTheme = ''; // twoTone
+
 export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
     <Masonry style={masonryStyle} options={masonryOptions}>
-        {getPages.map(({ id, url, pixelDiffRatio }) => (
+        {getPages.map(({ id, url, png, diff }) => (
             <Card
                 key={id}
                 hoverable
                 style={cardStyle}
-                cover={(
+                cover={png && (
                     <div style={coverStyle}>
                         <img style={imgStyle} alt="" src={`/crawler/thumbnail/${timestamp}/${id}`} />
                     </div>
                 )}
+                actions={[
+                    <Icon type="check" />,
+                    <Icon type="pushpin" title="pin as reference for comparison" />,
+                    // <Icon type="scissor" title="" />,
+                    <Icon type="ellipsis" title="more" />
+                ]}
             >
-                <p><a href={url}>{url}</a></p>
-                <p>Pixel diff ratio: {pixelDiffRatio || 0}</p>
+                <p><Icon type="link" /> <a href={url}>{url}</a></p>
+                {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
+                {png && !diff && <div><Icon type="picture" theme={iconTheme} /> New screenshot <Tag color="green">New</Tag></div>}
+                {diff && <>
+                    <p><b>Pixel diff ratio:</b> {diff.pixelDiffRatio}</p>
+                </>}
             </Card>
         ))}
     </Masonry>
