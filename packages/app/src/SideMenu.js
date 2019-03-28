@@ -6,7 +6,7 @@ import Menu from 'antd/lib/menu';
 import { Link } from 'react-router-dom';
 
 import GET_CRAWLERS from './gql/query/getCrawlers';
-import { getHomeRoute, getHistoryRoute } from './routes';
+import { getHomeRoute, getHistoryRoute, getPinsRoute } from './routes';
 import { timestampToString } from './utils';
 
 const SideMenu = ({ data: { getCrawlers } }) => {
@@ -16,6 +16,11 @@ const SideMenu = ({ data: { getCrawlers } }) => {
                 <Icon type="plus" />
                 <span className="nav-text">New</span>
                 <Link to={getHomeRoute()} />
+            </Menu.Item>
+            <Menu.Item key="pins">
+                <Icon type="pushpin" />
+                <span className="nav-text">Pins</span>
+                <Link to={getPinsRoute()} />
             </Menu.Item>
             {getCrawlers &&
                 getCrawlers.sort(({ timestamp: a }, { timestamp: b }) => b - a)

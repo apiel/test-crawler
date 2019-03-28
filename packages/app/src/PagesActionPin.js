@@ -26,6 +26,8 @@ export class PagesActionPin extends React.Component {
                             getPages,
                         }
                     });
+                    // would need to update pins as well
+                    // implement lib for insert, update, upsert...
                 },
             });
             message.success('Page pinned as reference for comparison.', 2);
