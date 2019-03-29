@@ -57,7 +57,7 @@ class CrawlerProvider {
     getPagesInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {
             const files = yield fs_extra_1.readdir(folder);
-            return Promise.all(files.filter(file => path_1.extname(file) === '.json')
+            return Promise.all(files.filter(file => path_1.extname(file) === '.json' && file !== '_.json')
                 .map(file => fs_extra_1.readJSON(path_1.join(folder, file))));
         });
     }

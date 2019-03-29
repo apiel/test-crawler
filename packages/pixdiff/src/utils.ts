@@ -1,6 +1,9 @@
 import { Image, Color, Zone } from './types';
 
 export function groupOverlappingZone(zones: Zone[]) {
+    if (zones.length < 2) {
+        return zones;
+    }
     const groupedZones: Zone[] = [];
     let newZone: Zone;
     zones.forEach((zone, index) => {

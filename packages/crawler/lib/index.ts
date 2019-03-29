@@ -58,7 +58,7 @@ export class CrawlerProvider {
     private async getPagesInFolder(folder: string): Promise<PageData[]> {
         const files = await readdir(folder);
         return Promise.all(
-            files.filter(file => extname(file) === '.json')
+            files.filter(file => extname(file) === '.json' && file !== '_.json')
                 .map(file => readJSON(join(folder, file))),
         );
     }
