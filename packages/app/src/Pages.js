@@ -8,33 +8,14 @@ import Masonry from 'react-masonry-component';
 
 import GET_PAGES from './gql/query/getPages';
 import PagesActionPin from './PagesActionPin';
-
-const cardStyle = {
-    width: 320,
-    marginBottom: 10,
-};
-
-const coverStyle = {
-    textAlign: 'center',
-    // borderBottom: '1px solid #888',
-}
-
-const imgStyle = {
-    // width: 300,
-}
-
-const masonryStyle = {
-    paddingTop: 10,
-    paddingBottom: 10,
-}
-
-const masonryOptions = {
-    gutter: 10,
-    // percentPosition: true,
-    fitWidth: true,
-}
-
-const iconTheme = ''; // twoTone
+import {
+    masonryStyle,
+    masonryOptions,
+    cardStyle,
+    coverStyle,
+    imgStyle,
+    iconTheme,
+} from './pageStyle';
 
 export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
     <Masonry style={masonryStyle} options={masonryOptions}>
