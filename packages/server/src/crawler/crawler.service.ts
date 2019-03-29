@@ -31,9 +31,9 @@ export class CrawlerService {
         return this.crawlerProvider.getBasePages();
     }
 
-    async thumbnail(folder: string, id: string): Promise<Buffer> {
+    async thumbnail(folder: string, id: string, width: number = 300): Promise<Buffer> {
         const image = await this.crawlerProvider.image(folder, id);
-        return sharp(image).resize(300).toBuffer();
+        return sharp(image).resize(width).toBuffer();
     }
 
     pin(timestamp: string, id: string): Promise<PageData> {

@@ -27,7 +27,7 @@ export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
                     folder={timestamp}
                     id={id}
                     zones={png.diff && png.diff.zones}
-                    ratio={png.width / 300}
+                    originalWidth={png.width}
                 />}
                 actions={[
                     <Icon type="check" />,

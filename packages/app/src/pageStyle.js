@@ -1,16 +1,18 @@
-export const cardStyle = {
-    width: 320,
-    marginBottom: 10,
-};
-
 export const coverStyle = {
     textAlign: 'center',
     // borderBottom: '1px solid #888',
 }
 
 export const imgStyle = {
-    // width: 300,
+    width: 300,
 }
+
+export const imgMargin = 10;
+
+export const cardStyle = {
+    width: imgStyle.width + imgMargin*2,
+    marginBottom: 10,
+};
 
 export const masonryStyle = {
     paddingTop: 10,
