@@ -12,10 +12,9 @@ import {
     masonryStyle,
     masonryOptions,
     cardStyle,
-    coverStyle,
-    imgStyle,
     iconTheme,
 } from './pageStyle';
+import { DiffImage } from './DiffImage'
 
 export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
     <Masonry style={masonryStyle} options={masonryOptions}>
@@ -24,11 +23,12 @@ export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
                 key={id}
                 hoverable
                 style={cardStyle}
-                cover={png && (
-                    <div style={coverStyle}>
-                        <img style={imgStyle} alt="" src={`/crawler/thumbnail/${timestamp}/${id}`} />
-                    </div>
-                )}
+                cover={png && <DiffImage
+                    folder={timestamp}
+                    id={id}
+                    zones={png.diff && png.diff.zones}
+                    ratio={png.width / 300}
+                />}
                 actions={[
                     <Icon type="check" />,
                     // <Icon type="pushpin" title="pin as reference for comparison" />,

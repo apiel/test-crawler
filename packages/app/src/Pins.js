@@ -11,10 +11,9 @@ import {
     masonryStyle,
     masonryOptions,
     cardStyle,
-    coverStyle,
-    imgStyle,
     iconTheme,
 } from './pageStyle';
+import { DiffImage } from './DiffImage';
 
 const { Title } = Typography;
 
@@ -29,11 +28,7 @@ export const Pins = ({ data: { getPins } }) => (
                             key={id}
                             hoverable
                             style={cardStyle}
-                            cover={png && (
-                                <div style={coverStyle}>
-                                    <img style={imgStyle} alt="" src={`/crawler/thumbnail/base/${id}`} />
-                                </div>
-                            )}
+                            cover={png && <DiffImage folder='base' id={id} />}
                         >
                             <p><Icon type="link" /> <a href={url}>{url}</a></p>
                             {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
