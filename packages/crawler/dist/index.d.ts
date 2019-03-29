@@ -6,8 +6,10 @@ export declare const getConfig: () => typeof config;
 export declare class CrawlerProvider {
     private copyFile;
     copyToBase(timestamp: string, id: string): Promise<PageData>;
-    image(timestamp: string, id: string): Promise<Buffer>;
+    image(folder: string, id: string): Promise<Buffer>;
+    getBasePages(): Promise<PageData[]>;
     getPages(timestamp: string): Promise<PageData[]>;
+    private getPagesInFolder;
     getCrawler(timestamp: string): Promise<Crawler>;
     getAllCrawlers(): Promise<Crawler[]>;
     startCrawler(crawlerInput: CrawlerInput): Promise<StartCrawler>;

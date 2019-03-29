@@ -40,14 +40,22 @@ export class CrawlerProvider {
         return data;
     }
 
-    image(timestamp: string, id: string): Promise<Buffer> {
-        const folder = join(CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
+    image(folder: string, id: string): Promise<Buffer> {
+        const target = folder === 'base' ? BASE_FOLDER : join(CRAWL_FOLDER, folder);
+        const filePath = getFilePath(id, target);
         return readFile(filePath('png'));
     }
 
-    async getPages(timestamp: string): Promise<PageData[]> {
+    getBasePages(): Promise<PageData[]> {
+        return this.getPagesInFolder(BASE_FOLDER);
+    }
+
+    getPages(timestamp: string): Promise<PageData[]> {
         const folder = join(CRAWL_FOLDER, timestamp);
+        return this.getPagesInFolder(folder);
+    }
+
+    private async getPagesInFolder(folder: string): Promise<PageData[]> {
         const files = await readdir(folder);
         return Promise.all(
             files.filter(file => extname(file) === '.json')

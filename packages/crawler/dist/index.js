@@ -42,14 +42,20 @@ class CrawlerProvider {
             return data;
         });
     }
-    image(timestamp, id) {
-        const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
-        const filePath = utils_1.getFilePath(id, folder);
+    image(folder, id) {
+        const target = folder === 'base' ? config_1.BASE_FOLDER : path_1.join(config_1.CRAWL_FOLDER, folder);
+        const filePath = utils_1.getFilePath(id, target);
         return fs_extra_1.readFile(filePath('png'));
     }
+    getBasePages() {
+        return this.getPagesInFolder(config_1.BASE_FOLDER);
+    }
     getPages(timestamp) {
+        const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
+        return this.getPagesInFolder(folder);
+    }
+    getPagesInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
             const files = yield fs_extra_1.readdir(folder);
             return Promise.all(files.filter(file => path_1.extname(file) === '.json')
                 .map(file => fs_extra_1.readJSON(path_1.join(folder, file))));

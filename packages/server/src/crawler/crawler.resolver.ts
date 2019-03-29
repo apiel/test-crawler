@@ -4,7 +4,6 @@ import { Crawler } from './models/crawler.model';
 import { CrawlerService } from './crawler.service';
 import { StartCrawler } from './models/startCrawler.model';
 import { PageData } from './models/page.model';
-import { Success } from './models/success.model';
 
 @Resolver(() => Crawler)
 export class CrawlerResolver {
@@ -27,6 +26,11 @@ export class CrawlerResolver {
         @Args('timestamp') timestamp: string,
     ): Promise<PageData[]> {
         return this.crawlerService.getPages(timestamp);
+    }
+
+    @Query(() => [PageData])
+    getPins(): Promise<PageData[]> {
+        return this.crawlerService.getPins();
     }
 
     @Mutation(() => StartCrawler)

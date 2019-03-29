@@ -6,11 +6,11 @@ import { Request, Response } from 'express';
 export class CrawlerController {
     constructor(private readonly crawlerService: CrawlerService) {}
 
-    @Get('/thumbnail/:timestamp/:id')
+    @Get('/thumbnail/:folder/:id')
     @Header('Content-Type', 'image/png')
     async thumbnail(@Req() request: Request, @Res() res: Response) {
-        const { params: { timestamp, id } } = request;
-        const image = await this.crawlerService.thumbnail(timestamp, id);
+        const { params: { folder, id } } = request;
+        const image = await this.crawlerService.thumbnail(folder, id);
         res.end(image);
     }
 }

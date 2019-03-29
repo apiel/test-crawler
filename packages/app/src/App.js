@@ -8,7 +8,8 @@ import './App.css';
 import New from './New';
 import History from './History';
 import SideMenu from './SideMenu';
-import { getHomeRoute, getHistoryRoute } from './routes';
+import { getHomeRoute, getHistoryRoute, getPinsRoute } from './routes';
+import Pins from './Pins';
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -38,6 +39,7 @@ const App = () => (
             </Sider>
             <Content style={contentStyle}>
                 <Route path={getHomeRoute()} exact component={New} />
+                <Route path={getPinsRoute()} exact component={Pins} />
                 <Route path={getHistoryRoute(':timestamp')} component={History} />
             </Content>
         </Layout>
