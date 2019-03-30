@@ -1,3 +1,5 @@
+Move all this in github issues
+
 - Need to make doc
 - use ID for graphql to simplify updates
 - make react app serve by server after building it
