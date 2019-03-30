@@ -1,6 +1,6 @@
 {
     "name": "pixdiff-zone",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "main": "src/index.ts",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
     "license": "MIT",
