@@ -35,7 +35,7 @@ export const DiffImage = ({ folder, id, zones, originalWidth }) => (
         {zones && zones.map((zone, index) => {
             const [hover, setHover] = useState(false);
             const ratio = originalWidth / imgStyle.width;
-            const img = `/crawler/thumbnail/base/${id}/${imgStyle.width}`;
+            const img = `/api/crawler/thumbnail/base/${id}/${imgStyle.width}`;
             return (
                 <Popover content={(
                     <>
@@ -53,6 +53,6 @@ export const DiffImage = ({ folder, id, zones, originalWidth }) => (
                 </Popover>
             );
         })}
-        <img style={imgStyle} alt="" src={`/crawler/thumbnail/${folder}/${id}/${imgStyle.width}`} />
+        <img style={imgStyle} alt="" src={`/api/crawler/thumbnail/${folder}/${id}/${imgStyle.width}`} />
     </div>
 );

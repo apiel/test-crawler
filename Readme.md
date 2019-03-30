@@ -12,9 +12,10 @@ cd test-crawler
 
 npx lerna bootstrap
 
-# not yet implemented
 yarn start
 ```
+
+Go to http://localhost:3000/
 
 Then enter the url you want to make screenshots and click start. It will crawl the url and use all the link found in the pages.
 
