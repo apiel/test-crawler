@@ -88,6 +88,7 @@ export class CrawlerProvider {
             ...crawlerInput,
             timestamp,
             id,
+            diffZoneCount: 0,
         };
 
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());

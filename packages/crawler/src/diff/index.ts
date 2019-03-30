@@ -41,15 +41,22 @@ async function parsePng(data: PageData, filePath: FilePath, baseFile: string) {
         zones,
     };
     await writeJSON(filePath('json'), data);
+
+    return zones.length;
 }
 
 export async function prepare(id: string, distFolder: string) {
     const basePath = getFilePath(id, BASE_FOLDER);
     const filePath = getFilePath(id, distFolder);
     const data = await readJson(filePath('json'));
+
+    let diffZoneCount = 0;
     if (await pathExists(basePath('png'))) {
-        await parsePng(data, filePath, basePath('png'));
+        diffZoneCount = await parsePng(data, filePath, basePath('png'));
     } else {
         info('DIFF', 'new png');
     }
+    return {
+        diffZoneCount,
+    };
 }

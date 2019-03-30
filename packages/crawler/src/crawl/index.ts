@@ -1,6 +1,6 @@
 import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
-import { writeFile, readdir, readJSON, move } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON } from 'fs-extra';
 import { join } from 'path';
 import { promisify } from 'util';
 
@@ -14,7 +14,15 @@ import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from '../../lib
 import { prepare } from '../diff';
 import { Crawler } from '../../lib/typing';
 
+interface ResultQueue {
+    result: {
+        diffZoneCount: number,
+    };
+    folder: string;
+}
+
 let consumerRunning = 0;
+const resultsQueue: ResultQueue[] = [];
 
 async function loadPage(id: string, url: string, distFolder: string, retry: number = 0) {
     consumerRunning++;
@@ -67,7 +75,11 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
         addUrls(urls, distFolder);
 
-        await prepare(id, distFolder);
+        const result = await prepare(id, distFolder);
+        resultsQueue.push({
+            result,
+            folder: distFolder,
+        });
     } catch (err) {
         await handleError(err, filePath('error'));
         if (retry < 2) {
@@ -133,8 +145,19 @@ async function consumeQueues() {
     } while (true);
 }
 
-// all the following should go away
+async function consumeResult() {
+    if (resultsQueue.length) {
+        const [{folder, result}] = resultsQueue.splice(0, 1);
+        const file = join(folder, '_.json');
+        const crawler: Crawler = await readJSON(file);
+        crawler.diffZoneCount += result.diffZoneCount;
+        await writeJSON(file, crawler);
+    } else {
+        setTimeout(consumeResult, 1000);
+    }
+}
 
 export async function crawl() {
+    consumeResult();
     await consumeQueues();
 }

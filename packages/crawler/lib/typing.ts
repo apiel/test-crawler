@@ -11,6 +11,7 @@ export interface CrawlerInput {
 export interface Crawler extends CrawlerInput {
     id: string;
     timestamp: number;
+    diffZoneCount: number;
 }
 
 export interface StartCrawler {

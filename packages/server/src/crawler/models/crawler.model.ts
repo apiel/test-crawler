@@ -15,4 +15,7 @@ export class Crawler implements CrawlerInterface {
 
   @Field()
   viewport: ViewPort;
+
+  @Field()
+  diffZoneCount: number;
 }

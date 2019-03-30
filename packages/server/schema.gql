@@ -12,6 +12,7 @@ type Crawler {
   url: String!
   timestamp: Float!
   viewport: ViewPort!
+  diffZoneCount: Float!
 }
 
 input CrawlerInput {

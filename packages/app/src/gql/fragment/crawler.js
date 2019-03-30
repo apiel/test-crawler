@@ -12,6 +12,7 @@ const fragment = gql`
             hasTouch
             isLandscape
         }
+        diffZoneCount
     }
 `;
 
