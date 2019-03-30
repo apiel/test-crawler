@@ -127,37 +127,33 @@ async function pickFromQueues() {
     }
 }
 
-// shoudl became consumeQueues and dont be to specific distFolder
-// then we need another function to get next file to crawl: pickFromQueues()
 async function consumeQueues() {
-    info('start consumers', `${consumerRunning}`);
-    const sleep = promisify(setTimeout);
-    do {
-        if (consumerRunning < CONSUMER_COUNT) {
-            const toCrawl = await pickFromQueues();
-            if (toCrawl) {
-                const { id, url, distFolder } = toCrawl;
-                loadPage(id, url, distFolder);
-            }
-        } else {
-            await sleep(200);
+    if (consumerRunning < CONSUMER_COUNT) {
+        const toCrawl = await pickFromQueues();
+        if (toCrawl) {
+            const { id, url, distFolder } = toCrawl;
+            loadPage(id, url, distFolder);
         }
-    } while (true);
+        consumeQueues();
+    } else {
+        setTimeout(consumeQueues, 200);
+    }
 }
 
-async function consumeResult() {
+async function consumeResults() {
     if (resultsQueue.length) {
         const [{folder, result}] = resultsQueue.splice(0, 1);
         const file = join(folder, '_.json');
         const crawler: Crawler = await readJSON(file);
         crawler.diffZoneCount += result.diffZoneCount;
         await writeJSON(file, crawler);
+        consumeResults();
     } else {
-        setTimeout(consumeResult, 1000);
+        setTimeout(consumeResults, 1000);
     }
 }
 
-export async function crawl() {
-    consumeResult();
-    await consumeQueues();
+export function crawl() {
+    consumeResults();
+    consumeQueues();
 }

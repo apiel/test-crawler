@@ -4,6 +4,8 @@
 - make a way to start framework from root folder
 - npm publish pixdiff
 
+- live update of crawler pages using Graphql stream
+
 - viewport selectable
 - options of urls from an enpoint instead of spider crawling
 - way to run custom script on crawl per page
