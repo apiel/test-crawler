@@ -32,7 +32,7 @@ const buttonStyle = {
 
 export const DiffImage = ({ folder, id, zones, originalWidth }) => (
     <div style={coverStyle}>
-        {zones && zones.map((zone, index) => {
+        {zones && zones.map(({ zone, status }, index) => {
             const [hover, setHover] = useState(false);
             const ratio = originalWidth / imgStyle.width;
             const img = `/api/crawler/thumbnail/base/${id}/${imgStyle.width}`;

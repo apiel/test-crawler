@@ -38,7 +38,7 @@ async function parsePng(data: PageData, filePath: FilePath, baseFile: string) {
 
     data.png.diff = {
         pixelDiffRatio,
-        zones,
+        zones: zones.map(zone => ({ zone, status: 'diff' })),
     };
     await writeJSON(filePath('json'), data);
 

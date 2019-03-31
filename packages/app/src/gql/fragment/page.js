@@ -9,10 +9,13 @@ const fragment = gql`
             diff {
                 pixelDiffRatio
                 zones {
-                    xMin
-                    yMin
-                    xMax
-                    yMax
+                    zone {
+                        xMin
+                        yMin
+                        xMax
+                        yMax
+                    }
+                    status
                 }
             }
         }

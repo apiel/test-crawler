@@ -1,12 +1,12 @@
 import { Field, ObjectType, ID } from 'type-graphql';
 import { PngDiffData as PngDiffDataInterface } from 'test-crawler-lib';
-import { Zone } from './zone.model';
+import { PngDiffDataZone } from './pngDiffDataZone.model';
 
 @ObjectType()
 export class PngDiffData implements PngDiffDataInterface {
     @Field()
     pixelDiffRatio: number;
 
-    @Field(type => [Zone])
-    zones: Zone[];
+    @Field(type => [PngDiffDataZone])
+    zones: PngDiffDataZone[];
 }

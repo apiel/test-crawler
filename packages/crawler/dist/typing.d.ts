@@ -16,9 +16,13 @@ export interface StartCrawler {
         MAX_HISTORY: number;
     };
 }
+export interface PngDiffDataZone {
+    zone: Zone;
+    status: string;
+}
 export interface PngDiffData {
     pixelDiffRatio: number;
-    zones: Zone[];
+    zones: PngDiffDataZone[];
 }
 export interface PageData {
     id: string;

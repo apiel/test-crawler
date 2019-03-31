@@ -27,7 +27,7 @@ const SideMenu = ({ data: { getCrawlers } }) => {
                 <span className="nav-text">Pins</span>
                 <Link to={getPinsRoute()} />
             </Menu.Item>
-            {getCrawlers && getCrawlers.length && <Divider style={dividerStyle} />}
+            {/* {getCrawlers && getCrawlers.length && <Divider style={dividerStyle} />} */}
             {getCrawlers &&
                 getCrawlers.sort(({ timestamp: a }, { timestamp: b }) => b - a)
                     .map(({ timestamp, url, id, diffZoneCount }) => (
