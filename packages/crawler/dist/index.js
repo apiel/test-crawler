@@ -25,6 +25,16 @@ class CrawlerProvider {
             }
         });
     }
+    setZoneStatus(timestamp, id, index, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
+            const filePath = utils_1.getFilePath(id, folder);
+            const data = yield fs_extra_1.readJson(filePath('json'));
+            data.png.diff.zones[index].status = status;
+            yield fs_extra_1.writeJSON(filePath('json'), data);
+            return data;
+        });
+    }
     copyToBase(timestamp, id) {
         return __awaiter(this, void 0, void 0, function* () {
             const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);

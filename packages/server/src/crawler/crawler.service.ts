@@ -39,4 +39,8 @@ export class CrawlerService {
     pin(timestamp: string, id: string): Promise<PageData> {
         return this.crawlerProvider.copyToBase(timestamp, id);
     }
+
+    setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
+        return this.crawlerProvider.setZoneStatus(timestamp, id, index, status);
+    }
 }

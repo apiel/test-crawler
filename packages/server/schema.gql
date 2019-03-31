@@ -23,6 +23,7 @@ input CrawlerInput {
 type Mutation {
   startCrawler(crawler: CrawlerInput!): StartCrawler!
   pin(id: String!, timestamp: String!): PageData!
+  setZoneStatus(status: String!, index: Float!, id: String!, timestamp: String!): PageData!
 }
 
 type PageData {

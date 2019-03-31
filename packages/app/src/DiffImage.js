@@ -56,3 +56,5 @@ export const DiffImage = ({ folder, id, zones, originalWidth }) => (
         <img style={imgStyle} alt="" src={`/api/crawler/thumbnail/${folder}/${id}/${imgStyle.width}`} />
     </div>
 );
+
+// need to create mutation for btn

@@ -33,6 +33,15 @@ export class CrawlerProvider {
         }
     }
 
+    async setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
+        const folder = join(CRAWL_FOLDER, timestamp);
+        const filePath = getFilePath(id, folder);
+        const data: PageData = await readJson(filePath('json'));
+        data.png.diff.zones[index].status = status;
+        await writeJSON(filePath('json'), data);
+        return data;
+    }
+
     async copyToBase(timestamp: string, id: string): Promise<PageData> {
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
