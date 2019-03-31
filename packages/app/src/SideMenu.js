@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { graphql, withApollo } from 'react-apollo';
 import Icon from 'antd/lib/icon';
 import Menu from 'antd/lib/menu';
-import Divider from 'antd/lib/divider';
 import { Link } from 'react-router-dom';
 
 import GET_CRAWLERS from './gql/query/getCrawlers';
@@ -11,7 +10,7 @@ import { getHomeRoute, getHistoryRoute, getPinsRoute } from './routes';
 import { timestampToString } from './utils';
 
 const dividerStyle = {
-    background: '#7e8791',
+    borderTop: '1px solid #7e8791',
 }
 
 const SideMenu = ({ data: { getCrawlers } }) => {
@@ -27,11 +26,10 @@ const SideMenu = ({ data: { getCrawlers } }) => {
                 <span className="nav-text">Pins</span>
                 <Link to={getPinsRoute()} />
             </Menu.Item>
-            {/* {getCrawlers && getCrawlers.length && <Divider style={dividerStyle} />} */}
             {getCrawlers &&
                 getCrawlers.sort(({ timestamp: a }, { timestamp: b }) => b - a)
-                    .map(({ timestamp, url, id, diffZoneCount }) => (
-                        <Menu.Item key={`crawler-${id}`} title={url}>
+                    .map(({ timestamp, url, id, diffZoneCount }, index) => (
+                        <Menu.Item key={`crawler-${id}`} title={url} style={index === 0 && dividerStyle}>
                             <Icon type={diffZoneCount ? 'exclamation-circle' : 'check'} />
                             <span className="nav-text">
                                 { timestampToString(timestamp) }
