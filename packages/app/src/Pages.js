@@ -34,10 +34,9 @@ export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
                 actions={[
                     <Icon type="check" />,
                     <Icon type="warning" />,
-                    // <Icon type="pushpin" title="pin as reference for comparison" />,
                     <PagesActionPin timestamp={timestamp} id={id} />,
                     // <Icon type="scissor" title="" />,
-                    <Icon type="ellipsis" title="more" />,
+                    // <Icon type="ellipsis" title="more" />,
                 ]}
             >
                 <p><Icon type="link" /> <a href={url}>{url}</a></p>

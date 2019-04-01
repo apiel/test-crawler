@@ -1,11 +1,6 @@
 Move all this in github issues
 
 - Need to make doc
-- use ID for graphql to simplify updates
-- make react app serve by server after building it
-- make a way to start framework from root folder
-- npm publish pixdiff
-
 - live update of crawler pages using Graphql stream
 
 - viewport selectable
@@ -13,5 +8,12 @@ Move all this in github issues
 - way to run custom script on crawl per page
 - ignore some zone
 
-
-- migration tools for pages, crawler
+- spider crawling with a limit of child path: (eg: limit 2)
+    /     (found: a, b, c, d)
+    /a    (found: 1, 2, 3, 4, 5)
+    /a/1
+    /a/2
+    no /a/3
+    /b    (found: 1, 2, 3)
+    /b/1
+    /b/2
