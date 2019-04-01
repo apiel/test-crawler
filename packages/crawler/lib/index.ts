@@ -37,6 +37,10 @@ export class CrawlerProvider {
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const data: PageData = await readJson(filePath('json'));
+        if (status === 'pin') {
+            // we should do some stuff with base diff
+            status = 'valid';
+        }
         data.png.diff.zones[index].status = status;
         await writeJSON(filePath('json'), data);
         return data;

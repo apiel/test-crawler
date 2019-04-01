@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Popover from 'antd/lib/popover';
-import Button from 'antd/lib/button';
 
 import {
     coverStyle,
@@ -9,8 +8,18 @@ import {
 } from './pageStyle';
 
 import './App.css';
+import DiffImageButtons from './DiffImageButtons';
 
-const zoneStyle = ({ xMin, yMin, xMax, yMax }, ratio, img, over) => {
+const getColorByStatus = (status) => {
+    if (status === 'valid') {
+        return '#0F0'; //'green';
+    } else if (status === 'report') {
+        return 'red';
+    }
+    return 'yellow';
+}
+
+const zoneStyle = ({ xMin, yMin, xMax, yMax }, ratio, img, over, status) => {
     const top = yMin / ratio;
     const left = xMin / ratio;
     return ({
@@ -18,16 +27,11 @@ const zoneStyle = ({ xMin, yMin, xMax, yMax }, ratio, img, over) => {
         height: (yMax - yMin) / ratio + 1,
         top,
         left: left + imgMargin,
-        border: '1px solid #0F0',
+        border: `1px solid ${getColorByStatus(status)}`,
         position: 'absolute',
         backgroundImage: over ? `url("${img}")` : 'none', // url("${img}")  ${top} ${left}
         backgroundPosition: `${-left}px ${-top}px`,
     });
-}
-
-const buttonStyle = {
-    marginLeft: 5,
-    marginRight: 5,
 }
 
 export const DiffImage = ({ folder, id, zones, originalWidth }) => (
@@ -37,16 +41,11 @@ export const DiffImage = ({ folder, id, zones, originalWidth }) => (
             const ratio = originalWidth / imgStyle.width;
             const img = `/api/crawler/thumbnail/base/${id}/${imgStyle.width}`;
             return (
-                <Popover content={(
-                    <>
-                        <Button style={buttonStyle} icon="check" size="small">Ignore</Button>
-                        <Button style={buttonStyle} icon="pushpin" size="small">Always ignore</Button>
-                        <Button style={buttonStyle} icon="warning" size="small" type="danger">Report</Button>
-                    </>
+                <Popover key={`${id}-${index}`} content={(
+                    <DiffImageButtons index={index} timestamp={folder} id={id} />
                 )} trigger="click">
                     <div
-                        key={`${id}-${index}`}
-                        style={zoneStyle(zone, ratio, img, hover)}
+                        style={zoneStyle(zone, ratio, img, hover, status)}
                         onMouseOver={() => setHover(true)}
                         onMouseOut={() => setHover(false)}
                     />
