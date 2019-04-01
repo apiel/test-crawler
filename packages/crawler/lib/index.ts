@@ -8,6 +8,7 @@ import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from '.
 
 import * as config from './config';
 import { Crawler, CrawlerInput, StartCrawler, PageData } from './typing';
+import { groupOverlappingZone } from 'pixdiff';
 
 export {
     Crawler,
@@ -33,13 +34,25 @@ export class CrawlerProvider {
         }
     }
 
+    // xMin: number;
+    // yMin: number;
+    // xMax: number;
+    // yMax: number;
     async setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const data: PageData = await readJson(filePath('json'));
         if (status === 'pin') {
-            // we should do some stuff with base diff
             status = 'valid';
+            const basePath = getFilePath(id, BASE_FOLDER);
+            const base: PageData = await readJson(basePath('json'));
+
+            base.png.diff.zones.push({ ...data.png.diff.zones[index], status });
+            const zones = base.png.diff.zones.map(item => item.zone);
+            const groupedZones = groupOverlappingZone(zones);
+            base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
+
+            await writeJSON(basePath('json'), base, { spaces: 4 });
         }
         data.png.diff.zones[index].status = status;
         await writeJSON(filePath('json'), data, { spaces: 4 });

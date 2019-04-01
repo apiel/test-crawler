@@ -15,6 +15,7 @@ const md5 = require("md5");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
 const config = require("./config");
+const pixdiff_1 = require("pixdiff");
 exports.getConfig = () => config;
 class CrawlerProvider {
     copyFile(filePath, basePath, extension) {
@@ -30,8 +31,18 @@ class CrawlerProvider {
             const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const data = yield fs_extra_1.readJson(filePath('json'));
+            if (status === 'pin') {
+                status = 'valid';
+                const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
+                const base = yield fs_extra_1.readJson(basePath('json'));
+                base.png.diff.zones.push(Object.assign({}, data.png.diff.zones[index], { status }));
+                const zones = base.png.diff.zones.map(item => item.zone);
+                const groupedZones = pixdiff_1.groupOverlappingZone(zones);
+                base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
+                yield fs_extra_1.writeJSON(basePath('json'), base, { spaces: 4 });
+            }
             data.png.diff.zones[index].status = status;
-            yield fs_extra_1.writeJSON(filePath('json'), data);
+            yield fs_extra_1.writeJSON(filePath('json'), data, { spaces: 4 });
             return data;
         });
     }
@@ -45,7 +56,7 @@ class CrawlerProvider {
                 pixelDiffRatio: 0,
                 zones: [],
             };
-            yield fs_extra_1.writeJSON(filePath('json'), data);
+            yield fs_extra_1.writeJSON(filePath('json'), data, { spaces: 4 });
             yield this.copyFile(filePath, basePath, 'png');
             yield this.copyFile(filePath, basePath, 'html');
             yield this.copyFile(filePath, basePath, 'json');
@@ -91,7 +102,7 @@ class CrawlerProvider {
             const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
             yield fs_extra_1.mkdir(distFolder);
             yield fs_extra_1.mkdir(utils_1.getQueueFolder(distFolder));
-            yield fs_extra_1.writeJSON(path_1.join(distFolder, '_.json'), crawler);
+            yield fs_extra_1.writeJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
             const addedToqueue = yield utils_1.addToQueue(crawlerInput.url, distFolder);
             if (!addedToqueue) {
                 throw (new Error('Something went wrong while adding job to queue'));
