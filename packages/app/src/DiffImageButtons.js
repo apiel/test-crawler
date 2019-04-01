@@ -5,7 +5,6 @@ import notification from 'antd/lib/notification';
 import { graphql } from 'react-apollo';
 
 import SET_ZONE_STATUS from './gql/mutation/setZoneStatus';
-import { updatePagesCache } from './utils/updatePageCache';
 
 const buttonStyle = {
     marginLeft: 5,
@@ -18,8 +17,6 @@ export class DiffImageButtons extends React.Component {
         try {
             await mutate({
                 variables: { timestamp: timestamp.toString(), id, index, status },
-                update: (store, { data: { setZoneStatus } }) =>
-                    updatePagesCache(store, setZoneStatus, timestamp),
             });
             message.success('Page pinned as reference for comparison.', 2);
         } catch (error) {

@@ -40,7 +40,7 @@ async function parsePng(data: PageData, filePath: FilePath, baseFile: string) {
         pixelDiffRatio,
         zones: zones.map(zone => ({ zone, status: 'diff' })),
     };
-    await writeJSON(filePath('json'), data);
+    await writeJSON(filePath('json'), data, { spaces: 4 });
 
     return zones.length;
 }

@@ -5,7 +5,6 @@ import notification from 'antd/lib/notification';
 import { graphql } from 'react-apollo';
 
 import PIN from './gql/mutation/pin';
-import { updatePagesCache } from './utils/updatePageCache';
 
 export class PagesActionPin extends React.Component {
     onPin = async () => {
@@ -13,8 +12,6 @@ export class PagesActionPin extends React.Component {
         try {
             await mutate({
                 variables: { timestamp: timestamp.toString(), id },
-                update: (store, { data: { pin } }) =>
-                    updatePagesCache(store, pin, timestamp),
             });
             message.success('Page pinned as reference for comparison.', 2);
         } catch (error) {

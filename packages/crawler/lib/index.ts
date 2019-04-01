@@ -42,7 +42,7 @@ export class CrawlerProvider {
             status = 'valid';
         }
         data.png.diff.zones[index].status = status;
-        await writeJSON(filePath('json'), data);
+        await writeJSON(filePath('json'), data, { spaces: 4 });
         return data;
     }
 
@@ -56,7 +56,7 @@ export class CrawlerProvider {
             pixelDiffRatio: 0,
             zones: [],
         };
-        await writeJSON(filePath('json'), data);
+        await writeJSON(filePath('json'), data, { spaces: 4 });
 
         await this.copyFile(filePath, basePath, 'png');
         await this.copyFile(filePath, basePath, 'html');
@@ -119,7 +119,7 @@ export class CrawlerProvider {
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());
         await mkdir(distFolder);
         await mkdir(getQueueFolder(distFolder));
-        await writeJSON(join(distFolder, '_.json'), crawler);
+        await writeJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
 
         const addedToqueue = await addToQueue(crawlerInput.url, distFolder);
         if (!addedToqueue) {

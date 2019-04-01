@@ -146,7 +146,7 @@ async function consumeResults() {
         const file = join(folder, '_.json');
         const crawler: Crawler = await readJSON(file);
         crawler.diffZoneCount += result.diffZoneCount;
-        await writeJSON(file, crawler);
+        await writeJSON(file, crawler, { spaces: 4 });
         consumeResults();
     } else {
         setTimeout(consumeResults, 1000);
