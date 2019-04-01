@@ -30,8 +30,8 @@ export class DiffImageButtons extends React.Component {
     render() {
         return (
             <>
-                <Button style={buttonStyle} icon="check" size="small" onClick={this.onSetStatus('valid')}>Ignore</Button>
-                <Button style={buttonStyle} icon="pushpin" size="small" onClick={this.onSetStatus('pin')}>Always ignore</Button>
+                <Button style={buttonStyle} icon="check" size="small" onClick={this.onSetStatus('valid')}>Valid</Button>
+                <Button style={buttonStyle} icon="pushpin" size="small" onClick={this.onSetStatus('pin')}>Always valid</Button>
                 <Button style={buttonStyle} icon="warning" size="small" type="danger" onClick={this.onSetStatus('report')}>Report</Button>
             </>
         );

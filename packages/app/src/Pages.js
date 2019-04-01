@@ -14,7 +14,9 @@ import {
     cardStyle,
     iconTheme,
 } from './pageStyle';
-import { DiffImage } from './DiffImage'
+import { DiffImage, getColorByStatus } from './DiffImage'
+
+const getCountZonesPerStatus = (zones, perStatus) => zones.filter(({ status }) => perStatus.includes(status)).length
 
 export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
     <Masonry style={masonryStyle} options={masonryOptions}>
@@ -43,6 +45,19 @@ export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
                 {png && !png.diff && <div><Icon type="picture" theme={iconTheme} /> New screenshot <Tag color="green">New</Tag></div>}
                 {png && png.diff && <>
                     <p><Icon type="picture" theme={iconTheme} /> Pixel diff ratio: {png.diff.pixelDiffRatio}</p>
+                    {png.diff.zones.length > 0 &&
+                        <p>
+                            <b>Zone:</b>&nbsp;
+                            {[['diff'], ['valid', 'pin'], ['report']].map(([status, ...more]) => (
+                                <React.Fragment key={status}>
+                                    <span style={{
+                                        marginLeft: 10,
+                                        color: getColorByStatus(status)
+                                    }}>■</span> <b>{getCountZonesPerStatus(png.diff.zones, [status, ...more])}</b> {status}
+                                </React.Fragment>
+                            ))}
+                        </p>
+                    }
                 </>}
             </Card>
         ))}

@@ -10,7 +10,7 @@ import {
 import './App.css';
 import DiffImageButtons from './DiffImageButtons';
 
-const getColorByStatus = (status) => {
+export const getColorByStatus = (status) => {
     if (status === 'valid' || status === 'pin') {
         return '#0F0'; //'green';
     } else if (status === 'report') {
