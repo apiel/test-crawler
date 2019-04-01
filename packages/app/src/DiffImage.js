@@ -29,7 +29,7 @@ const zoneStyle = ({ xMin, yMin, xMax, yMax }, ratio, img, over, status) => {
         left: left + imgMargin,
         border: `1px solid ${getColorByStatus(status)}`,
         position: 'absolute',
-        backgroundImage: over ? `url("${img}")` : 'none', // url("${img}")  ${top} ${left}
+        backgroundImage: over ? `url("${img}")` : 'none',
         backgroundPosition: `${-left}px ${-top}px`,
     });
 }
