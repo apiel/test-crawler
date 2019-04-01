@@ -32,11 +32,11 @@ class CrawlerProvider {
             const filePath = utils_1.getFilePath(id, folder);
             const data = yield fs_extra_1.readJson(filePath('json'));
             if (status === 'pin') {
-                status = 'valid';
                 const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
                 const base = yield fs_extra_1.readJson(basePath('json'));
                 base.png.diff.zones.push(Object.assign({}, data.png.diff.zones[index], { status }));
                 const zones = base.png.diff.zones.map(item => item.zone);
+                zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
                 const groupedZones = pixdiff_1.groupOverlappingZone(zones);
                 base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
                 yield fs_extra_1.writeJSON(basePath('json'), base, { spaces: 4 });

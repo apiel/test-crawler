@@ -43,12 +43,12 @@ export class CrawlerProvider {
         const filePath = getFilePath(id, folder);
         const data: PageData = await readJson(filePath('json'));
         if (status === 'pin') {
-            status = 'valid';
             const basePath = getFilePath(id, BASE_FOLDER);
             const base: PageData = await readJson(basePath('json'));
 
             base.png.diff.zones.push({ ...data.png.diff.zones[index], status });
             const zones = base.png.diff.zones.map(item => item.zone);
+            zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
             const groupedZones = groupOverlappingZone(zones);
             base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
 

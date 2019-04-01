@@ -11,7 +11,7 @@ import './App.css';
 import DiffImageButtons from './DiffImageButtons';
 
 const getColorByStatus = (status) => {
-    if (status === 'valid') {
+    if (status === 'valid' || status === 'pin') {
         return '#0F0'; //'green';
     } else if (status === 'report') {
         return 'red';
