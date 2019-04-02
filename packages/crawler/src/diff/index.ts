@@ -2,16 +2,16 @@ import { info } from 'npmlog';
 import { getFilePath, FilePath } from '../../lib/utils';
 import { BASE_FOLDER } from '../../lib/config';
 import { PNG } from 'pngjs';
-import { pixdiff } from 'pixdiff';
+import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
-import { PageData } from '../../lib/typing';
+import { PageData, Crawler } from '../../lib/typing';
 
-async function parsePng(data: PageData, filePath: FilePath, baseFile: string) {
+async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
     const file = filePath('png');
     const { id, url } = data;
     const actual = await readFile(file);
-    const expected = await readFile(baseFile);
+    const expected = await readFile(basePath('png'));
     const rawActual = PNG.sync.read(actual);
     const rawExpected = PNG.sync.read(expected);
 
@@ -38,11 +38,21 @@ async function parsePng(data: PageData, filePath: FilePath, baseFile: string) {
 
     data.png.diff = {
         pixelDiffRatio,
-        zones: zones.map(zone => ({ zone, status: 'diff' })),
+        // zones: zones.map(zone => ({ zone, status: 'diff' })),
+        zones: await parseZones(basePath, zones),
     };
     await writeJSON(filePath('json'), data, { spaces: 4 });
 
     return zones.length;
+}
+
+async function parseZones(basePath: FilePath, zones: Zone[]) {
+    const base: PageData = await readJson(basePath('json'));
+    const baseZones = base.png.diff.zones.map(z => z.zone);
+    return zones.map(zone => ({
+        zone,
+        status: groupOverlappingZone([...baseZones, zone]).length === baseZones.length ? 'valid' : 'diff',
+    }));
 }
 
 export async function prepare(id: string, distFolder: string) {
@@ -52,7 +62,7 @@ export async function prepare(id: string, distFolder: string) {
 
     let diffZoneCount = 0;
     if (await pathExists(basePath('png'))) {
-        diffZoneCount = await parsePng(data, filePath, basePath('png'));
+        diffZoneCount = await parsePng(data, filePath, basePath);
     } else {
         info('DIFF', 'new png');
     }
