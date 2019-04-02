@@ -11,31 +11,28 @@ const buttonStyle = {
     marginRight: 5,
 }
 
-export class DiffImageButtons extends React.Component {
-    onSetStatus = (status) => async () => {
-        const { mutate, timestamp, id, index } = this.props;
-        try {
-            await mutate({
-                variables: { timestamp: timestamp.toString(), id, index, status },
-            });
-            message.success('Page pinned as reference for comparison.', 2);
-        } catch (error) {
-            notification['error']({
-                message: 'Something went wrong!',
-                description: error.toString(),
-            });
-        }
+const onSetStatus = (status, { mutate, timestamp, id, index }) => async () => {
+    try {
+        await mutate({
+            variables: { timestamp: timestamp.toString(), id, index, status },
+        });
+        message.success('Page pinned as reference for comparison.', 2);
+    } catch (error) {
+        notification['error']({
+            message: 'Something went wrong!',
+            description: error.toString(),
+        });
     }
+}
 
-    render() {
-        return (
-            <>
-                <Button style={buttonStyle} icon="check" size="small" onClick={this.onSetStatus('valid')}>Valid</Button>
-                <Button style={buttonStyle} icon="pushpin" size="small" onClick={this.onSetStatus('pin')}>Always valid</Button>
-                <Button style={buttonStyle} icon="warning" size="small" type="danger" onClick={this.onSetStatus('report')}>Report</Button>
-            </>
-        );
-    }
+const DiffImageButtons = (props) => {
+    return (
+        <>
+            <Button style={buttonStyle} icon="check" size="small" onClick={onSetStatus('valid', props)}>Valid</Button>
+            <Button style={buttonStyle} icon="pushpin" size="small" onClick={onSetStatus('pin', props)}>Always valid</Button>
+            <Button style={buttonStyle} icon="warning" size="small" type="danger" onClick={onSetStatus('report', props)}>Report</Button>
+        </>
+    );
 }
 
 export default graphql(SET_ZONE_STATUS)(DiffImageButtons);

@@ -33,12 +33,9 @@ export const Pages = ({ data: { getPages }, timestamp }) => getPages ? (
                     originalWidth={png.width}
                 />}
                 actions={[
-                    // <Icon type="check" />,
                     <PagesActionZone type="check" timestamp={timestamp} id={id} status={'valid'} zones={png && png.diff ? png.diff.zones : []} />,
                     <PagesActionZone type="warning" timestamp={timestamp} id={id} status={'report'} zones={png && png.diff ? png.diff.zones : []} />,
-                    // <Icon type="warning" />,
                     <PagesActionPin timestamp={timestamp} id={id} />,
-                    // <Icon type="scissor" title="" />,
                     // <Icon type="ellipsis" title="more" />,
                 ]}
             >
