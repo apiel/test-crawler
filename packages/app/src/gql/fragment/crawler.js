@@ -7,6 +7,7 @@ const fragment = gql`
         timestamp
         status
         inQueue
+        urlsCount
         viewport {
             width
             height

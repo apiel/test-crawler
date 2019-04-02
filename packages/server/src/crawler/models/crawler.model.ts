@@ -20,6 +20,9 @@ export class Crawler implements CrawlerInterface {
   inQueue: number;
 
   @Field()
+  urlsCount: number;
+
+  @Field()
   viewport: ViewPort;
 
   @Field()

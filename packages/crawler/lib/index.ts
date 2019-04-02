@@ -133,6 +133,7 @@ export class CrawlerProvider {
             diffZoneCount: 0,
             status: 'review',
             inQueue: 1,
+            urlsCount: 0,
         };
 
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());

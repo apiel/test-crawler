@@ -10,6 +10,7 @@ export interface Crawler extends CrawlerInput {
     timestamp: number;
     diffZoneCount: number;
     inQueue: number;
+    urlsCount: number;
     status: string;
 }
 export interface StartCrawler {
