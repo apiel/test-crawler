@@ -43,4 +43,8 @@ export class CrawlerService {
     setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
         return this.crawlerProvider.setZoneStatus(timestamp, id, index, status);
     }
+
+    setStatus(timestamp: string, status: string): Promise<Crawler> {
+        return this.crawlerProvider.setCrawlerStatus(timestamp, status);
+    }
 }

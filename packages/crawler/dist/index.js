@@ -82,6 +82,15 @@ class CrawlerProvider {
                 .map(file => fs_extra_1.readJSON(path_1.join(folder, file))));
         });
     }
+    setCrawlerStatus(timestamp, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const file = path_1.join(config_1.CRAWL_FOLDER, timestamp, '_.json');
+            const crawler = yield fs_extra_1.readJson(file);
+            crawler.status = status;
+            yield fs_extra_1.writeJSON(file, crawler, { spaces: 4 });
+            return crawler;
+        });
+    }
     getCrawler(timestamp) {
         return fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, timestamp, '_.json'));
     }
@@ -98,7 +107,7 @@ class CrawlerProvider {
             const timestamp = Math.floor(Date.now() / 1000);
             const id = md5(`${timestamp}-${crawlerInput.url}`);
             const crawler = Object.assign({}, crawlerInput, { timestamp,
-                id, diffZoneCount: 0 });
+                id, diffZoneCount: 0, status: 'review' });
             const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
             yield fs_extra_1.mkdir(distFolder);
             yield fs_extra_1.mkdir(utils_1.getQueueFolder(distFolder));

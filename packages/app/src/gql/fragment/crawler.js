@@ -5,6 +5,7 @@ const fragment = gql`
         id
         url
         timestamp
+        status
         viewport {
             width
             height

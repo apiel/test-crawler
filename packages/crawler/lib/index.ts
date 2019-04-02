@@ -34,10 +34,6 @@ export class CrawlerProvider {
         }
     }
 
-    // xMin: number;
-    // yMin: number;
-    // xMax: number;
-    // yMax: number;
     async setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
@@ -101,6 +97,14 @@ export class CrawlerProvider {
         );
     }
 
+    async setCrawlerStatus(timestamp: string, status: string): Promise<Crawler> {
+        const file = join(CRAWL_FOLDER, timestamp, '_.json');
+        const crawler: Crawler = await readJson(file);
+        crawler.status = status;
+        await writeJSON(file, crawler, { spaces: 4 });
+        return crawler;
+    }
+
     getCrawler(timestamp: string): Promise<Crawler> {
         return readJSON(join(CRAWL_FOLDER, timestamp, '_.json'));
     }
@@ -127,6 +131,7 @@ export class CrawlerProvider {
             timestamp,
             id,
             diffZoneCount: 0,
+            status: 'review',
         };
 
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());

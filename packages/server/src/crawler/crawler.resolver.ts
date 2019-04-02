@@ -57,4 +57,12 @@ export class CrawlerResolver {
     ): Promise<PageData> {
         return this.crawlerService.setZoneStatus(timestamp, id, index, status);
     }
+
+    @Mutation(() => Crawler)
+    setStatus(
+        @Args('timestamp') timestamp: string,
+        @Args('status') status: string,
+    ): Promise<PageData> {
+        return this.crawlerService.setStatus(timestamp, status);
+    }
 }

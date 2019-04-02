@@ -11,6 +11,7 @@ export declare class CrawlerProvider {
     getBasePages(): Promise<PageData[]>;
     getPages(timestamp: string): Promise<PageData[]>;
     private getPagesInFolder;
+    setCrawlerStatus(timestamp: string, status: string): Promise<Crawler>;
     getCrawler(timestamp: string): Promise<Crawler>;
     getAllCrawlers(): Promise<Crawler[]>;
     startCrawler(crawlerInput: CrawlerInput): Promise<StartCrawler>;

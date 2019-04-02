@@ -14,6 +14,9 @@ export class Crawler implements CrawlerInterface {
   timestamp: number;
 
   @Field()
+  status: string;
+
+  @Field()
   viewport: ViewPort;
 
   @Field()

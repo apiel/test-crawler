@@ -11,6 +11,7 @@ type Crawler {
   id: ID!
   url: String!
   timestamp: Float!
+  status: String!
   viewport: ViewPort!
   diffZoneCount: Float!
 }
@@ -24,6 +25,7 @@ type Mutation {
   startCrawler(crawler: CrawlerInput!): StartCrawler!
   pin(id: String!, timestamp: String!): PageData!
   setZoneStatus(status: String!, index: Float!, id: String!, timestamp: String!): PageData!
+  setStatus(status: String!, timestamp: String!): Crawler!
 }
 
 type PageData {
