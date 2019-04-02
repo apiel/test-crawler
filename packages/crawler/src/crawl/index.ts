@@ -1,7 +1,7 @@
 import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
-import { writeFile, readdir, readJSON, move, writeJSON } from 'fs-extra';
-import { join } from 'path';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists } from 'fs-extra';
+import { join, extname } from 'path';
 
 import {
     CONSUMER_COUNT,
@@ -18,7 +18,6 @@ interface ResultQueue {
         diffZoneCount: number,
     };
     folder: string;
-    urlsCount: number;
 }
 
 let consumerRunning = 0;
@@ -79,7 +78,6 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         resultsQueue.push({
             result,
             folder: distFolder,
-            urlsCount: urls.length,
         });
     } catch (err) {
         await handleError(err, filePath('error'));
@@ -116,14 +114,16 @@ async function pickFromQueues() {
     for (const pagesFolder of pagesFolders) {
         const distFolder = join(CRAWL_FOLDER, pagesFolder);
         const queueFolder = getQueueFolder(distFolder);
-        const [file] = await readdir(queueFolder);
-        if (file) {
-            info('Crawl', file);
-            const queueFile = join(queueFolder, file);
-            const { id, url } = await readJSON(queueFile);
-            const filePath = getFilePath(id, distFolder);
-            await move(queueFile, filePath('json'));
-            return { id, url, distFolder };
+        if (await pathExists(queueFolder)) {
+            const [file] = await readdir(queueFolder);
+            if (file) {
+                info('Crawl', file);
+                const queueFile = join(queueFolder, file);
+                const { id, url } = await readJSON(queueFile);
+                const filePath = getFilePath(id, distFolder);
+                await move(queueFile, filePath('json'));
+                return { id, url, distFolder };
+            }
         }
     }
 }
@@ -143,7 +143,7 @@ async function consumeQueues() {
 
 async function consumeResults() {
     if (resultsQueue.length) {
-        const [{folder, result, urlsCount}] = resultsQueue.splice(0, 1);
+        const [{ folder, result }] = resultsQueue.splice(0, 1);
         const file = join(folder, '_.json');
         const crawler: Crawler = await readJSON(file);
         crawler.diffZoneCount += result.diffZoneCount;
@@ -151,7 +151,7 @@ async function consumeResults() {
         const queueFolder = getQueueFolder(folder);
         const filesInQueue = await readdir(queueFolder);
         crawler.inQueue = filesInQueue.length;
-        crawler.urlsCount += urlsCount;
+        crawler.urlsCount = (await readdir(folder)).filter(f => extname(f) === '.json' && f !== '_.json').length;
 
         await writeJSON(file, crawler, { spaces: 4 });
         consumeResults();
