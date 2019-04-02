@@ -131,7 +131,8 @@ export class CrawlerProvider {
             timestamp,
             id,
             diffZoneCount: 0,
-            status: 'crawling', // 'review',
+            status: 'review',
+            inQueue: 1,
         };
 
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());

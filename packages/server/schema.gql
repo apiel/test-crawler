@@ -12,6 +12,7 @@ type Crawler {
   url: String!
   timestamp: Float!
   status: String!
+  inQueue: Float!
   viewport: ViewPort!
   diffZoneCount: Float!
 }

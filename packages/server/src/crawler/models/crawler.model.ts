@@ -17,6 +17,9 @@ export class Crawler implements CrawlerInterface {
   status: string;
 
   @Field()
+  inQueue: number;
+
+  @Field()
   viewport: ViewPort;
 
   @Field()

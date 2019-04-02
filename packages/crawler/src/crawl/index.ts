@@ -2,7 +2,6 @@ import { launch } from 'puppeteer';
 import { error, info } from 'npmlog';
 import { writeFile, readdir, readJSON, move, writeJSON } from 'fs-extra';
 import { join } from 'path';
-import { promisify } from 'util';
 
 import {
     CONSUMER_COUNT,
@@ -140,20 +139,17 @@ async function consumeQueues() {
     }
 }
 
-async function getStatus(folder: string) {
-    const queueFolder = getQueueFolder(folder);
-    const files = await readdir(queueFolder);
-
-    return files.length > 0 ? 'crawling' : 'review';
-}
-
 async function consumeResults() {
     if (resultsQueue.length) {
         const [{folder, result}] = resultsQueue.splice(0, 1);
         const file = join(folder, '_.json');
         const crawler: Crawler = await readJSON(file);
         crawler.diffZoneCount += result.diffZoneCount;
-        crawler.status = await getStatus(folder);
+
+        const queueFolder = getQueueFolder(folder);
+        const filesInQueue = await readdir(queueFolder);
+        crawler.inQueue = filesInQueue.length;
+
         await writeJSON(file, crawler, { spaces: 4 });
         consumeResults();
     } else {
