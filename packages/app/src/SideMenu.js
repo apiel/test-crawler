@@ -13,6 +13,19 @@ const dividerStyle = {
     borderTop: '1px solid #7e8791',
 }
 
+const getIcon = (diffZoneCount, status) => {
+    if (status === 'crawling') {
+        return 'loading';
+    }
+    if (!diffZoneCount) {
+        return 'check';
+    }
+    if (status === 'done') {
+        return 'issues-close';
+    }
+    return 'exclamation-circle';
+}
+
 const SideMenu = ({ data: { getCrawlers } }) => {
     return (
         <Menu theme="dark" mode="inline">
@@ -28,9 +41,9 @@ const SideMenu = ({ data: { getCrawlers } }) => {
             </Menu.Item>
             {getCrawlers &&
                 getCrawlers.sort(({ timestamp: a }, { timestamp: b }) => b - a)
-                    .map(({ timestamp, url, id, diffZoneCount }, index) => (
+                    .map(({ timestamp, url, id, diffZoneCount, status }, index) => (
                         <Menu.Item key={`crawler-${id}`} title={url} style={index === 0 && dividerStyle}>
-                            <Icon type={diffZoneCount ? 'exclamation-circle' : 'check'} />
+                            <Icon type={getIcon(diffZoneCount, status)} />
                             <span className="nav-text">
                                 { timestampToString(timestamp) }
                             </span>
