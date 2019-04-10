@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/jest": "24.0.11",
-    "@types/node": "11.13.4",
-    "@types/react": "16.8.13",
-    "@types/react-dom": "16.8.3",
+    "antd": "^3.16.2",
     "isomor": "^0.1.8",
     "isomor-react": "^0.0.4",
+    "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-masonry-component": "^6.2.1",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "typescript": "3.4.3"
   },
@@ -38,6 +38,12 @@
   ],
   "proxy": "http://127.0.0.1:3005",
   "devDependencies": {
+    "@types/antd": "^1.0.0",
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.4",
+    "@types/react": "16.8.13",
+    "@types/react-dom": "16.8.3",
+    "@types/react-router-dom": "^4.3.1",
     "nodemon": "^1.18.11",
     "npm-run-all": "^4.1.5"
   }
