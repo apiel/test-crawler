@@ -16,37 +16,37 @@ function getCrawlers() {
 }
 exports.getCrawlers = getCrawlers;
 function startCrawler(crawlerInput) {
-    return this.crawlerProvider.startCrawler(crawlerInput);
+    return crawlerProvider.startCrawler(crawlerInput);
 }
 exports.startCrawler = startCrawler;
 function getCrawler(timestamp) {
-    return this.crawlerProvider.getCrawler(timestamp);
+    return crawlerProvider.getCrawler(timestamp);
 }
 exports.getCrawler = getCrawler;
 function getPages(timestamp) {
-    return this.crawlerProvider.getPages(timestamp);
+    return crawlerProvider.getPages(timestamp);
 }
 exports.getPages = getPages;
 function getPins() {
-    return this.crawlerProvider.getBasePages();
+    return crawlerProvider.getBasePages();
 }
 exports.getPins = getPins;
 function thumbnail(folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
-        const image = yield this.crawlerProvider.image(folder, id);
+        const image = yield crawlerProvider.image(folder, id);
         return sharp(image).resize(width).toBuffer();
     });
 }
 exports.thumbnail = thumbnail;
 function pin(timestamp, id) {
-    return this.crawlerProvider.copyToBase(timestamp, id);
+    return crawlerProvider.copyToBase(timestamp, id);
 }
 exports.pin = pin;
 function setZoneStatus(timestamp, id, index, status) {
-    return this.crawlerProvider.setZoneStatus(timestamp, id, index, status);
+    return crawlerProvider.setZoneStatus(timestamp, id, index, status);
 }
 exports.setZoneStatus = setZoneStatus;
 function setStatus(timestamp, status) {
-    return this.crawlerProvider.setCrawlerStatus(timestamp, status);
+    return crawlerProvider.setCrawlerStatus(timestamp, status);
 }
 exports.setStatus = setStatus;

@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import New from './New';
-import History from './History';
+import { History } from './History';
 import { SideMenu } from './SideMenu';
 import { getHomeRoute, getHistoryRoute, getPinsRoute } from './routes';
 import Pins from './Pins';
