@@ -6,10 +6,10 @@
   "author": "Alexandre Piel <alexandre.piel@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "run-p server crawler",
-    "server":  "cd packages/server && run-s start",
-    "crawler":  "cd packages/crawler && run-s start",
-    "prepublish": "cd packages/app && run-s build"
+    "skip-start": "run-p server crawler",
+    "skip-server":  "cd packages/server && run-s start",
+    "skip-crawler":  "cd packages/crawler && run-s start",
+    "skip-prepublish": "cd packages/app && run-s build"
   },
   "dependencies": {
     "lerna": "^3.13.1"

@@ -34,5 +34,6 @@
         "@types/puppeteer": "^1.11.2",
         "@types/rimraf": "^2.0.2",
         "tslint": "^5.12.1"
-    }
+    },
+    "gitHead": "88d2ea3e392ff0213df1b42e37a788a5e70e21ea"
 }

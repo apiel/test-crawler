@@ -48,5 +48,6 @@
     "@types/sharp": "^0.22.1",
     "nodemon": "^1.18.11",
     "npm-run-all": "^4.1.5"
-  }
+  },
+  "gitHead": "88d2ea3e392ff0213df1b42e37a788a5e70e21ea"
 }
