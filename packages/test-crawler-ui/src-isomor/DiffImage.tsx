@@ -36,10 +36,11 @@ const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, img: string, 
     });
 }
 
-export const DiffImage = ({ folder, id, zones, originalWidth }: any) => {
+export const DiffImage = ({ folder, id, zones, originalWidth, onImg }: any) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
         setThumb(await getThumbnail(folder, id, imgStyle.width));
+        onImg();
     }
     useEffect(() => { load(); }, []);
     return thumb ? (

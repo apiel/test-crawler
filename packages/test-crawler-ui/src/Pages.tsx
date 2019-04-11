@@ -30,8 +30,17 @@ export const Pages = ({ timestamp }: Props) => {
     }
     React.useEffect(() => { load(); }, []);
 
+
+    let masonry: any;
+    const onImg = () => {
+        if (masonry) masonry.layout(); // we might use setTimeout
+    }
     return pages ? (
-        <Masonry style={masonryStyle} options={masonryOptions}>
+        <Masonry
+            style={masonryStyle}
+            options={masonryOptions}
+            ref={(c: any) => { masonry = c.masonry; }}
+        >
             {
                 pages.map(({ id, url, png }: any) => (
                     <Card
@@ -43,6 +52,7 @@ export const Pages = ({ timestamp }: Props) => {
                             id={id}
                             zones={png.diff && png.diff.zones}
                             originalWidth={png.width}
+                            onImg={onImg}
                         />}
                         actions={[
                             <PagesActionZone type="check" timestamp={timestamp} id={id} status={'valid'} zones={png && png.diff ? png.diff.zones : []} />,
