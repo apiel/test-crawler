@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Popover from 'antd/lib/popover';
 
 import {
@@ -9,6 +9,8 @@ import {
 
 import './App.css';
 import DiffImageButtons from './DiffImageButtons';
+import { getThumbnail } from './server/crawler';
+import { DiffZone } from './DiffZone';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {
@@ -34,26 +36,20 @@ const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, img: string, 
     });
 }
 
-export const DiffImage = ({ folder, id, zones, originalWidth }: any) => (
-    <div style={coverStyle as any}>
-        {zones && zones.map(({ zone, status }: any, index: number) => {
-            const [hover, setHover] = useState(false);
-            const ratio = originalWidth / imgStyle.width;
-            const img = `/api/crawler/thumbnail/base/${id}/${imgStyle.width}`;
-            return (
-                <Popover key={`${id}-${index}`} content={(
-                    <DiffImageButtons index={index} timestamp={folder} id={id} />
-                )} trigger="click">
-                    <div
-                        style={zoneStyle(zone, ratio, img, hover, status) as any}
-                        onMouseOver={() => setHover(true)}
-                        onMouseOut={() => setHover(false)}
-                    />
-                </Popover>
-            );
-        })}
-        <img style={imgStyle} alt="" src={`/api/crawler/thumbnail/${folder}/${id}/${imgStyle.width}`} />
-    </div>
-);
+export const DiffImage = ({ folder, id, zones, originalWidth }: any) => {
+    const [thumb, setThumb] = useState<string>();
+    const load = async () => {
+        setThumb(await getThumbnail(folder, id, imgStyle.width));
+    }
+    useEffect(() => { load(); }, []);
+    return (
+        <div style={coverStyle as any}>
+            {zones && zones.map(({ zone, status }: any, index: number) =>
+                <DiffZone {...{ folder, id, index, originalWidth, zone, status }} />)}
+            {thumb && <img style={imgStyle} alt="" src={thumb} />}
+        </div>
+    );
+}
 
-// need to create mutation for btn
+
+// `data:image/png;base64,`

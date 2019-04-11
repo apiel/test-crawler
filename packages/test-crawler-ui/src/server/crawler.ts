@@ -14,8 +14,8 @@ export function getPages(...args: any) {
 export function getPins(...args: any) {
   return remote("server-crawler", "getPins", args);
 }
-export function thumbnail(...args: any) {
-  return remote("server-crawler", "thumbnail", args);
+export function getThumbnail(...args: any) {
+  return remote("server-crawler", "getThumbnail", args);
 }
 export function pin(...args: any) {
   return remote("server-crawler", "pin", args);

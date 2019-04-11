@@ -31,13 +31,14 @@ function getPins() {
     return crawlerProvider.getBasePages();
 }
 exports.getPins = getPins;
-function thumbnail(folder, id, width = 300) {
+function getThumbnail(folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const image = yield crawlerProvider.image(folder, id);
-        return sharp(image).resize(width).toBuffer();
+        return `data:image/png;base64, `
+            + (yield sharp(image).resize(width).toBuffer()).toString('base64');
     });
 }
-exports.thumbnail = thumbnail;
+exports.getThumbnail = getThumbnail;
 function pin(timestamp, id) {
     return crawlerProvider.copyToBase(timestamp, id);
 }

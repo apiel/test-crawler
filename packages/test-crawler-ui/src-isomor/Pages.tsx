@@ -24,7 +24,6 @@ interface Props {
     timestamp: string;
 }
 export const Pages = ({ timestamp }: Props) => {
-    console.log('timestamp', timestamp);
     const [pages, setPages] = React.useState<PageData[]>();
     const load = async () => {
         setPages(await getPages(timestamp));

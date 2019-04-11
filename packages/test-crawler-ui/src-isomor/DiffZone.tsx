@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Popover from 'antd/lib/popover';
 
 import {
-    coverStyle,
     imgStyle,
     imgMargin,
 } from './pageStyle';
@@ -10,7 +9,6 @@ import {
 import './App.css';
 import DiffImageButtons from './DiffImageButtons';
 import { getThumbnail } from './server/crawler';
-import { DiffZone } from './DiffZone';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {
@@ -21,7 +19,7 @@ export const getColorByStatus = (status: string) => {
     return 'yellow';
 }
 
-const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, img: string, over: boolean, status: string) => {
+const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, img: string | undefined, over: boolean, status: string) => {
     const top = yMin / ratio;
     const left = xMin / ratio;
     return ({
@@ -36,20 +34,23 @@ const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, img: string, 
     });
 }
 
-export const DiffImage = ({ folder, id, zones, originalWidth }: any) => {
+export const DiffZone = ({ folder, id, index, originalWidth, zone, status }: any) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(folder, id, imgStyle.width));
+        setThumb(await getThumbnail('base', id, imgStyle.width));
     }
     useEffect(() => { load(); }, []);
+    const [hover, setHover] = useState(false);
+    const ratio = originalWidth / imgStyle.width;
     return (
-        <div style={coverStyle as any}>
-            {zones && zones.map(({ zone, status }: any, index: number) =>
-                <DiffZone {...{ folder, id, index, originalWidth, zone, status }} />)}
-            {thumb && <img style={imgStyle} alt="" src={thumb} />}
-        </div>
+        <Popover key={`${id}-${index}`} content={(
+            <DiffImageButtons index={index} timestamp={folder} id={id} />
+        )} trigger="click">
+            <div
+                style={zoneStyle(zone, ratio, thumb, hover, status) as any}
+                onMouseOver={() => setHover(true)}
+                onMouseOut={() => setHover(false)}
+            />
+        </Popover>
     );
 }
-
-
-// `data:image/png;base64,`

@@ -29,9 +29,10 @@ export function getPins(): Promise<PageData[]> {
     return crawlerProvider.getBasePages();
 }
 
-export async function thumbnail(folder: string, id: string, width: number = 300): Promise<Buffer> {
+export async function getThumbnail(folder: string, id: string, width: number = 300): Promise<string> {
     const image = await crawlerProvider.image(folder, id);
-    return sharp(image).resize(width).toBuffer();
+    return `data:image/png;base64, `
+        + (await sharp(image).resize(width).toBuffer()).toString('base64');
 }
 
 export function pin(timestamp: string, id: string): Promise<PageData> {
