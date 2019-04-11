@@ -6,6 +6,7 @@
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
     "license": "MIT",
     "scripts": {
+        "prepublishOnly": "yarn build",
         "start": "ts-node src/index.ts",
         "prebuild": "rm -rf dist/",
         "build": "tsc -p tsconfig.json",
