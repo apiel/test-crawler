@@ -42,14 +42,10 @@ export const DiffImage = ({ folder, id, zones, originalWidth }: any) => {
         setThumb(await getThumbnail(folder, id, imgStyle.width));
     }
     useEffect(() => { load(); }, []);
-    return (
+    return thumb ? (
         <div style={coverStyle as any}>
             {zones && zones.map(({ zone, status }: any, index: number) =>
-                <DiffZone {...{ folder, id, index, originalWidth, zone, status }} />)}
-            {thumb && <img style={imgStyle} alt="" src={thumb} />}
-        </div>
-    );
+                <DiffZone {...{ folder, id, index, originalWidth, zone, status }} key={`zone-${id}-${index}`} />)}
+            <img style={imgStyle} alt="" src={thumb} />
+        </div>) : null;
 }
-
-
-// `data:image/png;base64,`
