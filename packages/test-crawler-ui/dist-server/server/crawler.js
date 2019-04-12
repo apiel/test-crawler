@@ -50,6 +50,20 @@ function setZoneStatus(timestamp, id, index, status) {
     });
 }
 exports.setZoneStatus = setZoneStatus;
+function setZonesStatus(timestamp, id, status) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const pages = yield getPages(timestamp);
+        const pageIndex = pages.findIndex(page => page.id === id);
+        const page = pages[pageIndex];
+        let newPage;
+        for (let index = 0; index < page.png.diff.zones.length; index++) {
+            newPage = yield crawlerProvider.setZoneStatus(timestamp, id, index, status);
+        }
+        pages[pageIndex] = newPage;
+        return pages;
+    });
+}
+exports.setZonesStatus = setZonesStatus;
 function setStatus(timestamp, status) {
     return crawlerProvider.setCrawlerStatus(timestamp, status);
 }

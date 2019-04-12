@@ -23,6 +23,9 @@ export function pin(...args: any) {
 export function setZoneStatus(...args: any) {
   return remote("server-crawler", "setZoneStatus", args);
 }
+export function setZonesStatus(...args: any) {
+  return remote("server-crawler", "setZonesStatus", args);
+}
 export function setStatus(...args: any) {
   return remote("server-crawler", "setStatus", args);
 }

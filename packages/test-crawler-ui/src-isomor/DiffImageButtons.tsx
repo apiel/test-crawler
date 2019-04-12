@@ -51,7 +51,3 @@ export const DiffImageButtons = (props: any) => {
         </>
     );
 }
-
-export default function (props: any) {
-    return DiffImageButtons(props);
-}

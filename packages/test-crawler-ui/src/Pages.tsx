@@ -14,7 +14,7 @@ import {
     iconTheme,
 } from './pageStyle';
 import { DiffImage } from './DiffImage'
-import PagesActionZone from './PagesActionZone';
+import { PagesActionZone } from './PagesActionZone';
 // import { PageData } from 'test-crawler-lib';
 import { getPages } from './server/crawler';
 import { getColorByStatus } from './DiffZone';
