@@ -44,7 +44,10 @@ function pin(timestamp, id) {
 }
 exports.pin = pin;
 function setZoneStatus(timestamp, id, index, status) {
-    return crawlerProvider.setZoneStatus(timestamp, id, index, status);
+    return __awaiter(this, void 0, void 0, function* () {
+        yield crawlerProvider.setZoneStatus(timestamp, id, index, status);
+        return getPages(timestamp);
+    });
 }
 exports.setZoneStatus = setZoneStatus;
 function setStatus(timestamp, status) {

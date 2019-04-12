@@ -39,8 +39,9 @@ export function pin(timestamp: string, id: string): Promise<PageData> {
     return crawlerProvider.copyToBase(timestamp, id);
 }
 
-export function setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
-    return crawlerProvider.setZoneStatus(timestamp, id, index, status);
+export async function setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData[]> {
+    await crawlerProvider.setZoneStatus(timestamp, id, index, status);
+    return getPages(timestamp);
 }
 
 export function setStatus(timestamp: string, status: string): Promise<Crawler> {

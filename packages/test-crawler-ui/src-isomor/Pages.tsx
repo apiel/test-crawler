@@ -4,6 +4,7 @@ import Spin from 'antd/lib/spin';
 import Tag from 'antd/lib/tag';
 import Icon from 'antd/lib/icon';
 import Masonry from 'react-masonry-component';
+import { useIsomor } from 'isomor-react';
 
 import PagesActionPin from './PagesActionPin';
 import {
@@ -14,7 +15,7 @@ import {
 } from './pageStyle';
 import { DiffImage, getColorByStatus } from './DiffImage'
 import PagesActionZone from './PagesActionZone';
-import { PageData } from 'test-crawler-lib';
+// import { PageData } from 'test-crawler-lib';
 import { getPages } from './server/crawler';
 
 const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
@@ -24,12 +25,8 @@ interface Props {
     timestamp: string;
 }
 export const Pages = ({ timestamp }: Props) => {
-    const [pages, setPages] = React.useState<PageData[]>();
-    const load = async () => {
-        setPages(await getPages(timestamp));
-    }
-    React.useEffect(() => { load(); }, []);
-
+    const { call, response } = useIsomor(); // <PageData[]>
+    React.useEffect(() => { call(getPages, timestamp); }, []);
 
     let masonry: any;
     let timer: NodeJS.Timer;
@@ -42,14 +39,14 @@ export const Pages = ({ timestamp }: Props) => {
             }, 500);
         }
     }
-    return pages ? (
+    return response ? (
         <Masonry
             style={masonryStyle}
             options={masonryOptions}
             ref={(c: any) => { masonry = c && c.masonry; }}
         >
             {
-                pages.map(({ id, url, png }: any) => (
+                response.map(({ id, url, png }: any) => (
                     <Card
                         key={id}
                         hoverable
