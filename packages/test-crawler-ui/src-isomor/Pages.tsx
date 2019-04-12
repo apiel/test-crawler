@@ -32,14 +32,21 @@ export const Pages = ({ timestamp }: Props) => {
 
 
     let masonry: any;
+    let timer: NodeJS.Timer;
     const onImg = () => {
-        if (masonry) masonry.layout(); // we might use setTimeout
+        if (masonry) {
+            masonry.layout();
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                masonry.layout();
+            }, 500);
+        }
     }
     return pages ? (
         <Masonry
             style={masonryStyle}
             options={masonryOptions}
-            ref={(c: any) => { masonry = c.masonry; }}
+            ref={(c: any) => { masonry = c && c.masonry; }}
         >
             {
                 pages.map(({ id, url, png }: any) => (
