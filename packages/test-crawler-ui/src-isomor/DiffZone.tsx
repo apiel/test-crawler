@@ -7,7 +7,7 @@ import {
 } from './pageStyle';
 
 import './App.css';
-import DiffImageButtons from './DiffImageButtons';
+import { DiffImageButtons } from './DiffImageButtons';
 import { getThumbnail } from './server/crawler';
 
 export const getColorByStatus = (status: string) => {

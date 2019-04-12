@@ -28,7 +28,7 @@ const onSetStatus = (update: any, status: string, { timestamp, id, index }: any)
     }
 }
 
-const DiffImageButtons = (props: any) => {
+export const DiffImageButtons = (props: any) => {
     const { update } = useIsomor();
     return (
         <>

@@ -13,10 +13,11 @@ import {
     cardStyle,
     iconTheme,
 } from './pageStyle';
-import { DiffImage, getColorByStatus } from './DiffImage'
+import { DiffImage } from './DiffImage'
 import PagesActionZone from './PagesActionZone';
 // import { PageData } from 'test-crawler-lib';
 import { getPages } from './server/crawler';
+import { getColorByStatus } from './DiffZone';
 
 const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
     zones.filter(({ status }: any) => perStatus.includes(status)).length
