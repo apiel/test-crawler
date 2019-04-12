@@ -6,6 +6,7 @@ export declare const getConfig: () => typeof config;
 export declare class CrawlerProvider {
     private copyFile;
     setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData>;
+    setZonesStatus(timestamp: string, id: string, status: string): Promise<PageData>;
     copyToBase(timestamp: string, id: string): Promise<PageData>;
     image(folder: string, id: string): Promise<Buffer>;
     getBasePages(): Promise<PageData[]>;

@@ -45,15 +45,8 @@ export async function setZoneStatus(timestamp: string, id: string, index: number
 }
 
 export async function setZonesStatus(timestamp: string, id: string, status: string): Promise<PageData[]> {
-    const pages = await getPages(timestamp);
-    const pageIndex = pages.findIndex(page => page.id === id);
-    const page = pages[pageIndex];
-    let newPage: PageData;
-    for(let index = 0; index < page.png.diff.zones.length; index++) {
-        newPage = await crawlerProvider.setZoneStatus(timestamp, id, index, status);
-    }
-    pages[pageIndex] = newPage;
-    return pages;
+    await crawlerProvider.setZonesStatus(timestamp, id, status);
+    return getPages(timestamp);
 }
 
 export function setStatus(timestamp: string, status: string): Promise<Crawler> {
