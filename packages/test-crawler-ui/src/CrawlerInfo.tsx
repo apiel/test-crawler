@@ -3,7 +3,7 @@ import Typography from 'antd/lib/typography';
 import Progress from 'antd/lib/progress';
 
 import { timestampToString } from './utils';
-import SwitchStatus from './SwitchStatus';
+import { SwitchStatus } from './SwitchStatus';
 
 const { Title } = Typography;
 

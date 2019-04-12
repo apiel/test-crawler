@@ -2,17 +2,15 @@ import React from 'react';
 import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
+import { setStatus, getCrawler } from './server/crawler';
+import { useIsomor } from 'isomor-react';
 
-const onChange = ({ mutate, timestamp }: any) => async (value: boolean) => {
+const onChange = (update: any, { timestamp }: any) => async (value: boolean) => {
     try {
         const status = value ? 'done' : 'review';
-        await mutate({
-            variables: {
-                timestamp: timestamp.toString(),
-                status,
-            },
-        });
-        message.success(`Status set to "${status}.`, 2);
+        const crawler = await setStatus(timestamp.toString(), status);
+        update(crawler, getCrawler, timestamp.toString());
+        message.success(`Status set to "${status}".`, 2);
     } catch (error) {
         notification['error']({
             message: 'Something went wrong!',
@@ -21,14 +19,12 @@ const onChange = ({ mutate, timestamp }: any) => async (value: boolean) => {
     }
 }
 
-const SwitchStatus = (props: any) =>
-    <Switch
+export const SwitchStatus = (props: any) => {
+    const { update } = useIsomor();
+    return <Switch
         checkedChildren="done"
         unCheckedChildren="review"
         checked={props.status === 'done'}
-        onChange={onChange(props)}
+        onChange={onChange(update, props)}
     />;
-
-export default function (props: any) {
-    return SwitchStatus(props);
 }

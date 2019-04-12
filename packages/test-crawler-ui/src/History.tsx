@@ -4,18 +4,16 @@ import { RouteComponentProps } from 'react-router-dom';
 
 import { Pages}  from './Pages';
 import { CrawlerInfo } from './CrawlerInfo';
-import { Crawler } from 'test-crawler-lib';
+// import { Crawler } from 'test-crawler-lib';
 import { getCrawler } from './server/crawler';
+import { useIsomor } from 'isomor-react';
 
 export const History = ({ match: { params: { timestamp } } }: RouteComponentProps<any>) => {
-    const [crawler, setCrawlers] = React.useState<Crawler>();
-    const load = async () => {
-        setCrawlers(await getCrawler(timestamp));
-    }
-    React.useEffect(() => { load(); }, []);
-    return crawler ? (
+    const { call, response } = useIsomor(); // <Crawler>
+    React.useEffect(() => { call(getCrawler, timestamp); }, []);
+    return response ? (
         <>
-            <CrawlerInfo crawler={crawler} />
+            <CrawlerInfo crawler={response} />
             <Pages timestamp={timestamp} />
         </>
     ) : <Spin />;
