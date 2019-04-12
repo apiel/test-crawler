@@ -2,13 +2,12 @@ import React from 'react';
 import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
+import { pin } from './server/crawler';
 
 
-const onPin = ({ mutate, timestamp, id }: any) => async () => {
+const onPin = ({ timestamp, id }: any) => async () => {
     try {
-        await mutate({
-            variables: { timestamp: timestamp.toString(), id },
-        });
+        await pin(timestamp.toString(), id);
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {
         notification['error']({
