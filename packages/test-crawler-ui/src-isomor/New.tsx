@@ -19,19 +19,6 @@ const New = ({ history, form: { getFieldDecorator, validateFields }}: any) => {
     const { call } = useIsomor();
     const start = async (input: any) => {
         try {
-            // should we show loading and deactivate btn --> this.props.form.isSubmitting()
-            // const { data: { startCrawler: { crawler: { timestamp } } } } = await mutate({
-            //      variables: { input: { ...input, viewport: {} } },
-            //     update: (store, { data: { startCrawler: { crawler, config: { MAX_HISTORY } } } }) => {
-            //         const query = GET_CRAWLERS;
-            //         const { getCrawlers } = store.readQuery({ query });
-            //         store.writeQuery({
-            //             query, data: {
-            //                 getCrawlers: [crawler, ...getCrawlers].slice(0, MAX_HISTORY),
-            //             }
-            //         });
-            //     },
-            // });
             const response = await startCrawler({ ...input, viewport: { width: 800, height: 600 } });
             await call(getCrawlers);
             history.push(getHistoryRoute(response.crawler.timestamp.toString()));
