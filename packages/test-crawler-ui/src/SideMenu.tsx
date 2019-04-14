@@ -4,6 +4,7 @@ import Icon from 'antd/lib/icon';
 import Menu from 'antd/lib/menu';
 import { Link } from 'react-router-dom';
 import { Crawler } from 'test-crawler-lib';
+import { useIsomor } from 'isomor-react';
 
 import { getHomeRoute, getHistoryRoute, getPinsRoute } from './routes';
 import { timestampToString } from './utils';
@@ -27,11 +28,8 @@ const getIcon = (diffZoneCount: number, status: string, inQueue: number) => {
 }
 
 export const SideMenu = () => {
-    const [crawlers, setCrawlers] = React.useState<Crawler[]>([]);
-    const load = async () => {
-        setCrawlers(await getCrawlers());
-    }
-    React.useEffect(() => { load(); }, []);
+    const { call, response: crawlers } = useIsomor(); // <Crawler[]>
+    React.useEffect(() => { call(getCrawlers); }, []);
     return (
         <Menu theme="dark" mode="inline">
             <Menu.Item key="new">
