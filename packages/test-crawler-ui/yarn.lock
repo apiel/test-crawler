@@ -924,6 +924,10 @@
   dependencies:
     "@types/jest-diff" "*"
 
+"@types/lodash@^4.14.123":
+  version "4.14.123"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
+
 "@types/node@*":
   version "11.10.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.10.5.tgz#fbaca34086bdc118011e1f05c47688d432f2d571"
@@ -6914,9 +6918,9 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-pixdiff-zone@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.0.2.tgz#c89ccb7bf13caee1a4ed21f977dbf0d6a0695d17"
+pixdiff-zone@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.1.2.tgz#711272f55c073172607c262ee5f77b45ef80776c"
   dependencies:
     typescript "^3.2.4"
 
@@ -9494,16 +9498,16 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
-test-crawler-lib@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.0.2.tgz#3d812bdeaf83a45687e05fdc69b12d60cd3fdae4"
+test-crawler-lib@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.1.2.tgz#8bb1e0b21198e19915bf0ab8ae0f379b0f7a3aa6"
   dependencies:
     execa "^1.0.0"
     fs-extra "^7.0.1"
     lodash "^4.17.11"
     md5 "^2.2.1"
     npmlog "^4.1.2"
-    pixdiff-zone "^0.0.2"
+    pixdiff-zone "^0.1.2"
     pngjs "^3.3.3"
     puppeteer "^1.11.0"
     rimraf "^2.6.3"

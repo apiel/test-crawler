@@ -24,21 +24,22 @@ const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
 
 interface Props {
     timestamp: string;
+    inQueue: number;
 }
-export const Pages = ({ timestamp }: Props) => {
+export const Pages = ({ timestamp, inQueue }: Props) => {
     const { call, response } = useIsomor(); // <PageData[]>
-    React.useEffect(() => { call(getPages, timestamp); }, []);
+    React.useEffect(() => { call(getPages, timestamp); }, [inQueue]);
 
     let masonry: any;
     let timer: NodeJS.Timer;
     const onImg = () => {
-        if (masonry) {
-            masonry.layout();
-            clearTimeout(timer);
-            timer = setTimeout(() => {
+        masonry.layout();
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            if (masonry) {
                 masonry.layout();
-            }, 500);
-        }
+            }
+        }, 500);
     }
     return response ? (
         <Masonry

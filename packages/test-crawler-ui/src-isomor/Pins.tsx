@@ -28,13 +28,13 @@ export const Pins = () => {
     let masonry: any;
     let timer: NodeJS.Timer;
     const onImg = () => {
-        if (masonry) {
-            masonry.layout();
-            clearTimeout(timer);
-            timer = setTimeout(() => {
+        masonry.layout();
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            if (masonry) {
                 masonry.layout();
-            }, 500);
-        }
+            }
+        }, 500);
     }
     return (
         <>
