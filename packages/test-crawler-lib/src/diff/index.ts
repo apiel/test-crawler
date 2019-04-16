@@ -32,7 +32,7 @@ async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) 
     if (pixelDiffRatio) {
         const buffer = PNG.sync.write(diffImage, { colorType: 6 });
         const diffFile = `${file}.diff.png`;
-        writeFile(diffFile, buffer);
+        await writeFile(diffFile, buffer);
         info('PNG', id, url, 'diff file:', diffFile);
     }
 

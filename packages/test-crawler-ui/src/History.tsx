@@ -14,17 +14,15 @@ let timer: NodeJS.Timeout;
 export const History = ({ match: { params: { timestamp } } }: RouteComponentProps<any>) => {
     const { call, response } = useIsomor(); // <Crawler>
     React.useEffect(() => { call(getCrawler, timestamp); }, []);
-    const inQueue = get(response, 'inQueue');
-    if (get(response, 'inQueue')) {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            call(getCrawler, timestamp);
-        }, 1000);
-    }
+    const lastUpdate = get(response, 'lastUpdate');
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+        call(getCrawler, timestamp);
+    }, 1000);
     return response ? (
         <>
             <CrawlerInfo crawler={response} />
-            <Pages timestamp={timestamp} inQueue={inQueue} />
+            <Pages timestamp={timestamp} lastUpdate={lastUpdate} />
         </>
     ) : <Spin />;
 }

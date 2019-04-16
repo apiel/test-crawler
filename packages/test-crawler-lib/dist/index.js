@@ -119,7 +119,7 @@ class CrawlerProvider {
             const timestamp = Math.floor(Date.now() / 1000);
             const id = md5(`${timestamp}-${crawlerInput.url}`);
             const crawler = Object.assign({}, crawlerInput, { timestamp,
-                id, diffZoneCount: 0, status: 'review', inQueue: 1, urlsCount: 0 });
+                id, diffZoneCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
             const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
             yield fs_extra_1.mkdir(distFolder);
             yield fs_extra_1.mkdir(utils_1.getQueueFolder(distFolder));

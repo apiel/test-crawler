@@ -24,11 +24,11 @@ const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
 
 interface Props {
     timestamp: string;
-    inQueue: number;
+    lastUpdate: number;
 }
-export const Pages = ({ timestamp, inQueue }: Props) => {
+export const Pages = ({ timestamp, lastUpdate }: Props) => {
     const { call, response } = useIsomor(); // <PageData[]>
-    React.useEffect(() => { call(getPages, timestamp); }, [inQueue]);
+    React.useEffect(() => { call(getPages, timestamp); }, [lastUpdate]);
 
     let masonry: any;
     let timer: NodeJS.Timer;

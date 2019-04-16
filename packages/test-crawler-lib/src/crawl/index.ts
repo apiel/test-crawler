@@ -149,9 +149,10 @@ async function consumeResults() {
         crawler.diffZoneCount += result.diffZoneCount;
 
         const queueFolder = getQueueFolder(folder);
-        const filesInQueue = await readdir(queueFolder);
+        const filesInQueue = await pathExists(queueFolder) ? await readdir(queueFolder) : [];
         crawler.inQueue = filesInQueue.length;
         crawler.urlsCount = (await readdir(folder)).filter(f => extname(f) === '.json' && f !== '_.json').length;
+        crawler.lastUpdate = Date.now();
 
         await writeJSON(file, crawler, { spaces: 4 });
         consumeResults();

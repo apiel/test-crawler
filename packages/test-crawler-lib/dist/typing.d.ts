@@ -12,6 +12,8 @@ export interface Crawler extends CrawlerInput {
     inQueue: number;
     urlsCount: number;
     status: string;
+    startAt: number;
+    lastUpdate: number;
 }
 export interface StartCrawler {
     crawler: Crawler;

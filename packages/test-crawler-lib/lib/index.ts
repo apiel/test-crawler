@@ -145,6 +145,8 @@ export class CrawlerProvider {
             status: 'review',
             inQueue: 1,
             urlsCount: 0,
+            startAt: Date.now(),
+            lastUpdate: Date.now(),
         };
 
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());
