@@ -4,7 +4,7 @@
   "dependencies": {
     "antd": "^3.16.2",
     "isomor": "^0.1.8",
-    "isomor-react": "^0.0.4",
+    "isomor-react": "^0.0.6",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.2.2",
     "react": "^16.8.6",
@@ -20,7 +20,7 @@
     "isomor:build": "isomor-transpiler",
     "isomor:build:dev": "WATCH=true isomor-transpiler",
     "serv:build": "rimraf ./dist-server && tsc -p tsconfig.server.json",
-    "serv": "rimraf ./dist-server && tsc -p tsconfig.server.json && isomor-server",
+    "serv": "rimraf ./dist-server && tsc -p tsconfig.server.json && STATIC_FOLDER=./public isomor-server",
     "serv:dev": "nodemon --watch 'src-isomor/**/server/**/*' -e ts,tsx --exec 'yarn serv'",
     "prod": "yarn isomor:build && yarn build && STATIC_FOLDER=./build yarn serv",
     "dev": "run-p isomor:build:dev serv:dev start",
