@@ -8,8 +8,17 @@ import {
 import './App.css';
 import { getThumbnail } from './server/crawler';
 import { DiffZone } from './DiffZone';
+import { Zone } from 'test-crawler-lib';
 
-export const DiffImage = ({ folder, id, zones, originalWidth, onImg }: any) => {
+interface Props {
+    folder: string;
+    id: string;
+    zones?: Zone[];
+    originalWidth?: number;
+    onImg: () => void;
+};
+
+export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
         setThumb(await getThumbnail(folder, id, imgStyle.width));

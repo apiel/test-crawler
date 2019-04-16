@@ -27,7 +27,7 @@ const onSetStatus = (update: any, status: string, { timestamp, id, index }: any)
         });
     }
 }
-
+// neeed to flatten? and inject onSetStatus?
 export const DiffImageButtons = (props: any) => {
     const { update } = useIsomor();
     return (

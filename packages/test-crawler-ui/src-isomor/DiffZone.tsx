@@ -9,6 +9,7 @@ import {
 import './App.css';
 import { DiffImageButtons } from './DiffImageButtons';
 import { getThumbnail } from './server/crawler';
+import { Zone } from 'test-crawler-lib';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {
@@ -34,7 +35,16 @@ const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, img: string |
     });
 }
 
-export const DiffZone = ({ folder, id, index, originalWidth, zone, status }: any) => {
+interface Props {
+    folder: string;
+    id: string;
+    zone: Zone;
+    originalWidth: number;
+    index: number;
+    status: string;
+};
+
+export const DiffZone = ({ folder, id, index, originalWidth, zone, status }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
         setThumb(await getThumbnail('base', id, imgStyle.width));
