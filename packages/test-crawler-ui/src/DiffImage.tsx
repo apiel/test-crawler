@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Popover from 'antd/lib/popover';
 
 import {
     coverStyle,

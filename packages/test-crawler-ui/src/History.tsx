@@ -13,11 +13,10 @@ import { useIsomor } from 'isomor-react';
 let timer: NodeJS.Timeout;
 
 export const History = ({ match: { params: { timestamp } } }: RouteComponentProps<any>) => {
-    const { call, response, cache, update } = useIsomor(); // <Crawler>
+    const { call, response, cache, update } = useIsomor<Crawler>(); //
     React.useEffect(() => { call(getCrawler, timestamp); }, []);
     React.useEffect(() => {
         if (response) {
-            console.log('response changed', response);
             const crawlers = cache(getCrawlers) as Crawler[];
             const index = crawlers.findIndex(crawler => crawler.id === response.id);
             if (index !== -1) {
