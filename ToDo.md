@@ -5,7 +5,11 @@ Move all this in github issues
 
 - viewport selectable
 - options of urls from an enpoint instead of spider crawling
-- way to run custom script on crawl per page
+- crawl from specific urls set
+    - use endpoint
+    - Storybook URLs generator
+
+- way to inject custom script in page while crawling
 - ignore some zone
 
 - spider crawling with a limit of child path: (eg: limit 2)

@@ -2,6 +2,9 @@ import React from 'react';
 import Input from 'antd/lib/input';
 // import Select from 'antd/lib/select';
 import Form from 'antd/lib/form';
+import Icon from 'antd/lib/icon';
+import Radio from 'antd/lib/radio';
+import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 
 import Btn from 'antd/lib/button';
@@ -11,11 +14,21 @@ import { getHistoryRoute } from './routes';
 import { startCrawler, getCrawlers } from './server/crawler';
 import { useIsomor } from 'isomor-react';
 
+const { Paragraph } = Typography;
+
 const buttonStyle = {
     marginTop: 10,
 }
 
-const New = ({ history, form: { getFieldDecorator, validateFields }}: any) => {
+const infoStyle = {
+    lineHeight: 1.2,
+    borderLeft: '8px solid #EEE',
+    paddingLeft: 15,
+    color: '#666',
+    textAlign: 'justify' as 'justify',
+}
+
+const New = ({ history, form: { getFieldDecorator, validateFields } }: any) => {
     const { call } = useIsomor();
     const start = async (input: any) => {
         try {
@@ -46,6 +59,30 @@ const New = ({ history, form: { getFieldDecorator, validateFields }}: any) => {
                 })(
                     <Input addonBefore="URL" />
                 )}
+            </Form.Item>
+            <Form.Item>
+                {getFieldDecorator('method', {
+                    initialValue: 'spiderbot',
+                })(
+                    <Radio.Group size="small">
+                        <Radio.Button value="spiderbot"><Icon type="radar-chart" /> Spider bot</Radio.Button>
+                        <Radio.Button value="urls"><Icon type="ordered-list" /> URLs list</Radio.Button>
+                    </Radio.Group>
+                )}
+                <div style={infoStyle}>
+                    <Paragraph ellipsis={{ rows: 1, expandable: true }}>
+                        <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
+                        and crawl the children. It will then continue do the same with the children till no new
+                        link is found. Be careful if you have big website, this might is most likely not the right
+                        solution for you.
+                    </Paragraph>
+                    <Paragraph ellipsis={{ rows: 1, expandable: true }}>
+                        <b>URLs list</b> crawling method will crawl a specific sets of URLs. In the URL input field
+                        you must provide an endpoint containing a list of URLs (a simple text format, with one URL
+                        per line). The crawler will crawl each of those URL only and will not try to find links in
+                        the page.
+                    </Paragraph>
+                </div>
             </Form.Item>
             {/* <Form.Item>
                 {getFieldDecorator('viewport', {

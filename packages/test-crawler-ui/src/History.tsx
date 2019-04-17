@@ -18,11 +18,13 @@ export const History = ({ match: { params: { timestamp } } }: RouteComponentProp
     React.useEffect(() => {
         if (response) {
             const crawlers = cache(getCrawlers) as Crawler[];
-            const index = crawlers.findIndex(crawler => crawler.id === response.id);
-            if (index !== -1) {
-                if (!isEqual(crawlers[index], response)) {
-                    crawlers[index] = response;
-                    update(crawlers, getCrawlers);
+            if (crawlers) {
+                const index = crawlers.findIndex(crawler => crawler.id === response.id);
+                if (index !== -1) {
+                    if (!isEqual(crawlers[index], response)) {
+                        crawlers[index] = response;
+                        update(crawlers, getCrawlers);
+                    }
                 }
             }
         }
