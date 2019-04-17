@@ -12,11 +12,16 @@ const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const rimraf = require("rimraf");
 const md5 = require("md5");
+const axios_1 = require("axios");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
 const config = require("./config");
 const pixdiff_zone_1 = require("pixdiff-zone");
 exports.getConfig = () => config;
+exports.CrawlerMethod = ({
+    URLs: 'urls',
+    SPIDER_BOT: 'spiderbot',
+});
 class CrawlerProvider {
     copyFile(filePath, basePath, extension) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -124,14 +129,31 @@ class CrawlerProvider {
             yield fs_extra_1.mkdir(distFolder);
             yield fs_extra_1.mkdir(utils_1.getQueueFolder(distFolder));
             yield fs_extra_1.writeJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
-            const addedToqueue = yield utils_1.addToQueue(crawlerInput.url, distFolder);
-            if (!addedToqueue) {
-                throw (new Error('Something went wrong while adding job to queue'));
+            if (crawlerInput.method === exports.CrawlerMethod.URLs) {
+                yield this.startUrlsCrawling(crawlerInput, distFolder);
+            }
+            else {
+                yield this.startSpiderBotCrawling(crawlerInput, distFolder);
             }
             return {
                 crawler,
                 config: { MAX_HISTORY: config_1.MAX_HISTORY },
             };
+        });
+    }
+    startUrlsCrawling(crawlerInput, distFolder) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data } = yield axios_1.default.get(crawlerInput.url);
+            const urls = data.split(`\n`);
+            yield Promise.all(urls.map((url) => utils_1.addToQueue(url, distFolder)));
+        });
+    }
+    startSpiderBotCrawling(crawlerInput, distFolder) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const addedToqueue = yield utils_1.addToQueue(crawlerInput.url, distFolder);
+            if (!addedToqueue) {
+                throw (new Error('Something went wrong while adding job to queue'));
+            }
         });
     }
     cleanHistory() {

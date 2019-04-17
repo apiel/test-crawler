@@ -2,6 +2,7 @@ import { readdir, readJSON, mkdir, writeJSON, readFile, pathExists, copy, readJs
 import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
+import axios from 'axios';
 
 import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER } from './config';
 import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
@@ -25,6 +26,10 @@ export {
 } from './typing';
 
 export const getConfig = () => config;
+export const CrawlerMethod = {
+    URLs: 'urls',
+    SPIDER_BOT: 'spiderbot',
+};
 
 export class CrawlerProvider {
     private async copyFile(filePath: FilePath, basePath: FilePath, extension: string) {
@@ -154,14 +159,29 @@ export class CrawlerProvider {
         await mkdir(getQueueFolder(distFolder));
         await writeJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
 
-        const addedToqueue = await addToQueue(crawlerInput.url, distFolder);
-        if (!addedToqueue) {
-            throw (new Error('Something went wrong while adding job to queue'));
+        if (crawlerInput.method === CrawlerMethod.URLs) {
+            await this.startUrlsCrawling(crawlerInput, distFolder);
+        } else {
+            await this.startSpiderBotCrawling(crawlerInput, distFolder);
         }
+
         return {
             crawler,
             config: { MAX_HISTORY },
         };
+    }
+
+    private async startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
+        const { data } = await axios.get(crawlerInput.url);
+        const urls = data.split(`\n`);
+        await Promise.all(urls.map((url: string) => addToQueue(url, distFolder)));
+    }
+
+    private async startSpiderBotCrawling(crawlerInput: CrawlerInput, distFolder: string) {
+        const addedToqueue = await addToQueue(crawlerInput.url, distFolder);
+        if (!addedToqueue) {
+            throw (new Error('Something went wrong while adding job to queue'));
+        }
     }
 
     private async cleanHistory() {

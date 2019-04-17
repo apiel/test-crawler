@@ -3,6 +3,10 @@ import * as config from './config';
 import { Crawler, CrawlerInput, StartCrawler, PageData } from './typing';
 export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance, Timing, Viewport, PngDiffData, PngDiffDataZone, Zone, } from './typing';
 export declare const getConfig: () => typeof config;
+export declare const CrawlerMethod: {
+    URLs: string;
+    SPIDER_BOT: string;
+};
 export declare class CrawlerProvider {
     private copyFile;
     setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData>;
@@ -16,5 +20,7 @@ export declare class CrawlerProvider {
     getCrawler(timestamp: string): Promise<Crawler>;
     getAllCrawlers(): Promise<Crawler[]>;
     startCrawler(crawlerInput: CrawlerInput): Promise<StartCrawler>;
+    private startUrlsCrawling;
+    private startSpiderBotCrawling;
     private cleanHistory;
 }

@@ -6,6 +6,7 @@ export { Viewport, Zone };
 export interface CrawlerInput {
     url: string;
     viewport: Viewport;
+    method: string;
 }
 
 export interface Crawler extends CrawlerInput {

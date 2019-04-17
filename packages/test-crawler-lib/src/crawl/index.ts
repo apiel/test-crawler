@@ -10,6 +10,7 @@ import {
     CRAWL_FOLDER,
 } from '../../lib/config';
 import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from '../../lib/utils';
+import { CrawlerMethod } from '../../lib';
 import { prepare } from '../diff';
 import { Crawler } from '../../lib/typing';
 
@@ -28,7 +29,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     let hrefs: string[];
     const filePath = getFilePath(id, distFolder);
 
-    const { viewport, url: baseUrl }: Crawler = await readJSON(join(distFolder, '_.json'));
+    const { viewport, url: baseUrl, method }: Crawler = await readJSON(join(distFolder, '_.json'));
 
     const browser = await launch({
         // headless: false,
@@ -66,13 +67,15 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         ));
 
         await page.screenshot({ path: filePath('png'), fullPage: true });
-        hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
 
         const png = { width: viewport.width };
         await savePageInfo(filePath('json'), { url, id, performance, png });
 
-        const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
-        addUrls(urls, distFolder);
+        if (method !== CrawlerMethod.URLs) {
+            hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
+            const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
+            addUrls(urls, distFolder);
+        }
 
         const result = await prepare(id, distFolder);
         resultsQueue.push({

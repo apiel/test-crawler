@@ -13,6 +13,7 @@ const Button = Btn as any;
 import { getHistoryRoute } from './routes';
 import { startCrawler, getCrawlers } from './server/crawler';
 import { useIsomor } from 'isomor-react';
+// import { CrawlerMethod } from 'test-crawler-lib';
 
 const { Paragraph } = Typography;
 
@@ -62,11 +63,11 @@ const New = ({ history, form: { getFieldDecorator, validateFields } }: any) => {
             </Form.Item>
             <Form.Item>
                 {getFieldDecorator('method', {
-                    initialValue: 'spiderbot',
+                    initialValue: 'spiderbot', // CrawlerMethod.SPIDER_BOT,
                 })(
                     <Radio.Group size="small">
-                        <Radio.Button value="spiderbot"><Icon type="radar-chart" /> Spider bot</Radio.Button>
-                        <Radio.Button value="urls"><Icon type="ordered-list" /> URLs list</Radio.Button>
+                        <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>
+                        <Radio.Button value={'urls'}><Icon type="ordered-list" /> URLs list</Radio.Button>
                     </Radio.Group>
                 )}
                 <div style={infoStyle}>
