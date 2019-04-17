@@ -6,7 +6,7 @@ Move all this in github issues
 - viewport selectable
 - options of urls from an enpoint instead of spider crawling
 - crawl from specific urls set
-    - use endpoint
+    - ~~use endpoint~~
     - Storybook URLs generator
 
 - way to inject custom script in page while crawling

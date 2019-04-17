@@ -173,7 +173,7 @@ export class CrawlerProvider {
 
     private async startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
         const { data } = await axios.get(crawlerInput.url);
-        const urls = data.split(`\n`);
+        const urls = data.split(`\n`).filter((url: string) => url.trim());
         await Promise.all(urls.map((url: string) => addToQueue(url, distFolder)));
     }
 

@@ -18,10 +18,10 @@ const utils_1 = require("./utils");
 const config = require("./config");
 const pixdiff_zone_1 = require("pixdiff-zone");
 exports.getConfig = () => config;
-exports.CrawlerMethod = ({
+exports.CrawlerMethod = {
     URLs: 'urls',
     SPIDER_BOT: 'spiderbot',
-});
+};
 class CrawlerProvider {
     copyFile(filePath, basePath, extension) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -144,7 +144,7 @@ class CrawlerProvider {
     startUrlsCrawling(crawlerInput, distFolder) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = yield axios_1.default.get(crawlerInput.url);
-            const urls = data.split(`\n`);
+            const urls = data.split(`\n`).filter((url) => url.trim());
             yield Promise.all(urls.map((url) => utils_1.addToQueue(url, distFolder)));
         });
     }
