@@ -104,7 +104,7 @@ async function injectCode(jsFile: string, page: Page, id: string, url: string, d
         info('Inject code', id);
         try {
             const fn = require(jsFile);
-            await fn(page, id, url, distFolder);
+            await fn(page, url, id, distFolder);
         } catch (err) {
             error('Something went wrong while injecting the code', id, err);
         }
