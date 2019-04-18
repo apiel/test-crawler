@@ -6,6 +6,7 @@ import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';
 import notification from 'antd/lib/notification';
 import message from 'antd/lib/message';
+import Dropdown from 'antd/lib/dropdown';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';
 
@@ -20,6 +21,7 @@ import { DiffImage } from './DiffImage';
 import { PageData } from 'test-crawler-lib';
 import { getPin, setPinCode, getPinCode } from './server/crawler';
 import { Info } from './Info';
+import { codeSnippet } from './PinCodeSnippet';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -88,6 +90,11 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<any>)
                         <div style={buttonBarStyle}>
                             <Button icon="save" onClick={onSave} style={buttonStyle}>Save</Button>
                             <Button icon="caret-right" onClick={onPlay} style={buttonStyle}>Preview</Button>
+                            <Dropdown overlay={codeSnippet(setCode)}>
+                                <Button style={buttonStyle}>
+                                    Code snippet <Icon type="down" />
+                                </Button>
+                            </Dropdown>
                         </div>
                         <AceEditor
                             mode="javascript"
