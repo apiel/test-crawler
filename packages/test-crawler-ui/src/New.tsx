@@ -7,6 +7,7 @@ import Radio from 'antd/lib/radio';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
+import { parse } from 'query-string';
 
 import { getHistoryRoute } from './routes';
 import { startCrawler, getCrawlers } from './server/crawler';
@@ -20,7 +21,7 @@ const buttonStyle = {
     marginTop: 10,
 }
 
-const New = ({ history, form: { getFieldDecorator, validateFields } }: any) => {
+const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: any) => {
     const { call } = useIsomor();
     const start = async (input: any) => {
         try {
@@ -42,19 +43,20 @@ const New = ({ history, form: { getFieldDecorator, validateFields } }: any) => {
             }
         });
     }
+    const { url, method } = parse(search);
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Item>
                 {getFieldDecorator('url', {
                     rules: [{ required: true, message: 'Please input an URL to crawl!' }],
-                    initialValue: 'http://localhost:3003/',
+                    initialValue: url || 'http://localhost:3003/',
                 })(
                     <Input addonBefore="URL" />
                 )}
             </Form.Item>
             <Form.Item>
                 {getFieldDecorator('method', {
-                    initialValue: 'spiderbot', // CrawlerMethod.SPIDER_BOT,
+                    initialValue: method || 'spiderbot', // CrawlerMethod.SPIDER_BOT,
                 })(
                     <Radio.Group size="small">
                         <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>

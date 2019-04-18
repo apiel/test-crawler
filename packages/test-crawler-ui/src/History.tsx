@@ -12,7 +12,7 @@ import { useIsomor } from 'isomor-react';
 
 let timer: NodeJS.Timeout;
 
-export const History = ({ match: { params: { timestamp } } }: RouteComponentProps<any>) => {
+export const History = ({ match: { params: { timestamp } }, history }: RouteComponentProps<any>) => {
     const { call, response, cache, update } = useIsomor<Crawler>(); //
     React.useEffect(() => { call(getCrawler, timestamp); }, []);
     React.useEffect(() => {
@@ -36,7 +36,7 @@ export const History = ({ match: { params: { timestamp } } }: RouteComponentProp
     }, 1000);
     return response ? (
         <>
-            <CrawlerInfo crawler={response} />
+            <CrawlerInfo crawler={response} history={history} />
             <Pages timestamp={timestamp} lastUpdate={lastUpdate} />
         </>
     ) : <Spin />;
