@@ -11,20 +11,13 @@ import Button from 'antd/lib/button';
 import { getHistoryRoute } from './routes';
 import { startCrawler, getCrawlers } from './server/crawler';
 import { useIsomor } from 'isomor-react';
+import { Info } from './Info';
 // import { CrawlerMethod } from 'test-crawler-lib';
 
 const { Paragraph } = Typography;
 
 const buttonStyle = {
     marginTop: 10,
-}
-
-const infoStyle = {
-    lineHeight: 1.2,
-    borderLeft: '8px solid #EEE',
-    paddingLeft: 15,
-    color: '#666',
-    textAlign: 'justify' as 'justify',
 }
 
 const New = ({ history, form: { getFieldDecorator, validateFields } }: any) => {
@@ -68,7 +61,7 @@ const New = ({ history, form: { getFieldDecorator, validateFields } }: any) => {
                         <Radio.Button value={'urls'}><Icon type="ordered-list" /> URLs list</Radio.Button>
                     </Radio.Group>
                 )}
-                <div style={infoStyle}>
+                <Info>
                     <Paragraph ellipsis={{ rows: 1, expandable: true }}>
                         <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
                         and crawl the children. It will then continue do the same with the children till no new
@@ -81,7 +74,7 @@ const New = ({ history, form: { getFieldDecorator, validateFields } }: any) => {
                         per line). The crawler will crawl each of those URL only and will not try to find links in
                         the page.
                     </Paragraph>
-                </div>
+                </Info>
             </Form.Item>
             {/* <Form.Item>
                 {getFieldDecorator('viewport', {

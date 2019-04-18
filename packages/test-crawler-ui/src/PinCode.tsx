@@ -7,6 +7,7 @@ import Button from 'antd/lib/button';
 import notification from 'antd/lib/notification';
 import message from 'antd/lib/message';
 import AceEditor from 'react-ace';
+import { RouteComponentProps } from 'react-router';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
@@ -18,9 +19,9 @@ import {
 import { DiffImage } from './DiffImage';
 import { PageData } from 'test-crawler-lib';
 import { getPin, setPinCode, getPinCode } from './server/crawler';
-import { RouteComponentProps } from 'react-router';
+import { Info } from './Info';
 
-const { Title } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const aceEditorStyle = {
     border: '1px solid #EEE',
@@ -38,8 +39,12 @@ const buttonBarStyle = {
     marginBottom: 15,
 }
 
+const buttonStyle = {
+    marginRight: 10,
+}
+
 export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<any>) => {
-    const [code, setCode] = React.useState<string>();
+    const [code, setCode] = React.useState<string>(`module.exports = async function run(page) {\n// your code\n}`);
     const [pin, setPin] = React.useState<PageData>();
     const load = async () => {
         setPin(await getPin(id));
@@ -59,14 +64,30 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<any>)
         }
     }
 
+    const onPlay = () => {
+        message.warn('To be implemented.', 2);
+    }
+
     return (
         <>
             <Title level={3}>Add some code</Title>
             {
                 pin ? (
                     <>
+                        <Info>
+                            <Paragraph>
+                                Inject some code in the crawler while you are parsing the page. This code will
+                                be executed just after the page finish loaded, before to make the screenshot and
+                                before extracting the links. You need to export a function that will take as
+                                first parameter the <Text code>page</Text> coming from Puppeteer.
+                            </Paragraph>
+                            <Paragraph>
+                                <Text code>module.exports = async (page) => ...some code</Text>
+                            </Paragraph>
+                        </Info>
                         <div style={buttonBarStyle}>
-                            <Button icon="save" onClick={onSave}>Save</Button>
+                            <Button icon="save" onClick={onSave} style={buttonStyle}>Save</Button>
+                            <Button icon="caret-right" onClick={onPlay} style={buttonStyle}>Preview</Button>
                         </div>
                         <AceEditor
                             mode="javascript"
