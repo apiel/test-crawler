@@ -30,12 +30,10 @@ export const Pins = () => {
     let masonry: any;
     let timer: NodeJS.Timer;
     const onImg = () => {
-        masonry.layout();
+        if (masonry) masonry.layout();
         clearTimeout(timer);
         timer = setTimeout(() => {
-            if (masonry) {
-                masonry.layout();
-            }
+            if (masonry) masonry.layout();
         }, 500);
     }
     return (
