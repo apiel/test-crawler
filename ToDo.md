@@ -1,11 +1,7 @@
-Move all this in github issues
-
 - Need to make doc
-- live update of crawler pages using Graphql stream
-
 - viewport selectable
-- options of urls from an enpoint instead of spider crawling
-- Storybook URLs snippet
+
+- server start crawling process
 
 - FIX if different image height, diff is not working!!! Need to fix that
 

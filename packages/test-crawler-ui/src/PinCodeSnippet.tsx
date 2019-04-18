@@ -19,6 +19,25 @@ export const codeSnippet = (setCode: any) => (
         >
             Test-crawler is awesome
         </Menu.Item>
-        <Menu.Item key="2">Storybook</Menu.Item>
+        <Menu.Item
+            key="2"
+            onClick={() => {
+                setCode(
+`module.exports = async function run(page) {
+    await page.evaluate(() => {
+        hrefs = Array.from(document.links).map(
+            link => link.href.replace('/?', '/iframe.html?')
+        );
+
+        document.body.innerHTML = hrefs.map(
+            href => \`<a href="\${href}">\${href}</a>\`
+        ).join('<br />');
+    });
+}`
+                );
+            }}
+        >
+            Storybook
+        </Menu.Item>
     </Menu>
 );
