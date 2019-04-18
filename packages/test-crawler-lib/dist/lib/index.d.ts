@@ -23,7 +23,7 @@ export declare class CrawlerProvider {
     setCrawlerStatus(timestamp: string, status: string): Promise<Crawler>;
     getCrawler(timestamp: string): Promise<Crawler>;
     getAllCrawlers(): Promise<Crawler[]>;
-    startCrawler(crawlerInput: CrawlerInput): Promise<StartCrawler>;
+    startCrawler(crawlerInput: CrawlerInput, runProcess?: boolean): Promise<StartCrawler>;
     private startUrlsCrawling;
     private startSpiderBotCrawling;
     private cleanHistory;

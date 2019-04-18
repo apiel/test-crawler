@@ -166,7 +166,7 @@ function processTimeout() {
     if (PROCESS_TIMEOUT) {
         clearTimeout(processTimeoutTimer);
         processTimeoutTimer = setTimeout(() => {
-            info('Process timeout, exit', PROCESS_TIMEOUT.toString(), 'sec inactivity');
+            info('Process timeout, exit', `${PROCESS_TIMEOUT} sec inactivity`);
             process.exit();
         }, PROCESS_TIMEOUT * 1000);
     }

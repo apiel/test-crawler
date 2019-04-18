@@ -3,6 +3,7 @@ import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
 import axios from 'axios';
+import { exec } from 'child_process';
 
 import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER } from './config';
 import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
@@ -156,7 +157,7 @@ export class CrawlerProvider {
         return crawlers;
     }
 
-    async startCrawler(crawlerInput: CrawlerInput): Promise<StartCrawler> {
+    async startCrawler(crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {
         await this.cleanHistory();
         const timestamp = Math.floor(Date.now() / 1000);
         const id = md5(`${timestamp}-${crawlerInput.url}`);
@@ -182,6 +183,10 @@ export class CrawlerProvider {
             await this.startUrlsCrawling(crawlerInput, distFolder);
         } else {
             await this.startSpiderBotCrawling(crawlerInput, distFolder);
+        }
+
+        if (runProcess) {
+            exec('PROCESS_TIMEOUT=60 test-crawler &');
         }
 
         return {

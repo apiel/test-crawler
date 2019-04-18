@@ -136,7 +136,7 @@ function processTimeout() {
     if (config_1.PROCESS_TIMEOUT) {
         clearTimeout(processTimeoutTimer);
         processTimeoutTimer = setTimeout(() => {
-            npmlog_1.info('Process timeout, exit', config_1.PROCESS_TIMEOUT.toString());
+            npmlog_1.info('Process timeout, exit', `${config_1.PROCESS_TIMEOUT} sec inactivity`);
             process.exit();
         }, config_1.PROCESS_TIMEOUT * 1000);
     }

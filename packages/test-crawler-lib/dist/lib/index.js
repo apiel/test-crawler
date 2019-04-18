@@ -13,6 +13,7 @@ const path_1 = require("path");
 const rimraf = require("rimraf");
 const md5 = require("md5");
 const axios_1 = require("axios");
+const child_process_1 = require("child_process");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
 const config = require("./config");
@@ -135,7 +136,7 @@ class CrawlerProvider {
             return crawlers;
         });
     }
-    startCrawler(crawlerInput) {
+    startCrawler(crawlerInput, runProcess = true) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.cleanHistory();
             const timestamp = Math.floor(Date.now() / 1000);
@@ -151,6 +152,9 @@ class CrawlerProvider {
             }
             else {
                 yield this.startSpiderBotCrawling(crawlerInput, distFolder);
+            }
+            if (runProcess) {
+                child_process_1.exec('PROCESS_TIMEOUT=60 test-crawler &');
             }
             return {
                 crawler,
