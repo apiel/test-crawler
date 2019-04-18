@@ -17,6 +17,12 @@ export function getPins(...args: any) {
 export function getPin(...args: any) {
   return remote("server-crawler", "getPin", args);
 }
+export function setPinCode(...args: any) {
+  return remote("server-crawler", "setPinCode", args);
+}
+export function getPinCode(...args: any) {
+  return remote("server-crawler", "getPinCode", args);
+}
 export function getThumbnail(...args: any) {
   return remote("server-crawler", "getThumbnail", args);
 }

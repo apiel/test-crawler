@@ -6,9 +6,7 @@ import Icon from 'antd/lib/icon';
 import Radio from 'antd/lib/radio';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
-
-import Btn from 'antd/lib/button';
-const Button = Btn as any;
+import Button from 'antd/lib/button';
 
 import { getHistoryRoute } from './routes';
 import { startCrawler, getCrawlers } from './server/crawler';

@@ -85,6 +85,16 @@ class CrawlerProvider {
         const filePath = utils_1.getFilePath(id, target);
         return fs_extra_1.readFile(filePath('png'));
     }
+    saveBasePageCode(id, code) {
+        const filePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
+        return fs_extra_1.writeFile(filePath('js'), code);
+    }
+    loadBasePageCode(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const filePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
+            return (yield fs_extra_1.readFile(filePath('js'))).toString();
+        });
+    }
     getBasePages() {
         return this.getPagesInFolder(config_1.BASE_FOLDER);
     }
@@ -96,10 +106,8 @@ class CrawlerProvider {
         return this.getPagesInFolder(folder);
     }
     getPageInFolder(folder, id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const filePath = utils_1.getFilePath(id, folder);
-            return fs_extra_1.readJSON(filePath('json'));
-        });
+        const filePath = utils_1.getFilePath(id, folder);
+        return fs_extra_1.readJSON(filePath('json'));
     }
     getPagesInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {

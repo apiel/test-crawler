@@ -1,4 +1,4 @@
-import { readdir, readJSON, mkdir, writeJSON, readFile, pathExists, copy, readJson } from 'fs-extra';
+import { readdir, readJSON, mkdir, writeJSON, readFile, pathExists, copy, readJson, writeFile } from 'fs-extra';
 import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
@@ -96,6 +96,16 @@ export class CrawlerProvider {
         return readFile(filePath('png'));
     }
 
+    saveBasePageCode(id: string, code: string): Promise<void> {
+        const filePath = getFilePath(id, BASE_FOLDER);
+        return writeFile(filePath('js'), code);
+    }
+
+    async loadBasePageCode(id: string): Promise<string> {
+        const filePath = getFilePath(id, BASE_FOLDER);
+        return (await readFile(filePath('js'))).toString();
+    }
+
     getBasePages(): Promise<PageData[]> {
         return this.getPagesInFolder(BASE_FOLDER);
     }
@@ -109,7 +119,7 @@ export class CrawlerProvider {
         return this.getPagesInFolder(folder);
     }
 
-    private async getPageInFolder(folder: string, id: string): Promise<PageData> {
+    private getPageInFolder(folder: string, id: string): Promise<PageData> {
         const filePath = getFilePath(id, folder);
         return readJSON(filePath('json'));
     }

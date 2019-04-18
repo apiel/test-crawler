@@ -33,6 +33,14 @@ export function getPin(id: string): Promise<PageData> {
     return crawlerProvider.getBasePage(id);
 }
 
+export function setPinCode(id: string, code: string): Promise<void> {
+    return crawlerProvider.saveBasePageCode(id, code);
+}
+
+export function getPinCode(id: string): Promise<string> {
+    return crawlerProvider.loadBasePageCode(id);
+}
+
 export async function getThumbnail(folder: string, id: string, width: number = 300): Promise<string> {
     const image = await crawlerProvider.image(folder, id);
     return `data:image/png;base64, `

@@ -2,13 +2,11 @@ import React from 'react';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { useIsomor } from 'isomor-react';
+import Button from 'antd/lib/button';
 
 import { setZoneStatus } from './server/crawler';
 import { getPages } from './server/crawler';
 
-// https://github.com/ant-design/ant-design/issues/15930
-import Btn from 'antd/lib/button';
-const Button = Btn as any;
 
 const buttonStyle = {
     marginLeft: 5,
