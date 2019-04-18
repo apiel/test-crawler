@@ -100,9 +100,18 @@ export class CrawlerProvider {
         return this.getPagesInFolder(BASE_FOLDER);
     }
 
+    getBasePage(id: string): Promise<PageData> {
+        return this.getPageInFolder(BASE_FOLDER, id);
+    }
+
     getPages(timestamp: string): Promise<PageData[]> {
         const folder = join(CRAWL_FOLDER, timestamp);
         return this.getPagesInFolder(folder);
+    }
+
+    private async getPageInFolder(folder: string, id: string): Promise<PageData> {
+        const filePath = getFilePath(id, folder);
+        return readJSON(filePath('json'));
     }
 
     private async getPagesInFolder(folder: string): Promise<PageData[]> {

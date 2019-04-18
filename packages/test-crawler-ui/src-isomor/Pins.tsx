@@ -14,6 +14,8 @@ import {
 import { DiffImage } from './DiffImage';
 import { getPins } from './server/crawler';
 import { PageData } from 'test-crawler-lib';
+import { Link } from 'react-router-dom';
+import { getPinCodeRoute } from './routes';
 
 const { Title } = Typography;
 
@@ -49,9 +51,14 @@ export const Pins = () => {
                         {pins.map(({ id, url, png }: any) => (
                             <Card
                                 key={id}
-                                hoverable
                                 style={cardStyle}
                                 cover={png && <DiffImage folder='base' id={id} onImg={onImg} />}
+                                actions={[
+                                    <Icon type="delete" title={`Delete pin`} />,
+                                    (<Link to={getPinCodeRoute(id)}>
+                                        <Icon type="code" title={`Insert code while crawling`} />
+                                    </Link>),
+                                ]}
                             >
                                 <p><Icon type="link" /> <a href={url}>{url}</a></p>
                                 {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}

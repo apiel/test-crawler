@@ -29,6 +29,10 @@ export function getPins(): Promise<PageData[]> {
     return crawlerProvider.getBasePages();
 }
 
+export function getPin(id: string): Promise<PageData> {
+    return crawlerProvider.getBasePage(id);
+}
+
 export async function getThumbnail(folder: string, id: string, width: number = 300): Promise<string> {
     const image = await crawlerProvider.image(folder, id);
     return `data:image/png;base64, `

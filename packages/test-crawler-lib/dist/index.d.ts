@@ -14,7 +14,9 @@ export declare class CrawlerProvider {
     copyToBase(timestamp: string, id: string): Promise<PageData>;
     image(folder: string, id: string): Promise<Buffer>;
     getBasePages(): Promise<PageData[]>;
+    getBasePage(id: string): Promise<PageData>;
     getPages(timestamp: string): Promise<PageData[]>;
+    private getPageInFolder;
     private getPagesInFolder;
     setCrawlerStatus(timestamp: string, status: string): Promise<Crawler>;
     getCrawler(timestamp: string): Promise<Crawler>;

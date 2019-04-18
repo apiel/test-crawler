@@ -51,7 +51,6 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                 response.map(({ id, url, png }: any) => (
                     <Card
                         key={id}
-                        hoverable
                         style={cardStyle}
                         cover={png && <DiffImage
                             folder={timestamp}

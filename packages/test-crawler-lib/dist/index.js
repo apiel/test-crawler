@@ -88,9 +88,18 @@ class CrawlerProvider {
     getBasePages() {
         return this.getPagesInFolder(config_1.BASE_FOLDER);
     }
+    getBasePage(id) {
+        return this.getPageInFolder(config_1.BASE_FOLDER, id);
+    }
     getPages(timestamp) {
         const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
         return this.getPagesInFolder(folder);
+    }
+    getPageInFolder(folder, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const filePath = utils_1.getFilePath(id, folder);
+            return fs_extra_1.readJSON(filePath('json'));
+        });
     }
     getPagesInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {

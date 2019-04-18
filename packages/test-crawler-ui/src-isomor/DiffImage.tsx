@@ -15,10 +15,10 @@ interface Props {
     id: string;
     zones?: Zone[];
     originalWidth?: number;
-    onImg: () => void;
+    onImg?: () => void;
 };
 
-export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg }: Props) => {
+export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg = () => {} }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
         setThumb(await getThumbnail(folder, id, imgStyle.width));
