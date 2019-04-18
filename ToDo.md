@@ -5,12 +5,9 @@ Move all this in github issues
 
 - viewport selectable
 - options of urls from an enpoint instead of spider crawling
-- crawl from specific urls set
-    - ~~use endpoint~~
-    - Storybook URLs generator
+- Storybook URLs snippet
 
-- way to inject custom script in page while crawling
-- ignore some zone
+- FIX if different image height, diff is not working!!! Need to fix that
 
 - spider crawling with a limit of child path: (eg: limit 2)
     /     (found: a, b, c, d)
