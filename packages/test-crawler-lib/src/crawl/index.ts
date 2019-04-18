@@ -1,4 +1,4 @@
-import { launch } from 'puppeteer';
+import { launch, Page } from 'puppeteer';
 import { error, info } from 'npmlog';
 import { writeFile, readdir, readJSON, move, writeJSON, pathExists } from 'fs-extra';
 import { join, extname } from 'path';
@@ -8,6 +8,7 @@ import {
     TIMEOUT,
     USER_AGENT,
     CRAWL_FOLDER,
+    BASE_FOLDER,
 } from '../../lib/config';
 import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from '../../lib/utils';
 import { CrawlerMethod } from '../../lib';
@@ -28,6 +29,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     consumerRunning++;
     let hrefs: string[];
     const filePath = getFilePath(id, distFolder);
+    const basePath = getFilePath(id, BASE_FOLDER);
 
     const { viewport, url: baseUrl, method }: Crawler = await readJSON(join(distFolder, '_.json'));
 
@@ -66,6 +68,8 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
             () => JSON.stringify(window.performance),
         ));
 
+        await injectCode(basePath('js'), page, id, url, distFolder);
+
         await page.screenshot({ path: filePath('png'), fullPage: true });
 
         const png = { width: viewport.width };
@@ -93,6 +97,18 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     await browser.close();
     info('browser closed', url);
     consumerRunning--;
+}
+
+async function injectCode(jsFile: string, page: Page, id: string, url: string, distFolder: string) {
+    if (await pathExists(jsFile)) {
+        info('Inject code', id);
+        try {
+            const fn = require(jsFile);
+            await fn(page, id, url, distFolder);
+        } catch (err) {
+            error('Something went wrong while injecting the code', id, err);
+        }
+    }
 }
 
 async function handleError(err: any, file: string) {
