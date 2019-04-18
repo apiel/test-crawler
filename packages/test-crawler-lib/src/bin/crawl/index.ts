@@ -9,6 +9,7 @@ import {
     USER_AGENT,
     CRAWL_FOLDER,
     BASE_FOLDER,
+    PROCESS_TIMEOUT,
 } from '../../lib/config';
 import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from '../../lib/utils';
 import { CrawlerMethod } from '../../lib';
@@ -160,6 +161,17 @@ async function consumeQueues() {
     }
 }
 
+let processTimeoutTimer: NodeJS.Timeout;
+function processTimeout() {
+    if (PROCESS_TIMEOUT) {
+        clearTimeout(processTimeoutTimer);
+        processTimeoutTimer = setTimeout(() => {
+            info('Process timeout, exit', PROCESS_TIMEOUT.toString(), 'sec inactivity');
+            process.exit();
+        }, PROCESS_TIMEOUT * 1000);
+    }
+}
+
 async function consumeResults() {
     if (resultsQueue.length) {
         const [{ folder, result }] = resultsQueue.splice(0, 1);
@@ -175,6 +187,7 @@ async function consumeResults() {
 
         await writeJSON(file, crawler, { spaces: 4 });
         consumeResults();
+        processTimeout();
     } else {
         setTimeout(consumeResults, 1000);
     }
@@ -183,4 +196,5 @@ async function consumeResults() {
 export function crawl() {
     consumeResults();
     consumeQueues();
+    processTimeout();
 }

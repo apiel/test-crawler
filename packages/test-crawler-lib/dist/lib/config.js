@@ -8,4 +8,5 @@ exports.MAX_HISTORY = 4;
 exports.TIMEOUT = 10000;
 exports.CONSUMER_COUNT = 5;
 exports.USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+exports.PROCESS_TIMEOUT = process.env.PROCESS_TIMEOUT ? parseInt(process.env.PROCESS_TIMEOUT, 10) : 0;
 //# sourceMappingURL=config.js.map

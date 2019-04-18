@@ -10,7 +10,7 @@
     "license": "MIT",
     "scripts": {
         "prepublishOnly": "yarn build",
-        "start": "test-crawler",
+        "start": "PROCESS_TIMEOUT=30 test-crawler",
         "dev": "ts-node src/index.ts",
         "prebuild": "rm -rf dist/",
         "build": "tsc -p tsconfig.json && chmod +x dist/bin/index.js",

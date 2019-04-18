@@ -131,6 +131,16 @@ function consumeQueues() {
         }
     });
 }
+let processTimeoutTimer;
+function processTimeout() {
+    if (config_1.PROCESS_TIMEOUT) {
+        clearTimeout(processTimeoutTimer);
+        processTimeoutTimer = setTimeout(() => {
+            npmlog_1.info('Process timeout, exit', config_1.PROCESS_TIMEOUT.toString());
+            process.exit();
+        }, config_1.PROCESS_TIMEOUT * 1000);
+    }
+}
 function consumeResults() {
     return __awaiter(this, void 0, void 0, function* () {
         if (resultsQueue.length) {
@@ -145,6 +155,7 @@ function consumeResults() {
             crawler.lastUpdate = Date.now();
             yield fs_extra_1.writeJSON(file, crawler, { spaces: 4 });
             consumeResults();
+            processTimeout();
         }
         else {
             setTimeout(consumeResults, 1000);
@@ -154,6 +165,7 @@ function consumeResults() {
 function crawl() {
     consumeResults();
     consumeQueues();
+    processTimeout();
 }
 exports.crawl = crawl;
 //# sourceMappingURL=index.js.map
