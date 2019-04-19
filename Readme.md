@@ -14,9 +14,30 @@ npx test-crawler
 Open url http://127.0.0.1:3005/
 ![screenshot-start](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-new.png?raw=true)
 
-If you select `Spider bot` method, enter the URL you want to crawl. The crawler will search for links in the crawled URL and crawl them as well.
+There is two way to crawl pages:
+
+- **Spider bot** crawling method will get all the links inside the page of the given URL
+  and crawl the children. It will then continue do the same with the children till no new
+  link is found. Be careful if you have big website, this is most likely not the right
+  solution for you.
+
+- **URLs list** crawling method will crawl a specific sets of URLs. In the URL input field
+  you must provide an endpoint containing a list of URLs (a simple text format, with one URL
+  per line). The crawler will crawl each of those URL only and will not try to find links in
+  the page.
+
+URLs list example:
+```
+http://127.0.0.1:3005/
+http://127.0.0.1:3005/page1
+http://127.0.0.1:3005/category/page33
+```
+
+> **Note:** to don't get false visual differences, you must run your test always on the same environment. Diffrent OS, different graphic card, ... might trigger visual differences in the snapshot, even if there was no changes. Prefer to always run your tests on the same machine.
 
 ## Cli
+
+You can also run some test directly from the cli. This can be useful for continuous integration test.
 
 ```bash
 test-crawler-cli ./preset.json

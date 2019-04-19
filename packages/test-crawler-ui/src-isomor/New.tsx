@@ -104,7 +104,7 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                     <Paragraph ellipsis={{ rows: 1, expandable: true }}>
                         <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
                         and crawl the children. It will then continue do the same with the children till no new
-                        link is found. Be careful if you have big website, this might is most likely not the right
+                        link is found. Be careful if you have big website, this is most likely not the right
                         solution for you.
                     </Paragraph>
                     <Paragraph ellipsis={{ rows: 1, expandable: true }}>
