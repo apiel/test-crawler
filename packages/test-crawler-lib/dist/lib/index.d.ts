@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import * as config from './config';
-import { Crawler, CrawlerInput, StartCrawler, PageData } from './typing';
-export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance, Timing, Viewport, PngDiffData, PngDiffDataZone, Zone, } from './typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Preset } from './typing';
+export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance, Timing, Viewport, PngDiffData, PngDiffDataZone, Zone, Preset, } from './typing';
 export declare const getConfig: () => typeof config;
 export declare const CrawlerMethod: {
     URLs: string;
@@ -23,6 +23,8 @@ export declare class CrawlerProvider {
     setCrawlerStatus(timestamp: string, status: string): Promise<Crawler>;
     getCrawler(timestamp: string): Promise<Crawler>;
     getAllCrawlers(): Promise<Crawler[]>;
+    loadPresets(): Promise<Preset[]>;
+    saveAndStart(crawlerInput: CrawlerInput, name: string): Promise<StartCrawler>;
     startCrawler(crawlerInput: CrawlerInput, runProcess?: boolean): Promise<StartCrawler>;
     private startUrlsCrawling;
     private startSpiderBotCrawling;

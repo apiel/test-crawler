@@ -2,8 +2,11 @@ import { remote } from "isomor";
 export function getCrawlers(...args: any) {
   return remote("server-crawler", "getCrawlers", args);
 }
-export function startCrawler(...args: any) {
-  return remote("server-crawler", "startCrawler", args);
+export function loadPresets(...args: any) {
+  return remote("server-crawler", "loadPresets", args);
+}
+export function saveAndStart(...args: any) {
+  return remote("server-crawler", "saveAndStart", args);
 }
 export function getCrawler(...args: any) {
   return remote("server-crawler", "getCrawler", args);

@@ -4,6 +4,7 @@ import {
     CrawlerInput,
     StartCrawler,
     PageData,
+    Preset,
 } from 'test-crawler-lib';
 import * as sharp from 'sharp';
 
@@ -13,8 +14,12 @@ export function getCrawlers(): Promise<Crawler[]> {
     return crawlerProvider.getAllCrawlers();
 }
 
-export function startCrawler(crawlerInput: CrawlerInput): Promise<StartCrawler> {
-    return crawlerProvider.startCrawler(crawlerInput);
+export function loadPresets(): Promise<Preset[]> {
+    return crawlerProvider.loadPresets();
+}
+
+export function saveAndStart(crawlerInput: CrawlerInput, saveAs: string): Promise<StartCrawler> {
+    return crawlerProvider.saveAndStart(crawlerInput, saveAs);
 }
 
 export function getCrawler(timestamp: string): Promise<Crawler> {

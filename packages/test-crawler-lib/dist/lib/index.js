@@ -136,6 +136,29 @@ class CrawlerProvider {
             return crawlers;
         });
     }
+    loadPresets() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (yield fs_extra_1.pathExists(config_1.PRESET_FOLDER)) {
+                const files = yield fs_extra_1.readdir(config_1.PRESET_FOLDER);
+                return Promise.all(files.filter(file => path_1.extname(file) === '.json')
+                    .map(file => fs_extra_1.readJSON(path_1.join(config_1.PRESET_FOLDER, file))));
+            }
+            return [];
+        });
+    }
+    saveAndStart(crawlerInput, name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (name) {
+                const id = md5(name);
+                if (!(yield fs_extra_1.pathExists(config_1.PRESET_FOLDER))) {
+                    yield fs_extra_1.mkdir(config_1.PRESET_FOLDER);
+                }
+                const file = path_1.join(config_1.PRESET_FOLDER, `${id}.json`);
+                yield fs_extra_1.writeJSON(file, { id, name, crawlerInput }, { spaces: 4 });
+            }
+            return this.startCrawler(crawlerInput);
+        });
+    }
     startCrawler(crawlerInput, runProcess = true) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.cleanHistory();

@@ -6,6 +6,11 @@ export interface CrawlerInput {
     viewport: Viewport;
     method: string;
 }
+export interface Preset {
+    id: string;
+    name: string;
+    crawlerInput: CrawlerInput;
+}
 export interface Crawler extends CrawlerInput {
     id: string;
     timestamp: number;

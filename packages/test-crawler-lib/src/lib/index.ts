@@ -5,11 +5,11 @@ import * as md5 from 'md5';
 import axios from 'axios';
 import { exec } from 'child_process';
 
-import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER } from './config';
+import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PRESET_FOLDER } from './config';
 import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
 
 import * as config from './config';
-import { Crawler, CrawlerInput, StartCrawler, PageData } from './typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Preset } from './typing';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
 export {
@@ -24,6 +24,7 @@ export {
     PngDiffData,
     PngDiffDataZone,
     Zone,
+    Preset,
 } from './typing';
 
 export const getConfig = () => config;
@@ -155,6 +156,29 @@ export class CrawlerProvider {
             ))),
         );
         return crawlers;
+    }
+
+    async loadPresets(): Promise<Preset[]> {
+        if (await pathExists(PRESET_FOLDER)) {
+            const files = await readdir(PRESET_FOLDER);
+            return Promise.all(
+                files.filter(file => extname(file) === '.json')
+                     .map(file => readJSON(join(PRESET_FOLDER, file))),
+            );
+        }
+        return [];
+    }
+
+    async saveAndStart(crawlerInput: CrawlerInput, name: string): Promise<StartCrawler> {
+        if (name) {
+            const id = md5(name);
+            if (!(await pathExists(PRESET_FOLDER))) {
+                await mkdir(PRESET_FOLDER);
+            }
+            const file = join(PRESET_FOLDER, `${id}.json`);
+            await writeJSON(file, { id, name, crawlerInput }, { spaces: 4 });
+        }
+        return this.startCrawler(crawlerInput);
     }
 
     async startCrawler(crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {

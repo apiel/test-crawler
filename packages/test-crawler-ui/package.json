@@ -27,7 +27,7 @@
     "serv:dev": "nodemon --watch 'src-isomor/**/server/**/*' -e ts,tsx --exec 'yarn serv'",
     "prod": "yarn isomor:build && yarn build && STATIC_FOLDER=./build yarn serv",
     "dev": "run-p isomor:build:dev serv:dev start",
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

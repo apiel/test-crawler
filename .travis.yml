@@ -16,7 +16,18 @@ install:
 script:
   - uptime > travisTest.txt
   - git branch
-  - git checkout master
+  - git checkout master # instead should be the branch triggering the build
   - git add ./travisTest.txt
   - git commit -m "travis commit [ci skip]"
-  - git push
+# need to provid credential from env variable
+#  - git push
+
+# create packages/example-travis
+# packages.json with http-server, test-crawler
+# index.html
+# http-server index.html
+# include test-crawler preset to call http://127.0.0.1:8080
+# test-crawler --preset example
+# git add ...
+# git commit/push
+# finally if diff found throw an error

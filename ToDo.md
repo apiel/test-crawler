@@ -7,6 +7,8 @@
 
 - FIX if different image height, diff is not working!!! Need to fix that
 
+- pin filter by url, viewport...
+
 - spider crawling with a limit of child path: (eg: limit 2)
     /     (found: a, b, c, d)
     /a    (found: 1, 2, 3, 4, 5)
@@ -16,5 +18,8 @@
     /b    (found: 1, 2, 3)
     /b/1
     /b/2
+
+
+
 
 - SSR version for react components?

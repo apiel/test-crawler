@@ -15,10 +15,14 @@ function getCrawlers() {
     return crawlerProvider.getAllCrawlers();
 }
 exports.getCrawlers = getCrawlers;
-function startCrawler(crawlerInput) {
-    return crawlerProvider.startCrawler(crawlerInput);
+function loadPresets() {
+    return crawlerProvider.loadPresets();
 }
-exports.startCrawler = startCrawler;
+exports.loadPresets = loadPresets;
+function saveAndStart(crawlerInput, saveAs) {
+    return crawlerProvider.saveAndStart(crawlerInput, saveAs);
+}
+exports.saveAndStart = saveAndStart;
 function getCrawler(timestamp) {
     return crawlerProvider.getCrawler(timestamp);
 }

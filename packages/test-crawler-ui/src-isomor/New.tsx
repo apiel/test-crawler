@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Input from 'antd/lib/input';
 // import Select from 'antd/lib/select';
 import Form from 'antd/lib/form';
@@ -8,24 +8,56 @@ import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 import { parse } from 'query-string';
+import { Preset as PresetType, CrawlerInput } from 'test-crawler-lib';
 
 import { getHistoryRoute } from './routes';
-import { startCrawler, getCrawlers } from './server/crawler';
+import { saveAndStart, getCrawlers } from './server/crawler';
 import { useIsomor } from 'isomor-react';
 import { Info } from './Info';
+import { Preset } from './Preset';
 // import { CrawlerMethod } from 'test-crawler-lib';
 
-const { Paragraph } = Typography;
+const { Paragraph, Text } = Typography;
 
-const buttonStyle = {
-    marginTop: 10,
+const inlineStyle = {
+    marginRight: 10,
+    display: 'inline-block',
+}
+
+const toolbarStyle = {
+    backgroundColor: '#EEE',
+    padding: '0px 10px',
+    borderRadius: 5,
+    marginBottom: 12,
+}
+
+const usePreset = (search: string) => {
+    const initialPreset: PresetType = {
+        name: '',
+        id: '',
+        crawlerInput: {
+            method: 'spiderbot', // CrawlerMethod.SPIDER_BOT,
+            url: 'http://localhost:3003/',
+            viewport: { width: 800, height: 600 },
+        }
+    };
+    const [preset, setPreset] = useState<PresetType>(initialPreset);
+
+    useEffect(() => {
+        if (search) {
+            const crawlerInput = parse(search) as any as CrawlerInput;
+            setPreset({ ...initialPreset, crawlerInput });
+        }
+    }, [search]);
+
+    return { preset, setPreset };
 }
 
 const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: any) => {
     const { call } = useIsomor();
-    const start = async (input: any) => {
+    const start = async ({ saveAs, ...input }: any) => {
         try {
-            const response = await startCrawler({ ...input, viewport: { width: 800, height: 600 } });
+            const response = await saveAndStart({ ...input, viewport: { width: 800, height: 600 } }, saveAs);
             await call(getCrawlers);
             history.push(getHistoryRoute(response.crawler.timestamp.toString()));
         } catch (error) {
@@ -43,20 +75,25 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
             }
         });
     }
-    const { url, method } = parse(search);
+
+    const { preset, setPreset } = usePreset(search);
+
     return (
         <Form onSubmit={handleSubmit}>
+            <Form.Item style={toolbarStyle}>
+                <Preset setPreset={setPreset} setDefault={!search} />
+            </Form.Item>
             <Form.Item>
                 {getFieldDecorator('url', {
                     rules: [{ required: true, message: 'Please input an URL to crawl!' }],
-                    initialValue: url || 'http://localhost:3003/',
+                    initialValue: preset.crawlerInput.url,
                 })(
                     <Input addonBefore="URL" />
                 )}
             </Form.Item>
             <Form.Item>
                 {getFieldDecorator('method', {
-                    initialValue: method || 'spiderbot', // CrawlerMethod.SPIDER_BOT,
+                    initialValue: preset.crawlerInput.method,
                 })(
                     <Radio.Group size="small">
                         <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>
@@ -88,14 +125,29 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                     </Select>
                 )}
             </Form.Item> */}
-            <Button
-                type="primary"
-                icon="caret-right"
-                style={buttonStyle}
-                htmlType="submit"
-            >
-                Start
-            </Button>
+            <Form.Item>
+                <Form.Item style={inlineStyle}>
+                    <Button
+                        type="primary"
+                        icon="caret-right"
+                        htmlType="submit"
+                    >
+                        Start
+                    </Button>
+                </Form.Item>
+                <Form.Item style={inlineStyle}>
+                    {getFieldDecorator('saveAs', {
+                        initialValue: preset.name,
+                    })(
+                        <Input addonBefore="Save as" placeholder="Leave empty to don't save" />
+                    )}
+                </Form.Item>
+                <Info>
+                    <Paragraph>
+                        If you save as <Text code>Default</Text>, this preset will always be load per default.
+                    </Paragraph>
+                </Info>
+            </Form.Item>
         </Form>
     );
 }
