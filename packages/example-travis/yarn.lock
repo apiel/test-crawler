@@ -9350,9 +9350,9 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.10"
 
-test-crawler-lib@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.2.5.tgz#f0d013d53291a9583e2eea04820eafe3b5471595"
+test-crawler-lib@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.2.6.tgz#7371c6d35f11aa187bf5b3e5da91f76930a6ea09"
   dependencies:
     "@types/lockfile" "^1.0.1"
     axios "^0.18.0"
@@ -9369,9 +9369,9 @@ test-crawler-lib@^0.2.5:
     ts-node "^8.0.2"
     typescript "^3.2.4"
 
-test-crawler@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/test-crawler/-/test-crawler-0.2.5.tgz#b455c35ca11912aca840c3569d31e63d0f79db21"
+test-crawler@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/test-crawler/-/test-crawler-0.2.6.tgz#96aa6b6e598d1ad16b03b10c47acb0435200bb67"
   dependencies:
     antd "^3.16.2"
     brace "^0.11.1"
@@ -9387,7 +9387,7 @@ test-crawler@^0.2.5:
     react-router-dom "^5.0.0"
     react-scripts "2.1.8"
     sharp "^0.22.0"
-    test-crawler-lib "^0.2.5"
+    test-crawler-lib "^0.2.6"
     typescript "3.4.3"
 
 test-exclude@^4.2.1:

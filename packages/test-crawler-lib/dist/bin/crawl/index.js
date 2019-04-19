@@ -162,10 +162,23 @@ function consumeResults() {
         }
     });
 }
+function prepareFolders() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!(yield fs_extra_1.pathExists(config_1.CRAWL_FOLDER))) {
+            yield fs_extra_1.mkdir(config_1.CRAWL_FOLDER);
+        }
+        if (!(yield fs_extra_1.pathExists(config_1.BASE_FOLDER))) {
+            yield fs_extra_1.mkdir(config_1.BASE_FOLDER);
+        }
+    });
+}
 function crawl() {
-    consumeResults();
-    consumeQueues();
-    processTimeout();
+    return __awaiter(this, void 0, void 0, function* () {
+        yield prepareFolders();
+        consumeResults();
+        consumeQueues();
+        processTimeout();
+    });
 }
 exports.crawl = crawl;
 //# sourceMappingURL=index.js.map

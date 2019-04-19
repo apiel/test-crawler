@@ -1,12 +1,15 @@
 - Travis integration
+- Need to run properly with only one server instance
+
 - viewport selectable
 
 - Need to make doc
-- Need to run properly with only one server instance
 
 - FIX if different image height, diff is not working!!! Need to fix that
 
-- pin filter by url, viewport...
+
+
+- pins: filter by url, viewport...
 
 - spider crawling with a limit of child path: (eg: limit 2)
     /     (found: a, b, c, d)

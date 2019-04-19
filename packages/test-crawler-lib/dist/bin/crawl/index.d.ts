@@ -1,1 +1,1 @@
-export declare function crawl(): void;
+export declare function crawl(): Promise<void>;

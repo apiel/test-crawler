@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "start": "http-server",
-    "test:crawler": "PAGES_FOLDER=./pages test-crawler",
-    "test:crawler:cli": "PAGES_FOLDER=./pages test-crawler-cli test-crawler.preset.json"
+    "test:crawler": "PAGES_FOLDER=./test-crawler test-crawler",
+    "test:crawler:cli": "PAGES_FOLDER=./test-crawler test-crawler-cli test-crawler.preset.json"
   },
   "dependencies": {
     "http-server": "^0.11.1",
