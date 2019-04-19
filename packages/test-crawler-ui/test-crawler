@@ -3,4 +3,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DIST_SERVER_FOLDER=${DIR}/../test-crawler/dist-server
 STATIC_FOLDER=${DIR}/../test-crawler/build
+
+# need to find a way to fix that
+cp ${DIST_SERVER_FOLDER}/server/crawler.js ${DIST_SERVER_FOLDER}/crawler.js
+
 DIST_SERVER_FOLDER=${DIST_SERVER_FOLDER} STATIC_FOLDER=${STATIC_FOLDER} isomor-server
