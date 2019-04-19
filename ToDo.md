@@ -1,5 +1,4 @@
-- Travis integration
-- Need to run properly with only one server instance
+- Travis need to throw if diff found
 
 - viewport selectable
 

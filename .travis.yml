@@ -21,9 +21,11 @@ script:
   - yarn start > /dev/null &
   - sleep 5
   - yarn test:crawler:cli
-  - git checkout ${TRAVIS_BRANCH} # instead should be the branch triggering the build
+# if diff we should trigger a failure
+
+# only push change if found diff
+after_failure:
+  - git checkout ${TRAVIS_BRANCH}
   - git add .
   - git commit -m "travis commit, test-crawler [ci skip]"
   - git push "https://${GITHUB_TOKEN}@${GH_REPO}" ${TRAVIS_BRANCH} > /dev/null 2>&1
-
-# if diff we should throw an error
