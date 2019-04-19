@@ -1,6 +1,6 @@
 {
   "name": "example-travis",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "http-server": "^0.11.1",
-    "test-crawler": "^0.2.7"
+    "test-crawler": "^0.2.8"
   }
 }
