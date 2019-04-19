@@ -18,7 +18,9 @@ script:
   - yarn start > /dev/null &
   - sleep 5
   - yarn test:crawler:cli
-  - ls pages/crawl
+  - ls
+  - ls test-crawler
+  - ls test-crawler/crawl
   - git status
   - git checkout master # instead should be the branch triggering the build
   - git add .
