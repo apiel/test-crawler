@@ -1,6 +1,6 @@
 import { launch, Page } from 'puppeteer';
 import { error, info } from 'npmlog';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdir } from 'fs-extra';
 import { join, extname } from 'path';
 
 import {
@@ -193,7 +193,17 @@ async function consumeResults() {
     }
 }
 
-export function crawl() {
+async function prepareFolders() {
+    if (!(await pathExists(CRAWL_FOLDER))) {
+        await mkdir(CRAWL_FOLDER);
+    }
+    if (!(await pathExists(BASE_FOLDER))) {
+        await mkdir(BASE_FOLDER);
+    }
+}
+
+export async function crawl() {
+    await prepareFolders();
     consumeResults();
     consumeQueues();
     processTimeout();
