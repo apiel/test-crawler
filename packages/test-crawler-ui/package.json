@@ -1,6 +1,6 @@
 {
   "name": "test-crawler",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "bin": {
     "test-crawler": "./test-crawler"
   },
@@ -19,7 +19,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "sharp": "^0.22.0",
-    "test-crawler-lib": "^0.2.2",
+    "test-crawler-lib": "^0.2.5",
     "typescript": "3.4.3"
   },
   "scripts": {
