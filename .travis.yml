@@ -23,6 +23,7 @@ script:
   - ls test-crawler
   - ls test-crawler/crawl
   - git status
+  - echo "${TRAVIS_BRANCH}"
   - git checkout master # instead should be the branch triggering the build
   - git add .
   - git commit -m "travis commit, test-crawler [ci skip]"
