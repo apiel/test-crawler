@@ -4,60 +4,17 @@ test-crawler is a tool to help you to make end to end testing, by crawling a web
 
 ![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pages.jpeg?raw=true)
 
-----
-Doc to be deprecated
-
-## getting started
-
-```
-git clone https://github.com/apiel/test-crawler.git
-cd test-crawler
-
-npx lerna bootstrap
-
-yarn start
-```
-
-Go to http://localhost:3000/
-
-Then enter the url you want to make screenshots and click start. It will crawl the url and use all the link found in the pages.
-
-![screenshot-start](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-new.jpeg?raw=true)
-
-## run in dev environment
-
-```
-# in root folder
-npx lerna bootstrap
-
-# go server folder
-cd packages/server
-yarn start:dev
-
-# go in react app folder
-cd packages/app
-yarn start
-
-# go in crawler folder (crawler doesn't have auto reload)
-cd packages/crawler
-yarn start
-
-# eventually start the example website to crawl
-cd packages/example
-yarn start
-```
-
-
-----
-
-New doc should be something like
-
 ## Getting started
 
 ```bash
 yarn add test-crawler
-test-crawler
+npx test-crawler
 ```
+
+Open url http://127.0.0.1:3005/
+![screenshot-start](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-new.png?raw=true)
+
+If you select `Spider bot` method, enter the URL you want to crawl. The crawler will search for links in the crawled URL and crawl them as well.
 
 ## Cli
 
