@@ -1,5 +1,5 @@
 {
-  "name": "test-crawler-ui",
+  "name": "test-crawler",
   "version": "0.2.0",
   "bin": {
     "test-crawler": "./test-crawler"
@@ -23,7 +23,7 @@
     "typescript": "3.4.3"
   },
   "scripts": {
-    "prepublishOnly": "yarn isomor:build && yarn build && yarn serv:build && chmod +x test-crawler",
+    "prepublishOnly": "cp ../../Readme.md . && yarn isomor:build && yarn build && yarn serv:build && chmod +x test-crawler",
     "isomor:build": "isomor-transpiler",
     "isomor:build:dev": "WATCH=true isomor-transpiler",
     "serv:build": "rimraf ./dist-server && tsc -p tsconfig.server.json",
