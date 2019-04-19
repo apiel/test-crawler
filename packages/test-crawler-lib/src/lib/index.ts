@@ -181,6 +181,12 @@ export class CrawlerProvider {
         return this.startCrawler(crawlerInput);
     }
 
+    async startCrawlerWithPresetFile(presetFile: string): Promise<CrawlerInput> {
+        const { crawlerInput } = await readJSON(presetFile);
+        await this.startCrawler(crawlerInput, false);
+        return crawlerInput;
+    }
+
     async startCrawler(crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {
         await this.cleanHistory();
         const timestamp = Math.floor(Date.now() / 1000);

@@ -25,6 +25,7 @@ export declare class CrawlerProvider {
     getAllCrawlers(): Promise<Crawler[]>;
     loadPresets(): Promise<Preset[]>;
     saveAndStart(crawlerInput: CrawlerInput, name: string): Promise<StartCrawler>;
+    startCrawlerWithPresetFile(presetFile: string): Promise<CrawlerInput>;
     startCrawler(crawlerInput: CrawlerInput, runProcess?: boolean): Promise<StartCrawler>;
     private startUrlsCrawling;
     private startSpiderBotCrawling;

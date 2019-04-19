@@ -5,12 +5,23 @@ import { info } from 'npmlog';
 
 import { crawl } from './crawl';
 import { join } from 'path';
+import { CrawlerProvider } from '../lib';
 
 const lockFile = join(__dirname, '../../test-crawler.lock');
 
+async function start() {
+    const [, , presetFile] = process.argv;
+    if (presetFile) {
+        const crawlerProvider = new CrawlerProvider();
+        const crawlerInput = await crawlerProvider.startCrawlerWithPresetFile(presetFile);
+        info('Start with preset', JSON.stringify(crawlerInput));
+    }
+    crawl();
+}
+
 if (!checkSync(lockFile)) {
     lockSync(lockFile);
-    crawl();
+    start();
 } else {
     info('Test-crawler already running', lockFile);
 }

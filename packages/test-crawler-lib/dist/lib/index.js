@@ -159,6 +159,13 @@ class CrawlerProvider {
             return this.startCrawler(crawlerInput);
         });
     }
+    startCrawlerWithPresetFile(presetFile) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { crawlerInput } = yield fs_extra_1.readJSON(presetFile);
+            yield this.startCrawler(crawlerInput, false);
+            return crawlerInput;
+        });
+    }
     startCrawler(crawlerInput, runProcess = true) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.cleanHistory();
