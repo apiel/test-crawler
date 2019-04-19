@@ -25,7 +25,7 @@
         "lodash": "^4.17.11",
         "md5": "^2.2.1",
         "npmlog": "^4.1.2",
-        "pixdiff-zone": "^0.2.0",
+        "pixdiff-zone": "^0.2.1",
         "pngjs": "^3.3.3",
         "puppeteer": "^1.11.0",
         "rimraf": "^2.6.3",

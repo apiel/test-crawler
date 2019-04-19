@@ -1,0 +1,14 @@
+{
+  "name": "example-travis",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "http-server",
+    "test:crawler": "test-crawler"
+  },
+  "dependencies": {
+    "http-server": "^0.11.1",
+    "test-crawler": "^0.2.1"
+  }
+}
