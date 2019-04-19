@@ -34,18 +34,8 @@
     "png": {
         "width": 800,
         "diff": {
-            "pixelDiffRatio": 0.0000020833333333333334,
-            "zones": [
-                {
-                    "zone": {
-                        "xMin": 96,
-                        "xMax": 96,
-                        "yMin": 24,
-                        "yMax": 24
-                    },
-                    "status": "diff"
-                }
-            ]
+            "pixelDiffRatio": 0,
+            "zones": []
         }
     }
 }
