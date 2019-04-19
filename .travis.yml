@@ -16,8 +16,10 @@ install:
 script:
   - cd packages/example-travis
   - yarn start > /dev/null &
-  - sleep 30
+  - sleep 5
   - yarn test:crawler:cli
+  - ls pages/crawl
+  - git status
   - git checkout master # instead should be the branch triggering the build
   - git add .
   - git commit -m "travis commit, test-crawler [ci skip]"
