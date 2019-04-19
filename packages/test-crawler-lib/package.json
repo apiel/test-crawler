@@ -43,5 +43,5 @@
         "@types/rimraf": "^2.0.2",
         "tslint": "^5.12.1"
     },
-    "gitHead": "c3dc43a2e9d2dab530fe2dc6ccfd751e5fa655e9"
+    "gitHead": "84cce9668e844e030da59d19dbc664b6ab413cee"
 }
