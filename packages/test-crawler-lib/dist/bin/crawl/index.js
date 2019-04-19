@@ -16,6 +16,7 @@ const config_1 = require("../../lib/config");
 const utils_1 = require("../../lib/utils");
 const lib_1 = require("../../lib");
 const diff_1 = require("../diff");
+let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
 function loadPage(id, url, distFolder, retry = 0) {
@@ -137,7 +138,7 @@ function processTimeout() {
         clearTimeout(processTimeoutTimer);
         processTimeoutTimer = setTimeout(() => {
             npmlog_1.info('Process timeout, exit', `${config_1.PROCESS_TIMEOUT} sec inactivity`);
-            process.exit();
+            process.exit(totalDiff);
         }, config_1.PROCESS_TIMEOUT * 1000);
     }
 }
@@ -148,6 +149,7 @@ function consumeResults() {
             const file = path_1.join(folder, '_.json');
             const crawler = yield fs_extra_1.readJSON(file);
             crawler.diffZoneCount += result.diffZoneCount;
+            totalDiff += result.diffZoneCount;
             const queueFolder = utils_1.getQueueFolder(folder);
             const filesInQueue = (yield fs_extra_1.pathExists(queueFolder)) ? yield fs_extra_1.readdir(queueFolder) : [];
             crawler.inQueue = filesInQueue.length;

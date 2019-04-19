@@ -23,6 +23,7 @@ interface ResultQueue {
     folder: string;
 }
 
+let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue: ResultQueue[] = [];
 
@@ -167,7 +168,7 @@ function processTimeout() {
         clearTimeout(processTimeoutTimer);
         processTimeoutTimer = setTimeout(() => {
             info('Process timeout, exit', `${PROCESS_TIMEOUT} sec inactivity`);
-            process.exit();
+            process.exit(totalDiff);
         }, PROCESS_TIMEOUT * 1000);
     }
 }
@@ -178,6 +179,7 @@ async function consumeResults() {
         const file = join(folder, '_.json');
         const crawler: Crawler = await readJSON(file);
         crawler.diffZoneCount += result.diffZoneCount;
+        totalDiff += result.diffZoneCount;
 
         const queueFolder = getQueueFolder(folder);
         const filesInQueue = await pathExists(queueFolder) ? await readdir(queueFolder) : [];
