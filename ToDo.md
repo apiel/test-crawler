@@ -1,5 +1,3 @@
-- Travis need to throw if diff found
-
 - viewport selectable
 
 - Need to make doc
