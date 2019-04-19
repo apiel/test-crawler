@@ -1,0 +1,3 @@
+#!/bin/bash
+
+STATIC_FOLDER=./build isomor-server

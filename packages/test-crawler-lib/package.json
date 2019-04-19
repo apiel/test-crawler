@@ -4,7 +4,7 @@
     "main": "dist/lib/index.js",
     "types": "dist/lib/index.d.ts",
     "bin": {
-        "test-crawler": "dist/bin/index.js"
+        "test-crawler-cli": "dist/bin/index.js"
     },
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
     "license": "MIT",

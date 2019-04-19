@@ -1,6 +1,9 @@
 {
   "name": "test-crawler-ui",
   "version": "0.2.0",
+  "bin": {
+    "test-crawler": "./test-crawler"
+  },
   "dependencies": {
     "antd": "^3.16.2",
     "brace": "^0.11.1",
@@ -20,12 +23,14 @@
     "typescript": "3.4.3"
   },
   "scripts": {
+    "prepublishOnly": "yarn isomor:build && yarn build && yarn serv:build && chmod +x test-crawler",
     "isomor:build": "isomor-transpiler",
     "isomor:build:dev": "WATCH=true isomor-transpiler",
     "serv:build": "rimraf ./dist-server && tsc -p tsconfig.server.json",
-    "serv": "rimraf ./dist-server && tsc -p tsconfig.server.json && STATIC_FOLDER=./public isomor-server",
+    "serv": "yarn serv:build && isomor-server",
     "serv:dev": "nodemon --watch 'src-isomor/**/server/**/*' -e ts,tsx --exec 'yarn serv'",
-    "prod": "yarn isomor:build && yarn build && STATIC_FOLDER=./build yarn serv",
+    "serv:prod": "STATIC_FOLDER=./build yarn serv",
+    "prod": "yarn isomor:build && yarn build && yarn serv:prod",
     "dev": "run-p isomor:build:dev serv:dev start",
     "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",

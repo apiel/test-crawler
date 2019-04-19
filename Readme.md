@@ -4,6 +4,9 @@ test-crawler is a tool to help you to make end to end testing, by crawling a web
 
 ![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pages.jpeg?raw=true)
 
+----
+Doc to be deprecated
+
 ## getting started
 
 ```
@@ -42,4 +45,37 @@ yarn start
 # eventually start the example website to crawl
 cd packages/example
 yarn start
+```
+
+
+----
+
+New doc should be something like
+
+## Getting started
+
+```bash
+yarn add test-crawler
+test-crawler
+```
+
+## Cli
+
+```bash
+test-crawler-cli ./preset.json
+```
+
+Preset file should look like:
+
+```json
+{
+    "crawlerInput": {
+        "url": "http://localhost:3003/",
+        "method": "spiderbot",
+        "viewport": {
+            "width": 800,
+            "height": 600
+        }
+    }
+}
 ```

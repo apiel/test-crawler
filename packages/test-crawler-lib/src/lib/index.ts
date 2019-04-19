@@ -216,7 +216,7 @@ export class CrawlerProvider {
         }
 
         if (runProcess) {
-            exec('PROCESS_TIMEOUT=60 test-crawler &');
+            exec('PROCESS_TIMEOUT=60 test-crawler-cli &');
         }
 
         return {

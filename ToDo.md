@@ -1,5 +1,4 @@
 - Travis integration
-- Preset start
 - viewport selectable
 
 - Need to make doc
