@@ -1,7 +1,9 @@
-- Need to make doc
+- Travis integration
+- Preset start
 - viewport selectable
 
-- server start crawling process
+- Need to make doc
+- Need to run properly with only one server instance
 
 - FIX if different image height, diff is not working!!! Need to fix that
 
@@ -14,3 +16,5 @@
     /b    (found: 1, 2, 3)
     /b/1
     /b/2
+
+- SSR version for react components?
