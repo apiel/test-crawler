@@ -1,3 +1,6 @@
 #!/bin/bash
 
-STATIC_FOLDER=./build isomor-server
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DIST_SERVER_FOLDER=${DIR}/../test-crawler/dist-server
+STATIC_FOLDER=${DIR}/../test-crawler/build
+DIST_SERVER_FOLDER=${DIST_SERVER_FOLDER} STATIC_FOLDER=${STATIC_FOLDER} isomor-server
