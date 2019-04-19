@@ -25,7 +25,8 @@ script:
 # only push change if found diff
 after_failure:
   - git checkout ${TRAVIS_BRANCH}
-  - git add .
+  - git add -A .
   - git commit -m "travis commit, test-crawler [ci skip]"
+  - git status
   - git pull
   - git push "https://${GITHUB_TOKEN}@${GH_REPO}" ${TRAVIS_BRANCH} > /dev/null 2>&1 # should always escape output, for security issue, else token could be visible
