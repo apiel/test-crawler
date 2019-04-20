@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "faker": "^4.1.0",
