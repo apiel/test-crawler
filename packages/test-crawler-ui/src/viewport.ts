@@ -25,3 +25,13 @@ export const viewportsStr: ViewportString[] = viewports.map(
 
 export const getDefaultViewportStr = () => viewportsStr[0];
 export const getDefaultViewport = (): ViewportObject => viewports[0].value;
+
+export const getViewportName = (value: ViewportObject) => {
+    const valueStr = JSON.stringify(value);
+    const index = viewportsStr.findIndex(vp => vp.value === valueStr);
+    if (index !== -1) {
+        return viewportsStr[index].name;
+    }
+    const { width, height, isMobile } = value;
+    return `${width}x${height}${ isMobile && ' mobile'}`;
+};

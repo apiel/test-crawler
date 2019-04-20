@@ -11,6 +11,7 @@ import 'moment-duration-format';
 import { timestampToString } from './utils';
 import { SwitchStatus } from './SwitchStatus';
 import { getHomeRoute } from './routes';
+import { getViewportName } from './viewport';
 
 const { Title } = Typography;
 
@@ -39,12 +40,13 @@ export const CrawlerInfo = ({
             search: stringify({ url, width, height, method }),
         });
     };
+    const screen = getViewportName(viewport);
     return (
         <>
             <Title level={3}>{timestampToString(timestamp)}</Title>
             <p><Button icon="retweet" size="small" onClick={onReRun}>Re-run</Button></p>
             <p><b>URL:</b> {url}</p>
-            <p><b>Screen:</b> {width}x{height} { isMobile && 'mobile'}</p>
+            <p><b>Screen:</b> {screen}</p>
             <p><b>URL crawled:</b> {urlsCount}</p>
             <p><b>Duration:</b> { duration(lastUpdate - startAt).format('h [hrs], m [min], s [sec]') }</p>
             {inQueue > 0 && <>
