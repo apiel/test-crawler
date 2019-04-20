@@ -1,5 +1,3 @@
-- viewport > different ID in crawler ??
-    - add viewport to page
 - need to generate folder if dont exist -> use outputJson and outputFile everywhere
 
 - FIX if different image height, diff is not working!!! Need to fix that

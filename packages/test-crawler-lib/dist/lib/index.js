@@ -48,10 +48,10 @@ class CrawlerProvider {
                 zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
                 const groupedZones = pixdiff_zone_1.groupOverlappingZone(zones);
                 base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
-                yield fs_extra_1.writeJSON(basePath('json'), base, { spaces: 4 });
+                yield fs_extra_1.outputJSON(basePath('json'), base, { spaces: 4 });
             }
             data.png.diff.zones[index].status = status;
-            yield fs_extra_1.writeJSON(filePath('json'), data, { spaces: 4 });
+            yield fs_extra_1.outputJSON(filePath('json'), data, { spaces: 4 });
             return data;
         });
     }
@@ -77,7 +77,7 @@ class CrawlerProvider {
                 pixelDiffRatio: 0,
                 zones: [],
             };
-            yield fs_extra_1.writeJSON(filePath('json'), data, { spaces: 4 });
+            yield fs_extra_1.outputJSON(filePath('json'), data, { spaces: 4 });
             yield this.copyFile(filePath, basePath, 'png');
             yield this.copyFile(filePath, basePath, 'html');
             yield this.copyFile(filePath, basePath, 'json');
@@ -91,7 +91,7 @@ class CrawlerProvider {
     }
     saveBasePageCode(id, code) {
         const filePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
-        return fs_extra_1.writeFile(filePath('js'), code);
+        return fs_extra_1.outputFile(filePath('js'), code);
     }
     loadBasePageCode(id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -125,7 +125,7 @@ class CrawlerProvider {
             const file = path_1.join(config_1.CRAWL_FOLDER, timestamp, '_.json');
             const crawler = yield fs_extra_1.readJson(file);
             crawler.status = status;
-            yield fs_extra_1.writeJSON(file, crawler, { spaces: 4 });
+            yield fs_extra_1.outputJSON(file, crawler, { spaces: 4 });
             return crawler;
         });
     }
@@ -157,7 +157,7 @@ class CrawlerProvider {
                     yield fs_extra_1.mkdir(config_1.PRESET_FOLDER);
                 }
                 const file = path_1.join(config_1.PRESET_FOLDER, `${id}.json`);
-                yield fs_extra_1.writeJSON(file, { id, name, crawlerInput }, { spaces: 4 });
+                yield fs_extra_1.outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
             }
             return this.startCrawler(crawlerInput);
         });
@@ -179,7 +179,7 @@ class CrawlerProvider {
             const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
             yield fs_extra_1.mkdir(distFolder);
             yield fs_extra_1.mkdir(utils_1.getQueueFolder(distFolder));
-            yield fs_extra_1.writeJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
+            yield fs_extra_1.outputJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
             if (crawlerInput.method === exports.CrawlerMethod.URLs) {
                 yield this.startUrlsCrawling(crawlerInput, distFolder);
             }

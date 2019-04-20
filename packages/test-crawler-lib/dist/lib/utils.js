@@ -41,7 +41,7 @@ function getQueueFolder(distFolder) {
 }
 exports.getQueueFolder = getQueueFolder;
 function savePageInfo(file, pageData) {
-    return fs_extra_1.writeJson(file, pageData, { spaces: 4 });
+    return fs_extra_1.outputJson(file, pageData, { spaces: 4 });
 }
 exports.savePageInfo = savePageInfo;
 //# sourceMappingURL=utils.js.map

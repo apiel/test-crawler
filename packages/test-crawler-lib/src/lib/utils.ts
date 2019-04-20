@@ -1,4 +1,4 @@
-import { readdir, pathExists, writeJson } from 'fs-extra';
+import { readdir, pathExists, outputJson } from 'fs-extra';
 
 import * as md5 from 'md5';
 
@@ -35,5 +35,5 @@ export function getQueueFolder(distFolder: string) {
 }
 
 export function savePageInfo(file: string, pageData: PageData) {
-    return writeJson(file, pageData, { spaces: 4 });
+    return outputJson(file, pageData, { spaces: 4 });
 }

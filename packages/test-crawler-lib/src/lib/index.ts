@@ -1,4 +1,14 @@
-import { readdir, readJSON, mkdir, writeJSON, readFile, pathExists, copy, readJson, writeFile } from 'fs-extra';
+import {
+    readdir,
+    readJSON,
+    mkdir,
+    outputJSON,
+    outputFile,
+    readFile,
+    pathExists,
+    copy,
+    readJson,
+} from 'fs-extra';
 import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
@@ -59,10 +69,10 @@ export class CrawlerProvider {
             const groupedZones = groupOverlappingZone(zones);
             base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
 
-            await writeJSON(basePath('json'), base, { spaces: 4 });
+            await outputJSON(basePath('json'), base, { spaces: 4 });
         }
         data.png.diff.zones[index].status = status;
-        await writeJSON(filePath('json'), data, { spaces: 4 });
+        await outputJSON(filePath('json'), data, { spaces: 4 });
         return data;
     }
 
@@ -87,7 +97,7 @@ export class CrawlerProvider {
             pixelDiffRatio: 0,
             zones: [],
         };
-        await writeJSON(filePath('json'), data, { spaces: 4 });
+        await outputJSON(filePath('json'), data, { spaces: 4 });
 
         await this.copyFile(filePath, basePath, 'png');
         await this.copyFile(filePath, basePath, 'html');
@@ -104,7 +114,7 @@ export class CrawlerProvider {
 
     saveBasePageCode(id: string, code: string): Promise<void> {
         const filePath = getFilePath(id, BASE_FOLDER);
-        return writeFile(filePath('js'), code);
+        return outputFile(filePath('js'), code);
     }
 
     async loadBasePageCode(id: string): Promise<string> {
@@ -142,7 +152,7 @@ export class CrawlerProvider {
         const file = join(CRAWL_FOLDER, timestamp, '_.json');
         const crawler: Crawler = await readJson(file);
         crawler.status = status;
-        await writeJSON(file, crawler, { spaces: 4 });
+        await outputJSON(file, crawler, { spaces: 4 });
         return crawler;
     }
 
@@ -167,7 +177,7 @@ export class CrawlerProvider {
             const files = await readdir(PRESET_FOLDER);
             return Promise.all(
                 files.filter(file => extname(file) === '.json')
-                     .map(file => readJSON(join(PRESET_FOLDER, file))),
+                    .map(file => readJSON(join(PRESET_FOLDER, file))),
             );
         }
         return [];
@@ -180,7 +190,7 @@ export class CrawlerProvider {
                 await mkdir(PRESET_FOLDER);
             }
             const file = join(PRESET_FOLDER, `${id}.json`);
-            await writeJSON(file, { id, name, crawlerInput }, { spaces: 4 });
+            await outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
         }
         return this.startCrawler(crawlerInput);
     }
@@ -211,7 +221,7 @@ export class CrawlerProvider {
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());
         await mkdir(distFolder);
         await mkdir(getQueueFolder(distFolder));
-        await writeJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
+        await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
 
         if (crawlerInput.method === CrawlerMethod.URLs) {
             await this.startUrlsCrawling(crawlerInput, distFolder);
