@@ -60,6 +60,8 @@ export const Pins = () => {
                             >
                                 <p><Icon type="link" /> <a href={url}>{url}</a></p>
                                 {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
+                                {png && png.width && <p><Icon type="picture" theme={iconTheme} /> width {png.width}</p>}
+
                             </Card>
                         ))}
                     </Masonry>

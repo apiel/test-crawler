@@ -18,6 +18,7 @@ import { PagesActionZone } from './PagesActionZone';
 // import { PageData } from 'test-crawler-lib';
 import { getPages } from './server/crawler';
 import { getColorByStatus } from './DiffZone';
+import { sigDig } from './utils';
 
 const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
     zones.filter(({ status }: any) => perStatus.includes(status)).length
@@ -68,7 +69,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                         {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
                         {png && !png.diff && <div><Icon type="picture" theme={iconTheme} /> New screenshot <Tag color="green">New</Tag></div>}
                         {png && png.diff && <>
-                            <p><Icon type="picture" theme={iconTheme} /> Pixel diff ratio: {png.diff.pixelDiffRatio}</p>
+                            <p><Icon type="picture" theme={iconTheme} /> Pixel diff ratio: {sigDig(png.diff.pixelDiffRatio)}</p>
                             {png.diff.zones.length > 0 &&
                                 <p>
                                     <b>Zone:</b>&nbsp;
