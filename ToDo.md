@@ -1,9 +1,12 @@
-- viewport selectable
+- viewport > mobile , rerun
 - need to generate folder if dont exist -> use outputJson and outputFile everywhere
 
 - FIX if different image height, diff is not working!!! Need to fix that
 - improve test-crawler bash
 
+- show data folder somewhere
+- give a way to run crawler from ui
+- output crawler in a log file instead of nothing, then we can `tail -f` with `run-screen`
 
 - code preview
 - pins: filter by url, viewport...

@@ -58,10 +58,9 @@ const usePreset = (search: string) => {
 type Props = FormComponentProps & RouteComponentProps;
 const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: Props) => {
     const { call } = useIsomor();
-    const start = async ({ saveAs, ...input }: any) => {
+    const start = async ({ saveAs, viewport, ...input }: any) => {
         try {
-            console.log('input', input);
-            const response = await saveAndStart({ ...input, viewport: { width: 800, height: 600 } }, saveAs);
+            const response = await saveAndStart({ ...input, viewport: JSON.parse(viewport) }, saveAs);
             await call(getCrawlers);
             history.push(getHistoryRoute(response.crawler.timestamp.toString()));
         } catch (error) {
