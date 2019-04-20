@@ -5158,9 +5158,9 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
-isomor-core@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.1.10.tgz#c203b3f98d9e66db29a06e849e5200fd0fdd9cfc"
+isomor-core@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.1.12.tgz#77ed0dd3a0ed3b616c6ecaa50ce0724f381e9b23"
   dependencies:
     fs-extra "^7.0.1"
     glob "^7.1.3"
@@ -5173,20 +5173,20 @@ isomor-react@^0.0.8:
     md5 "^2.2.1"
     typescript "^3.4.1"
 
-isomor-server@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.1.10.tgz#74801254f1d63f8f6998252b185827d8e9fb5360"
+isomor-server@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.1.12.tgz#bc0364c24ff6405dc0982c7d2e4aa99cf90a54d3"
   dependencies:
     body-parser "^1.18.3"
     express "^4.16.4"
     fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.1.10"
+    isomor-core "^0.1.12"
     typescript "^3.2.4"
 
-isomor-transpiler@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.1.10.tgz#4f92f10359896b5f8573f13247cc487526ca8053"
+isomor-transpiler@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.1.12.tgz#a8ddb90532f8192f00f76ca3894247805645eb08"
   dependencies:
     "@babel/generator" "^7.4.0"
     "@types/chokidar" "^2.1.3"
@@ -5196,17 +5196,17 @@ isomor-transpiler@^0.1.10:
     debug "^4.1.1"
     fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.1.10"
+    isomor-core "^0.1.12"
     ts-node "^8.0.3"
     typescript "^3.4.3"
 
-isomor@^0.1.8:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.1.10.tgz#905f4669f76012db6c6feaedcc71c4d926b67eb1"
+isomor@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.1.12.tgz#9e21c00418b95097e3d88c06860e0a861f9e4408"
   dependencies:
     axios "^0.18.0"
-    isomor-server "^0.1.10"
-    isomor-transpiler "^0.1.10"
+    isomor-server "^0.1.12"
+    isomor-transpiler "^0.1.12"
     typescript "^3.2.4"
 
 isomorphic-fetch@^2.1.1:
@@ -7031,9 +7031,9 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-pixdiff-zone@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.2.0.tgz#3db06c8895eb8e9269b56e210c0cb84024261038"
+pixdiff-zone@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.2.2.tgz#71f652a931ad64f29918bda89cc3bf360e7a2b8d"
   dependencies:
     typescript "^3.2.4"
 
@@ -8856,6 +8856,14 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
+run-screen@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.0.1.tgz#280dd912421f171f65e5ed0b20fcd4e31f026578"
+  dependencies:
+    cross-spawn "^6.0.5"
+    shell-quote "^1.6.1"
+    typescript "^3.2.4"
+
 rxjs@^6.1.0, rxjs@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.4.0.tgz#f3bb0fe7bda7fb69deac0c16f17b50b0b8790504"
@@ -9640,9 +9648,9 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
-test-crawler-lib@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.2.1.tgz#89c516796c672d230ffa0119d6d9c4ce0ac645c1"
+test-crawler-lib@^0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.2.8.tgz#38ced59606c41e697d6f48df75b41dafb9bc9344"
   dependencies:
     "@types/lockfile" "^1.0.1"
     axios "^0.18.0"
@@ -9652,7 +9660,7 @@ test-crawler-lib@^0.2.1:
     lodash "^4.17.11"
     md5 "^2.2.1"
     npmlog "^4.1.2"
-    pixdiff-zone "^0.2.0"
+    pixdiff-zone "^0.2.2"
     pngjs "^3.3.3"
     puppeteer "^1.11.0"
     rimraf "^2.6.3"

@@ -2,6 +2,7 @@
 - need to generate folder if dont exist -> use outputJson and outputFile everywhere
 
 - FIX if different image height, diff is not working!!! Need to fix that
+- improve test-crawler bash
 
 
 - code preview
@@ -22,3 +23,5 @@
 - HTML diff -> uglify HTML + linux diff (or diff lib)
 
 - SSR version for react components?
+
+- serverLess version using only github and travis (when loading the ui, github credential would be asked to get the a github token, then data would be saved by pushing commit to github)

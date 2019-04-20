@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Input from 'antd/lib/input';
 // import Select from 'antd/lib/select';
-import Form from 'antd/lib/form';
+import Form, { FormComponentProps } from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
 import Radio from 'antd/lib/radio';
 import Typography from 'antd/lib/typography';
@@ -15,6 +15,8 @@ import { saveAndStart, getCrawlers } from './server/crawler';
 import { useIsomor } from 'isomor-react';
 import { Info } from './Info';
 import { Preset } from './Preset';
+import { Viewport } from './Viewport';
+import { RouteComponentProps } from 'react-router';
 // import { CrawlerMethod } from 'test-crawler-lib';
 
 const { Paragraph, Text } = Typography;
@@ -53,10 +55,12 @@ const usePreset = (search: string) => {
     return { preset, setPreset };
 }
 
-const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: any) => {
+type Props = FormComponentProps & RouteComponentProps;
+const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: Props) => {
     const { call } = useIsomor();
     const start = async ({ saveAs, ...input }: any) => {
         try {
+            console.log('input', input);
             const response = await saveAndStart({ ...input, viewport: { width: 800, height: 600 } }, saveAs);
             await call(getCrawlers);
             history.push(getHistoryRoute(response.crawler.timestamp.toString()));
@@ -88,7 +92,12 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                     rules: [{ required: true, message: 'Please input an URL to crawl!' }],
                     initialValue: preset.crawlerInput.url,
                 })(
-                    <Input addonBefore="URL" />
+                    <Input addonBefore="URL" addonAfter={
+                        <Viewport 
+                            getFieldDecorator={getFieldDecorator} 
+                            initialValue={JSON.stringify(preset.crawlerInput.viewport)}
+                        />
+                    } />
                 )}
             </Form.Item>
             <Form.Item>
@@ -104,7 +113,7 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                     <Paragraph ellipsis={{ rows: 1, expandable: true }}>
                         <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
                         and crawl the children. It will then continue do the same with the children till no new
-                        link is found. Be careful if you have big website, this might is most likely not the right
+                        link is found. Be careful if you have big website, this is most likely not the right
                         solution for you.
                     </Paragraph>
                     <Paragraph ellipsis={{ rows: 1, expandable: true }}>
@@ -115,16 +124,6 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                     </Paragraph>
                 </Info>
             </Form.Item>
-            {/* <Form.Item>
-                {getFieldDecorator('viewport', {
-                    initialValue: '800x600',
-                })(
-                    <Select addonBefore="Viewport">
-                        <Select.Option value='800x600'>800x600</Select.Option>
-                        <Select.Option value='320x480'>320x480 mobile</Select.Option>
-                    </Select>
-                )}
-            </Form.Item> */}
             <Form.Item>
                 <Form.Item style={inlineStyle}>
                     <Button
