@@ -32,6 +32,9 @@ class CrawlerProvider {
             }
         });
     }
+    dir() {
+        return __dirname;
+    }
     setZoneStatus(timestamp, id, index, status) {
         return __awaiter(this, void 0, void 0, function* () {
             const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);

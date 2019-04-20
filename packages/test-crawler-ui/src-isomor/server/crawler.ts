@@ -10,6 +10,10 @@ import * as sharp from 'sharp';
 
 const crawlerProvider = new CrawlerProvider()
 
+export async function getDir(): Promise<string> {
+    return crawlerProvider.dir();
+}
+
 export function getCrawlers(): Promise<Crawler[]> {
     return crawlerProvider.getAllCrawlers();
 }

@@ -41,6 +41,10 @@ export class CrawlerProvider {
         }
     }
 
+    dir() {
+        return __dirname;
+    }
+
     async setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);

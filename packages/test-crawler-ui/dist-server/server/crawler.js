@@ -11,6 +11,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const test_crawler_lib_1 = require("test-crawler-lib");
 const sharp = require("sharp");
 const crawlerProvider = new test_crawler_lib_1.CrawlerProvider();
+function getDir() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return crawlerProvider.dir();
+    });
+}
+exports.getDir = getDir;
 function getCrawlers() {
     return crawlerProvider.getAllCrawlers();
 }

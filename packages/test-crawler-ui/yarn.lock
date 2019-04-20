@@ -3365,7 +3365,7 @@ error-ex@^1.2.0, error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-abstract@^1.11.0, es-abstract@^1.12.0, es-abstract@^1.4.3, es-abstract@^1.5.1, es-abstract@^1.7.0:
+es-abstract@^1.11.0, es-abstract@^1.12.0, es-abstract@^1.5.1, es-abstract@^1.7.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.13.0.tgz#ac86145fdd5099d8dd49558ccba2eaf9b88e24e9"
   dependencies:
@@ -4145,7 +4145,7 @@ fsevents@^1.2.7:
     nan "^2.12.1"
     node-pre-gyp "^0.12.0"
 
-function-bind@^1.0.2, function-bind@^1.1.1:
+function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
 
@@ -5158,9 +5158,9 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
-isomor-core@^0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.1.12.tgz#77ed0dd3a0ed3b616c6ecaa50ce0724f381e9b23"
+isomor-core@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.1.13.tgz#b9d291786308d315431065e056499f0b0c86a2f6"
   dependencies:
     fs-extra "^7.0.1"
     glob "^7.1.3"
@@ -5173,20 +5173,20 @@ isomor-react@^0.0.8:
     md5 "^2.2.1"
     typescript "^3.4.1"
 
-isomor-server@^0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.1.12.tgz#bc0364c24ff6405dc0982c7d2e4aa99cf90a54d3"
+isomor-server@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.1.13.tgz#e1ed83f2e450ea268e91ac7556fac1276dfc88d3"
   dependencies:
     body-parser "^1.18.3"
     express "^4.16.4"
     fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.1.12"
+    isomor-core "^0.1.13"
     typescript "^3.2.4"
 
-isomor-transpiler@^0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.1.12.tgz#a8ddb90532f8192f00f76ca3894247805645eb08"
+isomor-transpiler@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.1.13.tgz#03f7ce0b3c8d69e6d9048e0f31aa13cee2f6ce58"
   dependencies:
     "@babel/generator" "^7.4.0"
     "@types/chokidar" "^2.1.3"
@@ -5196,17 +5196,17 @@ isomor-transpiler@^0.1.12:
     debug "^4.1.1"
     fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.1.12"
+    isomor-core "^0.1.13"
     ts-node "^8.0.3"
     typescript "^3.4.3"
 
-isomor@^0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.1.12.tgz#9e21c00418b95097e3d88c06860e0a861f9e4408"
+isomor@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.1.13.tgz#cff6c8d1f1361d7ebc8c93eaa9caefc408f22810"
   dependencies:
     axios "^0.18.0"
-    isomor-server "^0.1.12"
-    isomor-transpiler "^0.1.12"
+    isomor-server "^0.1.13"
+    isomor-transpiler "^0.1.13"
     typescript "^3.2.4"
 
 isomorphic-fetch@^2.1.1:
@@ -5840,15 +5840,6 @@ load-json-file@^2.0.0:
     pify "^2.0.0"
     strip-bom "^3.0.0"
 
-load-json-file@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-4.0.0.tgz#2f5f45ab91e33216234fd53adab668eb4ec0993b"
-  dependencies:
-    graceful-fs "^4.1.2"
-    parse-json "^4.0.0"
-    pify "^3.0.0"
-    strip-bom "^3.0.0"
-
 loader-fs-cache@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/loader-fs-cache/-/loader-fs-cache-1.0.1.tgz#56e0bf08bd9708b26a765b68509840c8dec9fdbc"
@@ -6087,10 +6078,6 @@ memory-fs@^0.4.0, memory-fs@~0.4.1:
   dependencies:
     errno "^0.1.3"
     readable-stream "^2.0.1"
-
-memorystream@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/memorystream/-/memorystream-0.3.1.tgz#86d7090b30ce455d63fbae12dda51a47ddcaf9b2"
 
 merge-deep@^3.0.2:
   version "3.0.2"
@@ -6556,20 +6543,6 @@ npm-packlist@^1.1.6:
   dependencies:
     ignore-walk "^3.0.1"
     npm-bundled "^1.0.1"
-
-npm-run-all@^4.1.5:
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/npm-run-all/-/npm-run-all-4.1.5.tgz#04476202a15ee0e2e214080861bff12a51d98fba"
-  dependencies:
-    ansi-styles "^3.2.1"
-    chalk "^2.4.1"
-    cross-spawn "^6.0.5"
-    memorystream "^0.3.1"
-    minimatch "^3.0.4"
-    pidtree "^0.3.0"
-    read-pkg "^3.0.0"
-    shell-quote "^1.6.1"
-    string.prototype.padend "^3.0.0"
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -8517,14 +8490,6 @@ read-pkg@^2.0.0:
     normalize-package-data "^2.3.2"
     path-type "^2.0.0"
 
-read-pkg@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-3.0.0.tgz#9cbc686978fee65d16c00e2b19c237fcf6e38389"
-  dependencies:
-    load-json-file "^4.0.0"
-    normalize-package-data "^2.3.2"
-    path-type "^3.0.0"
-
 "readable-stream@1 || 2", readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.6, readable-stream@^2.1.5, readable-stream@^2.2.2, readable-stream@^2.3.0, readable-stream@^2.3.3, readable-stream@^2.3.5, readable-stream@^2.3.6, readable-stream@~2.3.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
@@ -8856,11 +8821,12 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-run-screen@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.0.1.tgz#280dd912421f171f65e5ed0b20fcd4e31f026578"
+run-screen@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.0.4.tgz#28625812aa7e96a664602668f0195878a68ddeb6"
   dependencies:
     cross-spawn "^6.0.5"
+    pidtree "^0.3.0"
     shell-quote "^1.6.1"
     typescript "^3.2.4"
 
@@ -9430,14 +9396,6 @@ string-width@^3.0.0:
     emoji-regex "^7.0.1"
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^5.0.0"
-
-string.prototype.padend@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/string.prototype.padend/-/string.prototype.padend-3.0.0.tgz#f3aaef7c1719f170c5eab1c32bf780d96e21f2f0"
-  dependencies:
-    define-properties "^1.1.2"
-    es-abstract "^1.4.3"
-    function-bind "^1.0.2"
 
 string_decoder@^1.0.0, string_decoder@^1.1.1:
   version "1.2.0"

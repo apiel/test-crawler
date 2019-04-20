@@ -1,12 +1,12 @@
-- viewport > mobile , rerun
+- viewport > mobile , rerun, different ID in crawler
 - need to generate folder if dont exist -> use outputJson and outputFile everywhere
 
 - FIX if different image height, diff is not working!!! Need to fix that
 - improve test-crawler bash
 
-- show data folder somewhere
-- give a way to run crawler from ui
+- show data folder path somewhere in ui
 - output crawler in a log file instead of nothing, then we can `tail -f` with `run-screen`
+- give a way to run crawler from ui
 
 - code preview
 - pins: filter by url, viewport...

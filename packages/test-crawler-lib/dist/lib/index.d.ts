@@ -9,6 +9,7 @@ export declare const CrawlerMethod: {
 };
 export declare class CrawlerProvider {
     private copyFile;
+    dir(): string;
     setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData>;
     setZonesStatus(timestamp: string, id: string, status: string): Promise<PageData>;
     copyToBase(timestamp: string, id: string): Promise<PageData>;

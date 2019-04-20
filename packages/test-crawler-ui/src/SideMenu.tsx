@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'antd/lib/icon';
 import Menu from 'antd/lib/menu';
+import Affix from 'antd/lib/affix';
 import { Link } from 'react-router-dom';
 import { Crawler } from 'test-crawler-lib';
 import { useIsomor } from 'isomor-react';
 
-import { getHomeRoute, getHistoryRoute, getPinsRoute } from './routes';
+import { getHomeRoute, getHistoryRoute, getPinsRoute, getSettingsRoute } from './routes';
 import { timestampToString } from './utils';
 import { getCrawlers } from './server/crawler';
 
@@ -53,6 +54,11 @@ export const SideMenu = () => {
                             <Link to={getHistoryRoute(timestamp)} />
                         </Menu.Item>
                     ))}
+            <Affix style={{ position: 'absolute', bottom: 15, left: 15 }}>
+                <Link to={getSettingsRoute()}>
+                    <Icon type="setting" />
+                </Link>
+            </Affix>
         </Menu>
     );
 }
