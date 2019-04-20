@@ -35,7 +35,7 @@ const App = () => (
         <Layout style={layoutStyle}>
             <Sider>
                 <Title level={3} style={titleStyle}>
-                    <Icon type="eye" /> Test-crawler
+                    Test-crawler
                 </Title>
                 <SideMenu />
             </Sider>

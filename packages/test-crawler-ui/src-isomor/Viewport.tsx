@@ -13,7 +13,7 @@ export const Viewport = ({ getFieldDecorator, initialValue }: any) => getFieldDe
 )(
     <Select>
         {viewportsStr.map(
-            ({ value, name }) => <Option value={value}>{name}</Option>
+            ({ value, name }) => <Option key={value} value={value}>{name}</Option>
         )}
     </Select>
 );

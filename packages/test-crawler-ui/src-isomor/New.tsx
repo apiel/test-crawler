@@ -94,8 +94,8 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                     initialValue: preset.crawlerInput.url,
                 })(
                     <Input addonBefore="URL" addonAfter={
-                        <Viewport 
-                            getFieldDecorator={getFieldDecorator} 
+                        <Viewport
+                            getFieldDecorator={getFieldDecorator}
                             initialValue={JSON.stringify(preset.crawlerInput.viewport)}
                         />
                     } />
