@@ -1,11 +1,10 @@
 - viewport selectable
-
-- Need to make doc
+- need to generate folder if dont exist -> use outputJson and outputFile everywhere
 
 - FIX if different image height, diff is not working!!! Need to fix that
 
 
-
+- code preview
 - pins: filter by url, viewport...
 
 - spider crawling with a limit of child path: (eg: limit 2)
@@ -20,5 +19,6 @@
 
 
 
+- HTML diff -> uglify HTML + linux diff (or diff lib)
 
 - SSR version for react components?
