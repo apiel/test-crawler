@@ -1,6 +1,10 @@
-- need to generate folder if dont exist -> use outputJson and outputFile everywhere
-
 - FIX if different image height, diff is not working!!! Need to fix that
+
+- doc doc doc
+
+- run in isolation, (docker? ....)
+
+
 - improve test-crawler bash > maybe switch to JS
 
 - output crawler in a log file instead of nothing, then we can `tail -f` with `run-screen`
@@ -9,6 +13,10 @@
 
 - code preview
 - pins: filter by url, viewport...
+
+
+
+- need to generate folder if dont exist? maybe no need since using outputJSON instead to writeJSON...
 
 - spider crawling with a limit of child path: (eg: limit 2)
     /     (found: a, b, c, d)
