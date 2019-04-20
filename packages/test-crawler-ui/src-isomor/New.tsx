@@ -17,6 +17,7 @@ import { Info } from './Info';
 import { Preset } from './Preset';
 import { Viewport } from './Viewport';
 import { RouteComponentProps } from 'react-router';
+import { getDefaultViewport } from './viewport';
 // import { CrawlerMethod } from 'test-crawler-lib';
 
 const { Paragraph, Text } = Typography;
@@ -40,7 +41,7 @@ const usePreset = (search: string) => {
         crawlerInput: {
             method: 'spiderbot', // CrawlerMethod.SPIDER_BOT,
             url: 'http://localhost:3003/',
-            viewport: { width: 800, height: 600 },
+            viewport: getDefaultViewport(),
         }
     };
     const [preset, setPreset] = useState<PresetType>(initialPreset);

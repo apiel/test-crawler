@@ -26,10 +26,11 @@ export const CrawlerInfo = ({
         startAt,
         lastUpdate,
         method,
-        viewport: { width, height },
+        viewport,
     },
     history,
 }: { crawler: Crawler, history: History }) => {
+    const { width, height, isMobile } = viewport;
     const total = urlsCount + inQueue;
     const percent = Math.floor(urlsCount / total * 100);
     const onReRun = () => {
@@ -43,7 +44,7 @@ export const CrawlerInfo = ({
             <Title level={3}>{timestampToString(timestamp)}</Title>
             <p><Button icon="retweet" size="small" onClick={onReRun}>Re-run</Button></p>
             <p><b>URL:</b> {url}</p>
-            <p><b>Screen:</b> {width}x{height}</p>
+            <p><b>Screen:</b> {width}x{height} { isMobile && 'mobile'}</p>
             <p><b>URL crawled:</b> {urlsCount}</p>
             <p><b>Duration:</b> { duration(lastUpdate - startAt).format('h [hrs], m [min], s [sec]') }</p>
             {inQueue > 0 && <>
