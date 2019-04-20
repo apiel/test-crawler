@@ -31,13 +31,12 @@ export const CrawlerInfo = ({
     },
     history,
 }: { crawler: Crawler, history: History }) => {
-    const { width, height, isMobile } = viewport;
     const total = urlsCount + inQueue;
     const percent = Math.floor(urlsCount / total * 100);
     const onReRun = () => {
         history.push({
             pathname: getHomeRoute(),
-            search: stringify({ url, width, height, method }),
+            search: stringify({ url, method, viewport: JSON.stringify(viewport) }),
         });
     };
     const screen = getViewportName(viewport);

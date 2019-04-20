@@ -48,7 +48,8 @@ const usePreset = (search: string) => {
 
     useEffect(() => {
         if (search) {
-            const crawlerInput = parse(search) as any as CrawlerInput;
+            const { viewport, ...crawlerInputRaw } = parse(search) as any;
+            const crawlerInput: CrawlerInput = { ...crawlerInputRaw, viewport: JSON.parse(viewport) }
             setPreset({ ...initialPreset, crawlerInput });
         }
     }, [search]);
