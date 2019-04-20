@@ -39,6 +39,8 @@ export interface PageData {
     id: string;
     url: string;
     performance?: Performance;
+    viewport?: Viewport;
+    baseUrl?: string;
     png?: {
         width: number;
         diff?: PngDiffData;

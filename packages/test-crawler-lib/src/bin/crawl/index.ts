@@ -75,7 +75,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         await page.screenshot({ path: filePath('png'), fullPage: true });
 
         const png = { width: viewport.width };
-        await savePageInfo(filePath('json'), { url, id, performance, png });
+        await savePageInfo(filePath('json'), { url, id, performance, png, viewport, baseUrl });
 
         if (method !== CrawlerMethod.URLs) {
             hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));

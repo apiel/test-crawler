@@ -187,7 +187,7 @@ class CrawlerProvider {
                 yield this.startSpiderBotCrawling(crawlerInput, distFolder);
             }
             if (runProcess) {
-                child_process_1.exec('PROCESS_TIMEOUT=60 test-crawler-cli &> test-crawler-cli.log');
+                child_process_1.exec('PROCESS_TIMEOUT=60 test-crawler-cli &');
             }
             return {
                 crawler,

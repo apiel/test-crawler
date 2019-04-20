@@ -16,6 +16,7 @@ import { getPins } from './server/crawler';
 import { PageData } from 'test-crawler-lib';
 import { Link } from 'react-router-dom';
 import { getPinCodeRoute } from './routes';
+import { getViewportName } from './viewport';
 
 const { Title } = Typography;
 
@@ -46,7 +47,7 @@ export const Pins = () => {
                         options={masonryOptions}
                         ref={(c: any) => { masonry = c && c.masonry; }}
                     >
-                        {pins.map(({ id, url, png }: any) => (
+                        {pins.map(({ id, url, png, viewport }: any) => (
                             <Card
                                 key={id}
                                 style={cardStyle}
@@ -60,8 +61,7 @@ export const Pins = () => {
                             >
                                 <p><Icon type="link" /> <a href={url}>{url}</a></p>
                                 {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
-                                {png && png.width && <p><Icon type="picture" theme={iconTheme} /> width {png.width}</p>}
-
+                                {viewport && <p><Icon type="picture" theme={iconTheme} /> {getViewportName(viewport)}</p>}
                             </Card>
                         ))}
                     </Masonry>

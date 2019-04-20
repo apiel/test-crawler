@@ -41,7 +41,7 @@ function loadPage(id, url, distFolder, retry = 0) {
             yield injectCode(basePath('js'), page, id, url, distFolder);
             yield page.screenshot({ path: filePath('png'), fullPage: true });
             const png = { width: viewport.width };
-            yield utils_1.savePageInfo(filePath('json'), { url, id, performance, png });
+            yield utils_1.savePageInfo(filePath('json'), { url, id, performance, png, viewport, baseUrl });
             if (method !== lib_1.CrawlerMethod.URLs) {
                 hrefs = yield page.$$eval('a', as => as.map(a => a.href));
                 const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
