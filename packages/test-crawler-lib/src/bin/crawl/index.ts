@@ -1,4 +1,4 @@
-import { launch, Page } from 'puppeteer';
+import { launch, Page, Viewport } from 'puppeteer';
 import { error, info } from 'npmlog';
 import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdir } from 'fs-extra';
 import { join, extname } from 'path';
@@ -80,7 +80,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         if (method !== CrawlerMethod.URLs) {
             hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
             const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
-            addUrls(urls, distFolder);
+            addUrls(urls, viewport, distFolder);
         }
 
         const result = await prepare(id, distFolder);
@@ -118,10 +118,10 @@ async function handleError(err: any, file: string) {
     await writeFile(file, JSON.stringify(err, null, 4));
 }
 
-function addUrls(urls: string[], distFolder: string) {
+function addUrls(urls: string[], viewport: Viewport, distFolder: string) {
     let count = 0;
     urls.forEach(url => {
-        if (addToQueue(url, distFolder)) {
+        if (addToQueue(url, viewport, distFolder)) {
             count++;
         }
     });

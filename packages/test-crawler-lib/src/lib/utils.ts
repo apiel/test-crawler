@@ -4,7 +4,7 @@ import * as md5 from 'md5';
 
 import { CRAWL_FOLDER } from './config';
 import { join } from 'path';
-import { PageData } from './typing';
+import { PageData, Viewport } from './typing';
 
 export async function getFolders() {
     const folders = await readdir(CRAWL_FOLDER);
@@ -18,8 +18,8 @@ export const getFilePath = (id: string, distFolder: string): FilePath => (extens
     return join(distFolder, `${id}.${extension}`);
 };
 
-export async function addToQueue(url: string, distFolder: string): Promise<boolean> {
-    const id = md5(url);
+export async function addToQueue(url: string, viewport: Viewport, distFolder: string): Promise<boolean> {
+    const id = md5(`${url}-${JSON.stringify(viewport)}`);
     const histFile = getFilePath(id, distFolder)('json');
     const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
 

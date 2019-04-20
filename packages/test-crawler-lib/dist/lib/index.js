@@ -173,7 +173,7 @@ class CrawlerProvider {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.cleanHistory();
             const timestamp = Math.floor(Date.now() / 1000);
-            const id = md5(`${timestamp}-${crawlerInput.url}`);
+            const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
             const crawler = Object.assign({}, crawlerInput, { timestamp,
                 id, diffZoneCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
             const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
@@ -199,12 +199,12 @@ class CrawlerProvider {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = yield axios_1.default.get(crawlerInput.url);
             const urls = data.split(`\n`).filter((url) => url.trim());
-            yield Promise.all(urls.map((url) => utils_1.addToQueue(url, distFolder)));
+            yield Promise.all(urls.map((url) => utils_1.addToQueue(url, crawlerInput.viewport, distFolder)));
         });
     }
-    startSpiderBotCrawling(crawlerInput, distFolder) {
+    startSpiderBotCrawling({ url, viewport }, distFolder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const addedToqueue = yield utils_1.addToQueue(crawlerInput.url, distFolder);
+            const addedToqueue = yield utils_1.addToQueue(url, viewport, distFolder);
             if (!addedToqueue) {
                 throw (new Error('Something went wrong while adding job to queue'));
             }

@@ -194,7 +194,7 @@ export class CrawlerProvider {
     async startCrawler(crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {
         await this.cleanHistory();
         const timestamp = Math.floor(Date.now() / 1000);
-        const id = md5(`${timestamp}-${crawlerInput.url}`);
+        const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
 
         const crawler: Crawler = {
             ...crawlerInput,
@@ -232,11 +232,11 @@ export class CrawlerProvider {
     private async startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
         const { data } = await axios.get(crawlerInput.url);
         const urls = data.split(`\n`).filter((url: string) => url.trim());
-        await Promise.all(urls.map((url: string) => addToQueue(url, distFolder)));
+        await Promise.all(urls.map((url: string) => addToQueue(url, crawlerInput.viewport, distFolder)));
     }
 
-    private async startSpiderBotCrawling(crawlerInput: CrawlerInput, distFolder: string) {
-        const addedToqueue = await addToQueue(crawlerInput.url, distFolder);
+    private async startSpiderBotCrawling({ url, viewport }: CrawlerInput, distFolder: string) {
+        const addedToqueue = await addToQueue(url, viewport, distFolder);
         if (!addedToqueue) {
             throw (new Error('Something went wrong while adding job to queue'));
         }

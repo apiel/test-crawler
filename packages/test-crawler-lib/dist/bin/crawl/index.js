@@ -45,7 +45,7 @@ function loadPage(id, url, distFolder, retry = 0) {
             if (method !== lib_1.CrawlerMethod.URLs) {
                 hrefs = yield page.$$eval('a', as => as.map(a => a.href));
                 const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
-                addUrls(urls, distFolder);
+                addUrls(urls, viewport, distFolder);
             }
             const result = yield diff_1.prepare(id, distFolder);
             resultsQueue.push({
@@ -86,10 +86,10 @@ function handleError(err, file) {
         yield fs_extra_1.writeFile(file, JSON.stringify(err, null, 4));
     });
 }
-function addUrls(urls, distFolder) {
+function addUrls(urls, viewport, distFolder) {
     let count = 0;
     urls.forEach(url => {
-        if (utils_1.addToQueue(url, distFolder)) {
+        if (utils_1.addToQueue(url, viewport, distFolder)) {
             count++;
         }
     });

@@ -23,9 +23,9 @@ exports.getFolders = getFolders;
 exports.getFilePath = (id, distFolder) => (extension) => {
     return path_1.join(distFolder, `${id}.${extension}`);
 };
-function addToQueue(url, distFolder) {
+function addToQueue(url, viewport, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
-        const id = md5(url);
+        const id = md5(`${url}-${JSON.stringify(viewport)}`);
         const histFile = exports.getFilePath(id, distFolder)('json');
         const queueFile = exports.getFilePath(id, getQueueFolder(distFolder))('json');
         if (!(yield fs_extra_1.pathExists(queueFile)) && !(yield fs_extra_1.pathExists(histFile))) {
