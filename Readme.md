@@ -37,7 +37,7 @@ http://127.0.0.1:3005/category/page33
 
 ## Pins
 
-Pins are the references screenshot to make the comparison with. While crawling, the crawler is comparing page to pin. To create a pin go in the result page of your crawling, each screenshot has some action buttons:
+Pins are the references screenshot to make the comparison with. While crawling, the crawler is comparing page to pin. To create a pin go in the result page of your crawling result, each screenshot has some action buttons:
 
 ![screenshot-action-buttons](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-action-btn.png?raw=true)
 
@@ -47,7 +47,17 @@ You can then visualize all your pins:
 
 ![screenshot-pins](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pins.png?raw=true)
 
-### Inject code
+## Crawling result
+
+![screenshot-diff](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-diff.png?raw=true)
+
+On the result page, you will see many screenshot with eventually some differences found. A difference is represented by a yellow rectangle. By clicking on the rectangle, popup 3 buttons giving you the possibility to report this difference (rectangle will became red) or validate this difference (rectangle will became green). You can as well validate this difference "for ever", then this area of the pages will always reconize this zone as valid place for changes.
+
+> **Note:** comparing page that are growing is very difficult (different height). For the moment this result to weird behaviors when comparing 2 screenshots of different size. To avoid this, use the code injection to remove the dynamic part of the page. Hopefully in the future, we will find better algarithm to reconize such changes.
+
+## Inject code
+
+![screenshot-code](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code.png?raw=true)
 
 Inject some code in the crawler while parsing the page. This code will be executed just after the page finish loaded, before to make the screenshot and before extracting the links.
 
@@ -55,7 +65,7 @@ This can be useful to remove some dynamic part from a page, for example some com
 
 Test-crawler is using [Puppeteer](https://www.npmjs.com/package/puppeteer) to crawl the page and make the screenshot. By injecting the code, you can use all the functionnalities from Puppeteer.
 
-To setup some code for a pin, click on the action button on the buttom right of a pin.
+To setup some code for a pin, click on the action button on the bottom right of a pin.
 
 ![screenshot-pin](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pin.png?raw=true)
 
@@ -79,9 +89,7 @@ module.exports = async function run(page) {
 }
 ```
 
-![screenshot-code](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code.png?raw=true)
-
-### Storybook
+## Storybook
 
 You can use code injection to crawl storybooks. Say test-crawler to crawl your storybook url http://127.0.0.1:6006/ and then inject some code to extract the urls of the stories and transform them to there iframe version. The code should be something like that:
 
@@ -103,17 +111,9 @@ You can find this code by clicking the button `Code snippet` of the code editor.
 
 > **Note:** feel free to make some pull request to propose some new code snippet.
 
-## Crawling result
-
-![screenshot-diff](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-diff.png?raw=true)
-
-On the result page, you will see many screenshot with eventually some differences found. A difference is represented by a yellow rectangle. By clicking on the rectangle, popup 3 buttons giving you the possibility to report this difference (rectangle will became red) or validate this difference (rectangle will became green). You can as well validate this difference "for ever", then this area of the pages will always reconize this zone as valid place for changes.
-
-> **Note:** comparing page that are growing is very difficult (different height). For the moment this result to weird behaviors when comparing 2 screenshots of different size. To avoid this, use the code injection to remove the dynamic part of the page. Hopefully in the future, we will find better algarithm to reconize such changes.
-
 ## Cli
 
-You can also run some test directly from the cli. This can be useful for continuous integration test.
+You can run test directly from the cli. This can be useful for continuous integration test.
 
 ```bash
 test-crawler-cli ./preset.json
