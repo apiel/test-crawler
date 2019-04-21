@@ -78,7 +78,7 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<any>)
                     <>
                         <Info>
                             <Paragraph>
-                                Inject some code in the crawler while you are parsing the page. This code will
+                                Inject some code in the crawler while parsing the page. This code will
                                 be executed just after the page finish loaded, before to make the screenshot and
                                 before extracting the links. You need to export a function that will take as
                                 first parameter the <Text code>page</Text> coming from Puppeteer.

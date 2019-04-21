@@ -2,7 +2,7 @@
 
 test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. Right now, it is mainly focus on visual regression testing but it will most likely support html comparison in the future.
 
-![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pages.jpeg?raw=true)
+![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-report.png?raw=true)
 
 ## Getting started
 
@@ -34,6 +34,82 @@ http://127.0.0.1:3005/category/page33
 ```
 
 > **Note:** to don't get false visual differences, you must run your test always on the same environment. Diffrent OS, different graphic card, ... might trigger visual differences in the snapshot, even if there was no changes. Prefer to always run your tests on the same machine.
+
+## Pins
+
+Pins are the references screenshot to make the comparison with. While crawling, the crawler is comparing page to pin. To create a pin go in the result page of your crawling, each screenshot has some action buttons:
+
+![screenshot-action-buttons](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-action-btn.png?raw=true)
+
+click on the button on the right with little pin icon.
+
+You can then visualize all your pins:
+
+![screenshot-pins](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pins.png?raw=true)
+
+### Inject code
+
+Inject some code in the crawler while parsing the page. This code will be executed just after the page finish loaded, before to make the screenshot and before extracting the links.
+
+This can be useful to remove some dynamic part from a page, for example some comments on a blog pages or some reviews on prodcut page. You could also inject code to simulate user behavior, like clicking or editing an input fields.
+
+Test-crawler is using [Puppeteer](https://www.npmjs.com/package/puppeteer) to crawl the page and make the screenshot. By injecting the code, you can use all the functionnalities from Puppeteer.
+
+To setup some code for a pin, click on the action button on the buttom right of a pin.
+
+![screenshot-pin](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pin.png?raw=true)
+
+In the editor, you need to export a function that will get as params the page currently opened by Puppeteer.
+
+```js
+module.exports = async function run(page) {
+// your code
+}
+```
+
+You can then use this `page` variable to manipulate the page. Following is an example that will insert "Test-crawler is awesome!" on the top of the page:
+
+```js
+module.exports = async function run(page) {
+    await page.evaluate(() => {
+        const div = document.createElement("div");
+        div.innerHTML = "Test-crawler is awesome!";
+        document.body.insertBefore(div, document.body.firstChild);
+    });
+}
+```
+
+![screenshot-code](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code.png?raw=true)
+
+### Storybook
+
+You can use code injection to crawl storybooks. Say test-crawler to crawl your storybook url http://127.0.0.1:6006/ and then inject some code to extract the urls of the stories and transform them to there iframe version. The code should be something like that:
+
+```js
+module.exports = async function run(page) {
+    await page.evaluate(() => {
+        hrefs = Array.from(document.links).map(
+            link => link.href.replace('/?', '/iframe.html?')
+        );
+
+        document.body.innerHTML = hrefs.map(
+            href => `<a href="${href}">${href}</a>`
+        ).join('<br />');
+    });
+}
+```
+
+You can find this code by clicking the button `Code snippet` of the code editor.
+
+> **Note:** feel free to make some pull request to propose some new code snippet.
+
+## Crawling result
+
+![screenshot-diff](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-diff.png?raw=true)
+
+On the result page, you will see many screenshot with eventually some differences found. A difference is represented by a yellow rectangle. By clicking on the rectangle, popup 3 buttons giving you the possibility to report this difference (rectangle will became red) or validate this difference (rectangle will became green). You can as well validate this difference "for ever", then this area of the pages will always reconize this zone as valid place for changes.
+
+> **Note:** comparing page that are growing is very difficult (different height). For the moment this result to weird behaviors when comparing 2 screenshots of different size. To avoid this, use the code injection to remove the dynamic part of the page. Hopefully in the future, we will find better algarithm to reconize such changes.
 
 ## Cli
 
