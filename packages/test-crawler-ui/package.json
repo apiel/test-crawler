@@ -33,7 +33,7 @@
   "dependencies": {
     "antd": "^3.16.2",
     "brace": "^0.11.1",
-    "isomor": "^0.1.13",
+    "isomor": "^0.1.14",
     "isomor-react": "^0.0.8",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.2.2",
