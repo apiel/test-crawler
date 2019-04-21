@@ -17,6 +17,9 @@
 - pins: filter by url, viewport...
 
 
+- plugin system
+
+
 - settings page?
 - need to generate folder if dont exist? maybe no need since using outputJSON instead to writeJSON...
 
