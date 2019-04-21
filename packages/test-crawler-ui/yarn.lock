@@ -7004,9 +7004,9 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-pixdiff-zone@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.2.2.tgz#71f652a931ad64f29918bda89cc3bf360e7a2b8d"
+pixdiff-zone@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.3.0.tgz#dc787e3d3d0bc7362a62c8e00409adf3a241205d"
   dependencies:
     typescript "^3.2.4"
 
@@ -8821,9 +8821,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-run-screen@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.0.4.tgz#28625812aa7e96a664602668f0195878a68ddeb6"
+run-screen@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.1.0.tgz#5b35302f1088f64107767d6c5fdb1bc6c997db22"
   dependencies:
     cross-spawn "^6.0.5"
     pidtree "^0.3.0"
@@ -9606,9 +9606,9 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
-test-crawler-lib@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.2.8.tgz#38ced59606c41e697d6f48df75b41dafb9bc9344"
+test-crawler-lib@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.0.tgz#b9a0b61239442fa365953782df87ce5d3a938191"
   dependencies:
     "@types/lockfile" "^1.0.1"
     axios "^0.18.0"
@@ -9618,7 +9618,7 @@ test-crawler-lib@^0.2.8:
     lodash "^4.17.11"
     md5 "^2.2.1"
     npmlog "^4.1.2"
-    pixdiff-zone "^0.2.2"
+    pixdiff-zone "^0.3.0"
     pngjs "^3.3.3"
     puppeteer "^1.11.0"
     rimraf "^2.6.3"

@@ -15,7 +15,7 @@
 - pins: filter by url, viewport...
 
 
-
+- settings page?
 - need to generate folder if dont exist? maybe no need since using outputJSON instead to writeJSON...
 
 - spider crawling with a limit of child path: (eg: limit 2)
