@@ -22,9 +22,11 @@ function parsePng(data, filePath, basePath) {
         const expected = yield fs_extra_1.readFile(basePath('png'));
         const rawActual = pngjs_1.PNG.sync.read(actual);
         const rawExpected = pngjs_1.PNG.sync.read(expected);
-        const { width, height } = rawActual;
+        let { width, height } = rawActual;
+        width = Math.min(width, rawExpected.width);
+        height = Math.min(height, rawExpected.height);
         const diffImage = new pngjs_1.PNG({ width, height });
-        const { diff, zones } = pixdiff_zone_1.pixdiff(rawActual, rawExpected, diffImage);
+        const { diff, zones } = pixdiff_zone_1.pixdiff(cropPng(rawActual, width, height), cropPng(rawExpected, width, height), diffImage);
         const totalPixels = width * height;
         const pixelDiffRatio = diff / totalPixels;
         npmlog_1.info('PNG', id, url, `diff ratio: ${pixelDiffRatio}`);
@@ -42,6 +44,13 @@ function parsePng(data, filePath, basePath) {
         yield fs_extra_1.writeJSON(filePath('json'), data, { spaces: 4 });
         return zones.length;
     });
+}
+function cropPng(png, width, height) {
+    const origin = new pngjs_1.PNG({ width: png.width, height: png.height });
+    origin.data = png.data;
+    const cropped = new pngjs_1.PNG({ width, height });
+    origin.bitblt(cropped, 0, 0, width, height);
+    return cropped;
 }
 function parseZones(basePath, zones) {
     return __awaiter(this, void 0, void 0, function* () {

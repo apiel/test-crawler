@@ -1,8 +1,10 @@
-- FIX if different image height, diff is not working!!! Need to fix that
-
 - doc doc doc
+    - diff images different height
 
 - run in isolation, (docker? ....)
+
+
+- show crawling error?
 
 
 - improve test-crawler bash > maybe switch to JS
@@ -28,6 +30,9 @@
     /b/1
     /b/2
 
+
+
+- diff images with different height algorithm
 
 
 - HTML diff -> uglify HTML + linux diff (or diff lib)

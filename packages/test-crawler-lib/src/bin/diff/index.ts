@@ -15,12 +15,14 @@ async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) 
     const rawActual = PNG.sync.read(actual);
     const rawExpected = PNG.sync.read(expected);
 
-    const { width, height } = rawActual;
-    const diffImage = new PNG({ width, height });
+    let { width, height } = rawActual;
+    width = Math.min(width, rawExpected.width); // even if width should be the same!!
+    height = Math.min(height, rawExpected.height);
 
+    const diffImage = new PNG({ width, height });
     const { diff, zones } = pixdiff(
-        rawActual,
-        rawExpected,
+        cropPng(rawActual, width, height),
+        cropPng(rawExpected, width, height),
         diffImage,
     );
 
@@ -44,6 +46,16 @@ async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) 
     await writeJSON(filePath('json'), data, { spaces: 4 });
 
     return zones.length;
+}
+
+function cropPng(png: PNG, width: number, height: number) {
+    const origin = new PNG({ width: png.width, height: png.height });
+    origin.data = png.data;
+
+    const cropped = new PNG({ width, height });
+    origin.bitblt(cropped, 0, 0, width, height);
+
+    return cropped;
 }
 
 async function parseZones(basePath: FilePath, zones: Zone[]) {

@@ -526,9 +526,9 @@ pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
 
-pixdiff-zone@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.1.2.tgz#711272f55c073172607c262ee5f77b45ef80776c"
+pixdiff-zone@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.3.0.tgz#dc787e3d3d0bc7362a62c8e00409adf3a241205d"
   dependencies:
     typescript "^3.2.4"
 
