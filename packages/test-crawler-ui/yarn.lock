@@ -2576,6 +2576,13 @@ convert-source-map@^1.1.0, convert-source-map@^1.4.0, convert-source-map@^1.5.1:
   dependencies:
     safe-buffer "~5.1.1"
 
+cookie-parser@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/cookie-parser/-/cookie-parser-1.4.4.tgz#e6363de4ea98c3def9697b93421c09f30cf5d188"
+  dependencies:
+    cookie "0.3.1"
+    cookie-signature "1.0.6"
+
 cookie-signature@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
@@ -5158,9 +5165,9 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
-isomor-core@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.1.13.tgz#b9d291786308d315431065e056499f0b0c86a2f6"
+isomor-core@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.2.2.tgz#d37cc3ca36bd24e0d19b8aaf3497dafeec429a32"
   dependencies:
     fs-extra "^7.0.1"
     glob "^7.1.3"
@@ -5173,20 +5180,21 @@ isomor-react@^0.0.8:
     md5 "^2.2.1"
     typescript "^3.4.1"
 
-isomor-server@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.1.13.tgz#e1ed83f2e450ea268e91ac7556fac1276dfc88d3"
+isomor-server@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.2.2.tgz#18900a9461ed4c1933f2c158a64e06e9b43243a6"
   dependencies:
     body-parser "^1.18.3"
+    cookie-parser "^1.4.4"
     express "^4.16.4"
     fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.1.13"
+    isomor-core "^0.2.2"
     typescript "^3.2.4"
 
-isomor-transpiler@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.1.13.tgz#03f7ce0b3c8d69e6d9048e0f31aa13cee2f6ce58"
+isomor-transpiler@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.2.2.tgz#78fafe02c1a03f6de6494565e273f333fb3f9ca9"
   dependencies:
     "@babel/generator" "^7.4.0"
     "@types/chokidar" "^2.1.3"
@@ -5196,17 +5204,17 @@ isomor-transpiler@^0.1.13:
     debug "^4.1.1"
     fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.1.13"
+    isomor-core "^0.2.2"
     ts-node "^8.0.3"
     typescript "^3.4.3"
 
-isomor@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.1.13.tgz#cff6c8d1f1361d7ebc8c93eaa9caefc408f22810"
+isomor@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.2.2.tgz#ba0941b2a7634a3f750efe13475b56dbe4250a7d"
   dependencies:
     axios "^0.18.0"
-    isomor-server "^0.1.13"
-    isomor-transpiler "^0.1.13"
+    isomor-server "^0.2.2"
+    isomor-transpiler "^0.2.2"
     typescript "^3.2.4"
 
 isomorphic-fetch@^2.1.1:
@@ -8821,9 +8829,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-run-screen@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.1.0.tgz#5b35302f1088f64107767d6c5fdb1bc6c997db22"
+run-screen@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.2.1.tgz#3c85bfd1f9cb8f7864d52f6be340e3a1495080d1"
   dependencies:
     cross-spawn "^6.0.5"
     pidtree "^0.3.0"
@@ -9606,9 +9614,9 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
-test-crawler-lib@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.0.tgz#b9a0b61239442fa365953782df87ce5d3a938191"
+test-crawler-lib@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.2.tgz#b51a9c7f7276af13cb7a1586a9a921b3f9699483"
   dependencies:
     "@types/lockfile" "^1.0.1"
     axios "^0.18.0"

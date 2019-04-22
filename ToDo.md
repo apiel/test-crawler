@@ -1,5 +1,7 @@
+- switch Readme to README (use docsify ?)
 - run in isolation, (docker? ....)
 
+- handle errors
 
 - show crawling error?
 - output crawler in a log file instead of nothing, then we can `tail -f` with `run-screen`
