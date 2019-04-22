@@ -59,7 +59,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/sharp": "^0.22.1",
     "nodemon": "^1.18.11",
-    "run-screen": "^0.1.0"
+    "run-screen": "^0.2.1"
   },
   "gitHead": "84cce9668e844e030da59d19dbc664b6ab413cee"
 }

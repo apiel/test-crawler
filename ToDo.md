@@ -1,22 +1,17 @@
-- doc doc doc
-    - diff images different height
-
 - run in isolation, (docker? ....)
 
 
 - show crawling error?
-
-
-- improve test-crawler bash > maybe switch to JS
-
 - output crawler in a log file instead of nothing, then we can `tail -f` with `run-screen`
     - find a way to get output
     - give a way to run crawler from ui ? no need?
 
+
+- improve test-crawler bash > maybe switch to JS
+
+
 - code preview
 - pins: filter by url, viewport...
-
-
 - plugin system
 
 
@@ -43,3 +38,14 @@
 - SSR version for react components?
 
 - serverLess version using only github and travis (when loading the ui, github credential would be asked to get the a github token, then data would be saved by pushing commit to github)
+
+### Test-crawler-input
+
+- (form) input random value in field, submit and save result. Do this several time with different values, and saves everything. Re-do with the same value and check if there is the same result. If result change, trigger warning...
+    - might give the possibility to reconize filed type
+        - email
+        - numeric
+        - password
+        - ...
+- search input test, enter random text... save result, compare... but for generating the search might use the data in the result...
+    - actually easier than form testing
