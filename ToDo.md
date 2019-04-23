@@ -4,11 +4,16 @@
 - run in isolation, (docker? ....)
 
 - handle errors
+- should we `tail -f test-crawler-cli.log` with `run-screen` ?
 
-- show crawling error?
-- output crawler in a log file instead of nothing, then we can `tail -f` with `run-screen`
-    - find a way to get output
-    - give a way to run crawler from ui ? no need?
+toggle on/off `runProcess` from settings, set timeout from settings...
+```tsx
+if (runProcess) {
+    exec(`PROCESS_TIMEOUT=60 test-crawler-cli 2> ${this.getLogFile()} &`);
+}
+```
+
+
 
 
 - improve test-crawler bash > maybe switch to JS

@@ -51,8 +51,19 @@ export class CrawlerProvider {
         }
     }
 
-    dir() {
-        return __dirname;
+    private getLogFile() {
+        return join(process.cwd(), 'test-crawler-cli.log');
+    }
+
+    getSettings() {
+        return {
+            dir: __dirname,
+            logFile: this.getLogFile(),
+        };
+    }
+
+    getLogs() {
+        return readFile(this.getLogFile());
     }
 
     async setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
@@ -230,7 +241,7 @@ export class CrawlerProvider {
         }
 
         if (runProcess) {
-            exec('PROCESS_TIMEOUT=60 test-crawler-cli 2> test-crawler-cli.log &');
+            exec(`PROCESS_TIMEOUT=60 test-crawler-cli 2> ${this.getLogFile()} &`);
         }
 
         return {

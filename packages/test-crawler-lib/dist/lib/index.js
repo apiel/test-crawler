@@ -32,8 +32,17 @@ class CrawlerProvider {
             }
         });
     }
-    dir() {
-        return __dirname;
+    getLogFile() {
+        return path_1.join(process.cwd(), 'test-crawler-cli.log');
+    }
+    getSettings() {
+        return {
+            dir: __dirname,
+            logFile: this.getLogFile(),
+        };
+    }
+    getLogs() {
+        return fs_extra_1.readFile(this.getLogFile());
     }
     setZoneStatus(timestamp, id, index, status) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -187,7 +196,7 @@ class CrawlerProvider {
                 yield this.startSpiderBotCrawling(crawlerInput, distFolder);
             }
             if (runProcess) {
-                child_process_1.exec('PROCESS_TIMEOUT=60 test-crawler-cli 2> test-crawler-cli.log &');
+                child_process_1.exec(`PROCESS_TIMEOUT=60 test-crawler-cli 2> ${this.getLogFile()} &`);
             }
             return {
                 crawler,

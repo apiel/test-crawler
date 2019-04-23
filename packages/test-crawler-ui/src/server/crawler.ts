@@ -1,6 +1,9 @@
 import { remote } from "isomor";
-export function getDir(...args: any) {
-  return remote("server-crawler", "getDir", args);
+export function getSettings(...args: any) {
+  return remote("server-crawler", "getSettings", args);
+}
+export function getLogs(...args: any) {
+  return remote("server-crawler", "getLogs", args);
 }
 export function getCrawlers(...args: any) {
   return remote("server-crawler", "getCrawlers", args);
