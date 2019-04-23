@@ -1,3 +1,5 @@
+- remove pages from npm package
+
 - switch Readme to README (use docsify ?)
 - run in isolation, (docker? ....)
 
