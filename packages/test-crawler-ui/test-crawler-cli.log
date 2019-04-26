@@ -3,24 +3,24 @@ info Add urls found 7, add 7
 info Crawl c1eee82a2c3dc4530f8560d0560583b7.json
 info Crawl c9ccfc8c7810f72add392ee25df09228.json
 info Crawl f46d7343468a2d7cc89860a38eee2463.json
-info PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff ratio: 0.0015658475110270952
-info PNG zone [ { xMin: 267, xMax: 528, yMin: 809, yMax: 827 },
-info PNG   { xMin: 325, xMax: 336, yMin: 1378, yMax: 1396 },
-info PNG   { xMin: 355, xMax: 408, yMin: 1378, yMax: 1395 },
-info PNG   { xMin: 456, xMax: 481, yMin: 1378, yMax: 1396 },
-info PNG   { xMin: 295, xMax: 307, yMin: 1379, yMax: 1396 },
-info PNG   { xMin: 427, xMax: 437, yMin: 1379, yMax: 1395 },
-info PNG   { xMin: 501, xMax: 526, yMin: 1379, yMax: 1396 } ]
-info PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff file: /home/alex/dev/test/test-crawler/packages/test-crawler-lib/pages/crawl/1556023190/defb34c2e30004f1aedca21bbc2a2612.png.diff.png
+info PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff ratio: 0.0015666351606805292
+info PNG zone [ { xMin: 274, xMax: 525, yMin: 809, yMax: 827 },
+info PNG   { xMin: 296, xMax: 394, yMin: 1378, yMax: 1396 },
+info PNG   { xMin: 420, xMax: 495, yMin: 1378, yMax: 1396 },
+info PNG   { xMin: 514, xMax: 525, yMin: 1378, yMax: 1395 },
+info PNG   { xMin: 296, xMax: 355, yMin: 1379, yMax: 1396 },
+info PNG   { xMin: 413, xMax: 495, yMin: 1379, yMax: 1396 },
+info PNG   { xMin: 296, xMax: 357, yMin: 1383, yMax: 1396 } ]
+info PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff file: /home/alex/dev/test/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages/crawl/1556283412/defb34c2e30004f1aedca21bbc2a2612.png.diff.png
 info browser closed http://localhost:3003/
 info Add urls found 1, add 1
+info PNG c1eee82a2c3dc4530f8560d0560583b7 http://localhost:3003/item/2 diff ratio: 0
+info PNG zone []
+info browser closed http://localhost:3003/item/2
 info Add urls found 1, add 1
 info DIFF new png
 info browser closed http://localhost:3003/item/1
-info PNG c1eee82a2c3dc4530f8560d0560583b7 http://localhost:3003/item/2 diff ratio: 0
-info PNG zone []
 info Add urls found 1, add 1
 info DIFF new png
-info browser closed http://localhost:3003/item/2
 info browser closed http://localhost:3003/item/0
 info Process timeout, exit 60 sec inactivity

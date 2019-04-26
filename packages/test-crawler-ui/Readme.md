@@ -6,6 +6,8 @@ test-crawler is a tool for end to end testing, by crawling a website and making 
 
 ## Getting started
 
+> **Note:** you need to use the latest version of node, right now v11.10.1
+
 ```bash
 yarn add test-crawler
 npx test-crawler
