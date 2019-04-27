@@ -1,5 +1,1 @@
-pages/.*
-!pages/base
-!pages/crawl
-pages/base/.*
-pages/crawl/.*
+pages

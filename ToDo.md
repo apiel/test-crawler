@@ -1,6 +1,5 @@
 - remove pages from npm package
 - handle errors
-- switch Readme to README (use docsify ?)
 
 - **spider crawling with a limit** of child path: (eg: limit 2)
     /     (found: a, b, c, d)
