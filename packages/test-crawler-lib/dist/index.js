@@ -78,6 +78,7 @@ class CrawlerProvider {
     }
     copyToBase(timestamp, id) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield fs_extra_1.mkdirp(config_1.BASE_FOLDER);
             const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
@@ -124,9 +125,7 @@ class CrawlerProvider {
     }
     getPagesInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!(yield fs_extra_1.pathExists(folder))) {
-                return [];
-            }
+            yield fs_extra_1.mkdirp(folder);
             const files = yield fs_extra_1.readdir(folder);
             return Promise.all(files.filter(file => path_1.extname(file) === '.json' && file !== '_.json')
                 .map(file => fs_extra_1.readJSON(path_1.join(folder, file))));
@@ -146,6 +145,7 @@ class CrawlerProvider {
     }
     getAllCrawlers() {
         return __awaiter(this, void 0, void 0, function* () {
+            yield fs_extra_1.mkdirp(config_1.CRAWL_FOLDER);
             const folders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
             const crawlers = yield Promise.all(folders.map(folder => fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, folder, '_.json'))));
             return crawlers;
@@ -153,21 +153,16 @@ class CrawlerProvider {
     }
     loadPresets() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (yield fs_extra_1.pathExists(config_1.PRESET_FOLDER)) {
-                const files = yield fs_extra_1.readdir(config_1.PRESET_FOLDER);
-                return Promise.all(files.filter(file => path_1.extname(file) === '.json')
-                    .map(file => fs_extra_1.readJSON(path_1.join(config_1.PRESET_FOLDER, file))));
-            }
-            return [];
+            yield fs_extra_1.mkdirp(config_1.PRESET_FOLDER);
+            const files = yield fs_extra_1.readdir(config_1.PRESET_FOLDER);
+            return Promise.all(files.filter(file => path_1.extname(file) === '.json')
+                .map(file => fs_extra_1.readJSON(path_1.join(config_1.PRESET_FOLDER, file))));
         });
     }
     saveAndStart(crawlerInput, name) {
         return __awaiter(this, void 0, void 0, function* () {
             if (name) {
                 const id = md5(name);
-                if (!(yield fs_extra_1.pathExists(config_1.PRESET_FOLDER))) {
-                    yield fs_extra_1.mkdir(config_1.PRESET_FOLDER);
-                }
                 const file = path_1.join(config_1.PRESET_FOLDER, `${id}.json`);
                 yield fs_extra_1.outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
             }
@@ -189,8 +184,6 @@ class CrawlerProvider {
             const crawler = Object.assign({}, crawlerInput, { timestamp,
                 id, diffZoneCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
             const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
-            yield fs_extra_1.mkdir(distFolder);
-            yield fs_extra_1.mkdir(utils_1.getQueueFolder(distFolder));
             yield fs_extra_1.outputJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
             if (crawlerInput.method === exports.CrawlerMethod.URLs) {
                 yield this.startUrlsCrawling(crawlerInput, distFolder);

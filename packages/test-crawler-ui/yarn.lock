@@ -938,10 +938,6 @@
   dependencies:
     "@types/jest-diff" "*"
 
-"@types/lockfile@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@types/lockfile/-/lockfile-1.0.1.tgz#434a3455e89843312f01976e010c60f1bcbd56f7"
-
 "@types/lodash@^4.14.123":
   version "4.14.123"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
@@ -8932,9 +8928,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-run-screen@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.2.1.tgz#3c85bfd1f9cb8f7864d52f6be340e3a1495080d1"
+run-screen@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.5.1.tgz#da3bf5b34ff7eaf25b942771b65a2ff9d82b2dea"
   dependencies:
     cross-spawn "^6.0.5"
     pidtree "^0.3.0"
@@ -9724,40 +9720,28 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
-test-crawler-cli@^0.3.6:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-0.3.6.tgz#0645e86f69b4cba16109ed92828f22077525e080"
+test-crawler-cli@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-0.3.8.tgz#afa9ef1251b5207ee922fb0bf91e9910e60497c2"
   dependencies:
-    "@types/lockfile" "^1.0.1"
-    axios "^0.18.0"
-    execa "^1.0.0"
     fs-extra "^7.0.1"
     lockfile "^1.0.4"
-    lodash "^4.17.11"
-    md5 "^2.2.1"
     npmlog "^4.1.2"
     pixdiff-zone "^0.3.0"
     pngjs "^3.3.3"
     puppeteer "^1.11.0"
-    rimraf "^2.6.3"
-    test-crawler-lib "^0.3.5"
+    test-crawler-lib "^0.3.8"
     ts-node "^8.0.2"
     typescript "^3.2.4"
 
-test-crawler-lib@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.5.tgz#9951b1aa2eb6b406628995582d26529f4e399786"
+test-crawler-lib@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.8.tgz#d9c5ea3ec2331a37f3e6062fb93cff30b64736a6"
   dependencies:
-    "@types/lockfile" "^1.0.1"
     axios "^0.18.0"
-    execa "^1.0.0"
     fs-extra "^7.0.1"
-    lockfile "^1.0.4"
-    lodash "^4.17.11"
     md5 "^2.2.1"
-    npmlog "^4.1.2"
     pixdiff-zone "^0.3.0"
-    pngjs "^3.3.3"
     puppeteer "^1.11.0"
     rimraf "^2.6.3"
     ts-node "^8.0.2"

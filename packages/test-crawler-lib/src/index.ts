@@ -8,6 +8,7 @@ import {
     pathExists,
     copy,
     readJson,
+    mkdirp,
 } from 'fs-extra';
 import { join, extname } from 'path';
 import * as rimraf from 'rimraf';
@@ -99,6 +100,7 @@ export class CrawlerProvider {
     }
 
     async copyToBase(timestamp: string, id: string): Promise<PageData> {
+        await mkdirp(BASE_FOLDER);
         const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const basePath = getFilePath(id, BASE_FOLDER);
@@ -152,9 +154,7 @@ export class CrawlerProvider {
     }
 
     private async getPagesInFolder(folder: string): Promise<PageData[]> {
-        if (!(await pathExists(folder))) {
-            return [];
-        }
+        await mkdirp(folder);
         const files = await readdir(folder);
         return Promise.all(
             files.filter(file => extname(file) === '.json' && file !== '_.json')
@@ -175,6 +175,7 @@ export class CrawlerProvider {
     }
 
     async getAllCrawlers(): Promise<Crawler[]> {
+        await mkdirp(CRAWL_FOLDER);
         const folders = await readdir(CRAWL_FOLDER);
         const crawlers: Crawler[] = await Promise.all(
             folders.map(folder => readJSON(join(
@@ -187,22 +188,17 @@ export class CrawlerProvider {
     }
 
     async loadPresets(): Promise<Preset[]> {
-        if (await pathExists(PRESET_FOLDER)) {
-            const files = await readdir(PRESET_FOLDER);
-            return Promise.all(
-                files.filter(file => extname(file) === '.json')
-                    .map(file => readJSON(join(PRESET_FOLDER, file))),
-            );
-        }
-        return [];
+        await mkdirp(PRESET_FOLDER);
+        const files = await readdir(PRESET_FOLDER);
+        return Promise.all(
+            files.filter(file => extname(file) === '.json')
+                .map(file => readJSON(join(PRESET_FOLDER, file))),
+        );
     }
 
     async saveAndStart(crawlerInput: CrawlerInput, name: string): Promise<StartCrawler> {
         if (name) {
             const id = md5(name);
-            if (!(await pathExists(PRESET_FOLDER))) {
-                await mkdir(PRESET_FOLDER);
-            }
             const file = join(PRESET_FOLDER, `${id}.json`);
             await outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
         }
@@ -233,8 +229,6 @@ export class CrawlerProvider {
         };
 
         const distFolder = join(CRAWL_FOLDER, (timestamp).toString());
-        await mkdir(distFolder);
-        await mkdir(getQueueFolder(distFolder));
         await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
 
         if (crawlerInput.method === CrawlerMethod.URLs) {
