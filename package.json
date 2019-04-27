@@ -5,10 +5,14 @@
   "repository": "git@github.com:apiel/test-crawler.git",
   "author": "Alexandre Piel <alexandre.piel@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "doc": "docsify serve ."
+  },
   "dependencies": {
     "lerna": "^3.13.1"
   },
   "devDependencies": {
+    "docsify-cli": "^4.3.0",
     "npm-run-all": "^4.1.5"
   }
 }

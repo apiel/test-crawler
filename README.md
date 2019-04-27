@@ -4,6 +4,8 @@ test-crawler is a tool for end to end testing, by crawling a website and making 
 
 ![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-report.png?raw=true)
 
+**[>> Online documentation <<](https://apiel.github.io/test-crawler/)**
+
 ## Getting started
 
 > **Note:** you need to use the latest version of node, right now v11.10.1
