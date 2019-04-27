@@ -1,0 +1,16 @@
+{
+    "url": "http://localhost:8080/",
+    "method": "spiderbot",
+    "viewport": {
+        "width": 800,
+        "height": 600
+    },
+    "timestamp": 1556373272,
+    "id": "74bb48b2a5682d8d8f1fc50a7ecb9444",
+    "diffZoneCount": 0,
+    "status": "review",
+    "inQueue": 0,
+    "urlsCount": 1,
+    "startAt": 1556373272788,
+    "lastUpdate": 1556373275795
+}

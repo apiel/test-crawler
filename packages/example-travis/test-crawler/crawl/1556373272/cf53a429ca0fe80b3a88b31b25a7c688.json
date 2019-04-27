@@ -1,0 +1,42 @@
+{
+    "url": "http://localhost:8080/",
+    "id": "cf53a429ca0fe80b3a88b31b25a7c688",
+    "performance": {
+        "timeOrigin": 1556373273722.09,
+        "timing": {
+            "navigationStart": 1556373273722,
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1556373273722,
+            "domainLookupStart": 1556373273737,
+            "domainLookupEnd": 1556373273737,
+            "connectStart": 1556373273737,
+            "connectEnd": 1556373273737,
+            "secureConnectionStart": 0,
+            "requestStart": 1556373273737,
+            "responseStart": 1556373273756,
+            "responseEnd": 1556373273757,
+            "domLoading": 1556373273763,
+            "domInteractive": 1556373273779,
+            "domContentLoadedEventStart": 1556373273780,
+            "domContentLoadedEventEnd": 1556373273780,
+            "domComplete": 1556373273780,
+            "loadEventStart": 1556373273780,
+            "loadEventEnd": 1556373273780
+        },
+        "navigation": {
+            "type": 0,
+            "redirectCount": 0
+        }
+    },
+    "png": {
+        "width": 800
+    },
+    "viewport": {
+        "width": 800,
+        "height": 600
+    },
+    "baseUrl": "http://localhost:8080/"
+}
