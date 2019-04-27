@@ -12,14 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const lockfile_1 = require("lockfile");
 const npmlog_1 = require("npmlog");
 const path_1 = require("path");
-const lib_1 = require("test-crawler-lib/dist/lib");
+const test_crawler_lib_1 = require("test-crawler-lib");
 const crawl_1 = require("./crawl");
 const lockFile = path_1.join(__dirname, '../../test-crawler.lock');
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         const [, , presetFile] = process.argv;
         if (presetFile) {
-            const crawlerProvider = new lib_1.CrawlerProvider();
+            const crawlerProvider = new test_crawler_lib_1.CrawlerProvider();
             const crawlerInput = yield crawlerProvider.startCrawlerWithPresetFile(presetFile);
             npmlog_1.info('Start with preset', JSON.stringify(crawlerInput));
         }

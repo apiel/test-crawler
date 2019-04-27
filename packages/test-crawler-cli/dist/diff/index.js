@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const npmlog_1 = require("npmlog");
-const utils_1 = require("test-crawler-lib/dist/lib/utils");
-const config_1 = require("test-crawler-lib/dist/lib/config");
+const utils_1 = require("test-crawler-lib/dist/utils");
+const config_1 = require("test-crawler-lib/dist/config");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");

@@ -168,7 +168,7 @@ install:
   - GH_REPO="github.com/your_user_name/the_repo.git"
 
 script:
-  - yarn --prod
+  - yarn
   - yarn start > /dev/null &
   - sleep 15 # wait that the server run
   - yarn test:crawler:cli
@@ -190,12 +190,6 @@ in `package.json` add the following scripts:
     "start": "...",
     "test:crawler": "PAGES_FOLDER=./test-crawler test-crawler",
     "test:crawler:cli": "PROCESS_TIMEOUT=10 PAGES_FOLDER=./test-crawler test-crawler-cli test-crawler.preset.json"
-  },
-  "dependencies": {
-    "test-crawler-cli": "^0.3.5"
-  },
-  "dev-dependencies": {
-    "test-crawler": "^0.3.5"
   }
 ```
 > **Note:** For `test-crawler-cli` and preset, see previous section.
