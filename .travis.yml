@@ -19,7 +19,7 @@ install:
 
 script:
   - cd packages/example-travis
-  - yarn
+  - yarn --prod
   - yarn start > /dev/null &
   - sleep 5
   - yarn test:crawler:cli
