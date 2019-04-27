@@ -11,7 +11,7 @@ branches:
 
 install:
   - sudo apt-get update
-  - sudo apt-get install -y libvips-dev libvips42
+  - sudo apt-get install -y libvips-dev
   - git config --global user.email "build@travis-ci.com"
   - git config --global user.name "Travis CI"
   # we should be able to take this from env var
