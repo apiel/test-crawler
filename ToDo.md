@@ -1,4 +1,3 @@
-- remove pages from npm package
 - handle errors
 
 - **spider crawling with a limit** of child path: (eg: limit 2)
