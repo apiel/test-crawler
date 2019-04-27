@@ -4,7 +4,7 @@
 
 test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. Right now, it is mainly focus on visual regression testing but it will most likely support html comparison in the future.
 
-![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-report.png?raw=true)
+![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/test-crawler.gif?raw=true)
 
 ## Getting started
 
