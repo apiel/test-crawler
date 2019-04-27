@@ -1,11 +1,11 @@
 import { info } from 'npmlog';
-import { getFilePath, FilePath } from 'test-crawler-lib/dist/lib/utils';
-import { BASE_FOLDER } from 'test-crawler-lib/dist/lib/config';
+import { getFilePath, FilePath } from 'test-crawler-lib/dist/utils';
+import { BASE_FOLDER } from 'test-crawler-lib/dist/config';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
-import { PageData } from 'test-crawler-lib/dist/lib/typing';
+import { PageData } from 'test-crawler-lib/dist/typing';
 
 async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
     const file = filePath('png');

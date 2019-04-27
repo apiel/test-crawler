@@ -14,13 +14,13 @@ import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
 import axios from 'axios';
 import { exec } from 'child_process';
+import { groupOverlappingZone } from 'pixdiff-zone';
 
 import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PRESET_FOLDER } from './config';
 import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
 
 import * as config from './config';
 import { Crawler, CrawlerInput, StartCrawler, PageData, Preset } from './typing';
-import { groupOverlappingZone } from 'pixdiff-zone';
 
 export {
     Crawler,

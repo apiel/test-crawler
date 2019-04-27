@@ -9724,9 +9724,29 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
-test-crawler-lib@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.4.tgz#151af5266a7d37caee5678bc2758cc93db5c6d16"
+test-crawler-cli@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-0.3.6.tgz#0645e86f69b4cba16109ed92828f22077525e080"
+  dependencies:
+    "@types/lockfile" "^1.0.1"
+    axios "^0.18.0"
+    execa "^1.0.0"
+    fs-extra "^7.0.1"
+    lockfile "^1.0.4"
+    lodash "^4.17.11"
+    md5 "^2.2.1"
+    npmlog "^4.1.2"
+    pixdiff-zone "^0.3.0"
+    pngjs "^3.3.3"
+    puppeteer "^1.11.0"
+    rimraf "^2.6.3"
+    test-crawler-lib "^0.3.5"
+    ts-node "^8.0.2"
+    typescript "^3.2.4"
+
+test-crawler-lib@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.5.tgz#9951b1aa2eb6b406628995582d26529f4e399786"
   dependencies:
     "@types/lockfile" "^1.0.1"
     axios "^0.18.0"

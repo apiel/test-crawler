@@ -3,7 +3,7 @@
 import { checkSync, lockSync } from 'lockfile';
 import { info } from 'npmlog';
 import { join } from 'path';
-import { CrawlerProvider } from 'test-crawler-lib/dist/lib';
+import { CrawlerProvider } from 'test-crawler-lib';
 
 import { crawl } from './crawl';
 

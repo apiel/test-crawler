@@ -10,11 +10,11 @@ import {
     CRAWL_FOLDER,
     BASE_FOLDER,
     PROCESS_TIMEOUT,
-} from 'test-crawler-lib/dist/lib/config';
-import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from 'test-crawler-lib/dist/lib/utils';
-import { CrawlerMethod } from 'test-crawler-lib/dist/lib';
+} from 'test-crawler-lib/dist/config';
+import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from 'test-crawler-lib/dist/utils';
+import { CrawlerMethod } from 'test-crawler-lib';
 import { prepare } from '../diff';
-import { Crawler } from 'test-crawler-lib/dist/lib/typing';
+import { Crawler } from 'test-crawler-lib/dist/typing';
 
 interface ResultQueue {
     result: {

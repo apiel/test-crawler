@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_extra_1 = require("fs-extra");
+const path_1 = require("path");
 const md5 = require("md5");
 const config_1 = require("./config");
-const path_1 = require("path");
 function getFolders() {
     return __awaiter(this, void 0, void 0, function* () {
         const folders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);

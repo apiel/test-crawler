@@ -14,10 +14,10 @@ const rimraf = require("rimraf");
 const md5 = require("md5");
 const axios_1 = require("axios");
 const child_process_1 = require("child_process");
+const pixdiff_zone_1 = require("pixdiff-zone");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
 const config = require("./config");
-const pixdiff_zone_1 = require("pixdiff-zone");
 exports.getConfig = () => config;
 exports.CrawlerMethod = {
     URLs: 'urls',

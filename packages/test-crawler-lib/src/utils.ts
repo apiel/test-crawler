@@ -1,9 +1,8 @@
 import { readdir, pathExists, outputJson } from 'fs-extra';
-
+import { join } from 'path';
 import * as md5 from 'md5';
 
 import { CRAWL_FOLDER } from './config';
-import { join } from 'path';
 import { PageData, Viewport } from './typing';
 
 export async function getFolders() {
