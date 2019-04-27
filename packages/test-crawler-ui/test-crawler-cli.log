@@ -1,25 +1,16 @@
 info Crawl defb34c2e30004f1aedca21bbc2a2612.json
 info Add urls found 7, add 7
+info DIFF new png
 info Crawl c1eee82a2c3dc4530f8560d0560583b7.json
+info browser closed http://localhost:3003/
 info Crawl c9ccfc8c7810f72add392ee25df09228.json
 info Crawl f46d7343468a2d7cc89860a38eee2463.json
-info PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff ratio: 0.0015304032766225583
-info PNG zone [ { xMin: 267, xMax: 532, yMin: 809, yMax: 827 },
-info PNG   { xMin: 295, xMax: 393, yMin: 1378, yMax: 1396 },
-info PNG   { xMin: 456, xMax: 495, yMin: 1378, yMax: 1396 },
-info PNG   { xMin: 295, xMax: 393, yMin: 1379, yMax: 1396 },
-info PNG   { xMin: 413, xMax: 437, yMin: 1379, yMax: 1396 },
-info PNG   { xMin: 457, xMax: 495, yMin: 1379, yMax: 1396 } ]
-info PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff file: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages/crawl/1556385474/defb34c2e30004f1aedca21bbc2a2612.png.diff.png
-info browser closed http://localhost:3003/
 info Add urls found 1, add 1
+info DIFF new png
+info browser closed http://localhost:3003/item/1
+info Add urls found 1, add 1
+info Add urls found 1, add 1
+info DIFF new png
+info browser closed http://localhost:3003/item/2
 info DIFF new png
 info browser closed http://localhost:3003/item/0
-info Add urls found 1, add 1
-info DIFF new png
-info Add urls found 1, add 1
-info browser closed http://localhost:3003/item/1
-info PNG c1eee82a2c3dc4530f8560d0560583b7 http://localhost:3003/item/2 diff ratio: 0
-info PNG zone []
-info browser closed http://localhost:3003/item/2
-info Process timeout, exit 60 sec inactivity
