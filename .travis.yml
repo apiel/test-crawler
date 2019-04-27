@@ -18,11 +18,11 @@ install:
   - GH_REPO="github.com/apiel/test-crawler.git"
 
 script:
-  # - cd packages/example-travis
-  # - yarn
-  # - yarn start > /dev/null &
-  # - sleep 5
-  # - yarn test:crawler:cli
+  - cd packages/example-travis
+  - yarn
+  - yarn start > /dev/null &
+  - sleep 5
+  - yarn test:crawler:cli
 
 # only push change if found diff
 after_failure:

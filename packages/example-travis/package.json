@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "http-server": "^0.11.1",
+    "test-crawler-cli": "^0.3.5"
+  },
+  "dev-dependencies": {
     "test-crawler": "^0.3.5"
   }
 }
