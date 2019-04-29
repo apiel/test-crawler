@@ -1,6 +1,6 @@
 {
     "name": "test-crawler-cli",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "types": "dist/index.d.ts",
     "bin": {
         "test-crawler-cli": "dist/index.js"
@@ -22,7 +22,7 @@
         "pixdiff-zone": "^0.4.0",
         "pngjs": "^3.3.3",
         "puppeteer": "^1.11.0",
-        "test-crawler-lib": "^0.4.0",
+        "test-crawler-lib": "^0.4.1",
         "ts-node": "^8.0.2",
         "typescript": "^3.2.4"
     },
