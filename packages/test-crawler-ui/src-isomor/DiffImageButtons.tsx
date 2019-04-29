@@ -1,7 +1,7 @@
 import React from 'react';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
-import { useIsomor } from 'isomor-react';
+import { useAsyncCache } from 'react-async-cache';
 import Button from 'antd/lib/button';
 
 import { setZoneStatus } from './server/crawler';
@@ -27,7 +27,7 @@ const onSetStatus = (update: any, status: string, { timestamp, id, index }: any)
 }
 // neeed to flatten? and inject onSetStatus?
 export const DiffImageButtons = (props: any) => {
-    const { update } = useIsomor();
+    const { update } = useAsyncCache();
     return (
         <>
             <Button

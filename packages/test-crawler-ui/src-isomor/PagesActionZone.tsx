@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
-import { useIsomor } from 'isomor-react';
+import { useAsyncCache } from 'react-async-cache';
 import { setZonesStatus, getPages } from './server/crawler';
 
 const onClick = (update: any, { timestamp, id, zones, status, type }: any) => async () => {
@@ -19,7 +19,7 @@ const onClick = (update: any, { timestamp, id, zones, status, type }: any) => as
 }
 
 export const PagesActionZone = (props: any) => {
-    const { update } = useIsomor();
+    const { update } = useAsyncCache();
     const { status, type } = props;
     return (
         <Icon type={type} title={`Set all zone to "${status}".`} onClick={onClick(update, props)} />

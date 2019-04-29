@@ -4,7 +4,7 @@ import Spin from 'antd/lib/spin';
 import Tag from 'antd/lib/tag';
 import Icon from 'antd/lib/icon';
 import Masonry from 'react-masonry-component';
-import { useIsomor } from 'isomor-react';
+import { useAsyncCacheEffect } from 'react-async-cache';
 
 import PagesActionPin from './PagesActionPin';
 import {
@@ -15,7 +15,7 @@ import {
 } from './pageStyle';
 import { DiffImage } from './DiffImage'
 import { PagesActionZone } from './PagesActionZone';
-// import { PageData } from 'test-crawler-lib';
+import { PageData } from 'test-crawler-lib';
 import { getPages } from './server/crawler';
 import { getColorByStatus } from './DiffZone';
 import { sigDig } from './utils';
@@ -28,8 +28,7 @@ interface Props {
     lastUpdate: number;
 }
 export const Pages = ({ timestamp, lastUpdate }: Props) => {
-    const { call, response } = useIsomor(); // <PageData[]>
-    React.useEffect(() => { call(getPages, timestamp); }, [lastUpdate]);
+    const { response } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, timestamp);
 
     let masonry: any;
     let timer: NodeJS.Timer;

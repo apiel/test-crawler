@@ -4,7 +4,7 @@ import Menu from 'antd/lib/menu';
 import Affix from 'antd/lib/affix';
 import { Link } from 'react-router-dom';
 import { Crawler } from 'test-crawler-lib';
-import { useIsomor } from 'isomor-react';
+import { useAsyncCacheEffect } from 'react-async-cache';
 
 import { getHomeRoute, getHistoryRoute, getPinsRoute, getSettingsRoute } from './routes';
 import { timestampToString } from './utils';
@@ -28,8 +28,7 @@ const getIcon = (diffZoneCount: number, status: string, inQueue: number) => {
 }
 
 export const SideMenu = () => {
-    const { call, response: crawlers } = useIsomor(); // <Crawler[]>
-    React.useEffect(() => { call(getCrawlers); }, []);
+    const { response: crawlers } = useAsyncCacheEffect<Crawler[]>(getCrawlers);
     return (
         <>
             <Menu theme="dark" mode="inline">

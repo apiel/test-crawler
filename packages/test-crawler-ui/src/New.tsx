@@ -12,7 +12,7 @@ import { Preset as PresetType, CrawlerInput } from 'test-crawler-lib';
 
 import { getHistoryRoute } from './routes';
 import { saveAndStart, getCrawlers } from './server/crawler';
-import { useIsomor } from 'isomor-react';
+import { useAsyncCache } from 'react-async-cache';
 import { Info } from './Info';
 import { Preset } from './Preset';
 import { Viewport } from './Viewport';
@@ -59,7 +59,7 @@ const usePreset = (search: string) => {
 
 type Props = FormComponentProps & RouteComponentProps;
 const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: Props) => {
-    const { call } = useIsomor();
+    const { call } = useAsyncCache();
     const start = async ({ saveAs, viewport, ...input }: any) => {
         try {
             const response = await saveAndStart({ ...input, viewport: JSON.parse(viewport) }, saveAs);

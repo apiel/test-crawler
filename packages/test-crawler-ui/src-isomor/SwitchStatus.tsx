@@ -3,7 +3,7 @@ import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { setStatus, getCrawler } from './server/crawler';
-import { useIsomor } from 'isomor-react';
+import { useAsyncCache } from 'react-async-cache';
 
 const onChange = (update: any, { timestamp }: any) => async (value: boolean) => {
     try {
@@ -20,7 +20,7 @@ const onChange = (update: any, { timestamp }: any) => async (value: boolean) => 
 }
 
 export const SwitchStatus = (props: any) => {
-    const { update } = useIsomor();
+    const { update } = useAsyncCache();
     return <Switch
         checkedChildren="done"
         unCheckedChildren="review"
