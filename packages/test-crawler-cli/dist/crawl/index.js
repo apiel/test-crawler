@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const puppeteer_1 = require("puppeteer");
-const npmlog_1 = require("npmlog");
+const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("test-crawler-lib/dist/config");
@@ -56,33 +56,33 @@ function loadPage(id, url, distFolder, retry = 0) {
         catch (err) {
             yield handleError(err, filePath('error'));
             if (retry < 2) {
-                npmlog_1.info('retry crawl', url);
+                logol_1.info('retry crawl', url);
                 yield loadPage(id, url, distFolder, retry + 1);
             }
             consumerRunning--;
         }
         yield browser.close();
-        npmlog_1.info('browser closed', url);
+        logol_1.info('browser closed', url);
         consumerRunning--;
     });
 }
 function injectCode(jsFile, page, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         if (yield fs_extra_1.pathExists(jsFile)) {
-            npmlog_1.info('Inject code', id);
+            logol_1.info('Inject code', id);
             try {
                 const fn = require(jsFile);
                 yield fn(page, url, id, distFolder);
             }
             catch (err) {
-                npmlog_1.error('Something went wrong while injecting the code', id, err);
+                logol_1.error('Something went wrong while injecting the code', id, err);
             }
         }
     });
 }
 function handleError(err, file) {
     return __awaiter(this, void 0, void 0, function* () {
-        npmlog_1.error('Load page error', err);
+        logol_1.error('Load page error', err);
         yield fs_extra_1.writeFile(file, JSON.stringify(err, null, 4));
     });
 }
@@ -94,7 +94,7 @@ function addUrls(urls, viewport, distFolder) {
         }
     });
     if (count > 0) {
-        npmlog_1.info('Add urls', `found ${urls.length}, add ${count}`);
+        logol_1.info('Add urls', `found ${urls.length}, add ${count}`);
     }
 }
 function pickFromQueues() {
@@ -106,7 +106,7 @@ function pickFromQueues() {
             if (yield fs_extra_1.pathExists(queueFolder)) {
                 const [file] = yield fs_extra_1.readdir(queueFolder);
                 if (file) {
-                    npmlog_1.info('Crawl', file);
+                    logol_1.info('Crawl', file);
                     const queueFile = path_1.join(queueFolder, file);
                     const { id, url } = yield fs_extra_1.readJSON(queueFile);
                     const filePath = utils_1.getFilePath(id, distFolder);
@@ -137,7 +137,7 @@ function processTimeout() {
     if (config_1.PROCESS_TIMEOUT) {
         clearTimeout(processTimeoutTimer);
         processTimeoutTimer = setTimeout(() => {
-            npmlog_1.info('Process timeout, exit', `${config_1.PROCESS_TIMEOUT} sec inactivity`);
+            logol_1.info('Process timeout, exit', `${config_1.PROCESS_TIMEOUT} sec inactivity`);
             process.exit(totalDiff);
         }, config_1.PROCESS_TIMEOUT * 1000);
     }

@@ -1,5 +1,5 @@
 import { launch, Page, Viewport } from 'puppeteer';
-import { error, info } from 'npmlog';
+import { error, info } from 'logol';
 import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdir } from 'fs-extra';
 import { join, extname } from 'path';
 

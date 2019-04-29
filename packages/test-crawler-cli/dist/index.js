@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const lockfile_1 = require("lockfile");
-const npmlog_1 = require("npmlog");
+const logol_1 = require("logol");
 const path_1 = require("path");
 const test_crawler_lib_1 = require("test-crawler-lib");
 const crawl_1 = require("./crawl");
@@ -21,7 +21,7 @@ function start() {
         if (presetFile) {
             const crawlerProvider = new test_crawler_lib_1.CrawlerProvider();
             const crawlerInput = yield crawlerProvider.startCrawlerWithPresetFile(presetFile);
-            npmlog_1.info('Start with preset', JSON.stringify(crawlerInput));
+            logol_1.info('Start with preset', JSON.stringify(crawlerInput));
         }
         crawl_1.crawl();
     });
@@ -31,6 +31,6 @@ if (!lockfile_1.checkSync(lockFile)) {
     start();
 }
 else {
-    npmlog_1.info('Test-crawler already running', lockFile);
+    logol_1.info('Test-crawler already running', lockFile);
 }
 //# sourceMappingURL=index.js.map

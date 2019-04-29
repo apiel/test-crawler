@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { checkSync, lockSync } from 'lockfile';
-import { info } from 'npmlog';
+import { info } from 'logol';
 import { join } from 'path';
 import { CrawlerProvider } from 'test-crawler-lib';
 

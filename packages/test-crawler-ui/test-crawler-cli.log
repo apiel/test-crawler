@@ -1,17 +1,3 @@
-info Crawl defb34c2e30004f1aedca21bbc2a2612.json
-info Add urls found 7, add 7
-info DIFF new png
-info Crawl c1eee82a2c3dc4530f8560d0560583b7.json
-info browser closed http://localhost:3003/
-info Crawl c9ccfc8c7810f72add392ee25df09228.json
-info Crawl f46d7343468a2d7cc89860a38eee2463.json
-info Add urls found 1, add 1
-info DIFF new png
-info browser closed http://localhost:3003/item/1
-info Add urls found 1, add 1
-info Add urls found 1, add 1
-info DIFF new png
-info browser closed http://localhost:3003/item/2
-info DIFF new png
-info browser closed http://localhost:3003/item/0
-info Process timeout, exit 60 sec inactivity
+(node:12700) UnhandledPromiseRejectionWarning: Error: ENOENT: no such file or directory, mkdir '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/node_modules/test-crawler-lib/pages/crawl'
+(node:12700) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). (rejection id: 1)
+(node:12700) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
