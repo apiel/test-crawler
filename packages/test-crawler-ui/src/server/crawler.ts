@@ -1,4 +1,6 @@
 import { remote } from "isomor";
+import { CrawlerProvider, Crawler, CrawlerInput, StartCrawler, PageData, Preset } from "test-crawler-lib";
+import * as sharp from "sharp";
 export function getSettings(...args: any) {
   return remote("server-crawler", "getSettings", args);
 }

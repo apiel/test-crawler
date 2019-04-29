@@ -1276,12 +1276,6 @@ ansi-escapes@^3.0.0, ansi-escapes@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.2.0.tgz#8780b98ff9dbf5638152d1f1fe5c1d7b4442976b"
 
-ansi-gray@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/ansi-gray/-/ansi-gray-0.1.1.tgz#2962cf54ec9792c48510a3deb524436861ef7251"
-  dependencies:
-    ansi-wrap "0.1.0"
-
 ansi-html@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/ansi-html/-/ansi-html-0.0.7.tgz#813584021962a9e9e6fd039f940d12f56ca7859e"
@@ -1307,10 +1301,6 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
   dependencies:
     color-convert "^1.9.0"
-
-ansi-wrap@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/ansi-wrap/-/ansi-wrap-0.1.0.tgz#a82250ddb0015e9a27ca82e82ea603bbfa45efaf"
 
 ant-design-palettes@^1.1.3:
   version "1.1.3"
@@ -2477,10 +2467,6 @@ color-string@^1.5.2:
   dependencies:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
-
-color-support@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/color-support/-/color-support-1.1.3.tgz#93834379a1cc9a0c61f82f52f0d04322251bd5a2"
 
 color@^3.0.0:
   version "3.1.0"
@@ -3854,15 +3840,6 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
-fancy-log@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/fancy-log/-/fancy-log-1.3.3.tgz#dbc19154f558690150a23953a0adbd035be45fc7"
-  dependencies:
-    ansi-gray "^0.1.1"
-    color-support "^1.1.3"
-    parse-node-version "^1.0.0"
-    time-stamp "^1.0.0"
-
 fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
@@ -5215,9 +5192,9 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
-isomor-core@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.2.2.tgz#d37cc3ca36bd24e0d19b8aaf3497dafeec429a32"
+isomor-core@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/isomor-core/-/isomor-core-0.3.0.tgz#a7568485123b1723fbae1b5e2cddaeb5bcfe0939"
   dependencies:
     fs-extra "^7.0.1"
     glob "^7.1.3"
@@ -5230,21 +5207,21 @@ isomor-react@^0.0.8:
     md5 "^2.2.1"
     typescript "^3.4.1"
 
-isomor-server@^0.2.7:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.2.7.tgz#67b5b327a9e415beacab03991abf1d9076720332"
+isomor-server@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-0.3.2.tgz#9e843784e803bddff0f8c9b413333acb62a0ffc5"
   dependencies:
     body-parser "^1.18.3"
     cookie-parser "^1.4.4"
     express "^4.16.4"
-    fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.2.2"
+    isomor-core "^0.3.0"
+    logol "^0.0.1"
     typescript "^3.2.4"
 
-isomor-transpiler@^0.2.7:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.2.7.tgz#39e352dca925fd131255be344c100ca8de5c71da"
+isomor-transpiler@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-0.3.2.tgz#9007d73a42afe8cfd7466fbdcf7b312a1a325861"
   dependencies:
     "@babel/generator" "^7.4.0"
     "@types/chokidar" "^2.1.3"
@@ -5252,20 +5229,20 @@ isomor-transpiler@^0.2.7:
     anymatch "^2.0.0"
     chokidar "^2.1.5"
     debug "^4.1.1"
-    fancy-log "^1.3.3"
     fs-extra "^7.0.1"
-    isomor-core "^0.2.2"
+    isomor-core "^0.3.0"
+    logol "^0.0.1"
     traverse "^0.6.6"
     ts-node "^8.0.3"
     typescript "^3.4.3"
 
-isomor@^0.2.2:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.2.7.tgz#75ea7a042f4302c3ef789578455d09003a795e5d"
+isomor@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-0.3.2.tgz#42922bb85b9f99fac66ea53b7d6d1ecb4ed8e8cf"
   dependencies:
     axios "^0.18.0"
-    isomor-server "^0.2.7"
-    isomor-transpiler "^0.2.7"
+    isomor-server "^0.3.2"
+    isomor-transpiler "^0.3.2"
     typescript "^3.2.4"
 
 isomorphic-fetch@^2.1.1:
@@ -6022,6 +5999,13 @@ lodash.uniq@^4.5.0:
 loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
+
+logol@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/logol/-/logol-0.0.1.tgz#902a5daa35b13f84ad28735e130e0a612a0e7d54"
+  dependencies:
+    chalk "^2.4.2"
+    typescript "^3.4.1"
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
@@ -6938,10 +6922,6 @@ parse-json@^4.0.0:
   dependencies:
     error-ex "^1.3.1"
     json-parse-better-errors "^1.0.1"
-
-parse-node-version@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/parse-node-version/-/parse-node-version-1.0.1.tgz#e2b5dbede00e7fa9bc363607f53327e8b073189b"
 
 parse5@4.0.0:
   version "4.0.0"
@@ -9786,10 +9766,6 @@ through@^2.3.6:
 thunky@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/thunky/-/thunky-1.0.3.tgz#f5df732453407b09191dae73e2a8cc73f381a826"
-
-time-stamp@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.1.0.tgz#764a5a11af50561921b133f3b44e618687e0f5c3"
 
 timed-out@^4.0.0:
   version "4.0.1"
