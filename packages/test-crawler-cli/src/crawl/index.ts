@@ -1,6 +1,6 @@
 import { launch, Page, Viewport } from 'puppeteer';
 import { error, info } from 'logol';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdir } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp } from 'fs-extra';
 import { join, extname } from 'path';
 
 import {
@@ -197,10 +197,10 @@ async function consumeResults() {
 
 async function prepareFolders() {
     if (!(await pathExists(CRAWL_FOLDER))) {
-        await mkdir(CRAWL_FOLDER);
+        await mkdirp(CRAWL_FOLDER);
     }
     if (!(await pathExists(BASE_FOLDER))) {
-        await mkdir(BASE_FOLDER);
+        await mkdirp(BASE_FOLDER);
     }
 }
 

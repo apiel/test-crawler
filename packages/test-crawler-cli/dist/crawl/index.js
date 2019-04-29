@@ -167,10 +167,10 @@ function consumeResults() {
 function prepareFolders() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!(yield fs_extra_1.pathExists(config_1.CRAWL_FOLDER))) {
-            yield fs_extra_1.mkdir(config_1.CRAWL_FOLDER);
+            yield fs_extra_1.mkdirp(config_1.CRAWL_FOLDER);
         }
         if (!(yield fs_extra_1.pathExists(config_1.BASE_FOLDER))) {
-            yield fs_extra_1.mkdir(config_1.BASE_FOLDER);
+            yield fs_extra_1.mkdirp(config_1.BASE_FOLDER);
         }
     });
 }

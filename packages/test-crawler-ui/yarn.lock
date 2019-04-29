@@ -8928,9 +8928,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-run-screen@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.5.1.tgz#da3bf5b34ff7eaf25b942771b65a2ff9d82b2dea"
+run-screen@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/run-screen/-/run-screen-0.5.2.tgz#222fac0f1ad0253d0b5ac42fca20595cc885cb6a"
   dependencies:
     cross-spawn "^6.0.5"
     pidtree "^0.3.0"
@@ -9720,9 +9720,9 @@ terser@^3.16.1:
     source-map "~0.6.1"
     source-map-support "~0.5.9"
 
-test-crawler-cli@^0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-0.3.8.tgz#afa9ef1251b5207ee922fb0bf91e9910e60497c2"
+test-crawler-cli@^0.3.9:
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-0.3.9.tgz#2e95f440a0da9a8fbfb213356f056f5f7c080c38"
   dependencies:
     fs-extra "^7.0.1"
     lockfile "^1.0.4"
@@ -9730,13 +9730,13 @@ test-crawler-cli@^0.3.8:
     pixdiff-zone "^0.3.0"
     pngjs "^3.3.3"
     puppeteer "^1.11.0"
-    test-crawler-lib "^0.3.8"
+    test-crawler-lib "^0.3.9"
     ts-node "^8.0.2"
     typescript "^3.2.4"
 
-test-crawler-lib@^0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.8.tgz#d9c5ea3ec2331a37f3e6062fb93cff30b64736a6"
+test-crawler-lib@^0.3.9:
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/test-crawler-lib/-/test-crawler-lib-0.3.9.tgz#705eca8f41c88ca84d7f419d76861e7759c7e259"
   dependencies:
     axios "^0.18.0"
     fs-extra "^7.0.1"
