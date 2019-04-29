@@ -4,6 +4,10 @@
   "bin": {
     "test-crawler": "./test-crawler"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apiel/test-crawler"
+  },
   "scripts": {
     "test-crawler": "test-crawler",
     "prepublishOnly": "cp ../../README.md . && yarn isomor:build && yarn serv:build && chmod +x test-crawler",
