@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const npmlog_1 = require("npmlog");
+const logol_1 = require("logol");
 const utils_1 = require("test-crawler-lib/dist/utils");
 const config_1 = require("test-crawler-lib/dist/config");
 const pngjs_1 = require("pngjs");
@@ -29,13 +29,13 @@ function parsePng(data, filePath, basePath) {
         const { diff, zones } = pixdiff_zone_1.pixdiff(cropPng(rawActual, width, height), cropPng(rawExpected, width, height), diffImage);
         const totalPixels = width * height;
         const pixelDiffRatio = diff / totalPixels;
-        npmlog_1.info('PNG', id, url, `diff ratio: ${pixelDiffRatio}`);
-        npmlog_1.info('PNG', 'zone', zones);
+        logol_1.info('PNG', id, url, `diff ratio: ${pixelDiffRatio}`);
+        logol_1.info('PNG', 'zone', zones);
         if (pixelDiffRatio) {
             const buffer = pngjs_1.PNG.sync.write(diffImage, { colorType: 6 });
             const diffFile = `${file}.diff.png`;
             yield fs_extra_1.writeFile(diffFile, buffer);
-            npmlog_1.info('PNG', id, url, 'diff file:', diffFile);
+            logol_1.info('PNG', id, url, 'diff file:', diffFile);
         }
         data.png.diff = {
             pixelDiffRatio,
@@ -72,7 +72,7 @@ function prepare(id, distFolder) {
             diffZoneCount = yield parsePng(data, filePath, basePath);
         }
         else {
-            npmlog_1.info('DIFF', 'new png');
+            logol_1.info('DIFF', 'new png');
         }
         return {
             diffZoneCount,

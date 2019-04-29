@@ -1,4 +1,4 @@
-import { info } from 'npmlog';
+import { info } from 'logol';
 import { getFilePath, FilePath } from 'test-crawler-lib/dist/utils';
 import { BASE_FOLDER } from 'test-crawler-lib/dist/config';
 import { PNG } from 'pngjs';
