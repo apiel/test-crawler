@@ -1,5 +1,3 @@
-- use useAsyncCacheEffect
-
 - handle errors from crawling, .error file
 
 - use error handling from isomor
