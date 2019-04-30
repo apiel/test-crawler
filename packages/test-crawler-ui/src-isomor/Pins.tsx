@@ -17,16 +17,12 @@ import { PageData } from 'test-crawler-lib';
 import { Link } from 'react-router-dom';
 import { getPinCodeRoute } from './routes';
 import { getViewportName } from './viewport';
+import { useAsyncCacheEffect } from 'react-async-cache';
 
 const { Title } = Typography;
 
 export const Pins = () => {
-    const [pins, setPins] = React.useState<PageData[]>();
-    const load = async () => {
-        setPins(await getPins());
-    }
-    React.useEffect(() => { load(); }, []);
-
+    const { response } = useAsyncCacheEffect<PageData[]>(getPins);
 
     let masonry: any;
     let timer: NodeJS.Timer;
@@ -41,13 +37,13 @@ export const Pins = () => {
         <>
             <Title level={3}>Pins</Title>
             {
-                pins ? (
+                response ? (
                     <Masonry
                         style={masonryStyle}
                         options={masonryOptions}
                         ref={(c: any) => { masonry = c && c.masonry; }}
                     >
-                        {pins.map(({ id, url, png, viewport }: any) => (
+                        {response.map(({ id, url, png, viewport }: any) => (
                             <Card
                                 key={id}
                                 style={cardStyle}

@@ -49,8 +49,15 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<any>)
     const [code, setCode] = React.useState<string>(`module.exports = async function run(page) {\n// your code\n}`);
     const [pin, setPin] = React.useState<PageData>();
     const load = async () => {
-        setPin(await getPin(id));
-        setCode(await getPinCode(id));
+        try {
+            setPin(await getPin(id));
+            setCode(await getPinCode(id));
+        } catch (error) {
+            notification['error']({
+                message: 'Something went wrong!',
+                description: error.toString(),
+            });
+        }
     }
     React.useEffect(() => { load(); }, []);
 
