@@ -19,6 +19,7 @@ import { PageData } from 'test-crawler-lib';
 import { getPages } from './server/crawler';
 import { getColorByStatus } from './DiffZone';
 import { sigDig } from './utils';
+import { ErrorHandler } from './ErrorHandler';
 
 const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
     zones.filter(({ status }: any) => perStatus.includes(status)).length
@@ -28,7 +29,10 @@ interface Props {
     lastUpdate: number;
 }
 export const Pages = ({ timestamp, lastUpdate }: Props) => {
-    const { response } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, timestamp);
+    const { response, error } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, timestamp);
+    if (error) {
+        return <ErrorHandler description={ error.toString() } />;
+    }
 
     let masonry: any;
     let timer: NodeJS.Timer;

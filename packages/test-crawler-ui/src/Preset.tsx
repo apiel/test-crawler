@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Dropdown from 'antd/lib/dropdown';
 import Button from 'antd/lib/button';
 import Menu from 'antd/lib/menu';
+import notification from 'antd/lib/notification';
 import { Preset as PresetType } from 'test-crawler-lib';
 import { loadPresets } from './server/crawler';
 
@@ -21,13 +22,20 @@ const menu = (presets: PresetType[], setPreset: React.Dispatch<React.SetStateAct
 export const Preset = ({ setPreset, setDefault }: any) => {
     const [presets, setPresets] = useState<PresetType[]>([]);
     const load = async () => {
-        const list = await loadPresets();
-        setPresets(list);
-        if (setDefault) {
-            const defaultIndex = list.findIndex(({ name }: PresetType) => name === 'Default');
-            if (defaultIndex !== -1) {
-                setPreset({ ...list[defaultIndex], name: '' });
+        try {
+            const list = await loadPresets();
+            setPresets(list);
+            if (setDefault) {
+                const defaultIndex = list.findIndex(({ name }: PresetType) => name === 'Default');
+                if (defaultIndex !== -1) {
+                    setPreset({ ...list[defaultIndex], name: '' });
+                }
             }
+        } catch (error) {
+            notification['warning']({
+                message: 'Something went wrong while loading presets.',
+                description: error.toString(),
+            });
         }
     }
     useEffect(() => { load(); }, []);

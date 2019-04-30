@@ -9,6 +9,7 @@ import { useAsyncCacheEffect } from 'react-async-cache';
 import { getHomeRoute, getHistoryRoute, getPinsRoute, getSettingsRoute } from './routes';
 import { timestampToString } from './utils';
 import { getCrawlers } from './server/crawler';
+import { ErrorHandler } from './ErrorHandler';
 
 const dividerStyle = (index: number) => index === 0 ? ({
     borderTop: '1px solid #7e8791',
@@ -28,7 +29,10 @@ const getIcon = (diffZoneCount: number, status: string, inQueue: number) => {
 }
 
 export const SideMenu = () => {
-    const { response: crawlers } = useAsyncCacheEffect<Crawler[]>(getCrawlers);
+    const { response: crawlers, error } = useAsyncCacheEffect<Crawler[]>(getCrawlers);
+    if (error) {
+        return <ErrorHandler description={ error.toString() } />;
+    }
     return (
         <>
             <Menu theme="dark" mode="inline">

@@ -1,5 +1,4 @@
 - handle errors from crawling, .error file
-- use error handling from isomor
 
 - **spider crawling with a limit** of child path: (eg: limit 2)
     /     (found: a, b, c, d)

@@ -18,11 +18,15 @@ import { Link } from 'react-router-dom';
 import { getPinCodeRoute } from './routes';
 import { getViewportName } from './viewport';
 import { useAsyncCacheEffect } from 'react-async-cache';
+import { ErrorHandler } from './ErrorHandler';
 
 const { Title } = Typography;
 
 export const Pins = () => {
-    const { response } = useAsyncCacheEffect<PageData[]>(getPins);
+    const { response, error } = useAsyncCacheEffect<PageData[]>(getPins);
+    if (error) {
+        return <ErrorHandler description={ error.toString() } />;
+    }
 
     let masonry: any;
     let timer: NodeJS.Timer;
