@@ -54,10 +54,16 @@ function loadPage(id, url, distFolder, retry = 0) {
             });
         }
         catch (err) {
-            yield handleError(err, filePath('error'));
+            yield handleError(err.toString(), filePath('error'));
             if (retry < 2) {
                 logol_1.info('retry crawl', url);
                 yield loadPage(id, url, distFolder, retry + 1);
+            }
+            else {
+                resultsQueue.push({
+                    folder: distFolder,
+                    isError: true,
+                });
             }
             consumerRunning--;
         }
@@ -83,7 +89,7 @@ function injectCode(jsFile, page, id, url, distFolder) {
 function handleError(err, file) {
     return __awaiter(this, void 0, void 0, function* () {
         logol_1.error('Load page error', err);
-        yield fs_extra_1.writeFile(file, JSON.stringify(err, null, 4));
+        yield fs_extra_1.writeFile(file, err);
     });
 }
 function addUrls(urls, viewport, distFolder) {
@@ -145,11 +151,16 @@ function processTimeout() {
 function consumeResults() {
     return __awaiter(this, void 0, void 0, function* () {
         if (resultsQueue.length) {
-            const [{ folder, result }] = resultsQueue.splice(0, 1);
+            const [{ folder, result, isError }] = resultsQueue.splice(0, 1);
             const file = path_1.join(folder, '_.json');
             const crawler = yield fs_extra_1.readJSON(file);
-            crawler.diffZoneCount += result.diffZoneCount;
-            totalDiff += result.diffZoneCount;
+            if (result) {
+                crawler.diffZoneCount += result.diffZoneCount;
+                totalDiff += result.diffZoneCount;
+            }
+            if (isError) {
+                crawler.errorCount++;
+            }
             const queueFolder = utils_1.getQueueFolder(folder);
             const filesInQueue = (yield fs_extra_1.pathExists(queueFolder)) ? yield fs_extra_1.readdir(queueFolder) : [];
             crawler.inQueue = filesInQueue.length;

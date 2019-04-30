@@ -2,6 +2,7 @@ import React from 'react';
 import Typography from 'antd/lib/typography';
 import Progress from 'antd/lib/progress';
 import Button from 'antd/lib/button';
+import Icon from 'antd/lib/icon';
 import { Crawler } from 'test-crawler-lib';
 import { History } from 'history';
 import { stringify } from 'query-string';
@@ -15,12 +16,17 @@ import { getViewportName } from './viewport';
 
 const { Title } = Typography;
 
+const warningStyle = {
+    color: '#faad29',
+};
+
 // need to flatten props and use react memo
 export const CrawlerInfo = ({
     crawler: {
         timestamp,
         url,
         diffZoneCount,
+        errorCount,
         status,
         urlsCount,
         inQueue,
@@ -52,7 +58,8 @@ export const CrawlerInfo = ({
                 <Progress percent={percent} />
                 <p><b>In queue:</b> {inQueue}</p>
             </>}
-            {diffZoneCount > 0 && <p><SwitchStatus status={status} timestamp={timestamp} /></p>}
+            {errorCount > 0 && <p style={warningStyle}><Icon type="exclamation-circle" /> {errorCount} error(s) founds</p>}
+            {diffZoneCount > 0 || errorCount > 0 && <p><SwitchStatus status={status} timestamp={timestamp} /></p>}
         </>
     );
 }

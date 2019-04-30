@@ -15,11 +15,11 @@ const dividerStyle = (index: number) => index === 0 ? ({
     borderTop: '1px solid #7e8791',
 }) : ({});
 
-const getIcon = (diffZoneCount: number, status: string, inQueue: number) => {
+const getIcon = (diffZoneCount: number, errorCount: number, status: string, inQueue: number) => {
     if (inQueue > 0) {
         return 'loading';
     }
-    if (!diffZoneCount) {
+    if (!diffZoneCount && errorCount === 0) {
         return 'check';
     }
     if (status === 'done') {
@@ -31,7 +31,7 @@ const getIcon = (diffZoneCount: number, status: string, inQueue: number) => {
 export const SideMenu = () => {
     const { response: crawlers, error } = useAsyncCacheEffect<Crawler[]>(getCrawlers);
     if (error) {
-        return <ErrorHandler description={ error.toString() } />;
+        return <ErrorHandler description={error.toString()} />;
     }
     return (
         <>
@@ -48,9 +48,9 @@ export const SideMenu = () => {
                 </Menu.Item>
                 {crawlers &&
                     crawlers.sort(({ timestamp: a }: any, { timestamp: b }: any) => b - a)
-                        .map(({ timestamp, url, id, diffZoneCount, status, inQueue }: any, index: number) => (
+                        .map(({ timestamp, url, id, diffZoneCount, errorCount, status, inQueue }: any, index: number) => (
                             <Menu.Item key={`crawler-${id}`} title={url} style={dividerStyle(index)}>
-                                <Icon type={getIcon(diffZoneCount, status, inQueue)} />
+                                <Icon type={getIcon(diffZoneCount, errorCount, status, inQueue)} />
                                 <span className="nav-text">
                                     {timestampToString(timestamp)}
                                 </span>

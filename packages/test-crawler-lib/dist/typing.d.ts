@@ -15,6 +15,7 @@ export interface Crawler extends CrawlerInput {
     id: string;
     timestamp: number;
     diffZoneCount: number;
+    errorCount: number;
     inQueue: number;
     urlsCount: number;
     status: string;

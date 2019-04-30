@@ -17,10 +17,11 @@ import { prepare } from '../diff';
 import { Crawler } from 'test-crawler-lib/dist/typing';
 
 interface ResultQueue {
-    result: {
+    result?: {
         diffZoneCount: number,
     };
     folder: string;
+    isError?: boolean;
 }
 
 let totalDiff = 0;
@@ -89,10 +90,15 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
             folder: distFolder,
         });
     } catch (err) {
-        await handleError(err, filePath('error'));
+        await handleError(err.toString(), filePath('error'));
         if (retry < 2) {
             info('retry crawl', url);
             await loadPage(id, url, distFolder, retry + 1);
+        } else {
+            resultsQueue.push({
+                folder: distFolder,
+                isError: true,
+            });
         }
         consumerRunning--;
     }
@@ -113,9 +119,9 @@ async function injectCode(jsFile: string, page: Page, id: string, url: string, d
     }
 }
 
-async function handleError(err: any, file: string) {
+async function handleError(err: string, file: string) {
     error('Load page error', err);
-    await writeFile(file, JSON.stringify(err, null, 4));
+    await writeFile(file, err);
 }
 
 function addUrls(urls: string[], viewport: Viewport, distFolder: string) {
@@ -175,11 +181,16 @@ function processTimeout() {
 
 async function consumeResults() {
     if (resultsQueue.length) {
-        const [{ folder, result }] = resultsQueue.splice(0, 1);
+        const [{ folder, result, isError }] = resultsQueue.splice(0, 1);
         const file = join(folder, '_.json');
         const crawler: Crawler = await readJSON(file);
-        crawler.diffZoneCount += result.diffZoneCount;
-        totalDiff += result.diffZoneCount;
+        if (result) {
+            crawler.diffZoneCount += result.diffZoneCount;
+            totalDiff += result.diffZoneCount;
+        }
+        if (isError) {
+            crawler.errorCount++;
+        }
 
         const queueFolder = getQueueFolder(folder);
         const filesInQueue = await pathExists(queueFolder) ? await readdir(queueFolder) : [];

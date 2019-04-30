@@ -1,7 +1,6 @@
 import {
     readdir,
     readJSON,
-    mkdir,
     outputJSON,
     outputFile,
     readFile,
@@ -221,6 +220,7 @@ export class CrawlerProvider {
             timestamp,
             id,
             diffZoneCount: 0,
+            errorCount: 0,
             status: 'review',
             inQueue: 1,
             urlsCount: 0,
