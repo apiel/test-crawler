@@ -5,14 +5,12 @@ import Card from 'antd/lib/card';
 import Input from 'antd/lib/input';
 import Icon from 'antd/lib/icon';
 import Masonry from 'react-masonry-component';
-import Fuse from 'fuse.js';
 
 import {
     masonryStyle,
     masonryOptions,
     cardStyle,
     iconTheme,
-    cardWidth,
 } from './pageStyle';
 import { DiffImage } from './DiffImage';
 import { getPins } from './server/crawler';
@@ -22,13 +20,10 @@ import { getPinCodeRoute } from './routes';
 import { getViewportName } from './viewport';
 import { useAsyncCacheEffect } from 'react-async-cache';
 import { ErrorHandler } from './ErrorHandler';
+import { onSearch, searchStyle } from './search';
 
 const { Title } = Typography;
 const { Search } = Input;
-
-const searchStyle = {
-    width: cardWidth,
-}
 
 export const Pins = () => {
     const { response, error } = useAsyncCacheEffect<PageData[]>(getPins);
@@ -40,25 +35,6 @@ export const Pins = () => {
     React.useEffect(() => {
         setPins(response);
     }, [response]);
-
-    let timerSearch: NodeJS.Timer;
-    const onSearch = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
-        if (!value.length) {
-            setPins(response);
-        } else {
-            const fuse = new Fuse(response, {
-                keys: [
-                    'url',
-                    'viewport.width',
-                    'viewport.height',
-                ],
-            });
-            clearTimeout(timerSearch);
-            timerSearch = setTimeout(() => {
-                setPins(fuse.search(value));
-            }, 500);
-        }
-    };
 
     let masonry: any;
     let timer: NodeJS.Timer;
@@ -74,7 +50,7 @@ export const Pins = () => {
             <Title level={3}>Pins</Title>
             <Search
                 placeholder="Search"
-                onChange={onSearch}
+                onChange={onSearch(setPins, response)}
                 style={searchStyle}
                 allowClear
             />
