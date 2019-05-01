@@ -20,6 +20,10 @@ const warningStyle = {
     color: '#faad29',
 };
 
+const marginRightStyle = {
+    marginRight: 10,
+}
+
 // need to flatten props and use react memo
 export const CrawlerInfo = ({
     crawler: {
@@ -50,17 +54,22 @@ export const CrawlerInfo = ({
     return (
         <>
             <Title level={3}>{timestampToString(timestamp)}</Title>
-            <p><Button icon="retweet" size="small" onClick={onReRun}>Re-run</Button></p>
+            <p>
+                <Button icon="retweet" size="small" onClick={onReRun} style={marginRightStyle}>
+                    Re-run
+                </Button>
+                {(diffZoneCount > 0 || errorCount > 0)
+                    && <SwitchStatus status={status} timestamp={timestamp} />}
+            </p>
             <p><b>URL:</b> {url}</p>
             <p><b>Screen:</b> {screen}</p>
             <p><b>URL crawled:</b> {urlsCount}</p>
-            <p><b>Duration:</b> { duration(lastUpdate - startAt).format('h [hrs], m [min], s [sec]') }</p>
+            <p><b>Duration:</b> {duration(lastUpdate - startAt).format('h [hrs], m [min], s [sec]')}</p>
             {inQueue > 0 && <>
                 <Progress percent={percent} />
                 <p><b>In queue:</b> {inQueue}</p>
             </>}
             {errorCount > 0 && <p style={warningStyle}><Icon type="exclamation-circle" /> {errorCount} error(s) founds</p>}
-            {(diffZoneCount > 0 || errorCount > 0) && <p><SwitchStatus status={status} timestamp={timestamp} /></p>}
         </>
     );
 }
