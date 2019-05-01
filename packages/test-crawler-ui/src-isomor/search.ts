@@ -1,20 +1,21 @@
 import { PageData } from 'test-crawler-lib';
 import Fuse from 'fuse.js';
-import { cardWidth } from './pageStyle';
+import get from 'lodash/get';
+import { cardStyle, masonryOptions } from './pageStyle';
 
 export const searchStyle = {
-    width: cardWidth,
+    width: cardStyle.width,
+    marginRight: masonryOptions.gutter,
 }
 
 let timerSearch: NodeJS.Timer;
 export const onSearch = (
     setSearchResult: React.Dispatch<React.SetStateAction<any>>,
-    pages: PageData[] | PageDataForSearch[],
+    pages: PageData[],
 ) => ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     if (!value.length) {
         setSearchResult(pages);
     } else {
-        console.log('pages', pages);
         const fuse = new Fuse(pages, {
             keys: [
                 'url',
@@ -30,19 +31,23 @@ export const onSearch = (
     }
 };
 
-export interface PageDataForSearch extends PageData {
-    keywords: string[],
-};
-
-export const preparePageData = (pages: PageData[]): PageDataForSearch[] => {
-    return pages.map(page => {
-        const keywords: string[] = [];
-        if (page && page.png && page.png.diff) {
-            const { diff } = page.png;
-            if (diff.pixelDiffRatio > 0) {
-                keywords.push('with:diff');
-            }
+export const onFilter = (
+    setFilterResult: React.Dispatch<React.SetStateAction<any>>,
+    pages: PageData[] | undefined,
+    setFilters: React.Dispatch<React.SetStateAction<any>>,
+) => (filters: string[]) => {
+    if (pages) {
+        setFilters(filters);
+        if (!filters.length) {
+            setFilterResult(pages);
+        } else {
+            setFilterResult(pages.filter(page => {
+                if (filters.includes('with-diff')) {
+                    const pixelDiffRatio = get(page, 'png.diff.pixelDiffRatio');
+                    return pixelDiffRatio > 0;
+                }
+                return false;
+            }));
         }
-        return { ...page, keywords };
-    });
-}
+    }
+};

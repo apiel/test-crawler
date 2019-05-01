@@ -4,6 +4,7 @@ import Spin from 'antd/lib/spin';
 import Tag from 'antd/lib/tag';
 import Alert from 'antd/lib/alert';
 import Input from 'antd/lib/input';
+import Select from 'antd/lib/select';
 import Icon from 'antd/lib/icon';
 import Masonry from 'react-masonry-component';
 import { useAsyncCacheEffect } from 'react-async-cache';
@@ -22,9 +23,10 @@ import { getPages } from './server/crawler';
 import { getColorByStatus } from './DiffZone';
 import { sigDig } from './utils';
 import { ErrorHandler } from './ErrorHandler';
-import { onSearch, searchStyle, preparePageData, PageDataForSearch } from './search';
+import { onSearch, searchStyle, onFilter } from './search';
 
 const { Search } = Input;
+const { Option } = Select;
 
 const alertStyle = {
     marginBottom: 10,
@@ -43,15 +45,16 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
         return <ErrorHandler description={error.toString()} />;
     }
 
-    const [initialPages, setInitialPages] = React.useState<PageDataForSearch[]>([]);
-    const [pages, setPages] = React.useState<PageDataForSearch[]>();
+    const [pages, setPages] = React.useState<PageData[]>();
     React.useEffect(() => {
-        if (response) {
-            const data = preparePageData(response);
-            setInitialPages(data);
-            setPages(data);
-        }
+        setPages(response);
     }, [response]);
+
+    const [filters, setFilters] = React.useState<string[]>([]);
+    const [pagesFiltered, setPagesFiltered] = React.useState<PageData[]>();
+    React.useEffect(() => {
+        onFilter(setPagesFiltered, pages, setFilters)(filters);
+    }, [pages]);
 
     let masonry: any;
     let timer: NodeJS.Timer;
@@ -66,11 +69,20 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
         <>
             <Search
                 placeholder="Search"
-                onChange={onSearch(setPages, initialPages)}
+                onChange={onSearch(setPages, response)}
                 style={searchStyle}
                 allowClear
             />
-            {pages ? (
+            <Select
+                mode="tags"
+                onChange={onFilter(setPagesFiltered, pages, setFilters)}
+                tokenSeparators={[',']}
+                style={searchStyle}
+                placeholder="filters"
+            >
+                <Option key="with-diff">with diff</Option>
+            </Select>
+            {pagesFiltered ? (
 
                 <Masonry
                     style={masonryStyle}
@@ -78,7 +90,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                     ref={(c: any) => { masonry = c && c.masonry; }}
                 >
                     {
-                        pages.map(({ id, url, png, error: pageError }: any) => (
+                        pagesFiltered.map(({ id, url, png, error: pageError }: any) => (
                             <Card
                                 key={id}
                                 style={cardStyle}
