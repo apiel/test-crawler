@@ -5,6 +5,7 @@ export interface CrawlerInput {
     url: string;
     viewport: Viewport;
     method: string;
+    autopin: boolean;
 }
 export interface Preset {
     id: string;

@@ -34,7 +34,8 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     const filePath = getFilePath(id, distFolder);
     const basePath = getFilePath(id, BASE_FOLDER);
 
-    const { viewport, url: baseUrl, method }: Crawler = await readJSON(join(distFolder, '_.json'));
+    const crawler: Crawler = await readJSON(join(distFolder, '_.json'));
+    const { viewport, url: baseUrl, method } = crawler;
 
     const browser = await launch({
         // headless: false,
@@ -69,7 +70,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
             addUrls(urls, viewport, distFolder);
         }
 
-        const result = await prepare(id, distFolder);
+        const result = await prepare(id, distFolder, crawler);
         resultsQueue.push({
             result,
             folder: distFolder,

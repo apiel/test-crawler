@@ -1,5 +1,3 @@
-- automatically pin new pages
-
 - pages filter to show only not validated, may use as well fuse.js
 
 - cleanup test-crawler-ui > refactoring & types

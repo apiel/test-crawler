@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Input from 'antd/lib/input';
-// import Select from 'antd/lib/select';
+import Checkbox from 'antd/lib/checkbox';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
 import Radio from 'antd/lib/radio';
@@ -42,6 +42,7 @@ const usePreset = (search: string) => {
             method: 'spiderbot', // CrawlerMethod.SPIDER_BOT,
             url: 'http://localhost:3003/',
             viewport: getDefaultViewport(),
+            autopin: true,
         }
     };
     const [preset, setPreset] = useState<PresetType>(initialPreset);
@@ -124,6 +125,14 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                         the page.
                     </Paragraph>
                 </Info>
+            </Form.Item>
+            <Form.Item>
+                {getFieldDecorator('autopin', {
+                    valuePropName: 'checked',
+                    initialValue: preset.crawlerInput.autopin,
+                })(
+                    <Checkbox>Automatically pin new page founds.</Checkbox>
+                )}
             </Form.Item>
             <Form.Item>
                 <Form.Item style={inlineStyle}>

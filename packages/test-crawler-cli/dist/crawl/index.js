@@ -25,7 +25,8 @@ function loadPage(id, url, distFolder, retry = 0) {
         let hrefs;
         const filePath = utils_1.getFilePath(id, distFolder);
         const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
-        const { viewport, url: baseUrl, method } = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
+        const crawler = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
+        const { viewport, url: baseUrl, method } = crawler;
         const browser = yield puppeteer_1.launch({});
         const page = yield browser.newPage();
         yield page.setUserAgent(config_1.USER_AGENT);
@@ -48,7 +49,7 @@ function loadPage(id, url, distFolder, retry = 0) {
                 const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
                 addUrls(urls, viewport, distFolder);
             }
-            const result = yield diff_1.prepare(id, distFolder);
+            const result = yield diff_1.prepare(id, distFolder, crawler);
             resultsQueue.push({
                 result,
                 folder: distFolder,

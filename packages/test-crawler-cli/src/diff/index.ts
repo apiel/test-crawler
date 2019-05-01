@@ -5,7 +5,8 @@ import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
-import { PageData } from 'test-crawler-lib/dist/typing';
+import { PageData, Crawler } from 'test-crawler-lib/dist/typing';
+import { CrawlerProvider } from 'test-crawler-lib';
 
 async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
     const file = filePath('png');
@@ -67,16 +68,21 @@ async function parseZones(basePath: FilePath, zones: Zone[]) {
     }));
 }
 
-export async function prepare(id: string, distFolder: string) {
+export async function prepare(id: string, distFolder: string, crawler: Crawler) {
     const basePath = getFilePath(id, BASE_FOLDER);
     const filePath = getFilePath(id, distFolder);
     const data = await readJson(filePath('json'));
 
     let diffZoneCount = 0;
-    if (await pathExists(basePath('png'))) {
-        diffZoneCount = await parsePng(data, filePath, basePath);
-    } else {
-        info('DIFF', 'new png');
+    if (await pathExists(basePath('json'))) {
+        if (await pathExists(basePath('png'))) {
+            diffZoneCount = await parsePng(data, filePath, basePath);
+        } else {
+            info('DIFF', 'new png');
+        }
+    } else if (crawler.autopin) {
+        const crawlerProvider = new CrawlerProvider();
+        crawlerProvider.copyToBase(crawler.timestamp.toString(), id);
     }
     return {
         diffZoneCount,
