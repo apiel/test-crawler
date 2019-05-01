@@ -1,5 +1,3 @@
-- pages filter to show only not validated, may use as well fuse.js
-
 - cleanup test-crawler-ui > refactoring & types
 
 - **spider crawling with a limit** of child path: (eg: limit 2)
