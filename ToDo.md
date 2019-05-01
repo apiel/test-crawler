@@ -19,9 +19,9 @@ if (runProcess) {
 }
 ```
 
+- when page was automatically pined, show info
 
 - code preview
-- pins: filter by url, viewport... maybe just use fuse.js
 - plugin system
 
 
