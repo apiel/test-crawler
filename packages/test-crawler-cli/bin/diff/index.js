@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
-const utils_1 = require("test-crawler-lib/dist/utils");
-const config_1 = require("test-crawler-lib/dist/config");
+const utils_1 = require("test-crawler-lib/lib/utils");
+const config_1 = require("test-crawler-lib/lib/config");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");
-const test_crawler_lib_1 = require("test-crawler-lib");
+const lib_1 = require("test-crawler-lib/lib");
 function parsePng(data, filePath, basePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = filePath('png');
@@ -78,7 +78,7 @@ function prepare(id, distFolder, crawler) {
             }
         }
         else if (crawler.autopin) {
-            const crawlerProvider = new test_crawler_lib_1.CrawlerProvider();
+            const crawlerProvider = new lib_1.CrawlerProvider();
             crawlerProvider.copyToBase(crawler.timestamp.toString(), id);
         }
         return {

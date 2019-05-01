@@ -1,9 +1,9 @@
 {
     "name": "test-crawler-cli",
     "version": "0.6.0",
-    "types": "dist/index.d.ts",
+    "types": "bin/index.d.ts",
     "bin": {
-        "test-crawler-cli": "dist/index.js"
+        "test-crawler-cli": "bin/index.js"
     },
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
     "license": "MIT",
@@ -11,8 +11,8 @@
         "prepublishOnly": "yarn build",
         "start": "PROCESS_TIMEOUT=30 test-crawler-cli",
         "dev": "ts-node src/index.ts",
-        "prebuild": "rm -rf dist/",
-        "build": "tsc -p tsconfig.json && chmod +x dist/index.js",
+        "prebuild": "rm -rf bin/",
+        "build": "tsc -p tsconfig.json && chmod +x bin/index.js",
         "lint": "tslint -p tsconfig.json -c tslint.json"
     },
     "dependencies": {

@@ -1,13 +1,13 @@
 {
     "name": "test-crawler-lib",
     "version": "0.6.0",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
     "license": "MIT",
     "scripts": {
         "prepublishOnly": "yarn build",
-        "prebuild": "rm -rf dist/",
+        "prebuild": "rm -rf lib/",
         "build": "tsc -p tsconfig.json",
         "lint": "tslint -p tsconfig.json -c tslint.json"
     },

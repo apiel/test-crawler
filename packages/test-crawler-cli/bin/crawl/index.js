@@ -12,9 +12,9 @@ const puppeteer_1 = require("puppeteer");
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
-const config_1 = require("test-crawler-lib/dist/config");
-const utils_1 = require("test-crawler-lib/dist/utils");
-const test_crawler_lib_1 = require("test-crawler-lib");
+const config_1 = require("test-crawler-lib/lib/config");
+const utils_1 = require("test-crawler-lib/lib/utils");
+const lib_1 = require("test-crawler-lib/lib");
 const diff_1 = require("../diff");
 let totalDiff = 0;
 let consumerRunning = 0;
@@ -44,7 +44,7 @@ function loadPage(id, url, distFolder, retry = 0) {
             yield page.screenshot({ path: filePath('png'), fullPage: true });
             const png = { width: viewport.width };
             yield utils_1.savePageInfo(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl });
-            if (method !== test_crawler_lib_1.CrawlerMethod.URLs) {
+            if (method !== lib_1.CrawlerMethod.URLs) {
                 hrefs = yield page.$$eval('a', as => as.map(a => a.href));
                 const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
                 addUrls(urls, viewport, distFolder);

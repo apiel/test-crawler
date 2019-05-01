@@ -1,12 +1,12 @@
 import { info } from 'logol';
-import { getFilePath, FilePath } from 'test-crawler-lib/dist/utils';
-import { BASE_FOLDER } from 'test-crawler-lib/dist/config';
+import { getFilePath, FilePath } from 'test-crawler-lib/lib/utils';
+import { BASE_FOLDER } from 'test-crawler-lib/lib/config';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
-import { PageData, Crawler } from 'test-crawler-lib/dist/typing';
-import { CrawlerProvider } from 'test-crawler-lib';
+import { PageData, Crawler } from 'test-crawler-lib/lib/typing';
+import { CrawlerProvider } from 'test-crawler-lib/lib';
 
 async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
     const file = filePath('png');
@@ -83,6 +83,7 @@ export async function prepare(id: string, distFolder: string, crawler: Crawler) 
     } else if (crawler.autopin) {
         const crawlerProvider = new CrawlerProvider();
         crawlerProvider.copyToBase(crawler.timestamp.toString(), id);
+        // we might want to put a flag to the page saying that it was automatically pin
     }
     return {
         diffZoneCount,
