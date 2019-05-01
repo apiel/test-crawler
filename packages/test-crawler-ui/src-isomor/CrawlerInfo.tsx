@@ -33,6 +33,7 @@ export const CrawlerInfo = ({
         startAt,
         lastUpdate,
         method,
+        autopin,
         viewport,
     },
     history,
@@ -42,7 +43,7 @@ export const CrawlerInfo = ({
     const onReRun = () => {
         history.push({
             pathname: getHomeRoute(),
-            search: stringify({ url, method, viewport: JSON.stringify(viewport) }),
+            search: stringify({ url, method, autopin, viewport: JSON.stringify(viewport) }),
         });
     };
     const screen = getViewportName(viewport);
