@@ -238,7 +238,7 @@ export class CrawlerProvider {
         }
 
         if (runProcess) {
-            exec(`PROCESS_TIMEOUT=60 test-crawler-cli 2> ${this.getLogFile()} &`);
+            exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
         }
 
         return {

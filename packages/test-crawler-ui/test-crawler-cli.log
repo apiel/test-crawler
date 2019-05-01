@@ -1,5 +1,9 @@
+[1m[34m• info[39m[22m Crawl defb34c2e30004f1aedca21bbc2a2612.json
 [1m[31m• [39m[41mERR[49m[22m [31mLoad page error (attempt 1)[39m [31mError: net::ERR_CONNECTION_REFUSED at http://localhost:3003/[39m
 [1m[33m• warn[39m[22m [33mRetry crawl[39m [33mhttp://localhost:3003/[39m
 [1m[31m• [39m[41mERR[49m[22m [31mLoad page error (attempt 2)[39m [31mError: net::ERR_CONNECTION_REFUSED at http://localhost:3003/[39m
 [1m[33m• warn[39m[22m [33mRetry crawl[39m [33mhttp://localhost:3003/[39m
 [1m[31m• [39m[41mERR[49m[22m [31mLoad page error (attempt 3)[39m [31mError: net::ERR_CONNECTION_REFUSED at http://localhost:3003/[39m
+[1m[34m• info[39m[22m browser closed http://localhost:3003/
+[1m[34m• info[39m[22m browser closed http://localhost:3003/
+[1m[34m• info[39m[22m browser closed http://localhost:3003/
