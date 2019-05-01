@@ -1,4 +1,8 @@
-- handle errors from crawling, .error file
+- automatically pin new pages
+
+- cleanup test-crawler-ui > refactoring & types
+
+- pages filter to show only not validated, may use as well fuse.js
 
 - **spider crawling with a limit** of child path: (eg: limit 2)
     /     (found: a, b, c, d)
@@ -10,14 +14,6 @@
     /b/1
     /b/2
 
-
-
-
-
-- run in isolation, (docker? ....)
-
-- should we `tail -f test-crawler-cli.log` with `run-screen` ?
-
 toggle on/off `runProcess` from settings, set timeout from settings...
 ```tsx
 if (runProcess) {
@@ -27,7 +23,7 @@ if (runProcess) {
 
 
 - code preview
-- pins: filter by url, viewport...
+- pins: filter by url, viewport... maybe just use fuse.js
 - plugin system
 
 

@@ -1,5 +1,5 @@
 import { launch, Page, Viewport } from 'puppeteer';
-import { error, info } from 'logol';
+import { error, info, warn } from 'logol';
 import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp } from 'fs-extra';
 import { join, extname } from 'path';
 
@@ -51,22 +51,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         const html = await page.content();
         await writeFile(filePath('html'), html);
 
-        // to implement
-        // console.log('to use: page.metrics', await page.metrics());
-        // { Timestamp: 4597.10704,
-        //     Documents: 2,
-        //     Frames: 1,
-        //     JSEventListeners: 24,
-        //     Nodes: 64,
-        //     LayoutCount: 2,
-        //     RecalcStyleCount: 4,
-        //     LayoutDuration: 0.370643,
-        //     RecalcStyleDuration: 0.065919,
-        //     ScriptDuration: 0.658299,
-        //     TaskDuration: 1.463009,
-        //     JSHeapUsedSize: 17742472,
-        //     JSHeapTotalSize: 36044800 }
-
+        const metrics = await page.metrics();
         const performance = JSON.parse(await page.evaluate(
             () => JSON.stringify(window.performance),
         ));
@@ -76,7 +61,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         await page.screenshot({ path: filePath('png'), fullPage: true });
 
         const png = { width: viewport.width };
-        await savePageInfo(filePath('json'), { url, id, performance, png, viewport, baseUrl });
+        await savePageInfo(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl });
 
         if (method !== CrawlerMethod.URLs) {
             hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
@@ -90,11 +75,12 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
             folder: distFolder,
         });
     } catch (err) {
-        await handleError(err.toString(), filePath('error'));
+        error(`Load page error (attempt ${retry + 1})`, err.toString());
         if (retry < 2) {
-            info('retry crawl', url);
+            warn('Retry crawl', url);
             await loadPage(id, url, distFolder, retry + 1);
         } else {
+            await savePageInfo(filePath('json'), { url, id, error: err.toString() });
             resultsQueue.push({
                 folder: distFolder,
                 isError: true,
@@ -117,11 +103,6 @@ async function injectCode(jsFile: string, page: Page, id: string, url: string, d
             error('Something went wrong while injecting the code', id, err);
         }
     }
-}
-
-async function handleError(err: string, file: string) {
-    error('Load page error', err);
-    await writeFile(file, err);
 }
 
 function addUrls(urls: string[], viewport: Viewport, distFolder: string) {

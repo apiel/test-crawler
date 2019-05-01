@@ -2,6 +2,7 @@ import React from 'react';
 import Card from 'antd/lib/card';
 import Spin from 'antd/lib/spin';
 import Tag from 'antd/lib/tag';
+import Alert from 'antd/lib/alert';
 import Icon from 'antd/lib/icon';
 import Masonry from 'react-masonry-component';
 import { useAsyncCacheEffect } from 'react-async-cache';
@@ -20,6 +21,10 @@ import { getPages } from './server/crawler';
 import { getColorByStatus } from './DiffZone';
 import { sigDig } from './utils';
 import { ErrorHandler } from './ErrorHandler';
+
+const alertStyle = {
+    marginBottom: 10,
+}
 
 const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
     zones.filter(({ status }: any) => perStatus.includes(status)).length
@@ -50,7 +55,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
             ref={(c: any) => { masonry = c && c.masonry; }}
         >
             {
-                response.map(({ id, url, png }: any) => (
+                response.map(({ id, url, png, error: pageError }: any) => (
                     <Card
                         key={id}
                         style={cardStyle}
@@ -68,6 +73,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                             // <Icon type="ellipsis" title="more" />,
                         ]}
                     >
+                        {pageError && <Alert message={pageError} type="warning" style={alertStyle} />}
                         <p><Icon type="link" /> <a href={url}>{url}</a></p>
                         {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
                         {png && !png.diff && <div><Icon type="picture" theme={iconTheme} /> New screenshot <Tag color="green">New</Tag></div>}
@@ -76,7 +82,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                             {png.diff.zones.length > 0 &&
                                 <p>
                                     <b>Zone:</b>&nbsp;
-                            {[['diff'], ['valid', 'pin'], ['report']].map(([status, ...more]) => (
+                                    {[['diff'], ['valid', 'pin'], ['report']].map(([status, ...more]) => (
                                         <React.Fragment key={status}>
                                             <span style={{
                                                 marginLeft: 10,

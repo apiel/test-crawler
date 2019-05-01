@@ -18,7 +18,7 @@
     "serv:dev": "nodemon --watch 'src-isomor/**/server/**/*' -e ts,tsx --exec 'yarn serv'",
     "serv:prod": "STATIC_FOLDER=./build yarn serv",
     "prod": "yarn isomor:build && yarn build && yarn serv:prod",
-    "dev": "run-screen 'yarn isomor:build:dev' 'yarn serv:dev' 'yarn start'",
+    "dev": "run-screen 'yarn isomor:build:dev' 'yarn serv:dev' 'yarn start' 'tail -f test-crawler-cli.log'",
     "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -37,11 +37,12 @@ function loadPage(id, url, distFolder, retry = 0) {
             });
             const html = yield page.content();
             yield fs_extra_1.writeFile(filePath('html'), html);
+            const metrics = yield page.metrics();
             const performance = JSON.parse(yield page.evaluate(() => JSON.stringify(window.performance)));
             yield injectCode(basePath('js'), page, id, url, distFolder);
             yield page.screenshot({ path: filePath('png'), fullPage: true });
             const png = { width: viewport.width };
-            yield utils_1.savePageInfo(filePath('json'), { url, id, performance, png, viewport, baseUrl });
+            yield utils_1.savePageInfo(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl });
             if (method !== test_crawler_lib_1.CrawlerMethod.URLs) {
                 hrefs = yield page.$$eval('a', as => as.map(a => a.href));
                 const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
@@ -54,12 +55,13 @@ function loadPage(id, url, distFolder, retry = 0) {
             });
         }
         catch (err) {
-            yield handleError(err.toString(), filePath('error'));
+            logol_1.error(`Load page error (attempt ${retry + 1})`, err.toString());
             if (retry < 2) {
-                logol_1.info('retry crawl', url);
+                logol_1.warn('Retry crawl', url);
                 yield loadPage(id, url, distFolder, retry + 1);
             }
             else {
+                yield utils_1.savePageInfo(filePath('json'), { url, id, error: err.toString() });
                 resultsQueue.push({
                     folder: distFolder,
                     isError: true,
@@ -84,12 +86,6 @@ function injectCode(jsFile, page, id, url, distFolder) {
                 logol_1.error('Something went wrong while injecting the code', id, err);
             }
         }
-    });
-}
-function handleError(err, file) {
-    return __awaiter(this, void 0, void 0, function* () {
-        logol_1.error('Load page error', err);
-        yield fs_extra_1.writeFile(file, err);
     });
 }
 function addUrls(urls, viewport, distFolder) {

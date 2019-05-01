@@ -47,7 +47,9 @@ export interface PngDiffData {
 export interface PageData {
     id: string;
     url: string;
+    error?: string;
     performance?: Performance;
+    metrics?: PageMetrics;
     viewport?: Viewport;
     baseUrl?: string;
 
@@ -55,6 +57,22 @@ export interface PageData {
         width: number;
         diff?: PngDiffData;
     };
+}
+
+export interface PageMetrics {
+    Timestamp: number;
+    Documents: number;
+    Frames: number;
+    JSEventListeners: number;
+    Nodes: number;
+    LayoutCount: number;
+    RecalcStyleCount: number;
+    LayoutDuration: number;
+    RecalcStyleDuration: number;
+    ScriptDuration: number;
+    TaskDuration: number;
+    JSHeapUsedSize: number;
+    JSHeapTotalSize: number;
 }
 
 export interface Performance {
