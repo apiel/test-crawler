@@ -10,17 +10,20 @@
     /b/1
     /b/2
 
+- inject code base on url pattern
+
+- when page was automatically pined, show info
+
+- code preview
+- plugin system
+
+
 toggle on/off `runProcess` from settings, set timeout from settings...
 ```tsx
 if (runProcess) {
     exec(`PROCESS_TIMEOUT=60 test-crawler-cli 2> ${this.getLogFile()} &`);
 }
 ```
-
-- when page was automatically pined, show info
-
-- code preview
-- plugin system
 
 
 - ~~improve test-crawler bash > maybe switch to JS~~
