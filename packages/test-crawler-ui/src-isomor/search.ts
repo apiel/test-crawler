@@ -1,7 +1,7 @@
 import { PageData } from 'test-crawler-lib';
 import Fuse from 'fuse.js';
 import get from 'lodash/get';
-import { cardStyle, masonryOptions } from './pageStyle';
+import { cardStyle, masonryOptions } from './pages/pageStyle';
 
 export const searchStyle = {
     width: cardStyle.width,

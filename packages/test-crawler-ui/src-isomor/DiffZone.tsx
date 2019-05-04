@@ -4,7 +4,7 @@ import Popover from 'antd/lib/popover';
 import {
     imgStyle,
     imgMargin,
-} from './pageStyle';
+} from './pages/pageStyle';
 
 import './App.css';
 import { DiffImageButtons } from './DiffImageButtons';

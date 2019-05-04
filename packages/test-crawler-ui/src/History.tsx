@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
-import { Pages}  from './Pages';
+import { Pages}  from './pages/Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { Crawler } from 'test-crawler-lib';
 import { getCrawler, getCrawlers } from './server/crawler';

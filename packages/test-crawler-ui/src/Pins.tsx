@@ -11,7 +11,7 @@ import {
     masonryOptions,
     cardStyle,
     iconTheme,
-} from './pageStyle';
+} from './pages/pageStyle';
 import { DiffImage } from './DiffImage';
 import { getPins } from './server/crawler';
 import { PageData } from 'test-crawler-lib';

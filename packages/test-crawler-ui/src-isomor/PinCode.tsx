@@ -16,7 +16,7 @@ import 'brace/theme/tomorrow';
 import {
     cardStyle,
     iconTheme,
-} from './pageStyle';
+} from './pages/pageStyle';
 import { DiffImage } from './DiffImage';
 import { PageData } from 'test-crawler-lib';
 import { getPin, setPinCode, getPinCode } from './server/crawler';

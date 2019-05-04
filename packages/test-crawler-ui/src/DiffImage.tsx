@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {
     coverStyle,
     imgStyle,
-} from './pageStyle';
+} from './pages/pageStyle';
 
 import './App.css';
 import { getThumbnail } from './server/crawler';
