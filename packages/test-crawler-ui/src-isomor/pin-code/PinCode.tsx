@@ -13,72 +13,57 @@ import { RouteComponentProps } from 'react-router';
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 
-import {
-    cardStyle,
-    iconTheme,
-} from '../pages/pageStyle';
+import { iconTheme } from '../pages/pageStyle';
 import { DiffImage } from '../diff/DiffImage';
 import { PageData } from 'test-crawler-lib';
 import { getPin, setPinCode, getPinCode } from '../server/crawler';
-import { Info } from '../common/Info';
 import { codeSnippet } from './PinCodeSnippet';
+import { PinCodeInfo } from './PinCodeInfo';
+import { buttonBarStyle, buttonStyle, aceEditorStyle, cardRightStyle } from './pinCodeStyle';
+import { PinCodeCard } from './PinCodeCard';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title } = Typography;
 
-const aceEditorStyle = {
-    border: '1px solid #EEE',
-    marginBottom: 15,
-    marginRight: 15,
-    float: 'left' as 'left',
+const load = async (
+    id: string,
+    setPin: React.Dispatch<React.SetStateAction<PageData | undefined>>,
+    setCode: React.Dispatch<React.SetStateAction<string>>,
+) => {
+    try {
+        setPin(await getPin(id));
+        const code = await getPinCode(id);
+        if (code.length) {
+            setCode(code);
+        }
+    } catch (error) {
+        notification['error']({
+            message: 'Something went wrong!',
+            description: error.toString(),
+        });
+    }
 }
 
-const cardRightStyle = {
-    ...cardStyle,
-    float: 'left' as 'left',
+const onPlay = () => {
+    message.warn('To be implemented.', 2);
 }
 
-const buttonBarStyle = {
-    marginBottom: 15,
-}
-
-const buttonStyle = {
-    marginRight: 10,
+const onSave = (id: string, code: string) => async () => {
+    try {
+        await setPinCode(id, code);
+        message.success('Code saved.', 2);
+    } catch (error) {
+        notification['error']({
+            message: 'Something went wrong!',
+            description: error.toString(),
+        });
+    }
 }
 
 export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<{ id: string }>) => {
     const [code, setCode] = React.useState<string>(`module.exports = async function run(page) {\n// your code\n}`);
     const [pin, setPin] = React.useState<PageData>();
-    const load = async () => {
-        try {
-            setPin(await getPin(id));
-            const code = await getPinCode(id);
-            if (code.length) {
-                setCode(code);
-            }
-        } catch (error) {
-            notification['error']({
-                message: 'Something went wrong!',
-                description: error.toString(),
-            });
-        }
-    }
-    React.useEffect(() => { load(); }, []);
 
-    const onSave = async () => {
-        try {
-            await setPinCode(id, code);
-            message.success('Code saved.', 2);
-        } catch (error) {
-            notification['error']({
-                message: 'Something went wrong!',
-                description: error.toString(),
-            });
-        }
-    }
-
-    const onPlay = () => {
-        message.warn('To be implemented.', 2);
-    }
+    React.useEffect(() => { load(id, setPin, setCode); }, []);
 
     return (
         <>
@@ -86,19 +71,9 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<{ id:
             {
                 pin ? (
                     <>
-                        <Info>
-                            <Paragraph>
-                                Inject some code in the crawler while parsing the page. This code will
-                                be executed just after the page finish loaded, before to make the screenshot and
-                                before extracting the links. You need to export a function that will take as
-                                first parameter the <Text code>page</Text> coming from Puppeteer.
-                            </Paragraph>
-                            <Paragraph>
-                                <Text code>module.exports = async (page) => ...some code</Text>
-                            </Paragraph>
-                        </Info>
+                        <PinCodeInfo />
                         <div style={buttonBarStyle}>
-                            <Button icon="save" onClick={onSave} style={buttonStyle}>Save</Button>
+                            <Button icon="save" onClick={onSave(id, code)} style={buttonStyle}>Save</Button>
                             <Button icon="caret-right" onClick={onPlay} style={buttonStyle}>Preview</Button>
                             <Dropdown overlay={codeSnippet(setCode)}>
                                 <Button style={buttonStyle}>
@@ -114,13 +89,7 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<{ id:
                             value={code}
                             style={aceEditorStyle}
                         />
-                        <Card
-                            style={cardRightStyle}
-                            cover={pin.png && <DiffImage folder='base' id={pin.id} />}
-                        >
-                            <p><Icon type="link" /> <a href={pin.url}>{pin.url}</a></p>
-                            {!pin.png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}
-                        </Card>
+                        <PinCodeCard id={pin.id} png={pin.png} url={pin.url} />
                     </>
                 ) : <Spin />
             }
