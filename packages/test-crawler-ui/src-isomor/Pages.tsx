@@ -24,6 +24,7 @@ import { getColorByStatus } from './DiffZone';
 import { sigDig } from './utils';
 import { ErrorHandler } from './ErrorHandler';
 import { onSearch, searchStyle, onFilter } from './search';
+import { PagesSearch, usePagesSearch } from './PagesSearch';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -35,28 +36,7 @@ const alertStyle = {
 const getCountZonesPerStatus = (zones: any, perStatus: string[]) =>
     zones.filter(({ status }: any) => perStatus.includes(status)).length
 
-interface Props {
-    timestamp: string;
-    lastUpdate: number;
-}
-export const Pages = ({ timestamp, lastUpdate }: Props) => {
-    const { response, error } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, timestamp);
-    if (error) {
-        return <ErrorHandler description={error.toString()} />;
-    }
-
-    const [pages, setPages] = React.useState<PageData[]>();
-    React.useEffect(() => {
-        setPages(response);
-    }, [response]);
-
-    const [filters, setFilters] = React.useState<string[]>([]);
-    const [pagesFiltered, setPagesFiltered] = React.useState<PageData[]>();
-    React.useEffect(() => {
-        onFilter(setPagesFiltered, pages, setFilters)(filters);
-    }, [pages]);
-
-    let masonry: any;
+const useMasonry = (masonry: any) => {
     let timer: NodeJS.Timer;
     const onImg = () => {
         if (masonry) masonry.layout();
@@ -65,25 +45,25 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
             if (masonry) masonry.layout();
         }, 500);
     }
-    return (
-        <>
-            <Search
-                placeholder="Search"
-                onChange={onSearch(setPages, response)}
-                style={searchStyle}
-                allowClear
-            />
-            <Select
-                mode="tags"
-                onChange={onFilter(setPagesFiltered, pages, setFilters)}
-                tokenSeparators={[',']}
-                style={searchStyle}
-                placeholder="filters"
-            >
-                <Option key="with-diff">with diff</Option>
-            </Select>
-            {pagesFiltered ? (
+    return onImg;
+}
 
+interface Props {
+    timestamp: string;
+    lastUpdate: number;
+}
+
+export const Pages = ({ timestamp, lastUpdate }: Props) => {
+    const { response, error } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, timestamp);
+    if (error) {
+        return <ErrorHandler description={error.toString()} />;
+    }
+
+    let masonry: any;
+    let onImg = useMasonry(masonry);
+    return (
+        <PagesSearch response={response}>
+            {(pagesFiltered: PageData[]) => pagesFiltered ? (
                 <Masonry
                     style={masonryStyle}
                     options={masonryOptions}
@@ -134,5 +114,5 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                 </Masonry >
             ) : <Spin />
             }
-        </>);
+        </PagesSearch>);
 }
