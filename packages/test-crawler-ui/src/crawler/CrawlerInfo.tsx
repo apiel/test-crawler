@@ -9,10 +9,10 @@ import { stringify } from 'query-string';
 import { duration } from 'moment';
 import 'moment-duration-format';
 
-import { timestampToString } from './utils';
+import { timestampToString } from '../utils';
 import { SwitchStatus } from './SwitchStatus';
-import { getHomeRoute } from './routes';
-import { getViewportName } from './viewport';
+import { getHomeRoute } from '../routes';
+import { getViewportName } from '../viewport';
 
 const { Title } = Typography;
 

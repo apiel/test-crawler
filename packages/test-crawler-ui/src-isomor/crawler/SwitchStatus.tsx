@@ -2,7 +2,7 @@ import React from 'react';
 import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
-import { setStatus, getCrawler } from './server/crawler';
+import { setStatus, getCrawler } from '../server/crawler';
 import { useAsyncCache } from 'react-async-cache';
 
 const onChange = (update: any, timestamp: string) => async (value: boolean) => {

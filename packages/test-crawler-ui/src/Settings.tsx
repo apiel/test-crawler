@@ -15,18 +15,23 @@ const terminalStyle = {
     borderLeft: 'solid 7px rgb(67, 83, 99)',
 }
 
+const loadLogs = async (setLogs: React.Dispatch<React.SetStateAction<string>>) => {
+    setLogs(await getLogs());
+    // setTimeout(loadLogs, 1000); // maybe better to refresh manually
+}
+const load = async (
+    setSettings: React.Dispatch<any>,
+    setLogs: React.Dispatch<React.SetStateAction<string>>,
+) => {
+    setSettings(await getSettings());
+    loadLogs(setLogs);
+}
+
 export const Settings = () => {
     const [settings, setSettings] = React.useState();
     const [logs, setLogs] = React.useState<string>('');
-    const load = async () => {
-        setSettings(await getSettings());
-        loadLogs();
-    }
-    const loadLogs = async () => {
-        setLogs(await getLogs());
-        // setTimeout(loadLogs, 1000); // maybe better to refresh manually
-    }
-    React.useEffect(() => { load(); }, []);
+
+    React.useEffect(() => { load(setSettings, setLogs); }, []);
 
     return (
         <>

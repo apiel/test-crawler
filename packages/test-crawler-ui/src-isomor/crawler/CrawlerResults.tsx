@@ -4,12 +4,12 @@ import { RouteComponentProps } from 'react-router-dom';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
-import { Pages}  from './pages/Pages';
+import { Pages}  from '../pages/Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { Crawler } from 'test-crawler-lib';
-import { getCrawler, getCrawlers } from './server/crawler';
+import { getCrawler, getCrawlers } from '../server/crawler';
 import { useAsyncCacheEffect, useAsyncCache, Cache, Update } from 'react-async-cache';
-import { ErrorHandler } from './common/ErrorHandler';
+import { ErrorHandler } from '../common/ErrorHandler';
 
 const parseRespAndUpdateCache = (
     response: Crawler,

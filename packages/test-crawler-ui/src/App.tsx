@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import New from './new/New';
-import { CrawlerResults } from './CrawlerResults';
+import { CrawlerResults } from './crawler/CrawlerResults';
 import { SideMenu } from './SideMenu';
 import { getHomeRoute, getResultsRoute, getPinsRoute, getPinCodeRoute, getSettingsRoute } from './routes';
 import { Pins } from './Pins';
