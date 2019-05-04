@@ -4,7 +4,7 @@ import Typography from 'antd/lib/typography';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
-import New from './New';
+import New from './new/New';
 import { CrawlerResults } from './CrawlerResults';
 import { SideMenu } from './SideMenu';
 import { getHomeRoute, getResultsRoute, getPinsRoute, getPinCodeRoute, getSettingsRoute } from './routes';

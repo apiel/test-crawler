@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { parse } from 'query-string';
 import { Preset as PresetType, CrawlerInput } from 'test-crawler-lib';
 
-import { getDefaultViewport } from './viewport';
+import { getDefaultViewport } from '../viewport';
 
 export const usePreset = (search: string) => {
     const initialPreset: PresetType = {

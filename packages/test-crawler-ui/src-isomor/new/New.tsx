@@ -9,12 +9,12 @@ import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 import { RouteComponentProps } from 'react-router';
 
-import { getResultsRoute } from './routes';
-import { saveAndStart, getCrawlers } from './server/crawler';
+import { getResultsRoute } from '../routes';
+import { saveAndStart, getCrawlers } from '../server/crawler';
 import { useAsyncCache } from 'react-async-cache';
-import { Info } from './common/Info';
+import { Info } from '../common/Info';
 import { Preset } from './Preset';
-import { Viewport } from './Viewport';
+import { Viewport } from '../Viewport';
 import { usePreset } from './usePreset';
 import { History } from 'history';
 import { CrawlerInput } from 'test-crawler-lib';
