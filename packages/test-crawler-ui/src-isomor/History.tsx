@@ -8,16 +8,17 @@ import { Pages}  from './Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { Crawler } from 'test-crawler-lib';
 import { getCrawler, getCrawlers } from './server/crawler';
-import { useAsyncCacheEffect } from 'react-async-cache';
+import { useAsyncCacheEffect, useAsyncCache } from 'react-async-cache';
 import { ErrorHandler } from './ErrorHandler';
 
 let timer: NodeJS.Timeout;
 
 export const History = ({ match: { params: { timestamp } }, history }: RouteComponentProps<any>) => {
-    const { error, call, response, cache, update } = useAsyncCacheEffect<Crawler>(getCrawler, timestamp); //
+    const { cache, update } = useAsyncCache<Crawler[]>();
+    const { error, call, response } = useAsyncCacheEffect<Crawler>(getCrawler, timestamp);
     React.useEffect(() => {
         if (response) {
-            const crawlers = cache(getCrawlers) as Crawler[];
+            const crawlers = cache(getCrawlers);
             if (crawlers) {
                 const index = crawlers.findIndex(crawler => crawler.id === response.id);
                 if (index !== -1) {
@@ -35,7 +36,7 @@ export const History = ({ match: { params: { timestamp } }, history }: RouteComp
     const lastUpdate = get(response, 'lastUpdate');
     clearTimeout(timer);
     timer = setTimeout(() => {
-        call(getCrawler, timestamp);
+        call();
     }, 1000);
     return response ? (
         <>

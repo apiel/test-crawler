@@ -2674,9 +2674,9 @@ copy-to-clipboard@^3.0.8:
   dependencies:
     toggle-selection "^1.0.6"
 
-core-async-cache@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-0.5.0.tgz#322da4ae3fda8e7917ca7b2f0232d58769b39702"
+core-async-cache@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-0.7.0.tgz#f3c0950239077eed52ef93b6b3a5addd88a3f84b"
   dependencies:
     md5 "^2.2.1"
     typescript "^3.4.1"
@@ -8450,11 +8450,11 @@ react-app-polyfill@^0.2.2:
     raf "3.4.1"
     whatwg-fetch "3.0.0"
 
-react-async-cache@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/react-async-cache/-/react-async-cache-0.5.1.tgz#b979e8018dd6c2c793cc3d9263392560dd9fed6e"
+react-async-cache@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-async-cache/-/react-async-cache-0.7.0.tgz#ddb26c51fb25b5b6b5bd107bcfef8abcfe22c72b"
   dependencies:
-    core-async-cache "^0.5.0"
+    core-async-cache "^0.7.0"
     md5 "^2.2.1"
     typescript "^3.4.1"
 

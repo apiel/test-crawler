@@ -5,11 +5,11 @@ import notification from 'antd/lib/notification';
 import { setStatus, getCrawler } from './server/crawler';
 import { useAsyncCache } from 'react-async-cache';
 
-const onChange = (update: any, { timestamp }: any) => async (value: boolean) => {
+const onChange = (update: any, timestamp: string) => async (value: boolean) => {
     try {
         const status = value ? 'done' : 'review';
-        const crawler = await setStatus(timestamp.toString(), status);
-        update(crawler, getCrawler, timestamp.toString());
+        const crawler = await setStatus(timestamp, status);
+        update(crawler);
         message.success(`Status set to "${status}".`, 2);
     } catch (error) {
         notification['error']({
@@ -19,12 +19,12 @@ const onChange = (update: any, { timestamp }: any) => async (value: boolean) => 
     }
 }
 
-export const SwitchStatus = (props: any) => {
-    const { update } = useAsyncCache();
+export const SwitchStatus = ({ timestamp, status }: any) => {
+    const { update } = useAsyncCache(getCrawler, timestamp.toString());
     return <Switch
         checkedChildren="done"
         unCheckedChildren="review"
-        checked={props.status === 'done'}
-        onChange={onChange(update, props)}
+        checked={status === 'done'}
+        onChange={onChange(update, timestamp.toString())}
     />;
 }

@@ -5,7 +5,7 @@ import notification from 'antd/lib/notification';
 import { useAsyncCache } from 'react-async-cache';
 import { setZonesStatus, getPages } from './server/crawler';
 
-const onClick = (update: any, { timestamp, id, zones, status, type }: any) => async () => {
+const onClick = (update: any, { timestamp, id, status }: any) => async () => {
     try {
         const pages = await setZonesStatus(timestamp.toString(), id, status);
         update(pages, getPages, timestamp);

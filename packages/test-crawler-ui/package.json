@@ -44,7 +44,7 @@
     "query-string": "^6.4.2",
     "react": "^16.8.6",
     "react-ace": "^6.4.0",
-    "react-async-cache": "^0.5.1",
+    "react-async-cache": "^0.7.0",
     "react-dom": "^16.8.6",
     "react-masonry-component": "^6.2.1",
     "react-router-dom": "^5.0.0",
