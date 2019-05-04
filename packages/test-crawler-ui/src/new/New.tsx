@@ -14,7 +14,7 @@ import { saveAndStart, getCrawlers } from '../server/crawler';
 import { useAsyncCache } from 'react-async-cache';
 import { Info } from '../common/Info';
 import { Preset } from './Preset';
-import { Viewport } from '../Viewport';
+import { Viewport } from './Viewport';
 import { usePreset } from './usePreset';
 import { History } from 'history';
 import { CrawlerInput } from 'test-crawler-lib';
