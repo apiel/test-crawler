@@ -106,6 +106,9 @@ class CrawlerProvider {
     loadBasePageCode(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const filePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
+            if (!(yield fs_extra_1.pathExists(filePath('js')))) {
+                return '';
+            }
             return (yield fs_extra_1.readFile(filePath('js'))).toString();
         });
     }

@@ -131,6 +131,9 @@ export class CrawlerProvider {
 
     async loadBasePageCode(id: string): Promise<string> {
         const filePath = getFilePath(id, BASE_FOLDER);
+        if (!(await pathExists(filePath('js')))) {
+            return '';
+        }
         return (await readFile(filePath('js'))).toString();
     }
 

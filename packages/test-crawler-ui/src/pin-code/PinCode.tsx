@@ -16,11 +16,11 @@ import 'brace/theme/tomorrow';
 import {
     cardStyle,
     iconTheme,
-} from './pages/pageStyle';
-import { DiffImage } from './diff/DiffImage';
+} from '../pages/pageStyle';
+import { DiffImage } from '../diff/DiffImage';
 import { PageData } from 'test-crawler-lib';
-import { getPin, setPinCode, getPinCode } from './server/crawler';
-import { Info } from './common/Info';
+import { getPin, setPinCode, getPinCode } from '../server/crawler';
+import { Info } from '../common/Info';
 import { codeSnippet } from './PinCodeSnippet';
 
 const { Title, Paragraph, Text } = Typography;
@@ -45,13 +45,16 @@ const buttonStyle = {
     marginRight: 10,
 }
 
-export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<any>) => {
+export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<{ id: string }>) => {
     const [code, setCode] = React.useState<string>(`module.exports = async function run(page) {\n// your code\n}`);
     const [pin, setPin] = React.useState<PageData>();
     const load = async () => {
         try {
             setPin(await getPin(id));
-            setCode(await getPinCode(id));
+            const code = await getPinCode(id);
+            if (code.length) {
+                setCode(code);
+            }
         } catch (error) {
             notification['error']({
                 message: 'Something went wrong!',

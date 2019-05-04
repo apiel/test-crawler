@@ -9,7 +9,7 @@ import { CrawlerResults } from './CrawlerResults';
 import { SideMenu } from './SideMenu';
 import { getHomeRoute, getResultsRoute, getPinsRoute, getPinCodeRoute, getSettingsRoute } from './routes';
 import { Pins } from './Pins';
-import { PinCode } from './PinCode';
+import { PinCode } from './pin-code/PinCode';
 import { Settings } from './Settings';
 
 const { Sider, Content } = Layout;
