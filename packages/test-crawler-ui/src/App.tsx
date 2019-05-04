@@ -1,5 +1,4 @@
 import React from 'react';
-import Icon from 'antd/lib/icon';
 import Layout from 'antd/lib/layout';
 import Typography from 'antd/lib/typography';
 import { BrowserRouter as Router, Route } from 'react-router-dom';

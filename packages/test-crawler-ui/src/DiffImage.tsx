@@ -8,12 +8,12 @@ import {
 import './App.css';
 import { getThumbnail } from './server/crawler';
 import { DiffZone } from './DiffZone';
-import { Zone } from 'test-crawler-lib';
+import { PngDiffDataZone } from 'test-crawler-lib';
 
 interface Props {
     folder: string;
     id: string;
-    zones?: Zone[];
+    zones?: PngDiffDataZone[];
     originalWidth?: number;
     onImg?: () => void;
 };
@@ -27,7 +27,7 @@ export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg = () => 
     useEffect(() => { load(); }, []);
     return thumb ? (
         <div style={coverStyle as any}>
-            {zones && zones.map(({ zone, status }: any, index: number) =>
+            {zones && zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
                 <DiffZone {...{ folder, id, index, originalWidth, zone, status }} key={`zone-${id}-${index}`} />)}
             <img style={imgStyle} alt="" src={thumb} />
         </div>) : null;

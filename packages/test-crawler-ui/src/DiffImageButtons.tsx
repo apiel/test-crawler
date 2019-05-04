@@ -1,11 +1,12 @@
 import React from 'react';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
-import { useAsyncCache } from 'react-async-cache';
+import { useAsyncCache, Update } from 'react-async-cache';
 import Button from 'antd/lib/button';
 
 import { setZoneStatus } from './server/crawler';
 import { getPages } from './server/crawler';
+import { PageData } from 'test-crawler-lib';
 
 
 const buttonStyle = {
@@ -13,7 +14,13 @@ const buttonStyle = {
     marginRight: 5,
 }
 
-const onSetStatus = (update: any, status: string, { timestamp, id, index }: any) => async () => {
+interface Props {
+    index: number;
+    timestamp: string;
+    id: string;
+}
+
+const onSetStatus = (update: Update<PageData[]>, status: string, { timestamp, id, index }: Props) => async () => {
     try {
         const pages = await setZoneStatus(timestamp.toString(), id, index, status);
         update(pages, getPages, timestamp);
@@ -25,8 +32,8 @@ const onSetStatus = (update: any, status: string, { timestamp, id, index }: any)
         });
     }
 }
-// neeed to flatten? and inject onSetStatus?
-export const DiffImageButtons = (props: any) => {
+
+export const DiffImageButtons = (props: Props) => {
     const { update } = useAsyncCache();
     return (
         <>

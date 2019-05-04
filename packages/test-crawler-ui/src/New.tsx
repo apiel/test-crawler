@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Input from 'antd/lib/input';
 import Checkbox from 'antd/lib/checkbox';
 import Form, { FormComponentProps } from 'antd/lib/form';
@@ -7,8 +7,7 @@ import Radio from 'antd/lib/radio';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
-import { parse } from 'query-string';
-import { Preset as PresetType, CrawlerInput } from 'test-crawler-lib';
+import { RouteComponentProps } from 'react-router';
 
 import { getHistoryRoute } from './routes';
 import { saveAndStart, getCrawlers } from './server/crawler';
@@ -16,9 +15,9 @@ import { useAsyncCache } from 'react-async-cache';
 import { Info } from './Info';
 import { Preset } from './Preset';
 import { Viewport } from './Viewport';
-import { RouteComponentProps } from 'react-router';
-import { getDefaultViewport } from './viewport';
-// import { CrawlerMethod } from 'test-crawler-lib';
+import { usePreset } from './usePreset';
+import { History } from 'history';
+import { CrawlerInput } from 'test-crawler-lib';
 
 const { Paragraph, Text } = Typography;
 
@@ -34,58 +33,37 @@ const toolbarStyle = {
     marginBottom: 12,
 }
 
-const usePreset = (search: string) => {
-    const initialPreset: PresetType = {
-        name: '',
-        id: '',
-        crawlerInput: {
-            method: 'spiderbot', // CrawlerMethod.SPIDER_BOT,
-            url: 'http://localhost:3003/',
-            viewport: getDefaultViewport(),
-            autopin: true,
-        }
-    };
-    const [preset, setPreset] = useState<PresetType>(initialPreset);
+const start = async (
+    history: History<any>,
+    { saveAs, viewport, ...input }: (CrawlerInput & { saveAs: string, viewport: string })) => {
+    const { call } = useAsyncCache();
+    try {
+        const response = await saveAndStart({ ...input, viewport: JSON.parse(viewport) }, saveAs);
+        await call(getCrawlers);
+        history.push(getHistoryRoute(response.crawler.timestamp.toString()));
+    } catch (error) {
+        notification['error']({
+            message: 'Something went wrong!',
+            description: error.toString(),
+        });
+    }
+}
 
-    useEffect(() => {
-        if (search) {
-            const { viewport, ...crawlerInputRaw } = parse(search) as any;
-            const crawlerInput: CrawlerInput = { ...crawlerInputRaw, viewport: JSON.parse(viewport) }
-            setPreset({ ...initialPreset, crawlerInput });
+const handleSubmit = (history: History<any>, validateFields: any) => (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    validateFields((err: any, values: any) => {
+        if (!err) {
+            start(history, values);
         }
-    }, [search]);
-
-    return { preset, setPreset };
+    });
 }
 
 type Props = FormComponentProps & RouteComponentProps;
 const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: Props) => {
-    const { call } = useAsyncCache();
-    const start = async ({ saveAs, viewport, ...input }: any) => {
-        try {
-            const response = await saveAndStart({ ...input, viewport: JSON.parse(viewport) }, saveAs);
-            await call(getCrawlers);
-            history.push(getHistoryRoute(response.crawler.timestamp.toString()));
-        } catch (error) {
-            notification['error']({
-                message: 'Something went wrong!',
-                description: error.toString(),
-            });
-        }
-    }
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        validateFields((err: any, values: any) => {
-            if (!err) {
-                start(values);
-            }
-        });
-    }
-
     const { preset, setPreset } = usePreset(search);
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(history, validateFields)}>
             <Form.Item style={toolbarStyle}>
                 <Preset setPreset={setPreset} setDefault={!search} />
             </Form.Item>

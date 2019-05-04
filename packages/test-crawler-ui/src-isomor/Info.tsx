@@ -8,7 +8,7 @@ const infoStyle = {
     textAlign: 'justify' as 'justify',
 }
 
-export const Info = ({ children }: any) => (
+export const Info: React.FunctionComponent = ({ children }) => (
     <div style={infoStyle}>
         { children }
     </div>
