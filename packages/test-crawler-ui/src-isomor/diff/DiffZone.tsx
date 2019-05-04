@@ -4,11 +4,10 @@ import Popover from 'antd/lib/popover';
 import {
     imgStyle,
     imgMargin,
-} from './pages/pageStyle';
+} from '../pages/pageStyle';
 
-import './App.css';
 import { DiffImageButtons } from './DiffImageButtons';
-import { getThumbnail } from './server/crawler';
+import { getThumbnail } from '../server/crawler';
 import { Zone } from 'test-crawler-lib';
 
 export const getColorByStatus = (status: string) => {

@@ -69,7 +69,11 @@ export const CrawlerInfo = ({
                 <Progress percent={percent} />
                 <p><b>In queue:</b> {inQueue}</p>
             </>}
-            {errorCount > 0 && <p style={warningStyle}><Icon type="exclamation-circle" /> {errorCount} error(s) founds</p>}
+            {errorCount > 0 &&
+                <p style={warningStyle}>
+                    <Icon type="exclamation-circle" /> {errorCount} error(s) founds
+                </p>
+            }
         </>
     );
 }

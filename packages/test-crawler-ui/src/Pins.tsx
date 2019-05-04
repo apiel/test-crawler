@@ -12,7 +12,7 @@ import {
     cardStyle,
     iconTheme,
 } from './pages/pageStyle';
-import { DiffImage } from './DiffImage';
+import { DiffImage } from './diff/DiffImage';
 import { getPins } from './server/crawler';
 import { PageData } from 'test-crawler-lib';
 import { Link } from 'react-router-dom';

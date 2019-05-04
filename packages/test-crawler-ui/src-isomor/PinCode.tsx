@@ -17,7 +17,7 @@ import {
     cardStyle,
     iconTheme,
 } from './pages/pageStyle';
-import { DiffImage } from './DiffImage';
+import { DiffImage } from './diff/DiffImage';
 import { PageData } from 'test-crawler-lib';
 import { getPin, setPinCode, getPinCode } from './server/crawler';
 import { Info } from './Info';

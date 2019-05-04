@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react';
 import {
     coverStyle,
     imgStyle,
-} from './pages/pageStyle';
+} from '../pages/pageStyle';
 
-import './App.css';
-import { getThumbnail } from './server/crawler';
+import { getThumbnail } from '../server/crawler';
 import { DiffZone } from './DiffZone';
 import { PngDiffDataZone } from 'test-crawler-lib';
 
