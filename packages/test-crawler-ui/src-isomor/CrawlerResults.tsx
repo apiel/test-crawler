@@ -9,7 +9,7 @@ import { CrawlerInfo } from './CrawlerInfo';
 import { Crawler } from 'test-crawler-lib';
 import { getCrawler, getCrawlers } from './server/crawler';
 import { useAsyncCacheEffect, useAsyncCache, Cache, Update } from 'react-async-cache';
-import { ErrorHandler } from './ErrorHandler';
+import { ErrorHandler } from './common/ErrorHandler';
 
 const parseRespAndUpdateCache = (
     response: Crawler,
@@ -38,7 +38,7 @@ const refreshTimeout = (call: () => Promise<string>) => {
     }, 1000);
 }
 
-export const History = ({
+export const CrawlerResults = ({
     match: { params: { timestamp } },
     history,
 }: RouteComponentProps<{ timestamp: string }>) => {

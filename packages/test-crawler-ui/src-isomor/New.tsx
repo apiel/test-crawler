@@ -9,10 +9,10 @@ import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 import { RouteComponentProps } from 'react-router';
 
-import { getHistoryRoute } from './routes';
+import { getResultsRoute } from './routes';
 import { saveAndStart, getCrawlers } from './server/crawler';
 import { useAsyncCache } from 'react-async-cache';
-import { Info } from './Info';
+import { Info } from './common/Info';
 import { Preset } from './Preset';
 import { Viewport } from './Viewport';
 import { usePreset } from './usePreset';
@@ -40,7 +40,7 @@ const start = async (
     try {
         const response = await saveAndStart({ ...input, viewport: JSON.parse(viewport) }, saveAs);
         await call(getCrawlers);
-        history.push(getHistoryRoute(response.crawler.timestamp.toString()));
+        history.push(getResultsRoute(response.crawler.timestamp.toString()));
     } catch (error) {
         notification['error']({
             message: 'Something went wrong!',

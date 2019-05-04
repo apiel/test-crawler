@@ -20,7 +20,7 @@ import {
 import { DiffImage } from './diff/DiffImage';
 import { PageData } from 'test-crawler-lib';
 import { getPin, setPinCode, getPinCode } from './server/crawler';
-import { Info } from './Info';
+import { Info } from './common/Info';
 import { codeSnippet } from './PinCodeSnippet';
 
 const { Title, Paragraph, Text } = Typography;

@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import { Crawler } from 'test-crawler-lib';
 import { useAsyncCacheEffect } from 'react-async-cache';
 
-import { getHomeRoute, getHistoryRoute, getPinsRoute, getSettingsRoute } from './routes';
+import { getHomeRoute, getResultsRoute, getPinsRoute, getSettingsRoute } from './routes';
 import { timestampToString } from './utils';
 import { getCrawlers } from './server/crawler';
-import { ErrorHandler } from './ErrorHandler';
+import { ErrorHandler } from './common/ErrorHandler';
 
 const dividerStyle = (index: number) => index === 0 ? ({
     borderTop: '1px solid #7e8791',
@@ -54,7 +54,7 @@ export const SideMenu = () => {
                                 <span className="nav-text">
                                     {timestampToString(timestamp)}
                                 </span>
-                                <Link to={getHistoryRoute(timestamp)} />
+                                <Link to={getResultsRoute(timestamp)} />
                             </Menu.Item>
                         ))}
             </Menu>

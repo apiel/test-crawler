@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import { getPinCodeRoute } from './routes';
 import { getViewportName } from './viewport';
 import { useAsyncCacheEffect } from 'react-async-cache';
-import { ErrorHandler } from './ErrorHandler';
+import { ErrorHandler } from './common/ErrorHandler';
 import { onSearch, searchStyle } from './search';
 
 const { Title } = Typography;

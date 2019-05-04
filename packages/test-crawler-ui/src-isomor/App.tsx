@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import New from './New';
-import { History } from './History';
+import { CrawlerResults } from './CrawlerResults';
 import { SideMenu } from './SideMenu';
-import { getHomeRoute, getHistoryRoute, getPinsRoute, getPinCodeRoute, getSettingsRoute } from './routes';
+import { getHomeRoute, getResultsRoute, getPinsRoute, getPinCodeRoute, getSettingsRoute } from './routes';
 import { Pins } from './Pins';
 import { PinCode } from './PinCode';
 import { Settings } from './Settings';
@@ -43,7 +43,7 @@ const App = () => (
                 <Route path={getPinsRoute()} exact component={Pins} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
                 <Route path={getPinCodeRoute(':id')} exact component={PinCode} />
-                <Route path={getHistoryRoute(':timestamp')} component={History} />
+                <Route path={getResultsRoute(':timestamp')} component={CrawlerResults} />
             </Content>
         </Layout>
     </Router>
