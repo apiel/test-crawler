@@ -1,4 +1,4 @@
-import React, { ReactChildren } from 'react';
+import React from 'react';
 import Input from 'antd/lib/input';
 import { PageData } from 'test-crawler-lib';
 
@@ -9,7 +9,7 @@ const { Search } = Input;
 
 interface Props {
     response: PageData[],
-    children: any,
+    children: (pages: PageData[] | undefined) => React.ReactNode,
 }
 export const PagesSearch = ({ children, response }: Props) => {
     const [pages, setPages] = React.useState<PageData[]>();

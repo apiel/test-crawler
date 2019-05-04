@@ -7,7 +7,7 @@ import { searchStyle, onFilter } from './search';
 const { Option } = Select;
 
 interface Props {
-    children: any,
+    children: (pagesFiltered: PageData[] | undefined) => React.ReactNode,
     pages: PageData[],
 }
 export const PagesSearchFilter = ({ children, pages }: Props) => {

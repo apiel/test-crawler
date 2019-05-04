@@ -57,7 +57,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
     let onImg = useMasonry(masonry);
     return (
         <PagesSearch response={response}>
-            {(pagesFiltered: PageData[]) => pagesFiltered ? (
+            {(pagesFiltered) => pagesFiltered ? (
                 <Masonry
                     style={masonryStyle}
                     options={masonryOptions}
