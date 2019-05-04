@@ -1,4 +1,6 @@
 - cleanup test-crawler-ui > refactoring & types
+    - PagesSearch in pin
+    - onImg() to fix
 
 - **spider crawling with a limit** of child path: (eg: limit 2)
     /     (found: a, b, c, d)
