@@ -3,8 +3,6 @@ import Card from 'antd/lib/card';
 import Spin from 'antd/lib/spin';
 import Tag from 'antd/lib/tag';
 import Alert from 'antd/lib/alert';
-import Input from 'antd/lib/input';
-import Select from 'antd/lib/select';
 import Icon from 'antd/lib/icon';
 import Masonry from 'react-masonry-component';
 import { useAsyncCacheEffect } from 'react-async-cache';
@@ -23,11 +21,7 @@ import { getPages } from './server/crawler';
 import { getColorByStatus } from './DiffZone';
 import { sigDig } from './utils';
 import { ErrorHandler } from './ErrorHandler';
-import { onSearch, searchStyle, onFilter } from './search';
-import { PagesSearch, usePagesSearch } from './PagesSearch';
-
-const { Search } = Input;
-const { Option } = Select;
+import { PagesSearch } from './PagesSearch';
 
 const alertStyle = {
     marginBottom: 10,
