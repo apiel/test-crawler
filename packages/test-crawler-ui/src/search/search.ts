@@ -33,6 +33,7 @@ export const onSearch = (
 
 // instead to have 2 fields, we could use one combine with to instance of fuse.js
 // 1 with partial match and 1 with full word match for filters
+// for the input field see "Search and Select Users" from select component
 export const onFilter = (
     setFilterResult: React.Dispatch<React.SetStateAction<any>>,
     pages: PageData[] | undefined,
