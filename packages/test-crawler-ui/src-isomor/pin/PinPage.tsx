@@ -24,7 +24,6 @@ interface Props {
 }
 export const PinPage = ({ id, url, viewport, onImg, png }: Props) => (
     <Card
-        key={id}
         style={cardStyle}
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} />}
         actions={[

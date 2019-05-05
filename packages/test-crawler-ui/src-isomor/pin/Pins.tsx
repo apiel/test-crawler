@@ -12,7 +12,7 @@ import { getPins } from '../server/crawler';
 import { PageData } from 'test-crawler-lib';
 import { useAsyncCacheEffect } from 'react-async-cache';
 import { ErrorHandler } from '../common/ErrorHandler';
-import { onSearch, searchStyle } from '../search';
+import { onSearch, searchStyle } from '../search/search';
 import { PinPage } from './PinPage';
 
 const { Title } = Typography;
@@ -56,6 +56,7 @@ export const Pins = () => {
                     {pins.map(({ id, url, png, viewport }: PageData) => (
                         <PinPage
                             id={id}
+                            key={id}
                             url={url}
                             png={png}
                             viewport={viewport}
