@@ -1,5 +1,4 @@
 - cleanup test-crawler-ui > refactoring & types
-    - PagesSearch in pin
     - onImg() to fix
 
 - **spider crawling with a limit** of child path: (eg: limit 2)
@@ -11,6 +10,8 @@
     /b    (found: 1, 2, 3)
     /b/1
     /b/2
+
+- use single input for search and filtering
 
 - inject code base on url pattern
 

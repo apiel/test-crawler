@@ -24,11 +24,14 @@ export const SearchFilter = ({ children, pages, filters }: Props) => {
     return (
         <>
             <Select
-                mode="tags"
+                mode="multiple"
                 onChange={onFilter(setPagesFiltered, pages, setSelectedFilters)}
                 tokenSeparators={[',']}
                 style={searchStyle}
                 placeholder="filters"
+                filterOption={false}
+                // onSearch={console.log}
+                // mode="tags"
             >
                 { Object.keys(filters).map(key => <Option key={key}>{filters[key]}</Option>) }
             </Select>
