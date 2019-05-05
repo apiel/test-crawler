@@ -1,6 +1,3 @@
-- cleanup test-crawler-ui > refactoring & types
-    - onImg() to fix
-
 - **spider crawling with a limit** of child path: (eg: limit 2)
     /     (found: a, b, c, d)
     /a    (found: 1, 2, 3, 4, 5)
