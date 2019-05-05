@@ -13,6 +13,7 @@ import { useAsyncCacheEffect } from 'react-async-cache';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { PinPage } from './PinPage';
 import { Search } from '../search/Search';
+import { setMasonry, onMasonryImg } from '../common/refreshMasonry';
 
 const { Title } = Typography;
 
@@ -22,15 +23,6 @@ export const Pins = () => {
         return <ErrorHandler description={error.toString()} />;
     }
 
-    let masonry: any;
-    let timer: NodeJS.Timer;
-    const onImg = () => {
-        if (masonry) masonry.layout();
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            if (masonry) masonry.layout();
-        }, 500);
-    }
     return (
         <>
             <Title level={3}>Pins</Title>
@@ -39,7 +31,7 @@ export const Pins = () => {
                     <Masonry
                         style={masonryStyle}
                         options={masonryOptions}
-                        ref={(c: any) => { masonry = c && c.masonry; }}
+                        ref={(c: any) => { setMasonry(c && c.masonry); }}
                     >
                         {pins.map(({ id, url, png, viewport }: PageData) => (
                             <PinPage
@@ -48,7 +40,7 @@ export const Pins = () => {
                                 url={url}
                                 png={png}
                                 viewport={viewport}
-                                onImg={onImg}
+                                onImg={onMasonryImg}
                             />
                         ))}
                     </Masonry>
