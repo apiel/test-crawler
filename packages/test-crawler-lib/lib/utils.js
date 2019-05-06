@@ -29,6 +29,7 @@ function addToQueue(url, viewport, distFolder) {
         const histFile = exports.getFilePath(id, distFolder)('json');
         const queueFile = exports.getFilePath(id, getQueueFolder(distFolder))('json');
         if (!(yield fs_extra_1.pathExists(queueFile)) && !(yield fs_extra_1.pathExists(histFile))) {
+            yield updateSiblingCount(url, distFolder);
             yield savePageInfo(queueFile, { url, id });
             return true;
         }
@@ -36,6 +37,21 @@ function addToQueue(url, viewport, distFolder) {
     });
 }
 exports.addToQueue = addToQueue;
+function updateSiblingCount(url, distFolder) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const urlPaths = url.split('/').filter(s => s);
+        urlPaths.pop();
+        const id = md5(urlPaths.join('/'));
+        const file = path_1.join(distFolder, 'sibling', id);
+        let count = 1;
+        if (yield fs_extra_1.pathExists(file)) {
+            count = parseInt((yield fs_extra_1.readFile(file)).toString(), 10) + 1;
+        }
+        yield fs_extra_1.outputFile(file, count);
+        console.log('updateSiblingCount', count, urlPaths);
+        return count;
+    });
+}
 function getQueueFolder(distFolder) {
     return path_1.join(distFolder, 'queue');
 }

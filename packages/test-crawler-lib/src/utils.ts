@@ -1,4 +1,4 @@
-import { readdir, pathExists, outputJson } from 'fs-extra';
+import { readdir, pathExists, outputJson, readFile, outputFile } from 'fs-extra';
 import { join } from 'path';
 import * as md5 from 'md5';
 
@@ -23,10 +23,25 @@ export async function addToQueue(url: string, viewport: Viewport, distFolder: st
     const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
 
     if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
+        // const siblingCount = await updateSiblingCount(url, distFolder);
+        // use siblingCount for "spider crawling with a limit"
         await savePageInfo(queueFile, { url, id });
         return true;
     }
     return false;
+}
+
+async function updateSiblingCount(url: string, distFolder: string) {
+    const urlPaths = url.split('/').filter(s => s);
+    urlPaths.pop();
+    const id = md5(urlPaths.join('/'));
+    const file = join(distFolder, 'sibling', id);
+    let count = 1;
+    if (await pathExists(file)) {
+        count = parseInt((await readFile(file)).toString(), 10) + 1;
+    }
+    await outputFile(file, count);
+    return count;
 }
 
 export function getQueueFolder(distFolder: string) {

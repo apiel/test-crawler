@@ -67,7 +67,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         if (method !== CrawlerMethod.URLs) {
             hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
             const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
-            addUrls(urls, viewport, distFolder);
+            await addUrls(urls, viewport, distFolder);
         }
 
         const result = await prepare(id, distFolder, crawler);
@@ -106,13 +106,13 @@ async function injectCode(jsFile: string, page: Page, id: string, url: string, d
     }
 }
 
-function addUrls(urls: string[], viewport: Viewport, distFolder: string) {
+async function addUrls(urls: string[], viewport: Viewport, distFolder: string) {
     let count = 0;
-    urls.forEach(url => {
-        if (addToQueue(url, viewport, distFolder)) {
+    for (const url of urls) {
+        if (await addToQueue(url, viewport, distFolder)) {
             count++;
         }
-    });
+    }
     if (count > 0) {
         info('Add urls', `found ${urls.length}, add ${count}`);
     }
