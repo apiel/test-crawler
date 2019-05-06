@@ -22,7 +22,12 @@ const warningStyle = {
 
 const marginRightStyle = {
     marginRight: 10,
-}
+};
+
+const limitStyle = {
+    color: '#999',
+    fontSize: 11,
+};
 
 // need to flatten props and use react memo
 export const CrawlerInfo = ({
@@ -37,6 +42,7 @@ export const CrawlerInfo = ({
         startAt,
         lastUpdate,
         method,
+        limit,
         autopin,
         viewport,
     },
@@ -47,7 +53,7 @@ export const CrawlerInfo = ({
     const onReRun = () => {
         history.push({
             pathname: getHomeRoute(),
-            search: stringify({ url, method, autopin, viewport: JSON.stringify(viewport) }),
+            search: stringify({ url, method, limit, autopin, viewport: JSON.stringify(viewport) }),
         });
     };
     const screen = getViewportName(viewport);
@@ -63,7 +69,12 @@ export const CrawlerInfo = ({
             </p>
             <p><b>URL:</b> {url}</p>
             <p><b>Screen:</b> {screen}</p>
-            <p><b>URL crawled:</b> {urlsCount}</p>
+            <p>
+                <b>URL crawled:</b> {urlsCount}
+                {limit !== undefined && limit > 0 &&
+                    <span style={limitStyle}> (with limit set to {limit})</span>
+                }
+            </p>
             <p><b>Duration:</b> {duration(lastUpdate - startAt).format('h [hrs], m [min], s [sec]')}</p>
             {inQueue > 0 && <>
                 <Progress percent={percent} />
