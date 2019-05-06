@@ -11,7 +11,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { getResultsRoute } from '../routes';
 import { saveAndStart, getCrawlers } from '../server/crawler';
-import { useAsyncCache } from 'react-async-cache';
+import { useAsyncCache, Call } from 'react-async-cache';
 import { Info } from '../common/Info';
 import { Preset } from './Preset';
 import { Viewport } from './Viewport';
@@ -35,8 +35,9 @@ const toolbarStyle = {
 
 const start = async (
     history: History<any>,
-    { saveAs, viewport, ...input }: (CrawlerInput & { saveAs: string, viewport: string })) => {
-    const { call } = useAsyncCache();
+    { saveAs, viewport, ...input }: (CrawlerInput & { saveAs: string, viewport: string }),
+    call: Call,
+) => {
     try {
         const response = await saveAndStart({ ...input, viewport: JSON.parse(viewport) }, saveAs);
         await call(getCrawlers);
@@ -49,11 +50,11 @@ const start = async (
     }
 }
 
-const handleSubmit = (history: History<any>, validateFields: any) => (event: React.FormEvent<any>) => {
+const handleSubmit = (history: History<any>, validateFields: any, call: Call) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     validateFields((err: any, values: any) => {
         if (!err) {
-            start(history, values);
+            start(history, values, call);
         }
     });
 }
@@ -61,9 +62,10 @@ const handleSubmit = (history: History<any>, validateFields: any) => (event: Rea
 type Props = FormComponentProps & RouteComponentProps;
 const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: Props) => {
     const { preset, setPreset } = usePreset(search);
+    const { call } = useAsyncCache();
 
     return (
-        <Form onSubmit={handleSubmit(history, validateFields)}>
+        <Form onSubmit={handleSubmit(history, validateFields, call)}>
             <Form.Item style={toolbarStyle}>
                 <Preset setPreset={setPreset} setDefault={!search} />
             </Form.Item>
