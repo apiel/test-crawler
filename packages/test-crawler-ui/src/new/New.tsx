@@ -1,5 +1,6 @@
 import React from 'react';
 import Input from 'antd/lib/input';
+import InputNumber from 'antd/lib/input-number';
 import Checkbox from 'antd/lib/checkbox';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
@@ -33,6 +34,10 @@ const toolbarStyle = {
     marginBottom: 12,
 }
 
+const radioGroupdStyle = {
+    marginRight: 30,
+}
+
 const start = async (
     history: History<any>,
     { saveAs, viewport, ...input }: (CrawlerInput & { saveAs: string, viewport: string }),
@@ -60,7 +65,7 @@ const handleSubmit = (history: History<any>, validateFields: any, call: Call) =>
 }
 
 type Props = FormComponentProps & RouteComponentProps;
-const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields } }: Props) => {
+const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields, getFieldValue } }: Props) => {
     const { preset, setPreset } = usePreset(search);
     const { call } = useAsyncCache();
 
@@ -83,14 +88,23 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                 )}
             </Form.Item>
             <Form.Item>
-                {getFieldDecorator('method', {
-                    initialValue: preset.crawlerInput.method,
-                })(
-                    <Radio.Group size="small">
-                        <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>
-                        <Radio.Button value={'urls'}><Icon type="ordered-list" /> URLs list</Radio.Button>
-                    </Radio.Group>
-                )}
+                <Form.Item style={inlineStyle}>
+                    {getFieldDecorator('method', {
+                        initialValue: preset.crawlerInput.method,
+                    })(
+                        <Radio.Group size="small" style={radioGroupdStyle}>
+                            <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>
+                            <Radio.Button value={'urls'}><Icon type="ordered-list" /> URLs list</Radio.Button>
+                        </Radio.Group>
+                    )}
+                </Form.Item>
+                {getFieldValue('method') === 'spiderbot' && <Form.Item style={inlineStyle}>
+                    Limit {getFieldDecorator('limit', {
+                        initialValue: 0, // preset.crawlerInput.method,
+                    })(
+                        <InputNumber min={0} size="small" />
+                    )}
+                </Form.Item>}
                 <Info>
                     <Paragraph ellipsis={{ rows: 1, expandable: true }}>
                         <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
