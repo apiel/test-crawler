@@ -4,21 +4,22 @@ import InputNumber from 'antd/lib/input-number';
 import Checkbox from 'antd/lib/checkbox';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
+import Popover from 'antd/lib/popover';
 import Radio from 'antd/lib/radio';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 import { RouteComponentProps } from 'react-router';
+import { CrawlerInput } from 'test-crawler-lib';
+import { useAsyncCache, Call } from 'react-async-cache';
 
 import { getResultsRoute } from '../routes';
 import { saveAndStart, getCrawlers } from '../server/crawler';
-import { useAsyncCache, Call } from 'react-async-cache';
 import { Info } from '../common/Info';
 import { Preset } from './Preset';
 import { Viewport } from './Viewport';
 import { usePreset } from './usePreset';
 import { History } from 'history';
-import { CrawlerInput } from 'test-crawler-lib';
 
 const { Paragraph, Text } = Typography;
 
@@ -104,6 +105,18 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                     })(
                         <InputNumber min={0} size="small" />
                     )}
+                    &nbsp;<Popover content={<div>
+                    <b>Limit the number of sibling pages. </b>
+                    For example, with the urls:
+                    <ul>
+                        <li>/item/1</li>
+                        <li>/item/2</li>
+                        <li>/item/3</li>
+                        <li>/item/4</li>
+                    </ul> using the limit <b>2</b> will only crawl <b>/item/1</b> and <b>/item/2</b>.<br /><br />
+                    Use <b>0</b> to skip the limit.</div>} trigger="click" overlayStyle={{width: 200}}>
+                        <Icon type="question-circle" />
+                    </Popover>
                 </Form.Item>}
                 <Info>
                     <Paragraph ellipsis={{ rows: 1, expandable: true }}>
