@@ -210,9 +210,9 @@ class CrawlerProvider {
             yield Promise.all(urls.map((url) => utils_1.addToQueue(url, crawlerInput.viewport, distFolder)));
         });
     }
-    startSpiderBotCrawling({ url, viewport }, distFolder) {
+    startSpiderBotCrawling({ url, viewport, limit }, distFolder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const addedToqueue = yield utils_1.addToQueue(url, viewport, distFolder);
+            const addedToqueue = yield utils_1.addToQueue(url, viewport, distFolder, limit);
             if (!addedToqueue) {
                 throw (new Error('Something went wrong while adding job to queue'));
             }

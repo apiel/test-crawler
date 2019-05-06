@@ -7,6 +7,7 @@ export interface CrawlerInput {
     url: string;
     viewport: Viewport;
     method: string;
+    limit?: number;
     autopin: boolean;
 }
 

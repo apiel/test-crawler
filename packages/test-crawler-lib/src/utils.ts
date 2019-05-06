@@ -17,15 +17,15 @@ export const getFilePath = (id: string, distFolder: string): FilePath => (extens
     return join(distFolder, `${id}.${extension}`);
 };
 
-export async function addToQueue(url: string, viewport: Viewport, distFolder: string): Promise<boolean> {
+export async function addToQueue(url: string, viewport: Viewport, distFolder: string, limit: number = 0): Promise<boolean> {
     const id = md5(`${url}-${JSON.stringify(viewport)}`);
     const histFile = getFilePath(id, distFolder)('json');
     const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
 
     if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
-        // const siblingCount = await updateSiblingCount(url, distFolder);
-        // use siblingCount for "spider crawling with a limit"
-        await savePageInfo(queueFile, { url, id });
+        if (!limit || (await updateSiblingCount(url, distFolder)) < limit) {
+            await savePageInfo(queueFile, { url, id });
+        }
         return true;
     }
     return false;
@@ -36,7 +36,7 @@ async function updateSiblingCount(url: string, distFolder: string) {
     urlPaths.pop();
     const id = md5(urlPaths.join('/'));
     const file = join(distFolder, 'sibling', id);
-    let count = 1;
+    let count = 0;
     if (await pathExists(file)) {
         count = parseInt((await readFile(file)).toString(), 10) + 1;
     }

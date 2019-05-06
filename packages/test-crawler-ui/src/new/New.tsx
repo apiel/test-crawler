@@ -101,7 +101,7 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                 </Form.Item>
                 {getFieldValue('method') === 'spiderbot' && <Form.Item style={inlineStyle}>
                     Limit {getFieldDecorator('limit', {
-                        initialValue: 0, // preset.crawlerInput.method,
+                        initialValue: preset.crawlerInput.limit,
                     })(
                         <InputNumber min={0} size="small" />
                     )}

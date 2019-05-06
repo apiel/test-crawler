@@ -35,7 +35,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     const basePath = getFilePath(id, BASE_FOLDER);
 
     const crawler: Crawler = await readJSON(join(distFolder, '_.json'));
-    const { viewport, url: baseUrl, method } = crawler;
+    const { viewport, url: baseUrl, method, limit } = crawler;
 
     const browser = await launch({
         // headless: false,
@@ -67,7 +67,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         if (method !== CrawlerMethod.URLs) {
             hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
             const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
-            await addUrls(urls, viewport, distFolder);
+            await addUrls(urls, viewport, distFolder, limit);
         }
 
         const result = await prepare(id, distFolder, crawler);
@@ -106,10 +106,10 @@ async function injectCode(jsFile: string, page: Page, id: string, url: string, d
     }
 }
 
-async function addUrls(urls: string[], viewport: Viewport, distFolder: string) {
+async function addUrls(urls: string[], viewport: Viewport, distFolder: string, limit: number) {
     let count = 0;
     for (const url of urls) {
-        if (await addToQueue(url, viewport, distFolder)) {
+        if (await addToQueue(url, viewport, distFolder, limit)) {
             count++;
         }
     }

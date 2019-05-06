@@ -26,7 +26,7 @@ function loadPage(id, url, distFolder, retry = 0) {
         const filePath = utils_1.getFilePath(id, distFolder);
         const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
         const crawler = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
-        const { viewport, url: baseUrl, method } = crawler;
+        const { viewport, url: baseUrl, method, limit } = crawler;
         const browser = yield puppeteer_1.launch({});
         const page = yield browser.newPage();
         yield page.setUserAgent(config_1.USER_AGENT);
@@ -47,7 +47,7 @@ function loadPage(id, url, distFolder, retry = 0) {
             if (method !== lib_1.CrawlerMethod.URLs) {
                 hrefs = yield page.$$eval('a', as => as.map(a => a.href));
                 const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
-                yield addUrls(urls, viewport, distFolder);
+                yield addUrls(urls, viewport, distFolder, limit);
             }
             const result = yield diff_1.prepare(id, distFolder, crawler);
             resultsQueue.push({
@@ -89,11 +89,11 @@ function injectCode(jsFile, page, id, url, distFolder) {
         }
     });
 }
-function addUrls(urls, viewport, distFolder) {
+function addUrls(urls, viewport, distFolder, limit) {
     return __awaiter(this, void 0, void 0, function* () {
         let count = 0;
         for (const url of urls) {
-            if (yield utils_1.addToQueue(url, viewport, distFolder)) {
+            if (yield utils_1.addToQueue(url, viewport, distFolder, limit)) {
                 count++;
             }
         }

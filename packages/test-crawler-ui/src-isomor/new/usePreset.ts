@@ -10,6 +10,7 @@ export const usePreset = (search: string) => {
         id: '',
         crawlerInput: {
             method: 'spiderbot', // CrawlerMethod.SPIDER_BOT,
+            limit: 0,
             url: 'http://localhost:3003/',
             viewport: getDefaultViewport(),
             autopin: true,
