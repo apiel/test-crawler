@@ -51,12 +51,12 @@ function getPin(id) {
     return crawlerProvider.getBasePage(id);
 }
 exports.getPin = getPin;
-function setCode(id, code) {
-    return crawlerProvider.saveBasePageCode(id, code);
+function setCode(code) {
+    return crawlerProvider.saveCode(code);
 }
 exports.setCode = setCode;
 function getCode(id) {
-    return crawlerProvider.loadBasePageCode(id);
+    return crawlerProvider.loadCode(id);
 }
 exports.getCode = getCode;
 function getThumbnail(folder, id, width = 300) {

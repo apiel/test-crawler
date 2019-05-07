@@ -15,17 +15,26 @@ import { Info } from '../common/Info';
 
 const { Paragraph } = Typography;
 
+interface FormInput {
+    name: string,
+    pattern: string,
+}
+
 const onPlay = () => {
     message.warn('To be implemented.', 2);
 }
 
-const handleSubmit = (
+const save = async(
     id: string,
-    code: string,
-    validateFields: any,
-) => async (event: React.FormEvent<any>) => {
+    source: string,
+    info: FormInput,
+) => {
     try {
-        await setCode(id, code);
+        await setCode({
+            id,
+            source,
+            ...info,
+        });
         message.success('Code saved.', 2);
     } catch (error) {
         notification['error']({
@@ -33,6 +42,19 @@ const handleSubmit = (
             description: error.toString(),
         });
     }
+}
+
+const handleSubmit = (
+    id: string,
+    source: string,
+    validateFields: any,
+) => (event: React.FormEvent<FormInput>) => {
+    event.preventDefault();
+    validateFields((err: any, info: FormInput) => {
+        if (!err) {
+            save(id, source, info);
+        }
+    });
 }
 
 type Props = FormComponentProps & {

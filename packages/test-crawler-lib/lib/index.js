@@ -126,7 +126,7 @@ class CrawlerProvider {
             const { source } = code, codeInfo = __rest(code, ["source"]);
             const list = yield this.getCodeList();
             list[code.id] = codeInfo;
-            fs_extra_1.outputJSON(path_1.join(config_1.CODE_FOLDER, `list.json`), list);
+            fs_extra_1.outputJSON(path_1.join(config_1.CODE_FOLDER, `list.json`), Object.assign({}, list), { spaces: 4 });
             fs_extra_1.outputFile(path_1.join(config_1.CODE_FOLDER, `${code.id}.js`), source);
         });
     }
@@ -151,7 +151,7 @@ class CrawlerProvider {
         return __awaiter(this, void 0, void 0, function* () {
             const listPath = path_1.join(config_1.CODE_FOLDER, `list.json`);
             if (!(yield fs_extra_1.pathExists(listPath))) {
-                return [];
+                return {};
             }
             return fs_extra_1.readJSON(listPath);
         });

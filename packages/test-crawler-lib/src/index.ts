@@ -20,7 +20,7 @@ import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PRESET_FOLDER, CODE_FOLDER } fr
 import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
 
 import * as config from './config';
-import { Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfo } from './typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfo, CodeInfoList } from './typing';
 
 export {
     Crawler,
@@ -35,6 +35,9 @@ export {
     PngDiffDataZone,
     Zone,
     Preset,
+    Code,
+    CodeInfo,
+    CodeInfoList,
 } from './typing';
 
 export const getConfig = () => config;
@@ -143,7 +146,7 @@ export class CrawlerProvider {
         const { source, ...codeInfo } = code;
         const list = await this.getCodeList();
         list[code.id] = codeInfo;
-        outputJSON(join(CODE_FOLDER, `list.json`), list);
+        outputJSON(join(CODE_FOLDER, `list.json`), {...list}, { spaces: 4 }); // for some reason it need a copy
         outputFile(join(CODE_FOLDER, `${code.id}.js`), source);
     }
 
@@ -163,10 +166,10 @@ export class CrawlerProvider {
         return { ...codeInfo, source };
     }
 
-    async getCodeList(): Promise<CodeInfo[]> {
+    async getCodeList(): Promise<CodeInfoList> { // should be list object
         const listPath = join(CODE_FOLDER, `list.json`);
         if (!(await pathExists(listPath))) {
-            return [];
+            return {};
         }
         return readJSON(listPath);
     }

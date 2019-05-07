@@ -1,6 +1,9 @@
 import { Zone } from 'pixdiff-zone';
 import { Viewport } from 'puppeteer';
 export { Viewport, Zone };
+export interface CodeInfoList {
+    [id: string]: CodeInfo;
+}
 export interface CodeInfo {
     id: string;
     pattern: string;

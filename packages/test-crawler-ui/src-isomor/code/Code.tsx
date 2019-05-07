@@ -27,8 +27,8 @@ const load = async (
     try {
         setPin(await getPin(id));
         const code = await getCode(id);
-        if (code.length) {
-            setCode(code);
+        if (code.source.length) {
+            setCode(code.source);
         }
     } catch (error) {
         notification['error']({
