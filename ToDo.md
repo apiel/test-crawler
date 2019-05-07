@@ -1,24 +1,20 @@
-- **spider crawling with a limit** of child path: (eg: limit 2)
-    /     (found: a, b, c, d)
-    /a    (found: 1, 2, 3, 4, 5)
-    /a/1
-    /a/2
-    no /a/3
-    /b    (found: 1, 2, 3)
-    /b/1
-    /b/2
-
-    limit on re-run
+- inject code base on url pattern
 
 - use single input for search and filtering
         https://2x.ant.design/components/select/#components-select-demo-select-users
 
-- inject code base on url pattern
-
 - when page was automatically pined, show info
 
+- when limit selected, allow random page (shuffle, if limit is 2 instead to always pick up the first 2 pages, pick randomly eg. page 10 and page 22)
+
+- think about jest or what ever test integration. or maybe just assert system.
+    - if code injection return an error maybe ?
+
 - code preview
+    - code preview till specific line
 - plugin system
+
+- think about AI!! random click?
 
 
 toggle on/off `runProcess` from settings, set timeout from settings...
