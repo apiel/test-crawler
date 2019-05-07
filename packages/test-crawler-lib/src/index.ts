@@ -127,21 +127,6 @@ export class CrawlerProvider {
         return readFile(filePath('png'));
     }
 
-    // to be deprecated
-    saveBasePageCode(id: string, code: string): Promise<void> {
-        const filePath = getFilePath(id, BASE_FOLDER);
-        return outputFile(filePath('js'), code);
-    }
-
-    // to be deprecated
-    async loadBasePageCode(id: string): Promise<string> {
-        const filePath = getFilePath(id, BASE_FOLDER);
-        if (!(await pathExists(filePath('js')))) {
-            return '';
-        }
-        return (await readFile(filePath('js'))).toString();
-    }
-
     async saveCode(code: Code): Promise<void> {
         const { source, ...codeInfo } = code;
         const list = await this.getCodeList();

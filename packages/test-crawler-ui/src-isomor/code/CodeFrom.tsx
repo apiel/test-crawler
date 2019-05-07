@@ -7,6 +7,7 @@ import message from 'antd/lib/message';
 import Dropdown from 'antd/lib/dropdown';
 import Typography from 'antd/lib/typography';
 import Form, { FormComponentProps } from 'antd/lib/form';
+import { Code } from 'test-crawler-lib';
 
 import { setCode } from '../server/service';
 import { codeSnippet } from './CodeSnippet';
@@ -59,13 +60,13 @@ const handleSubmit = (
 
 type Props = FormComponentProps & {
     id: string;
-    code: string;
-    setCode: React.Dispatch<React.SetStateAction<string>>;
+    code: Code;
+    setSource: (source: string) => void;
 };
 
-const CodeFormComponent = ({ setCode, id, code, form: { getFieldDecorator, validateFields } }: Props) => {
+const CodeFormComponent = ({ setSource, id, code, form: { getFieldDecorator, validateFields } }: Props) => {
     return (
-        <Form onSubmit={handleSubmit(id, code, validateFields)}>
+        <Form onSubmit={handleSubmit(id, code.source, validateFields)}>
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('name', {
                     initialValue: '',
@@ -91,7 +92,7 @@ const CodeFormComponent = ({ setCode, id, code, form: { getFieldDecorator, valid
             <div style={buttonBarStyle}>
                 <Button icon="save" htmlType="submit" style={buttonStyle}>Save</Button>
                 <Button icon="caret-right" onClick={onPlay} style={buttonStyle}>Preview</Button>
-                <Dropdown overlay={codeSnippet(setCode)}>
+                <Dropdown overlay={codeSnippet(setSource)}>
                     <Button style={buttonStyle}>
                         Code snippet <Icon type="down" />
                     </Button>

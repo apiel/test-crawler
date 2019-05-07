@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from 'antd/lib/menu';
 
-export const codeSnippet = (setCode: any) => (
+export const codeSnippet = (setCode: (source: string) => void) => (
     <Menu>
         <Menu.Item
             key="1"
