@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import * as config from './config';
-import { Crawler, CrawlerInput, StartCrawler, PageData, Preset } from './typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfo } from './typing';
 export { Crawler, CrawlerInput, StartCrawler, Navigation, PageData, Performance, Timing, Viewport, PngDiffData, PngDiffDataZone, Zone, Preset, } from './typing';
 export declare const getConfig: () => typeof config;
 export declare const CrawlerMethod: {
@@ -21,6 +21,9 @@ export declare class CrawlerProvider {
     image(folder: string, id: string): Promise<Buffer>;
     saveBasePageCode(id: string, code: string): Promise<void>;
     loadBasePageCode(id: string): Promise<string>;
+    saveCode(code: Code): Promise<void>;
+    loadCode(id: string): Promise<Code>;
+    getCodeList(): Promise<CodeInfo[]>;
     getBasePages(): Promise<PageData[]>;
     getBasePage(id: string): Promise<PageData>;
     getPages(timestamp: string): Promise<PageData[]>;

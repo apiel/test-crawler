@@ -5,9 +5,9 @@ import notification from 'antd/lib/notification';
 import message from 'antd/lib/message';
 import Dropdown from 'antd/lib/dropdown';
 
-import { setPinCode } from '../server/crawler';
-import { codeSnippet } from './PinCodeSnippet';
-import { buttonBarStyle, buttonStyle } from './pinCodeStyle';
+import { setCode } from '../server/crawler';
+import { codeSnippet } from './CodeSnippet';
+import { buttonBarStyle, buttonStyle } from './codeStyle';
 
 const onPlay = () => {
     message.warn('To be implemented.', 2);
@@ -15,7 +15,7 @@ const onPlay = () => {
 
 const onSave = (id: string, code: string) => async () => {
     try {
-        await setPinCode(id, code);
+        await setCode(id, code);
         message.success('Code saved.', 2);
     } catch (error) {
         notification['error']({
@@ -30,7 +30,7 @@ interface Props {
     code: string;
     setCode: React.Dispatch<React.SetStateAction<string>>;
 }
-export const PinCodeButtons = ({ setCode, id, code }: Props) => (
+export const CodeButtons = ({ setCode, id, code }: Props) => (
     <div style={buttonBarStyle}>
         <Button icon="save" onClick={onSave(id, code)} style={buttonStyle}>Save</Button>
         <Button icon="caret-right" onClick={onPlay} style={buttonStyle}>Preview</Button>

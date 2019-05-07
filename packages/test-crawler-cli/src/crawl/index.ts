@@ -57,7 +57,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
             () => JSON.stringify(window.performance),
         ));
 
-        await injectCode(basePath('js'), page, id, url, distFolder);
+        await injectCode(basePath('js'), page, id, url, distFolder, crawler);
 
         await page.screenshot({ path: filePath('png'), fullPage: true });
 
@@ -94,12 +94,12 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     consumerRunning--;
 }
 
-async function injectCode(jsFile: string, page: Page, id: string, url: string, distFolder: string) {
+async function injectCode(jsFile: string, page: Page, id: string, url: string, distFolder: string, crawler: Crawler) {
     if (await pathExists(jsFile)) {
         info('Inject code', id);
         try {
             const fn = require(jsFile);
-            await fn(page, url, id, distFolder);
+            await fn(page, url, id, distFolder, crawler);
         } catch (err) {
             error('Something went wrong while injecting the code', id, err);
         }

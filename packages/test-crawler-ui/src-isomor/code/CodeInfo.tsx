@@ -5,7 +5,7 @@ import { Info } from '../common/Info';
 
 const { Paragraph, Text } = Typography;
 
-export const PinCodeInfo = () => (
+export const CodeInfo = () => (
     <Info>
         <Paragraph>
             Inject some code in the crawler while parsing the page. This code will

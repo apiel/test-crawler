@@ -5,6 +5,7 @@ export const PAGES_FOLDER = process.env.PAGES_FOLDER || join(__dirname, '../page
 export const CRAWL_FOLDER = join(PAGES_FOLDER, 'crawl');
 export const PRESET_FOLDER = join(PAGES_FOLDER, 'preset');
 export const BASE_FOLDER = join(PAGES_FOLDER, 'base');
+export const CODE_FOLDER = join(PAGES_FOLDER, 'code');
 export const MAX_HISTORY = 4;
 export const TIMEOUT = 10000; // 10 sec
 export const CONSUMER_COUNT = 5;

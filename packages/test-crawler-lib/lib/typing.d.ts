@@ -1,6 +1,14 @@
 import { Zone } from 'pixdiff-zone';
 import { Viewport } from 'puppeteer';
 export { Viewport, Zone };
+export interface CodeInfo {
+    id: string;
+    pattern: string;
+    name: string;
+}
+export interface Code extends CodeInfo {
+    source: string;
+}
 export interface CrawlerInput {
     url: string;
     viewport: Viewport;

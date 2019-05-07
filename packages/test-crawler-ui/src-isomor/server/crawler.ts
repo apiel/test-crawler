@@ -46,11 +46,11 @@ export function getPin(id: string): Promise<PageData> {
     return crawlerProvider.getBasePage(id);
 }
 
-export function setPinCode(id: string, code: string): Promise<void> {
+export function setCode(id: string, code: string): Promise<void> {
     return crawlerProvider.saveBasePageCode(id, code);
 }
 
-export function getPinCode(id: string): Promise<string> {
+export function getCode(id: string): Promise<string> {
     return crawlerProvider.loadBasePageCode(id);
 }
 

@@ -9,7 +9,7 @@ import {
 import { DiffImage } from '../diff/DiffImage';
 import { PngDiffData, Viewport } from 'test-crawler-lib';
 import { Link } from 'react-router-dom';
-import { getPinCodeRoute } from '../routes';
+import { getCodeRoute } from '../routes';
 import { getViewportName } from '../viewport';
 
 interface Props {
@@ -28,7 +28,7 @@ export const PinPage = ({ id, url, viewport, onImg, png }: Props) => (
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} />}
         actions={[
             <Icon type="delete" title={`Delete pin`} />,
-            (<Link to={getPinCodeRoute(id)}>
+            (<Link to={getCodeRoute(id)}>
                 <Icon type="code" title={`Insert code while crawling`} />
             </Link>),
         ]}

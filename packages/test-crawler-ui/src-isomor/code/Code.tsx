@@ -9,11 +9,11 @@ import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 
 import { PageData } from 'test-crawler-lib';
-import { getPin, getPinCode } from '../server/crawler';
-import { PinCodeInfo } from './PinCodeInfo';
-import { aceEditorStyle } from './pinCodeStyle';
-import { PinCodeCard } from './PinCodeCard';
-import { PinCodeButtons } from './PinCodeButtons';
+import { getPin, getCode } from '../server/crawler';
+import { CodeInfo } from './CodeInfo';
+import { aceEditorStyle } from './codeStyle';
+import { CodeCard } from './CodeCard';
+import { CodeButtons } from './CodeButtons';
 
 const { Title } = Typography;
 
@@ -24,7 +24,7 @@ const load = async (
 ) => {
     try {
         setPin(await getPin(id));
-        const code = await getPinCode(id);
+        const code = await getCode(id);
         if (code.length) {
             setCode(code);
         }
@@ -36,7 +36,7 @@ const load = async (
     }
 }
 
-export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<{ id: string }>) => {
+export const Code = ({ match: { params: { id } } }: RouteComponentProps<{ id: string }>) => {
     const [code, setCode] = React.useState<string>(`module.exports = async function run(page) {\n// your code\n}`);
     const [pin, setPin] = React.useState<PageData>();
 
@@ -48,8 +48,8 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<{ id:
             {
                 pin ? (
                     <>
-                        <PinCodeInfo />
-                        <PinCodeButtons id={id} code={code} setCode={setCode} />
+                        <CodeInfo />
+                        <CodeButtons id={id} code={code} setCode={setCode} />
                         <AceEditor
                             mode="javascript"
                             theme="tomorrow"
@@ -58,7 +58,7 @@ export const PinCode = ({ match: { params: { id } } }: RouteComponentProps<{ id:
                             value={code}
                             style={aceEditorStyle}
                         />
-                        <PinCodeCard id={pin.id} png={pin.png} url={pin.url} />
+                        <CodeCard id={pin.id} png={pin.png} url={pin.url} />
                     </>
                 ) : <Spin />
             }

@@ -1,3 +1,6 @@
+// deactivate for the moment
+// we will need to find a way to load matching pined page
+
 import React from 'react';
 import Card from 'antd/lib/card';
 import Icon from 'antd/lib/icon';
@@ -5,7 +8,7 @@ import Icon from 'antd/lib/icon';
 import { iconTheme } from '../pages/pageStyle';
 import { DiffImage } from '../diff/DiffImage';
 import { PngDiffData } from 'test-crawler-lib';
-import { cardRightStyle } from './pinCodeStyle';
+import { cardRightStyle } from './codeStyle';
 
 interface Props {
     id: string;
@@ -15,7 +18,7 @@ interface Props {
         diff?: PngDiffData;
     };
 }
-export const PinCodeCard = ({ id, png, url }: Props) => (
+export const CodeCard = ({ id, png, url }: Props) => (
     <Card
         style={cardRightStyle}
         cover={png && <DiffImage folder='base' id={id} />}

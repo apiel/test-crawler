@@ -7,9 +7,9 @@ import './App.css';
 import New from './new/New';
 import { CrawlerResults } from './crawler/CrawlerResults';
 import { SideMenu } from './side-menu/SideMenu';
-import { getHomeRoute, getResultsRoute, getPinsRoute, getPinCodeRoute, getSettingsRoute } from './routes';
+import { getHomeRoute, getResultsRoute, getPinsRoute, getCodeRoute, getSettingsRoute } from './routes';
 import { Pins } from './pin/Pins';
-import { PinCode } from './pin-code/PinCode';
+import { Code } from './code/Code';
 import { Settings } from './Settings';
 
 const { Sider, Content } = Layout;
@@ -42,7 +42,7 @@ const App = () => (
                 <Route path={getHomeRoute()} exact component={New} />
                 <Route path={getPinsRoute()} exact component={Pins} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
-                <Route path={getPinCodeRoute(':id')} exact component={PinCode} />
+                <Route path={getCodeRoute(':id')} exact component={Code} />
                 <Route path={getResultsRoute(':timestamp')} component={CrawlerResults} />
             </Content>
         </Layout>

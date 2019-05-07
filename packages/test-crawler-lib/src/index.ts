@@ -16,11 +16,11 @@ import axios from 'axios';
 import { exec } from 'child_process';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
-import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PRESET_FOLDER } from './config';
+import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PRESET_FOLDER, CODE_FOLDER } from './config';
 import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
 
 import * as config from './config';
-import { Crawler, CrawlerInput, StartCrawler, PageData, Preset } from './typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfo } from './typing';
 
 export {
     Crawler,
@@ -124,17 +124,51 @@ export class CrawlerProvider {
         return readFile(filePath('png'));
     }
 
+    // to be deprecated
     saveBasePageCode(id: string, code: string): Promise<void> {
         const filePath = getFilePath(id, BASE_FOLDER);
         return outputFile(filePath('js'), code);
     }
 
+    // to be deprecated
     async loadBasePageCode(id: string): Promise<string> {
         const filePath = getFilePath(id, BASE_FOLDER);
         if (!(await pathExists(filePath('js')))) {
             return '';
         }
         return (await readFile(filePath('js'))).toString();
+    }
+
+    async saveCode(code: Code): Promise<void> {
+        const { source, ...codeInfo } = code;
+        const list = await this.getCodeList();
+        list[code.id] = codeInfo;
+        outputJSON(join(CODE_FOLDER, `list.json`), list);
+        outputFile(join(CODE_FOLDER, `${code.id}.js`), source);
+    }
+
+    async loadCode(id: string): Promise<Code> {
+        const list = await this.getCodeList();
+        const codeInfo = list[id];
+        const sourcePath = join(CODE_FOLDER, `${id}.js`);
+        if (!codeInfo || !(await pathExists(sourcePath))) {
+            return {
+                id,
+                name: '',
+                pattern: '',
+                source: '',
+            };
+        }
+        const source = (await readFile(sourcePath)).toString();
+        return { ...codeInfo, source };
+    }
+
+    async getCodeList(): Promise<CodeInfo[]> {
+        const listPath = join(CODE_FOLDER, `list.json`);
+        if (!(await pathExists(listPath))) {
+            return [];
+        }
+        return readJSON(listPath);
     }
 
     getBasePages(): Promise<PageData[]> {

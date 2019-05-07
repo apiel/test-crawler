@@ -51,14 +51,14 @@ function getPin(id) {
     return crawlerProvider.getBasePage(id);
 }
 exports.getPin = getPin;
-function setPinCode(id, code) {
+function setCode(id, code) {
     return crawlerProvider.saveBasePageCode(id, code);
 }
-exports.setPinCode = setPinCode;
-function getPinCode(id) {
+exports.setCode = setCode;
+function getCode(id) {
     return crawlerProvider.loadBasePageCode(id);
 }
-exports.getPinCode = getPinCode;
+exports.getCode = getCode;
 function getThumbnail(folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const image = yield crawlerProvider.image(folder, id);

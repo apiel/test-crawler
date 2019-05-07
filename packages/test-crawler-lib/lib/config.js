@@ -5,6 +5,7 @@ exports.PAGES_FOLDER = process.env.PAGES_FOLDER || path_1.join(__dirname, '../pa
 exports.CRAWL_FOLDER = path_1.join(exports.PAGES_FOLDER, 'crawl');
 exports.PRESET_FOLDER = path_1.join(exports.PAGES_FOLDER, 'preset');
 exports.BASE_FOLDER = path_1.join(exports.PAGES_FOLDER, 'base');
+exports.CODE_FOLDER = path_1.join(exports.PAGES_FOLDER, 'code');
 exports.MAX_HISTORY = 4;
 exports.TIMEOUT = 10000;
 exports.CONSUMER_COUNT = 5;
