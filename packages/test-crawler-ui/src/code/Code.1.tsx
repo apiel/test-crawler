@@ -15,7 +15,7 @@ import { getPin, getCode } from '../server/crawler';
 import { CodeInfo } from './CodeInfo';
 import { aceEditorStyle } from './codeStyle';
 import { CodeCard } from './CodeCard';
-import { CodeForm } from './CodeFrom';
+import { CodeButtons } from './CodeButtons';
 
 const { Title } = Typography;
 
@@ -38,9 +38,9 @@ const load = async (
     }
 }
 
-type Props = RouteComponentProps<{ id: string }>;
+type Props = FormComponentProps & RouteComponentProps<{ id: string }>;
 
-export const Code = ({ match: { params: { id } } }: Props) => {
+export const CodeComponent = ({ match: { params: { id } }, form: { getFieldDecorator } }: Props) => {
     const [code, setCode] = React.useState<string>(`module.exports = async function run(page) {\n// your code\n}`);
     const [pin, setPin] = React.useState<PageData>();
 
@@ -48,12 +48,28 @@ export const Code = ({ match: { params: { id } } }: Props) => {
 
     return (
         <>
-            <Title level={3}>Add some code</Title>
+            <Title level={3}>Add some code blah</Title>
             {
                 pin ? (
                     <Form>
                         <CodeInfo />
-                        <CodeForm id={id} code={code} setCode={setCode} />
+                        <Form.Item>
+                            {getFieldDecorator('name', {
+                                rules: [{ required: true, message: 'Please input a name!' }],
+                                initialValue: '',
+                            })(
+                                <Input addonBefore="Name" />
+                            )}
+                        </Form.Item>
+                        <Form.Item>
+                            {getFieldDecorator('pattern', {
+                                rules: [{ required: true, message: 'Please input a pattern!' }],
+                                initialValue: '',
+                            })(
+                                <Input addonBefore="Pattern" />
+                            )}
+                        </Form.Item>
+                        <CodeButtons id={id} code={code} setCode={setCode} />
                         <AceEditor
                             mode="javascript"
                             theme="tomorrow"
@@ -69,3 +85,5 @@ export const Code = ({ match: { params: { id } } }: Props) => {
         </>
     );
 }
+
+export const Code = Form.create({ name: 'code' })(CodeComponent);

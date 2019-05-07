@@ -1,7 +1,9 @@
 import React from 'react';
 import Spin from 'antd/lib/spin';
+import Input from 'antd/lib/input';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
+import Form, { FormComponentProps } from 'antd/lib/form';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';
 
@@ -13,7 +15,7 @@ import { getPin, getCode } from '../server/crawler';
 import { CodeInfo } from './CodeInfo';
 import { aceEditorStyle } from './codeStyle';
 import { CodeCard } from './CodeCard';
-import { CodeButtons } from './CodeButtons';
+import { CodeForm } from './CodeFrom';
 
 const { Title } = Typography;
 
@@ -36,7 +38,9 @@ const load = async (
     }
 }
 
-export const Code = ({ match: { params: { id } } }: RouteComponentProps<{ id: string }>) => {
+type Props = RouteComponentProps<{ id: string }>;
+
+export const Code = ({ match: { params: { id } } }: Props) => {
     const [code, setCode] = React.useState<string>(`module.exports = async function run(page) {\n// your code\n}`);
     const [pin, setPin] = React.useState<PageData>();
 
@@ -47,9 +51,9 @@ export const Code = ({ match: { params: { id } } }: RouteComponentProps<{ id: st
             <Title level={3}>Add some code</Title>
             {
                 pin ? (
-                    <>
+                    <Form>
                         <CodeInfo />
-                        <CodeButtons id={id} code={code} setCode={setCode} />
+                        <CodeForm id={id} code={code} setCode={setCode} />
                         <AceEditor
                             mode="javascript"
                             theme="tomorrow"
@@ -59,7 +63,7 @@ export const Code = ({ match: { params: { id } } }: RouteComponentProps<{ id: st
                             style={aceEditorStyle}
                         />
                         <CodeCard id={pin.id} png={pin.png} url={pin.url} />
-                    </>
+                    </Form>
                 ) : <Spin />
             }
         </>

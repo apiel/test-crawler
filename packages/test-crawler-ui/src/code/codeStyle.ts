@@ -19,3 +19,8 @@ export const buttonBarStyle = {
 export const buttonStyle = {
     marginRight: 10,
 }
+
+export const inputStyle = {
+    maxWidth: 500,
+    margin: '0px 0px 10px 0px',
+}
