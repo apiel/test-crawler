@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from 'antd/lib/typography';
 import Spin from 'antd/lib/spin';
 
-import { getSettings, getLogs } from './server/crawler';
+import { getSettings, getLogs } from './server/service';
 
 const { Title } = Typography;
 

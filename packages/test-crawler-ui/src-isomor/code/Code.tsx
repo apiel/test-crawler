@@ -11,7 +11,7 @@ import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 
 import { PageData } from 'test-crawler-lib';
-import { getPin, getCode } from '../server/crawler';
+import { getPin, getCode } from '../server/service';
 import { CodeInfo } from './CodeInfo';
 import { aceEditorStyle } from './codeStyle';
 import { CodeCard } from './CodeCard';

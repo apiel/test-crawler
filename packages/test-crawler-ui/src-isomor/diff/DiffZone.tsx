@@ -7,7 +7,7 @@ import {
 } from '../pages/pageStyle';
 
 import { DiffImageButtons } from './DiffImageButtons';
-import { getThumbnail } from '../server/crawler';
+import { getThumbnail } from '../server/service';
 import { Zone } from 'test-crawler-lib';
 
 export const getColorByStatus = (status: string) => {

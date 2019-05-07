@@ -14,7 +14,7 @@ import { CrawlerInput } from 'test-crawler-lib';
 import { useAsyncCache, Call } from 'react-async-cache';
 
 import { getResultsRoute } from '../routes';
-import { saveAndStart, getCrawlers } from '../server/crawler';
+import { saveAndStart, getCrawlers } from '../server/service';
 import { Info } from '../common/Info';
 import { Preset } from './Preset';
 import { Viewport } from './Viewport';

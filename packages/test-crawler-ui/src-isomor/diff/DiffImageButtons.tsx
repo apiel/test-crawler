@@ -4,8 +4,8 @@ import notification from 'antd/lib/notification';
 import { useAsyncCache, Update } from 'react-async-cache';
 import Button from 'antd/lib/button';
 
-import { setZoneStatus } from '../server/crawler';
-import { getPages } from '../server/crawler';
+import { setZoneStatus } from '../server/service';
+import { getPages } from '../server/service';
 import { PageData } from 'test-crawler-lib';
 
 

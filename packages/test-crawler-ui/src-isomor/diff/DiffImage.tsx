@@ -5,7 +5,7 @@ import {
     imgStyle,
 } from '../pages/pageStyle';
 
-import { getThumbnail } from '../server/crawler';
+import { getThumbnail } from '../server/service';
 import { DiffZone } from './DiffZone';
 import { PngDiffDataZone } from 'test-crawler-lib';
 

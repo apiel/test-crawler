@@ -7,7 +7,7 @@ import isEqual from 'lodash/isEqual';
 import { Pages}  from '../pages/Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { Crawler } from 'test-crawler-lib';
-import { getCrawler, getCrawlers } from '../server/crawler';
+import { getCrawler, getCrawlers } from '../server/service';
 import { useAsyncCacheEffect, useAsyncCache, Cache, Update } from 'react-async-cache';
 import { ErrorHandler } from '../common/ErrorHandler';
 

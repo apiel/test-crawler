@@ -8,7 +8,7 @@ import Dropdown from 'antd/lib/dropdown';
 import Typography from 'antd/lib/typography';
 import Form, { FormComponentProps } from 'antd/lib/form';
 
-import { setCode } from '../server/crawler';
+import { setCode } from '../server/service';
 import { codeSnippet } from './CodeSnippet';
 import { buttonBarStyle, buttonStyle, inputStyle } from './codeStyle';
 import { Info } from '../common/Info';

@@ -7,7 +7,7 @@ import { Crawler } from 'test-crawler-lib';
 import { useAsyncCacheEffect } from 'react-async-cache';
 
 import { getHomeRoute, getPinsRoute, getSettingsRoute } from '../routes';
-import { getCrawlers } from '../server/crawler';
+import { getCrawlers } from '../server/service';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { SideMenuResults } from './SideMenuResults';
 

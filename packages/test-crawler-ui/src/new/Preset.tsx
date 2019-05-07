@@ -4,7 +4,7 @@ import Button from 'antd/lib/button';
 import notification from 'antd/lib/notification';
 import { Preset as PresetType } from 'test-crawler-lib';
 
-import { loadPresets } from '../server/crawler';
+import { loadPresets } from '../server/service';
 import { menu } from './PresetMenu';
 
 const load = async (

@@ -7,7 +7,7 @@ import {
     masonryStyle,
     masonryOptions,
 } from '../pages/pageStyle';
-import { getPins } from '../server/crawler';
+import { getPins } from '../server/service';
 import { PageData } from 'test-crawler-lib';
 import { useAsyncCacheEffect } from 'react-async-cache';
 import { ErrorHandler } from '../common/ErrorHandler';
