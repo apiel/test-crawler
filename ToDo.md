@@ -3,12 +3,16 @@
 - use single input for search and filtering
         https://2x.ant.design/components/select/#components-select-demo-select-users
 
+- Url to crawl base on pattern
+
 - when page was automatically pined, show info
 
 - when limit selected, allow random page (shuffle, if limit is 2 instead to always pick up the first 2 pages, pick randomly eg. page 10 and page 22)
 
 - think about jest or what ever test integration. or maybe just assert system.
     - if code injection return an error maybe ?
+
+- page detail
 
 - code preview
     - code preview till specific line
@@ -24,6 +28,7 @@ if (runProcess) {
 }
 ```
 
+- ctrl-s save code https://www.npmjs.com/package/react-hotkeys
 
 - ~~improve test-crawler bash > maybe switch to JS~~
 

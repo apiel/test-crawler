@@ -69,7 +69,7 @@ const CodeFormComponent = ({ setSource, id, code, form: { getFieldDecorator, val
         <Form onSubmit={handleSubmit(id, code.source, validateFields)}>
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('name', {
-                    initialValue: '',
+                    initialValue: code.name || '',
                 })(
                     <Input addonBefore="Name" />
                 )}
@@ -77,7 +77,7 @@ const CodeFormComponent = ({ setSource, id, code, form: { getFieldDecorator, val
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('pattern', {
                     rules: [{ required: true, message: 'Please input a pattern!' }],
-                    initialValue: '',
+                    initialValue: code.pattern || '',
                 })(
                     <Input addonBefore="Pattern" />
                 )}

@@ -38,7 +38,7 @@ const load = async (
 
 const setSource = (
     code: CodeType,
-    setCode: React.Dispatch<React.SetStateAction<CodeType>>,
+    setCode: React.Dispatch<React.SetStateAction<CodeType | undefined>>,
 ) => (source: string) => {
     setCode({
         ...code,
