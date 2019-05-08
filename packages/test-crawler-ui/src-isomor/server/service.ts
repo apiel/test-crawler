@@ -6,6 +6,7 @@ import {
     PageData,
     Preset,
     Code,
+    CodeInfoList,
 } from 'test-crawler-lib';
 import * as sharp from 'sharp';
 
@@ -53,6 +54,10 @@ export function setCode(code: Code): Promise<void> {
 
 export function getCode(id: string): Promise<Code> {
     return crawlerProvider.loadCode(id);
+}
+
+export function getCodes(): Promise<CodeInfoList> {
+    return crawlerProvider.getCodeList();
 }
 
 export async function getThumbnail(folder: string, id: string, width: number = 300): Promise<string> {

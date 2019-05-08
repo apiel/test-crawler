@@ -1,12 +1,12 @@
 import React from 'react';
 import Spin from 'antd/lib/spin';
-import Input from 'antd/lib/input';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
-import Form, { FormComponentProps } from 'antd/lib/form';
+import Form from 'antd/lib/form';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';
 import { Code as CodeType } from 'test-crawler-lib';
+import { useAsyncCacheEffect } from 'react-async-cache';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
@@ -17,24 +17,9 @@ import { CodeInfo } from './CodeInfo';
 import { aceEditorStyle } from './codeStyle';
 import { CodeCard } from './CodeCard';
 import { CodeForm } from './CodeFrom';
+import { ErrorHandler } from '../common/ErrorHandler';
 
 const { Title } = Typography;
-
-const load = async (
-    id: string,
-    setPin: React.Dispatch<React.SetStateAction<PageData | undefined>>,
-    setCode: React.Dispatch<React.SetStateAction<CodeType | undefined>>,
-) => {
-    try {
-        setPin(await getPin(id));
-        setCode(await getCode(id));
-    } catch (error) {
-        notification['error']({
-            message: 'Something went wrong!',
-            description: error.toString(),
-        });
-    }
-}
 
 const setSource = (
     code: CodeType,
@@ -49,11 +34,11 @@ const setSource = (
 type Props = RouteComponentProps<{ id: string }>;
 
 export const Code = ({ match: { params: { id } } }: Props) => {
-    const [code, setCode] = React.useState<CodeType>();
-    const [pin, setPin] = React.useState<PageData>();
-
-    React.useEffect(() => { load(id, setPin, setCode); }, []);
-
+    const { error, response: code, update: setCode } = useAsyncCacheEffect<CodeType>(getCode, id);
+    const { response: pin } = useAsyncCacheEffect<PageData>(getPin, id);
+    if (error) {
+        return <ErrorHandler description={error.toString()} />;
+    }
     return (
         <>
             <Title level={3}>Add some code</Title>

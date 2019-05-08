@@ -1,5 +1,5 @@
 import { remote } from "isomor";
-import { CrawlerProvider, Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code } from "test-crawler-lib";
+import { CrawlerProvider, Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfoList } from "test-crawler-lib";
 import * as sharp from "sharp";
 export function getSettings(...args: any) {
   return remote("server-service", "getSettings", args);
@@ -33,6 +33,9 @@ export function setCode(...args: any) {
 }
 export function getCode(...args: any) {
   return remote("server-service", "getCode", args);
+}
+export function getCodes(...args: any) {
+  return remote("server-service", "getCodes", args);
 }
 export function getThumbnail(...args: any) {
   return remote("server-service", "getThumbnail", args);
