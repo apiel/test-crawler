@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
+        "expect": "^24.8.0",
         "fs-extra": "^7.0.1",
         "md5": "^2.2.1",
         "pixdiff-zone": "^0.7.0",

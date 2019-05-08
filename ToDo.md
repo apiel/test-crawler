@@ -1,4 +1,6 @@
 - inject code base on url pattern
+    - create a preset with jest.expect
+    - update doc
     - display related pins base on pattern
     - prefill pattern when coming from pins
     - (code history?)

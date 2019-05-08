@@ -35,6 +35,7 @@
   ],
   "proxy": "http://127.0.0.1:3005",
   "dependencies": {
+    "ansi-to-html": "^0.6.10",
     "antd": "^3.16.2",
     "brace": "^0.11.1",
     "fuse.js": "^3.4.4",
