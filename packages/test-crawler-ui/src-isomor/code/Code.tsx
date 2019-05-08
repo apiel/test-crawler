@@ -1,7 +1,6 @@
 import React from 'react';
 import Spin from 'antd/lib/spin';
 import Typography from 'antd/lib/typography';
-import notification from 'antd/lib/notification';
 import Form from 'antd/lib/form';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';

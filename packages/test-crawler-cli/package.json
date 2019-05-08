@@ -19,6 +19,7 @@
         "fs-extra": "^7.0.1",
         "lockfile": "^1.0.4",
         "logol": "^0.0.2",
+        "minimatch": "^3.0.4",
         "pixdiff-zone": "^0.7.0",
         "pngjs": "^3.3.3",
         "puppeteer": "^1.11.0",
@@ -29,6 +30,7 @@
     "devDependencies": {
         "@types/fs-extra": "^5.0.5",
         "@types/lockfile": "^1.0.1",
+        "@types/minimatch": "^3.0.3",
         "@types/pngjs": "^3.3.2",
         "@types/puppeteer": "^1.11.2",
         "tslint": "^5.12.1"

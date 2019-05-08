@@ -1,7 +1,8 @@
 import { launch, Page, Viewport } from 'puppeteer';
 import { error, info, warn } from 'logol';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, readFile } from 'fs-extra';
 import { join, extname } from 'path';
+import * as minimatch from 'minimatch';
 
 import {
     CONSUMER_COUNT,
@@ -10,8 +11,15 @@ import {
     CRAWL_FOLDER,
     BASE_FOLDER,
     PROCESS_TIMEOUT,
+    CODE_FOLDER,
 } from 'test-crawler-lib/lib/config';
-import { getFilePath, savePageInfo, addToQueue, getQueueFolder } from 'test-crawler-lib/lib/utils';
+import {
+    getFilePath,
+    savePageInfo,
+    addToQueue,
+    getQueueFolder,
+    getCodeList,
+} from 'test-crawler-lib/lib/utils';
 import { CrawlerMethod } from 'test-crawler-lib/lib';
 import { prepare } from '../diff';
 import { Crawler } from 'test-crawler-lib/lib/typing';
@@ -57,12 +65,21 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
             () => JSON.stringify(window.performance),
         ));
 
-        await injectCode(basePath('js'), page, id, url, distFolder, crawler);
+        let codeErr: string;
+        try {
+            await injectCodes(page, id, url, distFolder, crawler);
+        } catch (err) {
+            codeErr = err.toString();
+            error('Something went wrong while injecting the code', id, url, err);
+        }
 
         await page.screenshot({ path: filePath('png'), fullPage: true });
 
         const png = { width: viewport.width };
-        await savePageInfo(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl });
+        await savePageInfo(
+            filePath('json'),
+            { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr },
+        );
 
         if (method !== CrawlerMethod.URLs) {
             hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
@@ -74,6 +91,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         resultsQueue.push({
             result,
             folder: distFolder,
+            isError: !!codeErr,
         });
     } catch (err) {
         error(`Load page error (attempt ${retry + 1})`, err.toString());
@@ -94,15 +112,24 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     consumerRunning--;
 }
 
+async function injectCodes(page: Page, id: string, url: string, distFolder: string, crawler: Crawler) {
+    const list = await getCodeList();
+    // console.log('injectCodes list', list);
+    // console.log('Object.values', Object.values(list));
+    const toInject = Object.values(list).filter(({ pattern }) => {
+        return minimatch(url, pattern);
+    });
+    for (const codeInfo of toInject) {
+        const sourcePath = join(CODE_FOLDER, `${codeInfo.id}.js`);
+        await injectCode(sourcePath, page, id, url, distFolder, crawler);
+    }
+}
+
 async function injectCode(jsFile: string, page: Page, id: string, url: string, distFolder: string, crawler: Crawler) {
     if (await pathExists(jsFile)) {
-        info('Inject code', id);
-        try {
-            const fn = require(jsFile);
-            await fn(page, url, id, distFolder, crawler);
-        } catch (err) {
-            error('Something went wrong while injecting the code', id, err);
-        }
+        info('Inject code', url);
+        const fn = require(jsFile);
+        await fn(page, url, id, crawler, distFolder);
     }
 }
 

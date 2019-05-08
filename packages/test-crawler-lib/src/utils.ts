@@ -1,9 +1,9 @@
-import { readdir, pathExists, outputJson, readFile, outputFile } from 'fs-extra';
+import { readdir, pathExists, outputJson, readFile, outputFile, readJSON } from 'fs-extra';
 import { join } from 'path';
 import * as md5 from 'md5';
 
-import { CRAWL_FOLDER } from './config';
-import { PageData, Viewport } from './typing';
+import { CRAWL_FOLDER, CODE_FOLDER } from './config';
+import { PageData, Viewport, CodeInfoList } from './typing';
 
 export async function getFolders() {
     const folders = await readdir(CRAWL_FOLDER);
@@ -50,4 +50,12 @@ export function getQueueFolder(distFolder: string) {
 
 export function savePageInfo(file: string, pageData: PageData) {
     return outputJson(file, pageData, { spaces: 4 });
+}
+
+export async function getCodeList(): Promise<CodeInfoList> {
+    const listPath = join(CODE_FOLDER, `list.json`);
+    if (!(await pathExists(listPath))) {
+        return {};
+    }
+    return readJSON(listPath);
 }

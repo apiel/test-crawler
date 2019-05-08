@@ -1,10 +1,9 @@
 - inject code base on url pattern
-    - code list
-    - bin crawler use code
+    - display related pins base on pattern
+    - prefill pattern when coming from pins
     - (code history?)
 
 - think about jest or what ever test integration. or maybe just assert system.
-    - if code injection return an error maybe ?
 
 - use single input for search and filtering
         https://2x.ant.design/components/select/#components-select-demo-select-users

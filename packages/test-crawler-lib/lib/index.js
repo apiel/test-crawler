@@ -108,19 +108,6 @@ class CrawlerProvider {
         const filePath = utils_1.getFilePath(id, target);
         return fs_extra_1.readFile(filePath('png'));
     }
-    saveBasePageCode(id, code) {
-        const filePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
-        return fs_extra_1.outputFile(filePath('js'), code);
-    }
-    loadBasePageCode(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const filePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
-            if (!(yield fs_extra_1.pathExists(filePath('js')))) {
-                return '';
-            }
-            return (yield fs_extra_1.readFile(filePath('js'))).toString();
-        });
-    }
     saveCode(code) {
         return __awaiter(this, void 0, void 0, function* () {
             const { source } = code, codeInfo = __rest(code, ["source"]);
@@ -149,11 +136,7 @@ class CrawlerProvider {
     }
     getCodeList() {
         return __awaiter(this, void 0, void 0, function* () {
-            const listPath = path_1.join(config_1.CODE_FOLDER, `list.json`);
-            if (!(yield fs_extra_1.pathExists(listPath))) {
-                return {};
-            }
-            return fs_extra_1.readJSON(listPath);
+            return utils_1.getCodeList();
         });
     }
     getBasePages() {

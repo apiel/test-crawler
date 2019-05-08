@@ -17,7 +17,7 @@ import { exec } from 'child_process';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
 import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PRESET_FOLDER, CODE_FOLDER } from './config';
-import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath } from './utils';
+import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath, getCodeList } from './utils';
 
 import * as config from './config';
 import { Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfo, CodeInfoList } from './typing';
@@ -151,12 +151,8 @@ export class CrawlerProvider {
         return { ...codeInfo, source };
     }
 
-    async getCodeList(): Promise<CodeInfoList> { // should be list object
-        const listPath = join(CODE_FOLDER, `list.json`);
-        if (!(await pathExists(listPath))) {
-            return {};
-        }
-        return readJSON(listPath);
+    async getCodeList(): Promise<CodeInfoList> {
+        return getCodeList();
     }
 
     getBasePages(): Promise<PageData[]> {
