@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Crawler } from 'test-crawler-lib';
 import { useAsyncCacheEffect } from 'react-async-cache';
 
-import { getHomeRoute, getPinsRoute, getSettingsRoute } from '../routes';
+import { getHomeRoute, getPinsRoute, getSettingsRoute, getCodesRoute } from '../routes';
 import { getCrawlers } from '../server/service';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { SideMenuResults } from './SideMenuResults';
@@ -28,6 +28,11 @@ export const SideMenu = () => {
                     <Icon type="pushpin" />
                     <span className="nav-text">Pins</span>
                     <Link to={getPinsRoute()} />
+                </Menu.Item>
+                <Menu.Item key="codes">
+                    <Icon type="code" />
+                    <span className="nav-text">Codes</span>
+                    <Link to={getCodesRoute()} />
                 </Menu.Item>
                 {crawlers && SideMenuResults(crawlers) }
             </Menu>

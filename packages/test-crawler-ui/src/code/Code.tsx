@@ -58,7 +58,7 @@ export const Code = ({ match: { params: { id } } }: Props) => {
         <>
             <Title level={3}>Add some code</Title>
             {
-                pin && code ? (
+                code ? (
                     <Form>
                         <CodeInfo />
                         <CodeForm id={id} code={code} setSource={setSource(code, setCode)} />
@@ -72,7 +72,7 @@ export const Code = ({ match: { params: { id } } }: Props) => {
                                 : `module.exports = async function run(page) {\n// your code\n}`}
                             style={aceEditorStyle}
                         />
-                        <CodeCard id={pin.id} png={pin.png} url={pin.url} />
+                        {pin && <CodeCard id={pin.id} png={pin.png} url={pin.url} />}
                     </Form>
                 ) : <Spin />
             }
