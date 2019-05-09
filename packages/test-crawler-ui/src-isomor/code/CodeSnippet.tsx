@@ -39,5 +39,23 @@ export const codeSnippet = (setCode: (source: string) => void) => (
         >
             Storybook
         </Menu.Item>
+        <Menu.Item
+            key="3"
+            onClick={() => {
+                setCode(
+`// expect library from jest is installed by default
+// but you can use any assertion tool of your choice
+// just install it and use it here :D
+const expect = require('expect');
+
+module.exports = async function run(page) {
+  await expect(page.title()).resolves.toMatch('React App');
+  expect('a').toBe('b'); // fail
+}`
+                );
+            }}
+        >
+            Expect assetion example
+        </Menu.Item>
     </Menu>
 );

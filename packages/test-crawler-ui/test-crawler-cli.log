@@ -1,28 +1,35 @@
 [1m[34m• info[39m[22m Crawl defb34c2e30004f1aedca21bbc2a2612.json
-[1m[34m• info[39m[22m Crawl c9ccfc8c7810f72add392ee25df09228.json
+[1m[34m• info[39m[22m Crawl f46d7343468a2d7cc89860a38eee2463.json
 [1m[34m• info[39m[22m Add urls found 7, add 3
 [1m[34m• info[39m[22m Crawl c1eee82a2c3dc4530f8560d0560583b7.json
-[1m[34m• info[39m[22m Crawl f46d7343468a2d7cc89860a38eee2463.json
-[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff ratio: 0.002162885948330183
+[1m[34m• info[39m[22m Crawl c9ccfc8c7810f72add392ee25df09228.json
+[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff ratio: 0.002117989918084436
 [1m[34m• info[39m[22m PNG zone [ { xMin: 267, xMax: 532, yMin: 809, yMax: 827 },
-  { xMin: 260, xMax: 539, yMin: 1378, yMax: 1396 } ]
-[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff file: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/pages/crawl/1557335981/defb34c2e30004f1aedca21bbc2a2612.png.diff.png
+  { xMin: 267, xMax: 532, yMin: 1378, yMax: 1396 } ]
+[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff file: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/pages/crawl/1557404566/defb34c2e30004f1aedca21bbc2a2612.png.diff.png
 [1m[34m• info[39m[22m browser closed http://localhost:3003/
+[1m[34m• info[39m[22m Inject code http://localhost:3003/item/1
 [1m[34m• info[39m[22m Inject code http://localhost:3003/item/0
-[1m[31m• [39m[41mERR[49m[22m [31mSomething went wrong while injecting the code[39m [31mf46d7343468a2d7cc89860a38eee2463[39m [31mhttp://localhost:3003/item/0[39m Error: some error
-    at run (/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/pages/code/1557330925.js:3:9)
+[1m[31m• [39m[41mERR[49m[22m [31mSomething went wrong while injecting the code[39m [31mf46d7343468a2d7cc89860a38eee2463[39m [31mhttp://localhost:3003/item/0[39m { Error: [2mexpect([22m[31mreceived[39m[2m).[22mresolves[2m.[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
+
+Expected substring: [32m"Google"[39m
+Received string:    [31m"React App"[39m
+    at Object.args [as toMatch] (/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/node_modules/expect/build/index.js:202:20)
+    at run (/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/pages/code/1557330925.js:4:39)
     at /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/bin/crawl/index.js:104:19
     at Generator.next (<anonymous>)
     at fulfilled (/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/bin/crawl/index.js:4:58)
-[1m[34m• info[39m[22m Inject code http://localhost:3003/item/2
+  matcherResult: { message: [Function], pass: false },
+  message:
+   '\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mresolves\u001b[2m.\u001b[22mtoMatch\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected substring: \u001b[32m"Google"\u001b[39m\nReceived string:    \u001b[31m"React App"\u001b[39m' }
+[1m[34m• info[39m[22m PNG c9ccfc8c7810f72add392ee25df09228 http://localhost:3003/item/1 diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
+[1m[34m• info[39m[22m browser closed http://localhost:3003/item/1
 [1m[34m• info[39m[22m PNG f46d7343468a2d7cc89860a38eee2463 http://localhost:3003/item/0 diff ratio: 0
 [1m[34m• info[39m[22m PNG zone []
 [1m[34m• info[39m[22m browser closed http://localhost:3003/item/0
-[1m[34m• info[39m[22m Inject code http://localhost:3003/item/1
+[1m[34m• info[39m[22m Inject code http://localhost:3003/item/2
 [1m[34m• info[39m[22m PNG c1eee82a2c3dc4530f8560d0560583b7 http://localhost:3003/item/2 diff ratio: 0
 [1m[34m• info[39m[22m PNG zone []
-[1m[34m• info[39m[22m PNG c9ccfc8c7810f72add392ee25df09228 http://localhost:3003/item/1 diff ratio: 0
-[1m[34m• info[39m[22m PNG zone []
 [1m[34m• info[39m[22m browser closed http://localhost:3003/item/2
-[1m[34m• info[39m[22m browser closed http://localhost:3003/item/1
 [1m[34m• info[39m[22m Process timeout, exit 60 sec inactivity
