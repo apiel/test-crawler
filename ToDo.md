@@ -1,9 +1,14 @@
+- when limit selected, allow random page (shuffle, if limit is 2 instead to always pick up the first 2 pages, pick randomly eg. page 10 and page 22)
+    - or maybe do something with code injection
+    -> extract urls from beginning and pass them to code injection
+
 - inject code base on url pattern
     - update doc
     - display related pins base on pattern
     - (code history?)
 
-- think about jest or what ever test integration. or maybe just assert system.
+- code preview
+    - code preview till specific line
 
 - use single input for search and filtering
         https://2x.ant.design/components/select/#components-select-demo-select-users
@@ -12,12 +17,8 @@
 
 - when page was automatically pined, show info
 
-- when limit selected, allow random page (shuffle, if limit is 2 instead to always pick up the first 2 pages, pick randomly eg. page 10 and page 22)
-
 - page detail
 
-- code preview
-    - code preview till specific line
 - plugin system
 
 - think about AI!! random click?
