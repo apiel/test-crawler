@@ -61,7 +61,7 @@ On the result page, you will see many screenshot with eventually some difference
 
 ## Inject code
 
-![screenshot-code](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code.png?raw=true)
+![screenshot-code](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code-new.png?raw=true)
 
 Inject some code in the crawler while parsing the page. This code will be executed just after the page finish loaded, before to make the screenshot and before extracting the links.
 
