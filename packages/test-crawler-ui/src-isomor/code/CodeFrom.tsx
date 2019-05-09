@@ -13,6 +13,7 @@ import { setCode } from '../server/service';
 import { codeSnippet } from './CodeSnippet';
 import { buttonBarStyle, buttonStyle, inputStyle } from './codeStyle';
 import { Info } from '../common/Info';
+import { Location } from 'history';
 
 const { Paragraph } = Typography;
 
@@ -25,7 +26,7 @@ const onPlay = () => {
     message.warn('To be implemented.', 2);
 }
 
-const save = async(
+const save = async (
     id: string,
     source: string,
     info: FormInput,
@@ -61,10 +62,17 @@ const handleSubmit = (
 type Props = FormComponentProps & {
     id: string;
     code: Code;
+    location: Location<{ pattern: string }>;
     setSource: (source: string) => void;
 };
 
-const CodeFormComponent = ({ setSource, id, code, form: { getFieldDecorator, validateFields } }: Props) => {
+const CodeFormComponent = ({
+    setSource,
+    id,
+    code,
+    form: { getFieldDecorator, validateFields },
+    location: { state: { pattern } },
+}: Props) => {
     return (
         <Form onSubmit={handleSubmit(id, code.source, validateFields)}>
             <Form.Item style={inputStyle}>
@@ -77,7 +85,7 @@ const CodeFormComponent = ({ setSource, id, code, form: { getFieldDecorator, val
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('pattern', {
                     rules: [{ required: true, message: 'Please input a pattern!' }],
-                    initialValue: code.pattern || '',
+                    initialValue: code.pattern || pattern || '',
                 })(
                     <Input addonBefore="Pattern" />
                 )}

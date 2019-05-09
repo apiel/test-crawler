@@ -28,7 +28,10 @@ export const PinPage = ({ id, url, viewport, onImg, png }: Props) => (
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} />}
         actions={[
             <Icon type="delete" title={`Delete pin`} />,
-            (<Link to={getCodeRoute(id)}>
+            (<Link to={{
+                pathname: getCodeRoute(id),
+                state: { pattern: url }
+            }}>
                 <Icon type="code" title={`Insert code while crawling`} />
             </Link>),
         ]}

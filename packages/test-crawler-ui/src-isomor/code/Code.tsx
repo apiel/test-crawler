@@ -32,16 +32,15 @@ const setSource = (
 
 type Props = RouteComponentProps<{ id: string }>;
 
-export const Code = ({ match: { params: { id } } }: Props) => {
+export const Code = ({ match: { params: { id } }, location }: Props) => {
     const { error, response: code, update: setCode } = useAsyncCacheEffect<CodeType>(getCode, id);
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
-
     // instead to getPin, there should be a special endpoint retriving a
     // list of pages matching the pattern
     // (when it is coming from pin, pattern should be already be filled out)
-    const { response: pin } = useAsyncCacheEffect<PageData>(getPin, id);
+    // const { response: pin } = useAsyncCacheEffect<PageData>(getPin, id);
     return (
         <>
             <Title level={3}>Add some code</Title>
@@ -49,7 +48,12 @@ export const Code = ({ match: { params: { id } } }: Props) => {
                 code ? (
                     <Form>
                         <CodeInfo />
-                        <CodeForm id={id} code={code} setSource={setSource(code, setCode)} />
+                        <CodeForm
+                            id={id}
+                            code={code}
+                            setSource={setSource(code, setCode)}
+                            location={location}
+                        />
                         <AceEditor
                             mode="javascript"
                             theme="tomorrow"
@@ -60,7 +64,7 @@ export const Code = ({ match: { params: { id } } }: Props) => {
                                 : `module.exports = async function run(page) {\n// your code\n}`}
                             style={aceEditorStyle}
                         />
-                        {pin && <CodeCard id={pin.id} png={pin.png} url={pin.url} />}
+                        {/* {pin && <CodeCard id={pin.id} png={pin.png} url={pin.url} />} */}
                     </Form>
                 ) : <Spin />
             }
