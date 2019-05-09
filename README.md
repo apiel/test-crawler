@@ -69,10 +69,6 @@ This can be useful to remove some dynamic part from a page, for example some com
 
 Test-crawler is using [Puppeteer](https://www.npmjs.com/package/puppeteer) to crawl the page and make the screenshot. By injecting the code, you can use all the functionnalities from Puppeteer.
 
-To setup some code for a pin, click on the action button on the bottom right of a pin.
-
-![screenshot-pin](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pin.png?raw=true)
-
 In the editor, you need to export a function that will get as params the page currently opened by Puppeteer.
 
 ```js
@@ -92,6 +88,21 @@ module.exports = async function run(page) {
     });
 }
 ```
+
+You can as well make some assertion. Any failed assertion will be displayed in the result page.
+
+![screenshot-assertion](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-assertion.png?raw=true)
+
+```js
+const expect = require('expect');
+
+module.exports = async function run(page) {
+  await expect(page.title()).resolves.toMatch('React App');
+  expect('a').toBe('b'); // fail
+}
+```
+
+By default `expect` library from [jest](https://jestjs.io/docs/en/expect.html) is installed but you can use any library of your choice.
 
 ## Storybook
 

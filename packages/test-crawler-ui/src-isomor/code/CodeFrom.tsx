@@ -71,7 +71,7 @@ const CodeFormComponent = ({
     id,
     code,
     form: { getFieldDecorator, validateFields },
-    location: { state: { pattern } },
+    location: { state },
 }: Props) => {
     return (
         <Form onSubmit={handleSubmit(id, code.source, validateFields)}>
@@ -85,7 +85,7 @@ const CodeFormComponent = ({
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('pattern', {
                     rules: [{ required: true, message: 'Please input a pattern!' }],
-                    initialValue: code.pattern || pattern || '',
+                    initialValue: code.pattern || (state && state.pattern) || '',
                 })(
                     <Input addonBefore="Pattern" />
                 )}
