@@ -61,17 +61,13 @@ On the result page, you will see many screenshot with eventually some difference
 
 ## Inject code
 
-![screenshot-code](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code.png?raw=true)
+![screenshot-code](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code-new.png?raw=true)
 
 Inject some code in the crawler while parsing the page. This code will be executed just after the page finish loaded, before to make the screenshot and before extracting the links.
 
 This can be useful to remove some dynamic part from a page, for example some comments on a blog pages or some reviews on prodcut page. You could also inject code to simulate user behavior, like clicking or editing an input fields.
 
 Test-crawler is using [Puppeteer](https://www.npmjs.com/package/puppeteer) to crawl the page and make the screenshot. By injecting the code, you can use all the functionnalities from Puppeteer.
-
-To setup some code for a pin, click on the action button on the bottom right of a pin.
-
-![screenshot-pin](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pin.png?raw=true)
 
 In the editor, you need to export a function that will get as params the page currently opened by Puppeteer.
 
@@ -92,6 +88,21 @@ module.exports = async function run(page) {
     });
 }
 ```
+
+You can as well make some assertion. Any failed assertion will be displayed in the result page.
+
+![screenshot-assertion](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-assertion.png?raw=true)
+
+```js
+const expect = require('expect');
+
+module.exports = async function run(page) {
+  await expect(page.title()).resolves.toMatch('React App');
+  expect('a').toBe('b'); // fail
+}
+```
+
+By default `expect` library from [jest](https://jestjs.io/docs/en/expect.html) is installed but you can use any library of your choice.
 
 ## Storybook
 
