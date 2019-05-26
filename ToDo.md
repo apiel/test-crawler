@@ -1,14 +1,21 @@
-- when limit selected, allow random page (shuffle, if limit is 2 instead to always pick up the first 2 pages, pick randomly eg. page 10 and page 22)
-    - or maybe do something with code injection
-    -> extract urls from beginning and pass them to code injection
+- - export * from './Image';
 
 - inject code base on url pattern
+    - `await injectCodes(page, id, url, distFolder, crawler);` should return the urls found in the pages
+        so we can change preset for storybook
     - update doc
     - display related pins base on pattern
     - (code history?)
 
 - code preview
     - code preview till specific line
+
+- use html diff to improve visual comparison. automatically remove elements that changed and make screenshot, isolate element that change and make screenshot of them.
+    - if we have possibility to reuse original page, with all CSS and so on -> then we can remove element as well on original page, so we can know from with height position page changed
+
+- when limit selected, allow random page (shuffle, if limit is 2 instead to always pick up the first 2 pages, pick randomly eg. page 10 and page 22)
+    - or maybe do something with code injection
+    -> extract urls from beginning and pass them to code injection
 
 - use single input for search and filtering
         https://2x.ant.design/components/select/#components-select-demo-select-users

@@ -17,13 +17,24 @@ const config_1 = require("test-crawler-lib/lib/config");
 const utils_1 = require("test-crawler-lib/lib/utils");
 const lib_1 = require("test-crawler-lib/lib");
 const diff_1 = require("../diff");
+const util_1 = require("util");
 let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
+function getLinks(page, crawler) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { url: baseUrl, method } = crawler;
+        if (method === lib_1.CrawlerMethod.URLs) {
+            return [];
+        }
+        const hrefs = yield page.$$eval('a', as => as.map(a => a.href));
+        return hrefs.filter(href => href.indexOf(baseUrl) === 0);
+    });
+}
 function loadPage(id, url, distFolder, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         consumerRunning++;
-        let hrefs;
+        let links;
         const filePath = utils_1.getFilePath(id, distFolder);
         const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
         const crawler = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
@@ -43,7 +54,8 @@ function loadPage(id, url, distFolder, retry = 0) {
             const performance = JSON.parse(yield page.evaluate(() => JSON.stringify(window.performance)));
             let codeErr;
             try {
-                yield injectCodes(page, id, url, distFolder, crawler);
+                const injectLinks = yield getLinks(page, crawler);
+                links = yield injectCodes(page, id, url, injectLinks, distFolder, crawler);
             }
             catch (err) {
                 codeErr = err.toString();
@@ -53,8 +65,7 @@ function loadPage(id, url, distFolder, retry = 0) {
             const png = { width: viewport.width };
             yield utils_1.savePageInfo(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr });
             if (method !== lib_1.CrawlerMethod.URLs) {
-                hrefs = yield page.$$eval('a', as => as.map(a => a.href));
-                const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
+                const urls = util_1.isArray(links) ? links : yield getLinks(page, crawler);
                 yield addUrls(urls, viewport, distFolder, limit);
             }
             const result = yield diff_1.prepare(id, distFolder, crawler);
@@ -84,7 +95,7 @@ function loadPage(id, url, distFolder, retry = 0) {
         consumerRunning--;
     });
 }
-function injectCodes(page, id, url, distFolder, crawler) {
+function injectCodes(page, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         const list = yield utils_1.getCodeList();
         const toInject = Object.values(list).filter(({ pattern }) => {
@@ -92,17 +103,19 @@ function injectCodes(page, id, url, distFolder, crawler) {
         });
         for (const codeInfo of toInject) {
             const sourcePath = path_1.join(config_1.CODE_FOLDER, `${codeInfo.id}.js`);
-            yield injectCode(sourcePath, page, id, url, distFolder, crawler);
+            links = yield injectCode(sourcePath, page, id, url, links, distFolder, crawler);
         }
+        return links;
     });
 }
-function injectCode(jsFile, page, id, url, distFolder, crawler) {
+function injectCode(jsFile, page, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         if (yield fs_extra_1.pathExists(jsFile)) {
             logol_1.info('Inject code', url);
             const fn = require(jsFile);
-            yield fn(page, url, id, crawler, distFolder);
+            return yield fn(page, url, links, id, crawler, distFolder);
         }
+        return links;
     });
 }
 function addUrls(urls, viewport, distFolder, limit) {

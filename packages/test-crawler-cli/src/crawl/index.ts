@@ -23,6 +23,7 @@ import {
 import { CrawlerMethod } from 'test-crawler-lib/lib';
 import { prepare } from '../diff';
 import { Crawler } from 'test-crawler-lib/lib/typing';
+import { isArray } from 'util';
 
 interface ResultQueue {
     result?: {
@@ -36,9 +37,18 @@ let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue: ResultQueue[] = [];
 
+async function getLinks(page: Page, crawler: Crawler): Promise<string[]> {
+    const { url: baseUrl, method } = crawler;
+    if (method === CrawlerMethod.URLs) {
+        return [];
+    }
+    const hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
+    return hrefs.filter(href => href.indexOf(baseUrl) === 0);
+}
+
 async function loadPage(id: string, url: string, distFolder: string, retry: number = 0) {
     consumerRunning++;
-    let hrefs: string[];
+    let links: string[];
     const filePath = getFilePath(id, distFolder);
     const basePath = getFilePath(id, BASE_FOLDER);
 
@@ -67,7 +77,8 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
 
         let codeErr: string;
         try {
-            await injectCodes(page, id, url, distFolder, crawler);
+            const injectLinks = await getLinks(page, crawler);
+            links = await injectCodes(page, id, url, injectLinks, distFolder, crawler);
         } catch (err) {
             codeErr = err.toString();
             error('Something went wrong while injecting the code', id, url, err);
@@ -82,8 +93,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         );
 
         if (method !== CrawlerMethod.URLs) {
-            hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
-            const urls = hrefs.filter(href => href.indexOf(baseUrl) === 0);
+            const urls = isArray(links) ? links : await getLinks(page, crawler);
             await addUrls(urls, viewport, distFolder, limit);
         }
 
@@ -112,7 +122,14 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     consumerRunning--;
 }
 
-async function injectCodes(page: Page, id: string, url: string, distFolder: string, crawler: Crawler) {
+async function injectCodes(
+    page: Page,
+    id: string,
+    url: string,
+    links: string[],
+    distFolder: string,
+    crawler: Crawler,
+) {
     const list = await getCodeList();
     // console.log('injectCodes list', list);
     // console.log('Object.values', Object.values(list));
@@ -121,16 +138,26 @@ async function injectCodes(page: Page, id: string, url: string, distFolder: stri
     });
     for (const codeInfo of toInject) {
         const sourcePath = join(CODE_FOLDER, `${codeInfo.id}.js`);
-        await injectCode(sourcePath, page, id, url, distFolder, crawler);
+        links = await injectCode(sourcePath, page, id, url, links, distFolder, crawler);
     }
+    return links;
 }
 
-async function injectCode(jsFile: string, page: Page, id: string, url: string, distFolder: string, crawler: Crawler) {
+async function injectCode(
+    jsFile: string,
+    page: Page,
+    id: string,
+    url: string,
+    links: string[],
+    distFolder: string,
+    crawler: Crawler,
+) {
     if (await pathExists(jsFile)) {
         info('Inject code', url);
         const fn = require(jsFile);
-        await fn(page, url, id, crawler, distFolder);
+        return await fn(page, url, links, id, crawler, distFolder);
     }
+    return links;
 }
 
 async function addUrls(urls: string[], viewport: Viewport, distFolder: string, limit: number) {
