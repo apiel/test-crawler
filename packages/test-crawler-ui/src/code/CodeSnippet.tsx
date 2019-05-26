@@ -23,24 +23,11 @@ export const codeSnippet = (setCode: (source: string) => void) => (
             key="2"
             onClick={() => {
                 setCode(
-`module.exports = async function run(page, url, links) {
-    return await page.evaluate((_links) => {
-        return _links.map(
-            link => link.replace('/?', '/iframe.html?')
-        );
-    }, links);
-}`
-                );
-            }}
-        >
-            Storybook
-        </Menu.Item>
-        <Menu.Item
-            key="22"
-            onClick={() => {
-                setCode(
 `module.exports = async function run(page) {
     return await page.evaluate(() => {
+        Array.from(document.body.getElementsByTagName("a"))
+             .filter(a => !a.href)
+             .forEach(a => a.click());
         return Array.from(document.links).map(
             link => link.href.replace('/?', '/iframe.html?')
         );
@@ -49,7 +36,7 @@ export const codeSnippet = (setCode: (source: string) => void) => (
                 );
             }}
         >
-            Storybook2
+            Storybook
         </Menu.Item>
         <Menu.Item
             key="3"
