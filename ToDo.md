@@ -1,8 +1,6 @@
 - - export * from './Image';
 
 - inject code base on url pattern
-    - `await injectCodes(page, id, url, distFolder, crawler);` should return the urls found in the pages
-        so we can change preset for storybook
     - update doc
     - display related pins base on pattern
     - (code history?)
