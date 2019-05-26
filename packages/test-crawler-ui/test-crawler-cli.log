@@ -1,41 +1,41 @@
-[1m[34m• info[39m[22m Crawl defb34c2e30004f1aedca21bbc2a2612.json
-[1m[34m• info[39m[22m Crawl f46d7343468a2d7cc89860a38eee2463.json
-[1m[34m• info[39m[22m Add urls found 7, add 3
-[1m[34m• info[39m[22m Crawl c1eee82a2c3dc4530f8560d0560583b7.json
-[1m[34m• info[39m[22m Crawl c9ccfc8c7810f72add392ee25df09228.json
-[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff ratio: 0.0017194391934467548
-[1m[34m• info[39m[22m PNG zone [ { xMin: 295, xMax: 306, yMin: 809, yMax: 826 },
-  { xMin: 325, xMax: 452, yMin: 809, yMax: 827 },
-  { xMin: 470, xMax: 481, yMin: 809, yMax: 827 },
-  { xMin: 500, xMax: 526, yMin: 809, yMax: 827 },
-  { xMin: 325, xMax: 452, yMin: 810, yMax: 827 },
-  { xMin: 500, xMax: 526, yMin: 810, yMax: 827 },
-  { xMin: 325, xMax: 442, yMin: 814, yMax: 827 },
-  { xMin: 267, xMax: 532, yMin: 1378, yMax: 1396 } ]
-[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff file: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/pages/crawl/1558869474/defb34c2e30004f1aedca21bbc2a2612.png.diff.png
-[1m[34m• info[39m[22m browser closed http://localhost:3003/
-[1m[34m• info[39m[22m Inject code http://localhost:3003/item/1
-[1m[34m• info[39m[22m Inject code http://localhost:3003/item/2
-[1m[34m• info[39m[22m PNG c9ccfc8c7810f72add392ee25df09228 http://localhost:3003/item/1 diff ratio: 0
+[1m[34m• info[39m[22m Crawl 74ac49f8f4f460a0b734cb499c58ca59.json
+[1m[34m• info[39m[22m Crawl a2a2110862d24c07ae273a8adcb75925.json
+[1m[34m• info[39m[22m Crawl caa0498d830028cf3ca98cd2bf634332.json
+[1m[34m• info[39m[22m Crawl caa0498d830028cf3ca98cd2bf634332.json
+[1m[34m• info[39m[22m PNG 74ac49f8f4f460a0b734cb499c58ca59 http://localhost:9006/iframe.html?path=/info/welcome--welcome diff ratio: 0
 [1m[34m• info[39m[22m PNG zone []
-[1m[34m• info[39m[22m browser closed http://localhost:3003/item/1
-[1m[34m• info[39m[22m Inject code http://localhost:3003/item/0
-[1m[31m• [39m[41mERR[49m[22m [31mSomething went wrong while injecting the code[39m [31mf46d7343468a2d7cc89860a38eee2463[39m [31mhttp://localhost:3003/item/0[39m { Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
-
-Expected: [32m"b"[39m
-Received: [31m"a"[39m
-    at run (/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/pages/code/1557330925.js:8:15)
-    at processTicksAndRejections (internal/process/next_tick.js:81:5)
-  matcherResult:
-   { actual: 'a',
-     expected: 'b',
-     message: [Function],
-     name: 'toBe',
-     pass: false } }
-[1m[34m• info[39m[22m PNG c1eee82a2c3dc4530f8560d0560583b7 http://localhost:3003/item/2 diff ratio: 0
+[1m[34m• info[39m[22m browser closed http://localhost:9006/iframe.html?path=/info/welcome--welcome
+[1m[34m• info[39m[22m Add urls found 1, add 1
+[1m[34m• info[39m[22m Crawl ead5c2172f58fbef4dc36d85ed22e530.json
+[1m[34m• info[39m[22m PNG a2a2110862d24c07ae273a8adcb75925 http://localhost:9006/iframe.html?path=/story/welcome--welcome diff ratio: 0
 [1m[34m• info[39m[22m PNG zone []
-[1m[34m• info[39m[22m browser closed http://localhost:3003/item/2
-[1m[34m• info[39m[22m PNG f46d7343468a2d7cc89860a38eee2463 http://localhost:3003/item/0 diff ratio: 0
+[1m[34m• info[39m[22m browser closed http://localhost:9006/iframe.html?path=/story/welcome--welcome
+[1m[34m• info[39m[22m Inject code http://localhost:9006/
+[1m[34m• info[39m[22m Inject code http://localhost:9006/
+[1m[34m• info[39m[22m Inject code http://localhost:9006/
+[1m[34m• info[39m[22m Inject code http://localhost:9006/
+[1m[34m• info[39m[22m PNG caa0498d830028cf3ca98cd2bf634332 http://localhost:9006/ diff ratio: 0
 [1m[34m• info[39m[22m PNG zone []
-[1m[34m• info[39m[22m browser closed http://localhost:3003/item/0
+[1m[34m• info[39m[22m browser closed http://localhost:9006/
+[1m[34m• info[39m[22m Crawl a2a2110862d24c07ae273a8adcb75925.json
+[1m[34m• info[39m[22m Add urls found 4, add 2
+[1m[34m• info[39m[22m Crawl 74ac49f8f4f460a0b734cb499c58ca59.json
+[1m[34m• info[39m[22m PNG caa0498d830028cf3ca98cd2bf634332 http://localhost:9006/ diff ratio: 0.0007125
+[1m[34m• info[39m[22m PNG zone [ { xMin: 671, xMax: 778, yMin: 573, yMax: 584 } ]
+[1m[34m• info[39m[22m PNG caa0498d830028cf3ca98cd2bf634332 http://localhost:9006/ diff file: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-lib/pages/crawl/1558874531/caa0498d830028cf3ca98cd2bf634332.png.diff.png
+[1m[34m• info[39m[22m browser closed http://localhost:9006/
+[1m[34m• info[39m[22m PNG ead5c2172f58fbef4dc36d85ed22e530 http://localhost:9006/iframe.html?id=welcome--welcome# diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
+[1m[34m• info[39m[22m browser closed http://localhost:9006/iframe.html?id=welcome--welcome#
+[1m[34m• info[39m[22m PNG 74ac49f8f4f460a0b734cb499c58ca59 http://localhost:9006/iframe.html?path=/info/welcome--welcome diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
+[1m[34m• info[39m[22m Add urls found 1, add 1
+[1m[34m• info[39m[22m browser closed http://localhost:9006/iframe.html?path=/info/welcome--welcome
+[1m[34m• info[39m[22m Crawl ead5c2172f58fbef4dc36d85ed22e530.json
+[1m[34m• info[39m[22m PNG a2a2110862d24c07ae273a8adcb75925 http://localhost:9006/iframe.html?path=/story/welcome--welcome diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
+[1m[34m• info[39m[22m browser closed http://localhost:9006/iframe.html?path=/story/welcome--welcome
+[1m[34m• info[39m[22m PNG ead5c2172f58fbef4dc36d85ed22e530 http://localhost:9006/iframe.html?id=welcome--welcome# diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
+[1m[34m• info[39m[22m browser closed http://localhost:9006/iframe.html?id=welcome--welcome#
 [1m[34m• info[39m[22m Process timeout, exit 60 sec inactivity

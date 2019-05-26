@@ -23,21 +23,33 @@ export const codeSnippet = (setCode: (source: string) => void) => (
             key="2"
             onClick={() => {
                 setCode(
-`module.exports = async function run(page) {
-    await page.evaluate(() => {
-        hrefs = Array.from(document.links).map(
-            link => link.href.replace('/?', '/iframe.html?')
+`module.exports = async function run(page, url, links) {
+    return await page.evaluate((_links) => {
+        return _links.map(
+            link => link.replace('/?', '/iframe.html?')
         );
-
-        document.body.innerHTML = hrefs.map(
-            href => \`<a href="\${href}">\${href}</a>\`
-        ).join('<br />');
-    });
+    }, links);
 }`
                 );
             }}
         >
             Storybook
+        </Menu.Item>
+        <Menu.Item
+            key="22"
+            onClick={() => {
+                setCode(
+`module.exports = async function run(page) {
+    return await page.evaluate(() => {
+        return Array.from(document.links).map(
+            link => link.href.replace('/?', '/iframe.html?')
+        );
+    });
+}`
+                );
+            }}
+        >
+            Storybook2
         </Menu.Item>
         <Menu.Item
             key="3"
