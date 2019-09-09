@@ -13,6 +13,7 @@ const lockfile_1 = require("lockfile");
 const logol_1 = require("logol");
 const path_1 = require("path");
 const test_crawler_lib_1 = require("test-crawler-lib");
+const configs = require("test-crawler-lib/lib/config");
 const crawl_1 = require("./crawl");
 const lockFile = path_1.join(__dirname, '../../test-crawler.lock');
 function start() {
@@ -21,8 +22,9 @@ function start() {
         if (presetFile) {
             const crawlerProvider = new test_crawler_lib_1.CrawlerProvider();
             const crawlerInput = yield crawlerProvider.startCrawlerWithPresetFile(presetFile);
-            logol_1.info('Start with preset', JSON.stringify(crawlerInput));
+            logol_1.info('Start with preset', JSON.stringify(crawlerInput, null, 4));
         }
+        logol_1.info('Config', JSON.stringify(configs, null, 4));
         crawl_1.crawl();
     });
 }

@@ -1,6 +1,6 @@
 import { launch, Page, Viewport } from 'puppeteer';
 import { error, info, warn } from 'logol';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, readFile } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp } from 'fs-extra';
 import { join, extname } from 'path';
 import * as minimatch from 'minimatch';
 
@@ -43,6 +43,7 @@ async function getLinks(page: Page, crawler: Crawler): Promise<string[]> {
         return [];
     }
     const hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
+    // console.log('baseUrl', baseUrl, hrefs.filter(href => href.indexOf(baseUrl) === 0));
     return hrefs.filter(href => href.indexOf(baseUrl) === 0);
 }
 
@@ -50,7 +51,6 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
     consumerRunning++;
     let links: string[];
     const filePath = getFilePath(id, distFolder);
-    const basePath = getFilePath(id, BASE_FOLDER);
 
     const crawler: Crawler = await readJSON(join(distFolder, '_.json'));
     const { viewport, url: baseUrl, method, limit } = crawler;
@@ -79,6 +79,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         try {
             const injectLinks = await getLinks(page, crawler);
             links = await injectCodes(page, id, url, injectLinks, distFolder, crawler);
+            // console.log('links', links);
         } catch (err) {
             codeErr = err.toString();
             error('Something went wrong while injecting the code', id, url, err);
@@ -136,6 +137,7 @@ async function injectCodes(
     const toInject = Object.values(list).filter(({ pattern }) => {
         return minimatch(url, pattern);
     });
+    info(toInject.length, 'code(s) to inject for', url);
     for (const codeInfo of toInject) {
         const sourcePath = join(CODE_FOLDER, `${codeInfo.id}.js`);
         links = await injectCode(sourcePath, page, id, url, links, distFolder, crawler);
@@ -153,7 +155,7 @@ async function injectCode(
     crawler: Crawler,
 ) {
     if (await pathExists(jsFile)) {
-        info('Inject code', url);
+        info('Inject code', url, links);
         const fn = require(jsFile);
         return await fn(page, url, links, id, crawler, distFolder);
     }

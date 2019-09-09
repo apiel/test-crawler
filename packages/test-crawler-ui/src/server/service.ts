@@ -1,54 +1,54 @@
-import { remote } from "isomor";
-import { CrawlerProvider, Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfoList } from "test-crawler-lib";
-import * as sharp from "sharp";
+import { isomorRemote } from "isomor";
+import { CrawlerProvider, Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfoList } from 'test-crawler-lib';
+import * as sharp from 'sharp';
 export function getSettings(...args: any) {
-  return remote("server-service", "getSettings", args);
+  return isomorRemote("server-service", "test-crawler", "getSettings", args);
 }
 export function getLogs(...args: any) {
-  return remote("server-service", "getLogs", args);
+  return isomorRemote("server-service", "test-crawler", "getLogs", args);
 }
 export function getCrawlers(...args: any) {
-  return remote("server-service", "getCrawlers", args);
+  return isomorRemote("server-service", "test-crawler", "getCrawlers", args);
 }
 export function loadPresets(...args: any) {
-  return remote("server-service", "loadPresets", args);
+  return isomorRemote("server-service", "test-crawler", "loadPresets", args);
 }
 export function saveAndStart(...args: any) {
-  return remote("server-service", "saveAndStart", args);
+  return isomorRemote("server-service", "test-crawler", "saveAndStart", args);
 }
 export function getCrawler(...args: any) {
-  return remote("server-service", "getCrawler", args);
+  return isomorRemote("server-service", "test-crawler", "getCrawler", args);
 }
 export function getPages(...args: any) {
-  return remote("server-service", "getPages", args);
+  return isomorRemote("server-service", "test-crawler", "getPages", args);
 }
 export function getPins(...args: any) {
-  return remote("server-service", "getPins", args);
+  return isomorRemote("server-service", "test-crawler", "getPins", args);
 }
 export function getPin(...args: any) {
-  return remote("server-service", "getPin", args);
+  return isomorRemote("server-service", "test-crawler", "getPin", args);
 }
 export function setCode(...args: any) {
-  return remote("server-service", "setCode", args);
+  return isomorRemote("server-service", "test-crawler", "setCode", args);
 }
 export function getCode(...args: any) {
-  return remote("server-service", "getCode", args);
+  return isomorRemote("server-service", "test-crawler", "getCode", args);
 }
 export function getCodes(...args: any) {
-  return remote("server-service", "getCodes", args);
+  return isomorRemote("server-service", "test-crawler", "getCodes", args);
 }
 export function getThumbnail(...args: any) {
-  return remote("server-service", "getThumbnail", args);
+  return isomorRemote("server-service", "test-crawler", "getThumbnail", args);
 }
 export function pin(...args: any) {
-  return remote("server-service", "pin", args);
+  return isomorRemote("server-service", "test-crawler", "pin", args);
 }
 export function setZoneStatus(...args: any) {
-  return remote("server-service", "setZoneStatus", args);
+  return isomorRemote("server-service", "test-crawler", "setZoneStatus", args);
 }
 export function setZonesStatus(...args: any) {
-  return remote("server-service", "setZonesStatus", args);
+  return isomorRemote("server-service", "test-crawler", "setZonesStatus", args);
 }
 export function setStatus(...args: any) {
-  return remote("server-service", "setStatus", args);
+  return isomorRemote("server-service", "test-crawler", "setStatus", args);
 }

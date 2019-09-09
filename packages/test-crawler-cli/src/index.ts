@@ -4,6 +4,7 @@ import { checkSync, lockSync } from 'lockfile';
 import { info } from 'logol';
 import { join } from 'path';
 import { CrawlerProvider } from 'test-crawler-lib';
+import * as configs from 'test-crawler-lib/lib/config';
 
 import { crawl } from './crawl';
 
@@ -14,8 +15,9 @@ async function start() {
     if (presetFile) {
         const crawlerProvider = new CrawlerProvider();
         const crawlerInput = await crawlerProvider.startCrawlerWithPresetFile(presetFile);
-        info('Start with preset', JSON.stringify(crawlerInput));
+        info('Start with preset', crawlerInput);
     }
+    info('Config', configs);
     crawl();
 }
 

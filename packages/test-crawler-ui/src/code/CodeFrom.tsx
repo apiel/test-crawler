@@ -17,7 +17,7 @@ import { Location } from 'history';
 
 const { Paragraph } = Typography;
 
-interface FormInput {
+interface FormInput extends HTMLFormElement {
     name: string,
     pattern: string,
 }
