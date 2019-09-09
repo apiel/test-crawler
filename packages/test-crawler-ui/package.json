@@ -1,6 +1,6 @@
 {
   "name": "test-crawler",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "bin": {
     "test-crawler": "./test-crawler"
   },
@@ -53,8 +53,8 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "sharp": "^0.22.0",
-    "test-crawler-cli": "^0.7.5",
-    "test-crawler-lib": "^0.7.5",
+    "test-crawler-cli": "^0.7.6",
+    "test-crawler-lib": "^0.7.6",
     "typescript": "3.4.3"
   },
   "devDependencies": {
@@ -76,5 +76,5 @@
     "nodemon": "^1.18.11",
     "run-screen": "^0.5.3"
   },
-  "gitHead": "84cce9668e844e030da59d19dbc664b6ab413cee"
+  "gitHead": "af9ce9bc87080c5b936336d47f552ccccc350ac8"
 }

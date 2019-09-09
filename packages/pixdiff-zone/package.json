@@ -1,6 +1,6 @@
 {
     "name": "pixdiff-zone",
-    "version": "0.7.5",
+    "version": "0.7.6",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
@@ -23,5 +23,5 @@
         "ts-node": "^8.0.2",
         "tslint": "^5.12.1"
     },
-    "gitHead": "c3dc43a2e9d2dab530fe2dc6ccfd751e5fa655e9"
+    "gitHead": "af9ce9bc87080c5b936336d47f552ccccc350ac8"
 }
