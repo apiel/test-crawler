@@ -1,3 +1,44 @@
+- if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)
+- make it easy to setup
+- need to work globally
+- move all package for test-crawler in a single folder?
+- rerun doesnt work properly
+- should keep log for each url: see why code didn't execute...
+- need to handle error properly?
+
+
+
+
+
+- track user behavior, save it in history and reproduce scenarios... (e2e?)
+
+
+storybook
+pattern http://localhost:9001/
+module.exports = async function run(page, url, links) {
+    return await page.evaluate(() => {
+        // Array.from(document.body.getElementsByTagName("a"))
+        //      .filter(a => !a.href)
+        //      .forEach(a => a.click());
+        // return Array.from(document.links).map(
+        //     link => link.href.replace('/?path=/story/', '/iframe.html?id=')
+        // );
+        
+        return links.map(
+            link => link.href.replace('/?path=/story/', '/iframe.html?id=')
+        );
+    });
+}
+|
+--->
+        module.exports = async function run(page, url, links) {
+            return links.map(
+                link => link.replace('/?path=/story/', '/iframe.html?id=')
+            );
+        }
+
+
+
 - - export * from './Image';
 
 - inject code base on url pattern
@@ -27,6 +68,7 @@
 - plugin system
 
 - think about AI!! random click?
+    --> instead of random, track user behavior, save it in history and reproduce scenarios...
 
 
 toggle on/off `runProcess` from settings, set timeout from settings...
