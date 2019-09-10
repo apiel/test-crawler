@@ -23,10 +23,6 @@ module.exports = async function run(page, url, links) {
         // return Array.from(document.links).map(
         //     link => link.href.replace('/?path=/story/', '/iframe.html?id=')
         // );
-        
-        return links.map(
-            link => link.href.replace('/?path=/story/', '/iframe.html?id=')
-        );
     });
 }
 |
@@ -36,6 +32,41 @@ module.exports = async function run(page, url, links) {
                 link => link.replace('/?path=/story/', '/iframe.html?id=')
             );
         }
+
+----->
+const origin = (new URL(url)).origin;
+
+Array.from(document.body.getElementsByTagName("a")).filter(a => !a.href).forEach(a => {
+  if (a.nextSibling.nodeName === 'A') a.click()
+});
+
+
+const URL = require('url').URL;
+module.exports = async function run(page, url, links) {
+    const foundLinks = await page.evaluate(() => {
+        Array.from(document.body.getElementsByTagName("a")).filter(a => !a.href).forEach(a => {
+            if (a.nextSibling && a.nextSibling.nodeName === 'A') a.click()
+        });
+        return Array.from(document.links).map(
+            link => link.href.replace('/?path=/story/', '/iframe.html?id=')
+        );
+    });
+    const origin = (new URL(url)).origin;
+    return foundLinks.filter(link => link.href.indexOf(origin) !== -1);
+}
+
+
+module.exports = async function run(page, url, links) {
+    const foundLinks = await page.evaluate((url) => {
+        const origin = (new URL(url)).origin;
+        Array.from(document.body.getElementsByTagName("a")).filter(a => !a.href).forEach(a => {
+            if (a.nextSibling && a.nextSibling.nodeName === 'A') a.click()
+        });
+        return Array.from(document.links).filter(link => link.href.indexOf(origin) !== -1).map(
+            link => link.href.replace('/?path=/story/', '/iframe.html?id=')
+        );
+    }, url);
+}
 
 
 
