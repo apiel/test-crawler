@@ -6,6 +6,8 @@
 - should keep log for each url: see why code didn't execute...
 - need to handle error properly?
 
+- in new page, instead of new have list of project, button new would create a new project (preset)
+
 
 
 
@@ -56,17 +58,27 @@ module.exports = async function run(page, url, links) {
 }
 
 
+const URL = require('url').URL;
 module.exports = async function run(page, url, links) {
-    const foundLinks = await page.evaluate((url) => {
+    return await page.evaluate((url) => {
         const origin = (new URL(url)).origin;
         Array.from(document.body.getElementsByTagName("a")).filter(a => !a.href).forEach(a => {
             if (a.nextSibling && a.nextSibling.nodeName === 'A') a.click()
         });
-        return Array.from(document.links).filter(link => link.href.indexOf(origin) !== -1).map(
+        return Array.from(document.links).filter(link => link.href && link.href.indexOf(origin) !== -1).map(
             link => link.href.replace('/?path=/story/', '/iframe.html?id=')
         );
     }, url);
 }
+
+
+
+// module.exports = async function run(page, url, links) {
+//     return links.map(
+//        (link) => link.replace('/?path=/story/', '/iframe.html?id=')
+//    );
+//}
+
 
 
 
