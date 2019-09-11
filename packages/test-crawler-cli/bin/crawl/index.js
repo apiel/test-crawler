@@ -36,7 +36,6 @@ function loadPage(id, url, distFolder, retry = 0) {
         consumerRunning++;
         let links;
         const filePath = utils_1.getFilePath(id, distFolder);
-        const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
         const crawler = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
         const { viewport, url: baseUrl, method, limit } = crawler;
         const browser = yield puppeteer_1.launch({});
@@ -101,6 +100,7 @@ function injectCodes(page, id, url, links, distFolder, crawler) {
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });
+        logol_1.info(toInject.length, 'code(s) to inject for', url);
         for (const codeInfo of toInject) {
             const sourcePath = path_1.join(config_1.CODE_FOLDER, `${codeInfo.id}.js`);
             links = yield injectCode(sourcePath, page, id, url, links, distFolder, crawler);
@@ -111,7 +111,7 @@ function injectCodes(page, id, url, links, distFolder, crawler) {
 function injectCode(jsFile, page, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         if (yield fs_extra_1.pathExists(jsFile)) {
-            logol_1.info('Inject code', url);
+            logol_1.info('Inject code', url, links);
             const fn = require(jsFile);
             return yield fn(page, url, links, id, crawler, distFolder);
         }

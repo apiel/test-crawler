@@ -22,9 +22,9 @@ function start() {
         if (presetFile) {
             const crawlerProvider = new test_crawler_lib_1.CrawlerProvider();
             const crawlerInput = yield crawlerProvider.startCrawlerWithPresetFile(presetFile);
-            logol_1.info('Start with preset', JSON.stringify(crawlerInput, null, 4));
+            logol_1.info('Start with preset', crawlerInput);
         }
-        logol_1.info('Config', JSON.stringify(configs, null, 4));
+        logol_1.info('Config', configs);
         crawl_1.crawl();
     });
 }
