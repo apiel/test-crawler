@@ -1,1 +1,30 @@
-[1m[34m• info[39m[22m Test-crawler already running /home/alex/dev/test/test-crawler/packages/test-crawler.lock
+[1m[34m• info[39m[22m Config { PAGES_FOLDER:
+   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages',
+  CRAWL_FOLDER:
+   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages/crawl',
+  PRESET_FOLDER:
+   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages/preset',
+  BASE_FOLDER:
+   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages/base',
+  CODE_FOLDER:
+   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages/code',
+  MAX_HISTORY: 4,
+  TIMEOUT: 10000,
+  CONSUMER_COUNT: 5,
+  USER_AGENT:
+   'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+  PROCESS_TIMEOUT: 60 }
+[1m[34m• info[39m[22m Crawl defb34c2e30004f1aedca21bbc2a2612.json
+[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/
+[1m[34m• info[39m[22m Crawl f46d7343468a2d7cc89860a38eee2463.json
+[1m[34m• info[39m[22m Crawl c9ccfc8c7810f72add392ee25df09228.json
+[1m[34m• info[39m[22m Add urls found 7, add 3
+[1m[34m• info[39m[22m Crawl c1eee82a2c3dc4530f8560d0560583b7.json
+[1m[34m• info[39m[22m browser closed http://localhost:3003/
+[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/2
+[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/0
+[1m[34m• info[39m[22m browser closed http://localhost:3003/item/2
+[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/1
+[1m[34m• info[39m[22m browser closed http://localhost:3003/item/0
+[1m[34m• info[39m[22m browser closed http://localhost:3003/item/1
+[1m[34m• info[39m[22m Process timeout, exit 60 sec inactivity
