@@ -67,8 +67,8 @@ exports.getCodes = getCodes;
 function getThumbnail(folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const image = yield crawlerProvider.image(folder, id);
-        return `data:image/png;base64, `
-            + (yield sharp(image).resize(width).toBuffer()).toString('base64');
+        const sharpImg = width ? sharp(image).resize(width) : sharp(image);
+        return `data:image/png;base64, ${(yield sharpImg.toBuffer()).toString('base64')}`;
     });
 }
 exports.getThumbnail = getThumbnail;

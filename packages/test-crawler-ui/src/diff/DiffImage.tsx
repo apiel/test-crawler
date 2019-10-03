@@ -14,13 +14,14 @@ interface Props {
     id: string;
     zones?: PngDiffDataZone[];
     originalWidth?: number;
+    width?: number;
     onImg?: () => void;
 };
 
-export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg = () => {} }: Props) => {
+export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg = () => {}, width = imgStyle.width }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(folder, id, imgStyle.width));
+        setThumb(await getThumbnail(folder, id, width));
         onImg();
     }
     useEffect(() => { load(); }, []);
@@ -28,6 +29,6 @@ export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg = () => 
         <div style={coverStyle as any}>
             {zones && zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
                 <DiffZone {...{ folder, id, index, originalWidth, zone, status }} key={`zone-${id}-${index}`} />)}
-            <img style={imgStyle} alt="" src={thumb} />
+            <img style={{ width }} alt="" src={thumb} />
         </div>) : null;
 }

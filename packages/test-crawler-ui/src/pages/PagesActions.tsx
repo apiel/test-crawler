@@ -1,9 +1,9 @@
 import React from 'react';
 import { PngDiffData } from 'test-crawler-lib';
-import Icon from 'antd/lib/icon';
 
 import { PagesActionZone } from './PagesActionZone';
 import PagesActionPin from './PagesActionPin';
+import { PagesActionFullscreen } from './PagesActionFullscreen';
 
 interface Props {
     timestamp: string;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const PagesActions = ({ timestamp, id, png }: Props) => [
-    <Icon type="fullscreen" title="fullscreen" />,
+    ...[png && <PagesActionFullscreen png={png} id={id} timestamp={timestamp} />],
     <PagesActionZone type="check" timestamp={timestamp} id={id} status={'valid'} zones={png && png.diff ? png.diff.zones : []} />,
     <PagesActionZone type="warning" timestamp={timestamp} id={id} status={'report'} zones={png && png.diff ? png.diff.zones : []} />,
     <PagesActionPin timestamp={timestamp} id={id} />,

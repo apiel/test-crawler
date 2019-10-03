@@ -62,8 +62,8 @@ export function getCodes(): Promise<CodeInfoList> {
 
 export async function getThumbnail(folder: string, id: string, width: number = 300): Promise<string> {
     const image = await crawlerProvider.image(folder, id);
-    return `data:image/png;base64, `
-        + (await sharp(image).resize(width).toBuffer()).toString('base64');
+    const sharpImg = width ? sharp(image).resize(width) : sharp(image);
+    return `data:image/png;base64, ${(await sharpImg.toBuffer()).toString('base64')}`;
 }
 
 export function pin(timestamp: string, id: string): Promise<PageData> {
