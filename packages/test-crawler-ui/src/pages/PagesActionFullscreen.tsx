@@ -3,6 +3,7 @@ import Icon from 'antd/lib/icon';
 import Modal from 'antd/lib/modal';
 import { DiffImage } from '../diff/DiffImage';
 import { PngDiffData } from 'test-crawler-lib';
+import { Page } from './Page';
 
 const onClick = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => () => {
     setVisible(true);
@@ -15,18 +16,20 @@ const onCancel = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => 
 interface Props {
     timestamp: string;
     id: string;
+    url: string;
+    pageError: any;
     png: {
         width: number;
         diff?: PngDiffData;
     };
 }
 
-export const PagesActionFullscreen = ({ timestamp, id, png }: Props) => {
+export const PagesActionFullscreen = ({ timestamp, id, png, url, pageError }: Props) => {
     const [visible, setVisible] = React.useState<boolean>(false);
     return (
         <>
             <Modal
-                title="Basic Modal"
+                title=""
                 visible={visible}
                 onCancel={onCancel(setVisible)}
                 footer={null}
@@ -39,6 +42,7 @@ export const PagesActionFullscreen = ({ timestamp, id, png }: Props) => {
                     originalWidth={png.width}
                     width={png.width}
                 />
+                <Page url={url} pageError={pageError} png={png} />
             </Modal>
             <Icon type="fullscreen" title="fullscreen" onClick={onClick(setVisible)} />
         </>

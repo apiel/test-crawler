@@ -50,7 +50,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                                     originalWidth={png.width}
                                     onImg={onMasonryImg}
                                 />}
-                                actions={PagesActions({ id, timestamp, png })}
+                                actions={PagesActions({ id, timestamp, png, url, pageError })}
                             >
                                 <Page url={url} pageError={pageError} png={png} />
                             </Card>
