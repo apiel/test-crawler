@@ -4,7 +4,6 @@ import Modal from 'antd/lib/modal';
 import { DiffImage } from '../diff/DiffImage';
 import { PngDiffData } from 'test-crawler-lib';
 import { Page } from './Page';
-import { relative } from 'path';
 
 const onClick = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => () => {
     setVisible(true);

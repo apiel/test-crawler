@@ -2,13 +2,17 @@
   "name": "test-crawler",
   "version": "0.8.0",
   "bin": {
-    "test-crawler": "./test-crawler"
+    "test-crawler": "./test-crawler",
+    "test-crawler-cli": "bin/index.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/apiel/test-crawler"
   },
   "scripts": {
+    "cli-start": "PROCESS_TIMEOUT=30 test-crawler-cli",
+    "cli-dev": "ts-node cli-src/index.ts",
+    "cli-build": "rm -rf cli/ && tsc -p tsconfig-cli.json && chmod +x cli/index.js",
     "test-crawler": "test-crawler",
     "prepublishOnly": "cp ../../README.md . && yarn isomor:build && yarn serv:build && chmod +x test-crawler",
     "isomor:build": "isomor-transpiler",
@@ -20,7 +24,8 @@
     "prod": "yarn isomor:build && yarn build && yarn serv:prod",
     "dev": "run-screen 'yarn isomor:build:dev' 'yarn serv:dev' 'yarn start' 'tail -f test-crawler-cli.log'",
     "start": "BROWSER=none react-scripts start",
-    "build": "react-scripts build",
+    "app-build": "react-scripts build",
+    "build": "yarn app-build && yarn cli-build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
@@ -53,8 +58,15 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "sharp": "^0.23.0",
-    "test-crawler-cli": "^0.8.0",
     "test-crawler-lib": "^0.8.0",
+    "fs-extra": "^7.0.1",
+    "lockfile": "^1.0.4",
+    "logol": "^0.0.2",
+    "minimatch": "^3.0.4",
+    "pixdiff-zone": "^0.8.0",
+    "pngjs": "^3.3.3",
+    "puppeteer": "^1.11.0",
+    "ts-node": "^8.0.2",
     "typescript": "3.6.2"
   },
   "devDependencies": {
@@ -72,6 +84,12 @@
     "@types/react-dom": "16.9.0",
     "@types/react-router-dom": "^4.3.5",
     "@types/sharp": "^0.22.2",
+    "@types/fs-extra": "^5.0.5",
+    "@types/lockfile": "^1.0.1",
+    "@types/minimatch": "^3.0.3",
+    "@types/pngjs": "^3.3.2",
+    "@types/puppeteer": "^1.11.2",
+    "tslint": "^5.12.1",
     "babel-loader": "8.0.6",
     "nodemon": "^1.19.2",
     "run-screen": "^0.5.3"
