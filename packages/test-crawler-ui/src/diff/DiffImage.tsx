@@ -28,7 +28,7 @@ export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg = () => 
     return thumb ? (
         <div style={coverStyle as any}>
             {zones && zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
-                <DiffZone {...{ folder, id, index, originalWidth, zone, status }} key={`zone-${id}-${index}`} />)}
+                <DiffZone {...{ folder, id, index, originalWidth, zone, status, width }} key={`zone-${id}-${index}`} />)}
             <img style={{ width }} alt="" src={thumb} />
         </div>) : null;
 }

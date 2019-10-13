@@ -4,6 +4,7 @@ import Modal from 'antd/lib/modal';
 import { DiffImage } from '../diff/DiffImage';
 import { PngDiffData } from 'test-crawler-lib';
 import { Page } from './Page';
+import { relative } from 'path';
 
 const onClick = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => () => {
     setVisible(true);
@@ -35,14 +36,16 @@ export const PagesActionFullscreen = ({ timestamp, id, png, url, pageError }: Pr
                 footer={null}
                 width={png.width + 40}
             >
-                <DiffImage
-                    folder={timestamp}
-                    id={id}
-                    zones={png.diff && png.diff.zones}
-                    originalWidth={png.width}
-                    width={png.width}
-                />
-                <Page url={url} pageError={pageError} png={png} />
+                <div style={{position: "relative"}}>
+                    <DiffImage
+                        folder={timestamp}
+                        id={id}
+                        zones={png.diff && png.diff.zones}
+                        originalWidth={png.width}
+                        width={png.width}
+                    />
+                    <Page url={url} pageError={pageError} png={png} />
+                </div>
             </Modal>
             <Icon type="fullscreen" title="fullscreen" onClick={onClick(setVisible)} />
         </>

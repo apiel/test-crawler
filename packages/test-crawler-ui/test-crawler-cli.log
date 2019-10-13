@@ -17,14 +17,30 @@
 [1m[34m• info[39m[22m Crawl defb34c2e30004f1aedca21bbc2a2612.json
 [1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/
 [1m[34m• info[39m[22m Crawl f46d7343468a2d7cc89860a38eee2463.json
-[1m[34m• info[39m[22m Crawl c9ccfc8c7810f72add392ee25df09228.json
-[1m[34m• info[39m[22m Add urls found 7, add 3
 [1m[34m• info[39m[22m Crawl c1eee82a2c3dc4530f8560d0560583b7.json
+[1m[34m• info[39m[22m Add urls found 7, add 3
+[1m[34m• info[39m[22m Crawl c9ccfc8c7810f72add392ee25df09228.json
+[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff ratio: 0.0014555765595463139
+[1m[34m• info[39m[22m PNG zone [ { xMin: 371, xMax: 430, yMin: 809, yMax: 827 },
+  { xMin: 441, xMax: 539, yMin: 809, yMax: 827 },
+  { xMin: 260, xMax: 430, yMin: 810, yMax: 827 },
+  { xMin: 442, xMax: 539, yMin: 810, yMax: 827 },
+  { xMin: 295, xMax: 321, yMin: 1378, yMax: 1396 },
+  { xMin: 338, xMax: 525, yMin: 1378, yMax: 1396 },
+  { xMin: 295, xMax: 321, yMin: 1379, yMax: 1396 },
+  { xMin: 338, xMax: 525, yMin: 1379, yMax: 1396 } ]
+[1m[34m• info[39m[22m PNG defb34c2e30004f1aedca21bbc2a2612 http://localhost:3003/ diff file: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-ui/node_modules/test-crawler-lib/pages/crawl/1570987472/defb34c2e30004f1aedca21bbc2a2612.png.diff.png
 [1m[34m• info[39m[22m browser closed http://localhost:3003/
-[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/2
 [1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/0
-[1m[34m• info[39m[22m browser closed http://localhost:3003/item/2
-[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/1
+[1m[34m• info[39m[22m PNG f46d7343468a2d7cc89860a38eee2463 http://localhost:3003/item/0 diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
 [1m[34m• info[39m[22m browser closed http://localhost:3003/item/0
+[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/2
+[1m[34m• info[39m[22m PNG c1eee82a2c3dc4530f8560d0560583b7 http://localhost:3003/item/2 diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
+[1m[34m• info[39m[22m 0 code(s) to inject for http://localhost:3003/item/1
+[1m[34m• info[39m[22m browser closed http://localhost:3003/item/2
+[1m[34m• info[39m[22m PNG c9ccfc8c7810f72add392ee25df09228 http://localhost:3003/item/1 diff ratio: 0
+[1m[34m• info[39m[22m PNG zone []
 [1m[34m• info[39m[22m browser closed http://localhost:3003/item/1
 [1m[34m• info[39m[22m Process timeout, exit 60 sec inactivity

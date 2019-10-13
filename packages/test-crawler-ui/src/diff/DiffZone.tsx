@@ -41,16 +41,17 @@ interface Props {
     originalWidth: number;
     index: number;
     status: string;
+    width: number;
 };
 
-export const DiffZone = ({ folder, id, index, originalWidth, zone, status }: Props) => {
+export const DiffZone = ({ folder, id, index, originalWidth, zone, status, width }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail('base', id, imgStyle.width));
+        setThumb(await getThumbnail('base', id, width));
     }
     useEffect(() => { load(); }, []);
     const [hover, setHover] = useState(false);
-    const ratio = originalWidth / imgStyle.width;
+    const ratio = originalWidth / width;
     return (
         <Popover key={`${id}-${index}`} content={(
             <DiffImageButtons index={index} timestamp={folder} id={id} />
