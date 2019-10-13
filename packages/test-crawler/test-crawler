@@ -1,0 +1,11 @@
+#!/bin/bash
+
+resolve() {
+    echo "$( cd $1 >/dev/null 2>&1 && pwd )"
+}
+
+DIR="$( resolve "$( dirname "${BASH_SOURCE[0]}" )" )"
+DIST_SERVER_FOLDER="$( resolve ${DIR}/../test-crawler/dist-server )"
+STATIC_FOLDER="$( resolve ${DIR}/../test-crawler/build )"
+
+DIST_SERVER_FOLDER=${DIST_SERVER_FOLDER} STATIC_FOLDER=${STATIC_FOLDER} isomor-server

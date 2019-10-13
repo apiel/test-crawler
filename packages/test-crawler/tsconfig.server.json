@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "types": [
+      "node"
+    ],
+    "module": "commonjs",
+    "declaration": false,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": false,
+    "outDir": "./dist-server",
+    "rootDir": "./src-isomor",
+    "baseUrl": "./"
+  },
+  "exclude": [
+    "node_modules",
+    "src",
+    "src-isomor/!**/server"
+  ],
+  "include": [
+    "src-isomor/**/server"
+  ]
+}
