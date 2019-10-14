@@ -1,1 +1,29 @@
-/bin/sh: 1: test-crawler-cli: not found
+
+> test-crawler@0.8.0 cli /home/alex/dev/node/pkg/test-crawler/packages/test-crawler
+> node cli/index.js
+
+internal/modules/cjs/loader.js:615
+    throw err;
+    ^
+
+Error: Cannot find module 'test-crawler-lib'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:613:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:539:25)
+    at Module.require (internal/modules/cjs/loader.js:667:17)
+    at require (internal/modules/cjs/helpers.js:20:18)
+    at Object.<anonymous> (/home/alex/dev/node/pkg/test-crawler/packages/test-crawler/cli/index.js:16:28)
+    at Module._compile (internal/modules/cjs/loader.js:738:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:749:10)
+    at Module.load (internal/modules/cjs/loader.js:630:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:570:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:562:3)
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! test-crawler@0.8.0 cli: `node cli/index.js`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the test-crawler@0.8.0 cli script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/alex/.npm/_logs/2019-10-14T17_36_11_750Z-debug.log

@@ -10,10 +10,10 @@
       "experimentalDecorators": true,
       "target": "es6",
       "sourceMap": true,
-      "outDir": "./cli",
+      "outDir": "./bin",
       "baseUrl": "./"
     },
     "include": [
-      "cli-src"
+      "cli"
     ]
   }
