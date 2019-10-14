@@ -1,7 +1,22 @@
-import { Zone } from 'pixdiff-zone';
-import { Viewport } from 'puppeteer';
+// import { Zone } from 'pixdiff-zone';
+// import { Viewport } from 'puppeteer';
+// export { Viewport, Zone };
 
-export { Viewport, Zone };
+export interface Zone {
+    xMin: number;
+    yMin: number;
+    xMax: number;
+    yMax: number;
+}
+
+export interface Viewport {
+    width: number;
+    height: number;
+    deviceScaleFactor?: number;
+    isMobile?: boolean;
+    hasTouch?: boolean;
+    isLandscape?: boolean;
+}
 
 export interface CodeInfoList {
     [id: string]: CodeInfo;
