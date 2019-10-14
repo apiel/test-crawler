@@ -10,10 +10,10 @@
     "url": "https://github.com/apiel/test-crawler"
   },
   "scripts": {
-    "cli": "node bin/cli/index.js",
+    "cli": "node bin/index.js",
     "cli-start": "PROCESS_TIMEOUT=30 test-crawler-cli",
     "cli-dev": "ts-node --project tsconfig-cli.json cli/index.ts",
-    "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && chmod +x bin/cli/index.js",
+    "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && rm -rf bin/src-isomor && mv bin/cli/* bin/. && chmod +x bin/index.js",
     "test-crawler": "test-crawler",
     "prepublishOnly": "cp ../../README.md . && yarn isomor:build && yarn serv:build && chmod +x test-crawler",
     "isomor:build": "NO_VALIDATION=true isomor-transpiler",

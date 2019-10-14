@@ -1,11 +1,12 @@
 import { info } from 'logol';
-import { getFilePath, FilePath } from '../../dist-server/server/lib/utils';
+import { getFilePath } from '../../dist-server/server/lib/utils';
 import { BASE_FOLDER } from '../../dist-server/server/lib/config';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
 import { PageData, Crawler } from '../../src-isomor/server/typing';
+import { FilePath } from '../../src-isomor/server/lib/utils';
 import { CrawlerProvider } from '../../dist-server/server/lib';
 
 async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
