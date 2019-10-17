@@ -19,6 +19,7 @@
     "isomor:build": "NO_VALIDATION=true isomor-transpiler",
     "isomor:build:dev": "NO_VALIDATION=true WATCH=true isomor-transpiler",
     "isomor:server": "node ../isomor-server/dist/bin/server.js",
+    "postinstall": "mkdir pages && chmod 777 pages",
     "serv:build": "rimraf ./dist-server && tsc -p tsconfig.server.json",
     "serv": "yarn serv:build && isomor-server",
     "serv:dev": "nodemon --watch 'src-isomor/**/server/**/*' -e ts,tsx --exec 'yarn serv'",
