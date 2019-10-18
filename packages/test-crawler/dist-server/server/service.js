@@ -17,12 +17,6 @@ function getSettings() {
     });
 }
 exports.getSettings = getSettings;
-function getLogs() {
-    return __awaiter(this, void 0, void 0, function* () {
-        return (yield crawlerProvider.getLogs()).toString();
-    });
-}
-exports.getLogs = getLogs;
 function getCrawlers() {
     return crawlerProvider.getAllCrawlers();
 }

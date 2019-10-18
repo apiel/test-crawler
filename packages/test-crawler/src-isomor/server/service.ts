@@ -20,10 +20,6 @@ export async function getSettings() {
     return crawlerProvider.getSettings();
 }
 
-export async function getLogs(): Promise<string> {
-    return (await crawlerProvider.getLogs()).toString();
-}
-
 export function getCrawlers(): Promise<Crawler[]> {
     return crawlerProvider.getAllCrawlers();
 }

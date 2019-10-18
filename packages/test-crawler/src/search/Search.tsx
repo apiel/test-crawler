@@ -1,11 +1,14 @@
 import React from 'react';
-import Input from 'antd/lib/input';
 import { PageData } from '../server/typing';
 
-import { onSearch, searchStyle } from './search';
-import { SearchFilter, Filters } from './SearchFilter';
+import { onSearch, searchStyle, onFilter } from './search';
+import Select from 'antd/lib/select';
 
-const { Search: SearchInput } = Input;
+const { Option } = Select;
+
+export interface Filters {
+    [key: string]: string;
+}
 
 interface Props {
     withFilters?: Filters;
@@ -14,22 +17,27 @@ interface Props {
 }
 export const Search = ({ children, response, withFilters }: Props) => {
     const [pages, setPages] = React.useState<PageData[]>();
+    const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
+    const [pagesFiltered, setPagesFiltered] = React.useState<PageData[]>();
     React.useEffect(() => {
         setPages(response);
+        onFilter(setPagesFiltered, response, setSelectedFilters)(selectedFilters);
     }, [response]);
 
     return (
         <>
-            <SearchInput
-                placeholder="Search"
-                onChange={onSearch(setPages, response)}
+            <Select
+                mode="tags"
+                onChange={onFilter(setPagesFiltered, pages, setSelectedFilters)}
+                tokenSeparators={[',']}
                 style={searchStyle}
-                allowClear
-            />
-            {withFilters
-                ? <SearchFilter children={children} pages={pages!} filters={withFilters} />
-                : children(pages)
-            }
+                placeholder="Search"
+                filterOption={false}
+                onSearch={onSearch(setPagesFiltered, pages, selectedFilters)}
+            >
+                { !!withFilters && Object.keys(withFilters).map(key => <Option key={key}>{withFilters[key]}</Option>) }
+            </Select>
+            {children(pagesFiltered)}
         </>
     );
 }

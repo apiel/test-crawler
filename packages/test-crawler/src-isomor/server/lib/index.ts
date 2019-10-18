@@ -37,19 +37,10 @@ export class CrawlerProvider {
         }
     }
 
-    private getLogFile() {
-        return join(process.cwd(), 'test-crawler-cli.log');
-    }
-
     getSettings() {
         return {
             dir: __dirname,
-            logFile: this.getLogFile(),
         };
-    }
-
-    getLogs() {
-        return readFile(this.getLogFile());
     }
 
     async setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {

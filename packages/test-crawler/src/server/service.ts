@@ -2,9 +2,6 @@ import { isomorRemote } from "isomor";
 export function getSettings(...args: any) {
   return isomorRemote("server-service", "test-crawler", "getSettings", args);
 }
-export function getLogs(...args: any) {
-  return isomorRemote("server-service", "test-crawler", "getLogs", args);
-}
 export function getCrawlers(...args: any) {
   return isomorRemote("server-service", "test-crawler", "getCrawlers", args);
 }

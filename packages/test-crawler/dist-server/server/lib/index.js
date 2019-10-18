@@ -44,17 +44,10 @@ class CrawlerProvider {
             }
         });
     }
-    getLogFile() {
-        return path_1.join(process.cwd(), 'test-crawler-cli.log');
-    }
     getSettings() {
         return {
             dir: __dirname,
-            logFile: this.getLogFile(),
         };
-    }
-    getLogs() {
-        return fs_extra_1.readFile(this.getLogFile());
     }
     setZoneStatus(timestamp, id, index, status) {
         return __awaiter(this, void 0, void 0, function* () {
