@@ -14,19 +14,26 @@ const lockfile_1 = require("lockfile");
 const logol_1 = require("logol");
 const path_1 = require("path");
 const lib_1 = require("../dist-server/server/lib");
+const crawl_1 = require("../dist-server/server/lib/crawl");
 const configs = require("../dist-server/server/lib/config");
-const crawl_1 = require("./crawl");
 const lockFile = path_1.join(__dirname, '../../test-crawler.lock');
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
-        const [, , presetFile] = process.argv;
-        if (presetFile) {
-            const crawlerProvider = new lib_1.CrawlerProvider();
-            const crawlerInput = yield crawlerProvider.startCrawlerWithPresetFile(presetFile);
-            logol_1.info('Start with preset', crawlerInput);
+        const [, , option, value] = process.argv;
+        let pagesFolder;
+        if (option && value) {
+            if (option === '--preset') {
+                const crawlerProvider = new lib_1.CrawlerProvider();
+                const crawlerInput = yield crawlerProvider.startCrawlerWithPresetFile(value);
+                logol_1.info('Start with preset', crawlerInput);
+            }
+            else if (option === '--folder') {
+                pagesFolder = value;
+                logol_1.info('Start to crawl specific queue', pagesFolder);
+            }
         }
         logol_1.info('Config', configs);
-        crawl_1.crawl();
+        crawl_1.crawl(pagesFolder);
     });
 }
 if (!lockfile_1.checkSync(lockFile)) {
@@ -36,4 +43,4 @@ if (!lockfile_1.checkSync(lockFile)) {
 else {
     logol_1.info('Test-crawler already running', lockFile);
 }
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=cli.js.map

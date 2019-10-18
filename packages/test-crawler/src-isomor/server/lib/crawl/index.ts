@@ -12,17 +12,17 @@ import {
     BASE_FOLDER,
     PROCESS_TIMEOUT,
     CODE_FOLDER,
-} from '../../dist-server/server/lib/config';
+} from '../config';
 import {
     getFilePath,
     savePageInfo,
     addToQueue,
     getQueueFolder,
     getCodeList,
-} from '../../dist-server/server/lib/utils';
-import { CrawlerMethod } from '../../dist-server/server/lib';
+} from '../utils';
+import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler } from '../../src-isomor/server/typing';
+import { Crawler } from '../../typing';
 import { isArray } from 'util';
 
 interface ResultQueue {
@@ -174,36 +174,55 @@ async function addUrls(urls: string[], viewport: Viewport, distFolder: string, l
     }
 }
 
-async function pickFromQueues() {
-    const pagesFolders = await readdir(CRAWL_FOLDER);
-    for (const pagesFolder of pagesFolders) {
-        const distFolder = join(CRAWL_FOLDER, pagesFolder);
-        const queueFolder = getQueueFolder(distFolder);
-        if (await pathExists(queueFolder)) {
-            const [file] = await readdir(queueFolder);
-            if (file) {
-                info('Crawl', file);
-                const queueFile = join(queueFolder, file);
-                const { id, url } = await readJSON(queueFile);
-                const filePath = getFilePath(id, distFolder);
-                await move(queueFile, filePath('json'));
-                return { id, url, distFolder };
-            }
+interface ToCrawl {
+    id: any;
+    url: any;
+    distFolder: string;
+};
+
+async function pickFromQueue(pagesFolder: string): Promise<ToCrawl> {
+    const distFolder = join(CRAWL_FOLDER, pagesFolder);
+    const queueFolder = getQueueFolder(distFolder);
+    if (await pathExists(queueFolder)) {
+        const [file] = await readdir(queueFolder);
+        if (file) {
+            info('Crawl', file);
+            const queueFile = join(queueFolder, file);
+            const { id, url } = await readJSON(queueFile);
+            const filePath = getFilePath(id, distFolder);
+            await move(queueFile, filePath('json'));
+            return { id, url, distFolder };
         }
     }
 }
 
-async function consumeQueues() {
+async function pickFromQueues(): Promise<ToCrawl> {
+    const pagesFolders = await readdir(CRAWL_FOLDER);
+    for (const pagesFolder of pagesFolders) {
+        const toCrawl = await pickFromQueue(pagesFolder);
+        if (toCrawl) {
+            return toCrawl;
+        }
+    }
+}
+
+async function consumeQueues(pagesFolder?: string) {
     if (consumerRunning < CONSUMER_COUNT) {
-        const toCrawl = await pickFromQueues();
+        let toCrawl: ToCrawl;
+        if (pagesFolder) {
+            toCrawl = await pickFromQueue(pagesFolder);
+        } else {
+            toCrawl = await pickFromQueues();
+        }
         if (toCrawl) {
             const { id, url, distFolder } = toCrawl;
             loadPage(id, url, distFolder);
+            consumeQueues();
+            return;
         }
-        consumeQueues();
-    } else {
-        setTimeout(consumeQueues, 200);
     }
+    setTimeout(consumeQueues, 500);
+    // process.stdout.write('.');
 }
 
 let processTimeoutTimer: NodeJS.Timeout;
@@ -253,9 +272,9 @@ async function prepareFolders() {
     }
 }
 
-export async function crawl() {
+export async function crawl(pagesFolder?: string) {
     await prepareFolders();
     consumeResults();
-    consumeQueues();
+    consumeQueues(pagesFolder);
     processTimeout();
 }

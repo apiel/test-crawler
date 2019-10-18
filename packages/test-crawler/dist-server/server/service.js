@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const sharp = require("sharp");
 const lib_1 = require("./lib");
 const crawlerProvider = new lib_1.CrawlerProvider();
 function getSettings() {
@@ -67,8 +66,7 @@ exports.getCodes = getCodes;
 function getThumbnail(folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const image = yield crawlerProvider.image(folder, id);
-        const sharpImg = width ? sharp(image).resize(width) : sharp(image);
-        return `data:image/png;base64, ${(yield sharpImg.toBuffer()).toString('base64')}`;
+        return `data:image/png;base64, ${(image).toString('base64')}`;
     });
 }
 exports.getThumbnail = getThumbnail;

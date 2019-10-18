@@ -21,6 +21,7 @@ import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath, getCodeL
 
 import * as config from './config';
 import { Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfoList } from '../typing';
+import { crawl } from './crawl';
 
 export const getConfig = () => config;
 export const CrawlerMethod = {
@@ -242,7 +243,8 @@ export class CrawlerProvider {
 
         if (runProcess) {
             // exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
-            exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
+            // exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
+            crawl(timestamp.toString());
         }
 
         return {

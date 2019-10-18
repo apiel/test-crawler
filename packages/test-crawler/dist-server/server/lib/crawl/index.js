@@ -14,9 +14,9 @@ const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const minimatch = require("minimatch");
-const config_1 = require("../../dist-server/server/lib/config");
-const utils_1 = require("../../dist-server/server/lib/utils");
-const lib_1 = require("../../dist-server/server/lib");
+const config_1 = require("../config");
+const utils_1 = require("../utils");
+const index_1 = require("../index");
 const diff_1 = require("../diff");
 const util_1 = require("util");
 let totalDiff = 0;
@@ -25,7 +25,7 @@ const resultsQueue = [];
 function getLinks(page, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         const { url: baseUrl, method } = crawler;
-        if (method === lib_1.CrawlerMethod.URLs) {
+        if (method === index_1.CrawlerMethod.URLs) {
             return [];
         }
         const hrefs = yield page.$$eval('a', as => as.map(a => a.href));
@@ -64,7 +64,7 @@ function loadPage(id, url, distFolder, retry = 0) {
             yield page.screenshot({ path: filePath('png'), fullPage: true });
             const png = { width: viewport.width };
             yield utils_1.savePageInfo(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr });
-            if (method !== lib_1.CrawlerMethod.URLs) {
+            if (method !== index_1.CrawlerMethod.URLs) {
                 const urls = util_1.isArray(links) ? links : yield getLinks(page, crawler);
                 yield addUrls(urls, viewport, distFolder, limit);
             }
@@ -132,39 +132,53 @@ function addUrls(urls, viewport, distFolder, limit) {
         }
     });
 }
-function pickFromQueues() {
+;
+function pickFromQueue(pagesFolder) {
     return __awaiter(this, void 0, void 0, function* () {
-        const pagesFolders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
-        for (const pagesFolder of pagesFolders) {
-            const distFolder = path_1.join(config_1.CRAWL_FOLDER, pagesFolder);
-            const queueFolder = utils_1.getQueueFolder(distFolder);
-            if (yield fs_extra_1.pathExists(queueFolder)) {
-                const [file] = yield fs_extra_1.readdir(queueFolder);
-                if (file) {
-                    logol_1.info('Crawl', file);
-                    const queueFile = path_1.join(queueFolder, file);
-                    const { id, url } = yield fs_extra_1.readJSON(queueFile);
-                    const filePath = utils_1.getFilePath(id, distFolder);
-                    yield fs_extra_1.move(queueFile, filePath('json'));
-                    return { id, url, distFolder };
-                }
+        const distFolder = path_1.join(config_1.CRAWL_FOLDER, pagesFolder);
+        const queueFolder = utils_1.getQueueFolder(distFolder);
+        if (yield fs_extra_1.pathExists(queueFolder)) {
+            const [file] = yield fs_extra_1.readdir(queueFolder);
+            if (file) {
+                logol_1.info('Crawl', file);
+                const queueFile = path_1.join(queueFolder, file);
+                const { id, url } = yield fs_extra_1.readJSON(queueFile);
+                const filePath = utils_1.getFilePath(id, distFolder);
+                yield fs_extra_1.move(queueFile, filePath('json'));
+                return { id, url, distFolder };
             }
         }
     });
 }
-function consumeQueues() {
+function pickFromQueues() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const pagesFolders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
+        for (const pagesFolder of pagesFolders) {
+            const toCrawl = yield pickFromQueue(pagesFolder);
+            if (toCrawl) {
+                return toCrawl;
+            }
+        }
+    });
+}
+function consumeQueues(pagesFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         if (consumerRunning < config_1.CONSUMER_COUNT) {
-            const toCrawl = yield pickFromQueues();
+            let toCrawl;
+            if (pagesFolder) {
+                toCrawl = yield pickFromQueue(pagesFolder);
+            }
+            else {
+                toCrawl = yield pickFromQueues();
+            }
             if (toCrawl) {
                 const { id, url, distFolder } = toCrawl;
                 loadPage(id, url, distFolder);
+                consumeQueues();
+                return;
             }
-            consumeQueues();
         }
-        else {
-            setTimeout(consumeQueues, 200);
-        }
+        setTimeout(consumeQueues, 500);
     });
 }
 let processTimeoutTimer;
@@ -214,13 +228,12 @@ function prepareFolders() {
         }
     });
 }
-function crawl() {
+function crawl(pagesFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
         consumeResults();
-        consumeQueues();
+        consumeQueues(pagesFolder);
         processTimeout();
     });
 }
 exports.crawl = crawl;
-//# sourceMappingURL=index.js.map

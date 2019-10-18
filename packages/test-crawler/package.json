@@ -3,17 +3,17 @@
   "version": "0.8.4",
   "bin": {
     "test-crawler": "./test-crawler.js",
-    "test-crawler-cli": "bin/index.js"
+    "test-crawler-cli": "bin/cli.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/apiel/test-crawler"
   },
   "scripts": {
-    "cli": "node bin/index.js",
+    "cli": "node bin/cli.js",
     "cli-start": "PROCESS_TIMEOUT=30 test-crawler-cli",
-    "cli-dev": "ts-node --project tsconfig-cli.json cli/index.ts",
-    "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && rm -rf bin/src-isomor && mv bin/cli/* bin/. && chmod +x bin/index.js",
+    "cli-dev": "ts-node --project tsconfig-cli.json cli/cli.ts",
+    "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && chmod +x bin/cli.js",
     "test-crawler": "test-crawler",
     "prepublishOnly": "cp ../../README.md . && yarn isomor:build && yarn serv:build && chmod +x test-crawler.js",
     "isomor:build": "NO_VALIDATION=true isomor-transpiler",

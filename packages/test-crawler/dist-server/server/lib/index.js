@@ -25,11 +25,11 @@ const path_1 = require("path");
 const rimraf = require("rimraf");
 const md5 = require("md5");
 const axios_1 = require("axios");
-const child_process_1 = require("child_process");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
 const config = require("./config");
+const crawl_1 = require("./crawl");
 exports.getConfig = () => config;
 exports.CrawlerMethod = {
     URLs: 'urls',
@@ -225,7 +225,7 @@ class CrawlerProvider {
                 yield this.startSpiderBotCrawling(crawlerInput, distFolder);
             }
             if (runProcess) {
-                child_process_1.exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
+                crawl_1.crawl(timestamp.toString());
             }
             return {
                 crawler,

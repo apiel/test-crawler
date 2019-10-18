@@ -1,5 +1,4 @@
 import { isomorRemote } from "isomor";
-import * as sharp from 'sharp';
 export function getSettings(...args: any) {
   return isomorRemote("server-service", "test-crawler", "getSettings", args);
 }

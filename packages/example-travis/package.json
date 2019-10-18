@@ -8,7 +8,7 @@
     "run-in-docker": "docker build . -t test-crawler-example-travis && docker rmi test-crawler-example-travis",
     "start": "http-server",
     "test:crawler": "PAGES_FOLDER=./test-crawler test-crawler",
-    "test:crawler:cli": "PROCESS_TIMEOUT=10 PAGES_FOLDER=./test-crawler test-crawler-cli test-crawler.preset.json"
+    "test:crawler:cli": "PROCESS_TIMEOUT=10 PAGES_FOLDER=./test-crawler test-crawler-cli --preset test-crawler.preset.json"
   },
   "dependencies": {
     "http-server": "^0.11.1",

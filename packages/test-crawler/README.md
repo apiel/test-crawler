@@ -131,7 +131,7 @@ You can find this code by clicking the button `Code snippet` of the code editor.
 You can run test directly from the cli. This can be useful for continuous integration test.
 
 ```bash
-test-crawler-cli ./preset.json
+test-crawler-cli  --preset ./preset.json
 ```
 
 Preset file should look like:

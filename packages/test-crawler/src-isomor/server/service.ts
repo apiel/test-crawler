@@ -1,4 +1,4 @@
-import * as sharp from 'sharp';
+// import * as sharp from 'sharp';
 
 import {
     CrawlerProvider,
@@ -66,8 +66,9 @@ export function getCodes(): Promise<CodeInfoList> {
 
 export async function getThumbnail(folder: string, id: string, width: number = 300): Promise<string> {
     const image = await crawlerProvider.image(folder, id);
-    const sharpImg = width ? sharp(image).resize(width) : sharp(image);
-    return `data:image/png;base64, ${(await sharpImg.toBuffer()).toString('base64')}`;
+    // const sharpImg = width ? sharp(image).resize(width) : sharp(image);
+    // return `data:image/png;base64, ${(await image.toBuffer()).toString('base64')}`;
+    return `data:image/png;base64, ${(image).toString('base64')}`;
 }
 
 export function pin(timestamp: string, id: string): Promise<PageData> {
