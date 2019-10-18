@@ -69,11 +69,15 @@ const filterPages = (
                 pages = searchPages(pages, searchValue);
             }
             setPages(pages.filter(page => {
+                let res = true
                 if (filters.includes('with-diff')) {
                     const pixelDiffRatio = get(page, 'png.diff.pixelDiffRatio');
-                    return pixelDiffRatio > 0;
+                    res = res && pixelDiffRatio > 0;
                 }
-                return true;
+                if (filters.includes('new')) {
+                    res = res && !!page.png && !page.png.diff
+                }
+                return res;
             }));
         }
     }
@@ -81,4 +85,5 @@ const filterPages = (
 
 export const availableFilters = {
     'with-diff': 'with diff',
+    'new': 'new',
 }
