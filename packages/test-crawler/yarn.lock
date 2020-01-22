@@ -7485,7 +7485,7 @@ isomor-transpiler@^1.6.3:
     ts-node "^8.3.0"
     typescript "^3.5.3"
 
-isomor@^1.6.3:
+isomor@1.6.3, isomor@^1.6.3:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/isomor/-/isomor-1.6.3.tgz#039d479b5247970ddc32ac9771ccc9c01e8fb11f"
   dependencies:
@@ -8249,7 +8249,7 @@ lodash._getnative@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/lodash._getnative/-/lodash._getnative-3.9.1.tgz#570bc7dede46d61cdcde687d65d3eecbaa3aaff5"
 
-lodash._reinterpolate@~3.0.0:
+lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
 
@@ -8290,17 +8290,17 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
 
 lodash.template@^4.2.4, lodash.template@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/lodash.template/-/lodash.template-4.4.0.tgz#e73a0385c8355591746e020b99679c690e68fba0"
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.template/-/lodash.template-4.5.0.tgz#f976195cf3f347d0d5f52483569fe8031ccce8ab"
   dependencies:
-    lodash._reinterpolate "~3.0.0"
+    lodash._reinterpolate "^3.0.0"
     lodash.templatesettings "^4.0.0"
 
 lodash.templatesettings@^4.0.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/lodash.templatesettings/-/lodash.templatesettings-4.1.0.tgz#2b4d4e95ba440d915ff08bc899e4553666713316"
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/lodash.templatesettings/-/lodash.templatesettings-4.2.0.tgz#e481310f049d3cf6d47e912ad09313b154f0fb33"
   dependencies:
-    lodash._reinterpolate "~3.0.0"
+    lodash._reinterpolate "^3.0.0"
 
 lodash.throttle@^4.0.0, lodash.throttle@^4.1.1:
   version "4.1.1"
@@ -9521,9 +9521,9 @@ pirates@^4.0.1:
   dependencies:
     node-modules-regexp "^1.0.0"
 
-pixdiff-zone@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.8.0.tgz#82ec3fc908b3b54bd6aa6ef095c1af9375bfd628"
+pixdiff-zone@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-0.10.0.tgz#5b859f1ef978ec0be40230b165813420b0a5d6c0"
   dependencies:
     typescript "^3.2.4"
 
