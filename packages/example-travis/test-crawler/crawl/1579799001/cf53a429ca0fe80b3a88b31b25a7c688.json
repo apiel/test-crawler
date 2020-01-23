@@ -1,0 +1,71 @@
+{
+    "url": "http://localhost:8080/",
+    "id": "cf53a429ca0fe80b3a88b31b25a7c688",
+    "performance": {
+        "timeOrigin": 1579799002177.4329,
+        "timing": {
+            "navigationStart": 1579799002177,
+            "unloadEventStart": 0,
+            "unloadEventEnd": 0,
+            "redirectStart": 0,
+            "redirectEnd": 0,
+            "fetchStart": 1579799002177,
+            "domainLookupStart": 1579799002245,
+            "domainLookupEnd": 1579799002245,
+            "connectStart": 1579799002245,
+            "connectEnd": 1579799002245,
+            "secureConnectionStart": 0,
+            "requestStart": 1579799002245,
+            "responseStart": 1579799002247,
+            "responseEnd": 1579799002247,
+            "domLoading": 1579799002251,
+            "domInteractive": 1579799002254,
+            "domContentLoadedEventStart": 1579799002254,
+            "domContentLoadedEventEnd": 1579799002254,
+            "domComplete": 1579799002254,
+            "loadEventStart": 1579799002254,
+            "loadEventEnd": 1579799002254
+        },
+        "navigation": {
+            "type": 0,
+            "redirectCount": 0
+        }
+    },
+    "metrics": {
+        "Timestamp": 9206.708924,
+        "Documents": 3,
+        "Frames": 1,
+        "JSEventListeners": 0,
+        "Nodes": 20,
+        "LayoutCount": 1,
+        "RecalcStyleCount": 1,
+        "LayoutDuration": 0.011616,
+        "RecalcStyleDuration": 0.000164,
+        "ScriptDuration": 0.000012,
+        "TaskDuration": 0.027861,
+        "JSHeapUsedSize": 2199528,
+        "JSHeapTotalSize": 3616768
+    },
+    "png": {
+        "width": 800,
+        "diff": {
+            "pixelDiffRatio": 0.0000020833333333333334,
+            "zones": [
+                {
+                    "zone": {
+                        "xMin": 96,
+                        "xMax": 96,
+                        "yMin": 24,
+                        "yMax": 24
+                    },
+                    "status": "diff"
+                }
+            ]
+        }
+    },
+    "viewport": {
+        "width": 800,
+        "height": 600
+    },
+    "baseUrl": "http://localhost:8080/"
+}

@@ -5,12 +5,13 @@
         "width": 800,
         "height": 600
     },
-    "timestamp": 1556373839,
-    "id": "b69a902a81084d3135a078337016f25e",
-    "diffZoneCount": 0,
+    "timestamp": 1579798963,
+    "id": "eaca4ee40ff2fc82ef4dd6dacf2ed647",
+    "diffZoneCount": 1,
+    "errorCount": 0,
     "status": "review",
     "inQueue": 0,
     "urlsCount": 1,
-    "startAt": 1556373839678,
-    "lastUpdate": 1556373842684
+    "startAt": 1579798963577,
+    "lastUpdate": 1579798965587
 }

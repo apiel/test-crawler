@@ -18,7 +18,7 @@ function pixdiff(img1, img2, output, options = {}) {
     }
     const pixelDiff = [];
     const { width, height } = img1;
-    const { threshold, includeAntiAliasing, drawPixelDiff, drawZonesDiff, zoneColor, antiAliasingColor, pixelDiffColor, } = Object.assign({}, defaultOptions, options);
+    const { threshold, includeAntiAliasing, drawPixelDiff, drawZonesDiff, zoneColor, antiAliasingColor, pixelDiffColor, } = Object.assign(Object.assign({}, defaultOptions), options);
     const maxDelta = 35215 * threshold * threshold;
     let diff = 0;
     for (let y = 0; y < height; y++) {
