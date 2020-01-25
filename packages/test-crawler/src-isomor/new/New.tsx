@@ -16,9 +16,7 @@ import { useAsyncCache, Call } from 'react-async-cache';
 import { getResultsRoute } from '../routes';
 import { saveAndStart, getCrawlers } from '../server/service';
 import { Info } from '../common/Info';
-import { Preset } from './Preset';
 import { Viewport } from './Viewport';
-import { usePreset } from './usePreset';
 import { History } from 'history';
 
 const { Paragraph, Text } = Typography;
@@ -26,13 +24,6 @@ const { Paragraph, Text } = Typography;
 const inlineStyle = {
     marginRight: 10,
     display: 'inline-block',
-}
-
-const toolbarStyle = {
-    backgroundColor: '#EEE',
-    padding: '0px 10px',
-    borderRadius: 5,
-    marginBottom: 12,
 }
 
 const radioGroupdStyle = {
@@ -67,23 +58,19 @@ const handleSubmit = (history: History<any>, validateFields: any, call: Call) =>
 
 type Props = FormComponentProps & RouteComponentProps;
 const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields, getFieldValue } }: Props) => {
-    const { preset, setPreset } = usePreset(search);
     const { call } = useAsyncCache();
 
     return (
         <Form onSubmit={handleSubmit(history, validateFields, call)}>
-            <Form.Item style={toolbarStyle}>
-                <Preset setPreset={setPreset} setDefault={!search} />
-            </Form.Item>
             <Form.Item>
                 {getFieldDecorator('url', {
                     rules: [{ required: true, message: 'Please input an URL to crawl!' }],
-                    initialValue: preset.crawlerInput.url,
+                    // initialValue: preset.crawlerInput.url,
                 })(
                     <Input addonBefore="URL" addonAfter={
                         <Viewport
                             getFieldDecorator={getFieldDecorator}
-                            initialValue={JSON.stringify(preset.crawlerInput.viewport)}
+                            // initialValue={JSON.stringify(preset.crawlerInput.viewport)}
                         />
                     } />
                 )}
@@ -91,7 +78,7 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
             <Form.Item>
                 <Form.Item style={inlineStyle}>
                     {getFieldDecorator('method', {
-                        initialValue: preset.crawlerInput.method,
+                        // initialValue: preset.crawlerInput.method,
                     })(
                         <Radio.Group size="small" style={radioGroupdStyle}>
                             <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>
@@ -101,7 +88,7 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                 </Form.Item>
                 {getFieldValue('method') === 'spiderbot' && <Form.Item style={inlineStyle}>
                     Limit {getFieldDecorator('limit', {
-                        initialValue: preset.crawlerInput.limit,
+                        // initialValue: preset.crawlerInput.limit,
                     })(
                         <InputNumber min={0} size="small" />
                     )}
@@ -136,7 +123,7 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
             <Form.Item>
                 {getFieldDecorator('autopin', {
                     valuePropName: 'checked',
-                    initialValue: preset.crawlerInput.autopin,
+                    // initialValue: preset.crawlerInput.autopin,
                 })(
                     <Checkbox>Automatically pin new page founds.</Checkbox>
                 )}
@@ -153,7 +140,7 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                 </Form.Item>
                 <Form.Item style={inlineStyle}>
                     {getFieldDecorator('saveAs', {
-                        initialValue: preset.name,
+                        // initialValue: preset.name,
                     })(
                         <Input addonBefore="Save as" placeholder="Leave empty to don't save" />
                     )}

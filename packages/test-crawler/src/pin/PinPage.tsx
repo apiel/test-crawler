@@ -27,7 +27,7 @@ export const PinPage = ({ id, url, viewport, onImg, png }: Props) => (
         style={cardStyle}
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} />}
         actions={[
-            <Icon type="delete" title={`Delete pin`} />,
+            <Icon type="delete" title={`Delete pin`} onClick={() => alert('Not yet implemented')} />,
             (<Link to={{
                 pathname: getCodeRoute(id),
                 state: { pattern: url }

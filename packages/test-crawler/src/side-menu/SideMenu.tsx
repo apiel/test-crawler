@@ -21,7 +21,7 @@ export const SideMenu = () => {
             <Menu theme="dark" mode="inline">
                 <Menu.Item key="new">
                     <Icon type="plus" />
-                    <span className="nav-text">New</span>
+                    <span className="nav-text">Projects</span>
                     <Link to={getHomeRoute()} />
                 </Menu.Item>
                 <Menu.Item key="pins">

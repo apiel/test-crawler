@@ -5,9 +5,11 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import New from './new/New';
+import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
 import { SideMenu } from './side-menu/SideMenu';
-import { getHomeRoute, getResultsRoute, getPinsRoute, getCodeRoute, getSettingsRoute, getCodesRoute } from './routes';
+import { getHomeRoute, getResultsRoute, getPinsRoute,
+    getCodeRoute, getSettingsRoute, getCodesRoute, getNewRoute } from './routes';
 import { Pins } from './pin/Pins';
 import { Code } from './code/Code';
 import { Codes } from './code/Codes';
@@ -40,7 +42,8 @@ const App = () => (
                 <SideMenu />
             </Sider>
             <Content style={contentStyle}>
-                <Route path={getHomeRoute()} exact component={New} />
+                <Route path={getHomeRoute()} exact component={Projects} />
+                <Route path={getNewRoute()} exact component={New} />
                 <Route path={getPinsRoute()} exact component={Pins} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
                 <Route path={getCodeRoute(':id')} exact component={Code} />
