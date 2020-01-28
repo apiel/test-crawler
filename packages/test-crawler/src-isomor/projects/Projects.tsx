@@ -6,7 +6,7 @@ import notification from 'antd/lib/notification';
 import Typography from 'antd/lib/typography';
 import { loadPresets } from '../server/service';
 import { Preset as PresetType } from '../server/typing';
-import { getNewRoute } from '../routes';
+import { getNewProjectRoute } from '../routes';
 
 const load = async (
     setPresets: React.Dispatch<React.SetStateAction<PresetType[]>>,
@@ -43,7 +43,7 @@ export const Projects = () => {
                     </List.Item>
                 )}
             />
-            <Link to={getNewRoute()}>
+            <Link to={getNewProjectRoute()}>
                 <Button icon="plus" size="small">New</Button>
             </Link>
         </>

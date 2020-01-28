@@ -8,8 +8,8 @@ export function getCrawlers(...args: any) {
 export function loadPresets(...args: any) {
   return isomorRemote("server-service", "test-crawler", "loadPresets", args);
 }
-export function saveAndStart(...args: any) {
-  return isomorRemote("server-service", "test-crawler", "saveAndStart", args);
+export function saveProject(...args: any) {
+  return isomorRemote("server-service", "test-crawler", "saveProject", args);
 }
 export function getCrawler(...args: any) {
   return isomorRemote("server-service", "test-crawler", "getCrawler", args);

@@ -25,10 +25,10 @@ function loadPresets() {
     return crawlerProvider.loadPresets();
 }
 exports.loadPresets = loadPresets;
-function saveAndStart(crawlerInput, saveAs) {
-    return crawlerProvider.saveAndStart(crawlerInput, saveAs);
+function saveProject(crawlerInput, name) {
+    return crawlerProvider.saveProject(crawlerInput, name);
 }
-exports.saveAndStart = saveAndStart;
+exports.saveProject = saveProject;
 function getCrawler(timestamp) {
     return crawlerProvider.getCrawler(timestamp);
 }

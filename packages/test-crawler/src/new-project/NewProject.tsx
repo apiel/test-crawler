@@ -13,10 +13,11 @@ import { RouteComponentProps } from 'react-router';
 import { CrawlerInput } from '../server/typing';
 import { useAsyncCache, Call } from 'react-async-cache';
 
-import { getResultsRoute } from '../routes';
-import { saveAndStart, getCrawlers } from '../server/service';
+import { getHomeRoute } from '../routes';
+import { saveProject, getCrawlers } from '../server/service';
 import { Info } from '../common/Info';
 import { Viewport } from './Viewport';
+import { getDefaultViewport } from '../viewport';
 import { History } from 'history';
 
 const { Paragraph, Text } = Typography;
@@ -32,13 +33,13 @@ const radioGroupdStyle = {
 
 const start = async (
     history: History<any>,
-    { saveAs, viewport, ...input }: (CrawlerInput & { saveAs: string, viewport: string }),
+    { name, viewport, ...input }: (CrawlerInput & { name: string, viewport: string }),
     call: Call,
 ) => {
     try {
-        const response = await saveAndStart({ ...input, viewport: JSON.parse(viewport) }, saveAs);
-        await call(getCrawlers);
-        history.push(getResultsRoute(response.crawler.timestamp.toString()));
+        await saveProject({ ...input, viewport: JSON.parse(viewport) }, name);
+        // await call(getCrawlers);
+        history.push(getHomeRoute());
     } catch (error) {
         notification['error']({
             message: 'Something went wrong!',
@@ -57,28 +58,38 @@ const handleSubmit = (history: History<any>, validateFields: any, call: Call) =>
 }
 
 type Props = FormComponentProps & RouteComponentProps;
-const New = ({ history, location: { search }, form: { getFieldDecorator, validateFields, getFieldValue } }: Props) => {
+const NewProject = ({ history, location: { search }, form: { getFieldDecorator, validateFields, getFieldValue } }: Props) => {
     const { call } = useAsyncCache();
 
     return (
         <Form onSubmit={handleSubmit(history, validateFields, call)}>
             <Form.Item>
-                {getFieldDecorator('url', {
-                    rules: [{ required: true, message: 'Please input an URL to crawl!' }],
-                    // initialValue: preset.crawlerInput.url,
+                {getFieldDecorator('name', {
+                    rules: [{ required: true, message: 'Please give a name to the project.' }],
                 })(
-                    <Input addonBefore="URL" addonAfter={
-                        <Viewport
-                            getFieldDecorator={getFieldDecorator}
-                            // initialValue={JSON.stringify(preset.crawlerInput.viewport)}
-                        />
-                    } />
+                    <Input addonBefore="Name" placeholder="Project name" />
+                )}
+            </Form.Item>
+            <Form.Item>
+                {getFieldDecorator('url', {
+                    rules: [{ required: true, message: 'Please input an URL to crawl.' }],
+                })(
+                    <Input
+                        placeholder="https://domain.com/"
+                        addonBefore="URL"
+                        addonAfter={
+                            <Viewport
+                                getFieldDecorator={getFieldDecorator}
+                                initialValue={JSON.stringify(getDefaultViewport())}
+                            />
+                        }
+                    />
                 )}
             </Form.Item>
             <Form.Item>
                 <Form.Item style={inlineStyle}>
                     {getFieldDecorator('method', {
-                        // initialValue: preset.crawlerInput.method,
+                        initialValue: 'spiderbot',
                     })(
                         <Radio.Group size="small" style={radioGroupdStyle}>
                             <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>
@@ -93,15 +104,15 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                         <InputNumber min={0} size="small" />
                     )}
                     &nbsp;<Popover content={<div>
-                    <b>Limit the number of sibling pages. </b>
-                    For example, with the urls:
-                    <ul>
-                        <li>/item/1</li>
-                        <li>/item/2</li>
-                        <li>/item/3</li>
-                        <li>/item/4</li>
-                    </ul> using the limit <b>2</b> will only crawl <b>/item/1</b> and <b>/item/2</b>.<br /><br />
-                    Use <b>0</b> to skip the limit.</div>} trigger="click" overlayStyle={{width: 200}}>
+                        <b>Limit the number of sibling pages. </b>
+                        For example, with the urls:
+                        <ul>
+                            <li>/item/1</li>
+                            <li>/item/2</li>
+                            <li>/item/3</li>
+                            <li>/item/4</li>
+                        </ul> using the limit <b>2</b> will only crawl <b>/item/1</b> and <b>/item/2</b>.<br /><br />
+                        Use <b>0</b> to skip the limit.</div>} trigger="click" overlayStyle={{ width: 200 }}>
                         <Icon type="question-circle" />
                     </Popover>
                 </Form.Item>}
@@ -132,28 +143,16 @@ const New = ({ history, location: { search }, form: { getFieldDecorator, validat
                 <Form.Item style={inlineStyle}>
                     <Button
                         type="primary"
-                        icon="caret-right"
+                        icon="plus"
                         htmlType="submit"
                     >
-                        Start
+                        Create
                     </Button>
                 </Form.Item>
-                <Form.Item style={inlineStyle}>
-                    {getFieldDecorator('saveAs', {
-                        // initialValue: preset.name,
-                    })(
-                        <Input addonBefore="Save as" placeholder="Leave empty to don't save" />
-                    )}
-                </Form.Item>
-                <Info>
-                    <Paragraph>
-                        If you save as <Text code>Default</Text>, this preset will always be load per default.
-                    </Paragraph>
-                </Info>
             </Form.Item>
         </Form>
     );
 }
 
-const NewForm = Form.create({ name: 'start_crawler' })(New);
+const NewForm = Form.create({ name: 'start_crawler' })(NewProject);
 export default NewForm;

@@ -105,7 +105,7 @@ export class CrawlerProvider {
         const { source, ...codeInfo } = code;
         const list = await this.getCodeList();
         list[code.id] = codeInfo;
-        outputJSON(join(CODE_FOLDER, `list.json`), {...list}, { spaces: 4 }); // for some reason it need a copy
+        outputJSON(join(CODE_FOLDER, `list.json`), { ...list }, { spaces: 4 }); // for some reason it need a copy
         outputFile(join(CODE_FOLDER, `${code.id}.js`), source);
     }
 
@@ -190,13 +190,11 @@ export class CrawlerProvider {
         );
     }
 
-    async saveAndStart(crawlerInput: CrawlerInput, name: string): Promise<StartCrawler> {
-        if (name) {
-            const id = md5(name);
-            const file = join(PRESET_FOLDER, `${id}.json`);
-            await outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
-        }
-        return this.startCrawler(crawlerInput);
+    async saveProject(crawlerInput: CrawlerInput, name: string): Promise<string> {
+        const id = md5(name);
+        const file = join(PRESET_FOLDER, `${id}.json`);
+        await outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
+        return id;
     }
 
     async startCrawlerWithPresetFile(presetFile: string): Promise<CrawlerInput> {

@@ -28,8 +28,8 @@ export function loadPresets(): Promise<Preset[]> {
     return crawlerProvider.loadPresets();
 }
 
-export function saveAndStart(crawlerInput: CrawlerInput, saveAs: string): Promise<StartCrawler> {
-    return crawlerProvider.saveAndStart(crawlerInput, saveAs);
+export function saveProject(crawlerInput: CrawlerInput, name: string): Promise<string> {
+    return crawlerProvider.saveProject(crawlerInput, name);
 }
 
 export function getCrawler(timestamp: string): Promise<Crawler> {
