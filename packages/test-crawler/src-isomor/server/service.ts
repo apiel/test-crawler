@@ -32,8 +32,8 @@ export function loadProjects(): Promise<Project[]> {
     return crawlerProvider.loadProjects();
 }
 
-export function saveProject(crawlerInput: CrawlerInput, name: string): Promise<string> {
-    return crawlerProvider.saveProject(crawlerInput, name);
+export function saveProject(crawlerInput: CrawlerInput, name: string, id?: string): Promise<Project> {
+    return crawlerProvider.saveProject(crawlerInput, name, id);
 }
 
 export function getCrawler(timestamp: string): Promise<Crawler> {

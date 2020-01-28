@@ -3,11 +3,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import { Project as ProjectType } from '../server/typing';
-import { loadProject } from '../server/service';
+import { loadProject, saveProject } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
 import Icon from 'antd/lib/icon';
-import Checkbox from 'antd/lib/checkbox';
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 const load = async (
     id: string,
@@ -22,6 +22,14 @@ const load = async (
             description: error.toString(),
         });
     }
+}
+
+const onAutoPinChange = (
+    { name, id, crawlerInput}: ProjectType,
+    setProject: React.Dispatch<React.SetStateAction<ProjectType | undefined>>,
+) => async ({ target: { checked } }: CheckboxChangeEvent) => {
+    const project = await saveProject({ ...crawlerInput, autopin: checked }, name, id);
+    setProject(project);
 }
 
 export const Project = ({
@@ -46,7 +54,14 @@ export const Project = ({
                         </>
                     }
                 </p>
-                <p><Checkbox>Automatically pin new page founds.</Checkbox></p>
+                <p>
+                    <Checkbox
+                        checked={project.crawlerInput.autopin}
+                        onChange={onAutoPinChange(project, setProject)}
+                    >
+                        Automatically pin new page founds.
+                    </Checkbox>
+                </p>
             </>}
         </>
     );

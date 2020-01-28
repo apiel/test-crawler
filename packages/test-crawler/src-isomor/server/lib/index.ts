@@ -194,11 +194,14 @@ export class CrawlerProvider {
         return readJSON(join(PROJECT_FOLDER, `${id}.json`));
     }
 
-    async saveProject(crawlerInput: CrawlerInput, name: string): Promise<string> {
-        const id = md5(name);
+    async saveProject(crawlerInput: CrawlerInput, name: string, id?: string): Promise<Project> {
+        if (!id) {
+            id = md5(name);
+        }
         const file = join(PROJECT_FOLDER, `${id}.json`);
-        await outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
-        return id;
+        const project = { id, name, crawlerInput };
+        await outputJSON(file, project, { spaces: 4 });
+        return project;
     }
 
     async startCrawlerFromProject(file: string): Promise<CrawlerInput> {

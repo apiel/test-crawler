@@ -29,8 +29,8 @@ function loadProjects() {
     return crawlerProvider.loadProjects();
 }
 exports.loadProjects = loadProjects;
-function saveProject(crawlerInput, name) {
-    return crawlerProvider.saveProject(crawlerInput, name);
+function saveProject(crawlerInput, name, id) {
+    return crawlerProvider.saveProject(crawlerInput, name, id);
 }
 exports.saveProject = saveProject;
 function getCrawler(timestamp) {

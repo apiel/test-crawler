@@ -188,12 +188,15 @@ class CrawlerProvider {
     loadProject(id) {
         return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, `${id}.json`));
     }
-    saveProject(crawlerInput, name) {
+    saveProject(crawlerInput, name, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = md5(name);
+            if (!id) {
+                id = md5(name);
+            }
             const file = path_1.join(config_1.PROJECT_FOLDER, `${id}.json`);
-            yield fs_extra_1.outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
-            return id;
+            const project = { id, name, crawlerInput };
+            yield fs_extra_1.outputJSON(file, project, { spaces: 4 });
+            return project;
         });
     }
     startCrawlerFromProject(file) {
