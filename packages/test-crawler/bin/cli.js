@@ -24,7 +24,7 @@ function start() {
         if (option && value) {
             if (option === '--preset') {
                 const crawlerProvider = new lib_1.CrawlerProvider();
-                const crawlerInput = yield crawlerProvider.startCrawlerWithPresetFile(value);
+                const crawlerInput = yield crawlerProvider.startCrawlerFromProject(value);
                 logol_1.info('Start with preset', crawlerInput);
             }
             else if (option === '--folder') {

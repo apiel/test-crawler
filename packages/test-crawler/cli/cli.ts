@@ -13,10 +13,10 @@ async function start() {
     const [, , option, value] = process.argv;
     let pagesFolder: string | undefined;
     if (option && value) {
-        if (option === '--preset') {
+        if (option === '--project') {
             const crawlerProvider = new CrawlerProvider();
             const crawlerInput = await crawlerProvider.startCrawlerFromProject(value);
-            info('Start with preset', crawlerInput);
+            info('Start project', crawlerInput);
         } else if (option === '--folder') {
             pagesFolder = value;
             info('Start to crawl specific queue', pagesFolder);

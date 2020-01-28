@@ -16,7 +16,7 @@ const load = async (
         setProjects(list);
     } catch (error) {
         notification['warning']({
-            message: 'Something went wrong while loading presets.',
+            message: 'Something went wrong while loading projects.',
             description: error.toString(),
         });
     }
