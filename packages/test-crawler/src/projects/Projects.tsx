@@ -41,7 +41,7 @@ export const Projects = () => {
                         ]}
                     >
                         <List.Item.Meta
-                            title={<a href="https://ant.design">{name}</a>}
+                            title={<Link to={getProjectRoute(id)}>{name}</Link>}
                             description={url}
                         />
                     </List.Item>
