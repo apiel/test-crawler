@@ -1,5 +1,6 @@
 import React from 'react';
 import List from 'antd/lib/list';
+import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import notification from 'antd/lib/notification';
 import Typography from 'antd/lib/typography';
@@ -31,18 +32,20 @@ export const Projects = () => {
             <List
                 itemLayout="horizontal"
                 dataSource={projects}
-                renderItem={project => (
+                renderItem={({ name, crawlerInput: { url } }) => (
                     <List.Item
                         actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}
                     >
                         <List.Item.Meta
-                            title={<a href="https://ant.design">{project.name}</a>}
-                            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                            title={<a href="https://ant.design">{name}</a>}
+                            description={url}
                         />
                     </List.Item>
                 )}
             />
-            <Link to={getNewRoute()}>Create a new project</Link>
+            <Link to={getNewRoute()}>
+                <Button icon="plus" size="small">New</Button>
+            </Link>
         </>
     );
 }
