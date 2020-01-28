@@ -6,7 +6,7 @@ import notification from 'antd/lib/notification';
 import Typography from 'antd/lib/typography';
 import { loadProjects } from '../server/service';
 import { Project } from '../server/typing';
-import { getNewProjectRoute } from '../routes';
+import { getNewProjectRoute, getProjectRoute } from '../routes';
 
 const load = async (
     setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
@@ -32,9 +32,13 @@ export const Projects = () => {
             <List
                 itemLayout="horizontal"
                 dataSource={projects}
-                renderItem={({ name, crawlerInput: { url } }) => (
+                renderItem={({ id, name, crawlerInput: { url } }) => (
                     <List.Item
-                        actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}
+                        actions={[
+                            <Link to={getProjectRoute(id)}>
+                                Open
+                            </Link>,
+                        ]}
                     >
                         <List.Item.Meta
                             title={<a href="https://ant.design">{name}</a>}

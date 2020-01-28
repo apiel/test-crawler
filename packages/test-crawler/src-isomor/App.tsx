@@ -9,13 +9,14 @@ import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
 import { SideMenu } from './side-menu/SideMenu';
 import {
-    getHomeRoute, getResultsRoute, getPinsRoute,
+    getHomeRoute, getResultsRoute, getPinsRoute, getProjectRoute,
     getCodeRoute, getSettingsRoute, getCodesRoute, getNewProjectRoute
 } from './routes';
 import { Pins } from './pin/Pins';
 import { Code } from './code/Code';
 import { Codes } from './code/Codes';
 import { Settings } from './Settings';
+import { Project } from './projects/Project';
 
 const { Sider, Content } = Layout;
 const { Title } = Typography;
@@ -51,6 +52,7 @@ const App = () => (
                 <Route path={getCodeRoute(':id')} exact component={Code} />
                 <Route path={getCodesRoute()} exact component={Codes} />
                 <Route path={getResultsRoute(':timestamp')} component={CrawlerResults} />
+                <Route path={getProjectRoute(':id')} exact component={Project} />
             </Content>
         </Layout>
     </Router>

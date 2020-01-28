@@ -190,6 +190,10 @@ export class CrawlerProvider {
         );
     }
 
+    loadProject(id: string): Promise<Project> {
+        return readJSON(join(PROJECT_FOLDER, `${id}.json`));
+    }
+
     async saveProject(crawlerInput: CrawlerInput, name: string): Promise<string> {
         const id = md5(name);
         const file = join(PROJECT_FOLDER, `${id}.json`);

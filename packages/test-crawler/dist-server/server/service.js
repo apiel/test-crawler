@@ -21,6 +21,10 @@ function getCrawlers() {
     return crawlerProvider.getAllCrawlers();
 }
 exports.getCrawlers = getCrawlers;
+function loadProject(id) {
+    return crawlerProvider.loadProject(id);
+}
+exports.loadProject = loadProject;
 function loadProjects() {
     return crawlerProvider.loadProjects();
 }

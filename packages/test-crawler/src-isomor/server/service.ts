@@ -24,6 +24,10 @@ export function getCrawlers(): Promise<Crawler[]> {
     return crawlerProvider.getAllCrawlers();
 }
 
+export function loadProject(id: string): Promise<Project> {
+    return crawlerProvider.loadProject(id);
+}
+
 export function loadProjects(): Promise<Project[]> {
     return crawlerProvider.loadProjects();
 }
