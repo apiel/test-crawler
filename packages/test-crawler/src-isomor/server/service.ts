@@ -9,7 +9,7 @@ import {
     CrawlerInput,
     StartCrawler,
     PageData,
-    Preset,
+    Project,
     Code,
     CodeInfoList,
 } from './typing';
@@ -24,8 +24,8 @@ export function getCrawlers(): Promise<Crawler[]> {
     return crawlerProvider.getAllCrawlers();
 }
 
-export function loadPresets(): Promise<Preset[]> {
-    return crawlerProvider.loadPresets();
+export function loadProjects(): Promise<Project[]> {
+    return crawlerProvider.loadProjects();
 }
 
 export function saveProject(crawlerInput: CrawlerInput, name: string): Promise<string> {

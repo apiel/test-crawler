@@ -21,10 +21,10 @@ function getCrawlers() {
     return crawlerProvider.getAllCrawlers();
 }
 exports.getCrawlers = getCrawlers;
-function loadPresets() {
-    return crawlerProvider.loadPresets();
+function loadProjects() {
+    return crawlerProvider.loadProjects();
 }
-exports.loadPresets = loadPresets;
+exports.loadProjects = loadProjects;
 function saveProject(crawlerInput, name) {
     return crawlerProvider.saveProject(crawlerInput, name);
 }

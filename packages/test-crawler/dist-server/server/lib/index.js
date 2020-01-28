@@ -177,25 +177,25 @@ class CrawlerProvider {
             return crawlers;
         });
     }
-    loadPresets() {
+    loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield fs_extra_1.mkdirp(config_1.PRESET_FOLDER);
-            const files = yield fs_extra_1.readdir(config_1.PRESET_FOLDER);
+            yield fs_extra_1.mkdirp(config_1.PROJECT_FOLDER);
+            const files = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
             return Promise.all(files.filter(file => path_1.extname(file) === '.json')
-                .map(file => fs_extra_1.readJSON(path_1.join(config_1.PRESET_FOLDER, file))));
+                .map(file => fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, file))));
         });
     }
     saveProject(crawlerInput, name) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = md5(name);
-            const file = path_1.join(config_1.PRESET_FOLDER, `${id}.json`);
+            const file = path_1.join(config_1.PROJECT_FOLDER, `${id}.json`);
             yield fs_extra_1.outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
             return id;
         });
     }
-    startCrawlerWithPresetFile(presetFile) {
+    startCrawlerFromProject(file) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { crawlerInput } = yield fs_extra_1.readJSON(presetFile);
+            const { crawlerInput } = yield fs_extra_1.readJSON(file);
             yield this.startCrawler(crawlerInput, false);
             return crawlerInput;
         });

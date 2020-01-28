@@ -11,7 +11,6 @@ import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 import { RouteComponentProps } from 'react-router';
 import { CrawlerInput } from '../server/typing';
-import { useAsyncCache, Call } from 'react-async-cache';
 
 import { getHomeRoute } from '../routes';
 import { saveProject } from '../server/service';
@@ -19,8 +18,6 @@ import { Info } from '../common/Info';
 import { Viewport } from './Viewport';
 import { getDefaultViewport } from '../viewport';
 import { History } from 'history';
-
-const { Paragraph, Text } = Typography;
 
 const inlineStyle = {
     marginRight: 10,
@@ -111,18 +108,18 @@ const NewProject = ({ history, form: { getFieldDecorator, validateFields, getFie
                     </Popover>
                 </Form.Item>}
                 <Info>
-                    <Paragraph ellipsis={{ rows: 1, expandable: true }}>
+                    <Typography.Paragraph ellipsis={{ rows: 1, expandable: true }}>
                         <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
                         and crawl the children. It will then continue do the same with the children till no new
                         link is found. Be careful if you have big website, this is most likely not the right
                         solution for you.
-                    </Paragraph>
-                    <Paragraph ellipsis={{ rows: 1, expandable: true }}>
+                    </Typography.Paragraph>
+                    <Typography.Paragraph ellipsis={{ rows: 1, expandable: true }}>
                         <b>URLs list</b> crawling method will crawl a specific sets of URLs. In the URL input field
                         you must provide an endpoint containing a list of URLs (a simple text format, with one URL
                         per line). The crawler will crawl each of those URL only and will not try to find links in
                         the page.
-                    </Paragraph>
+                    </Typography.Paragraph>
                 </Info>
             </Form.Item>
             <Form.Item>

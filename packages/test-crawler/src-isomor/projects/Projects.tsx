@@ -4,16 +4,16 @@ import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import notification from 'antd/lib/notification';
 import Typography from 'antd/lib/typography';
-import { loadPresets } from '../server/service';
-import { Preset as PresetType } from '../server/typing';
+import { loadProjects } from '../server/service';
+import { Project } from '../server/typing';
 import { getNewProjectRoute } from '../routes';
 
 const load = async (
-    setPresets: React.Dispatch<React.SetStateAction<PresetType[]>>,
+    setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
 ) => {
     try {
-        const list = await loadPresets();
-        setPresets(list);
+        const list = await loadProjects();
+        setProjects(list);
     } catch (error) {
         notification['warning']({
             message: 'Something went wrong while loading presets.',
@@ -23,9 +23,9 @@ const load = async (
 }
 
 export const Projects = () => {
-    const [projects, setPresets] = React.useState<PresetType[]>([]);
+    const [projects, setProjects] = React.useState<Project[]>([]);
 
-    React.useEffect(() => { load(setPresets); }, []);
+    React.useEffect(() => { load(setProjects); }, []);
     return (
         <>
             <Typography.Title level={3}>Projects</Typography.Title>

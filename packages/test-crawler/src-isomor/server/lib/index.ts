@@ -16,11 +16,11 @@ import axios from 'axios';
 import { exec } from 'child_process';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
-import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PRESET_FOLDER, CODE_FOLDER } from './config';
-import { getFolders, addToQueue, getQueueFolder, getFilePath, FilePath, getCodeList } from './utils';
+import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
+import { getFolders, addToQueue, getFilePath, FilePath, getCodeList } from './utils';
 
 import * as config from './config';
-import { Crawler, CrawlerInput, StartCrawler, PageData, Preset, Code, CodeInfoList } from '../typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList } from '../typing';
 import { crawl } from './crawl';
 
 export const getConfig = () => config;
@@ -181,24 +181,24 @@ export class CrawlerProvider {
         return crawlers;
     }
 
-    async loadPresets(): Promise<Preset[]> {
-        await mkdirp(PRESET_FOLDER);
-        const files = await readdir(PRESET_FOLDER);
+    async loadProjects(): Promise<Project[]> {
+        await mkdirp(PROJECT_FOLDER);
+        const files = await readdir(PROJECT_FOLDER);
         return Promise.all(
             files.filter(file => extname(file) === '.json')
-                .map(file => readJSON(join(PRESET_FOLDER, file))),
+                .map(file => readJSON(join(PROJECT_FOLDER, file))),
         );
     }
 
     async saveProject(crawlerInput: CrawlerInput, name: string): Promise<string> {
         const id = md5(name);
-        const file = join(PRESET_FOLDER, `${id}.json`);
+        const file = join(PROJECT_FOLDER, `${id}.json`);
         await outputJSON(file, { id, name, crawlerInput }, { spaces: 4 });
         return id;
     }
 
-    async startCrawlerWithPresetFile(presetFile: string): Promise<CrawlerInput> {
-        const { crawlerInput } = await readJSON(presetFile);
+    async startCrawlerFromProject(file: string): Promise<CrawlerInput> {
+        const { crawlerInput } = await readJSON(file);
         await this.startCrawler(crawlerInput, false);
         return crawlerInput;
     }

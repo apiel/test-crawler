@@ -40,7 +40,7 @@ export interface CrawlerInput {
     autopin: boolean;
 }
 
-export interface Preset {
+export interface Project {
     id: string;
     name: string;
     crawlerInput: CrawlerInput;

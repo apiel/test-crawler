@@ -15,7 +15,7 @@ async function start() {
     if (option && value) {
         if (option === '--preset') {
             const crawlerProvider = new CrawlerProvider();
-            const crawlerInput = await crawlerProvider.startCrawlerWithPresetFile(value);
+            const crawlerInput = await crawlerProvider.startCrawlerFromProject(value);
             info('Start with preset', crawlerInput);
         } else if (option === '--folder') {
             pagesFolder = value;
