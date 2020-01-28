@@ -14,7 +14,7 @@ import { CrawlerInput } from '../server/typing';
 import { useAsyncCache, Call } from 'react-async-cache';
 
 import { getHomeRoute } from '../routes';
-import { saveProject, getCrawlers } from '../server/service';
+import { saveProject } from '../server/service';
 import { Info } from '../common/Info';
 import { Viewport } from './Viewport';
 import { getDefaultViewport } from '../viewport';
@@ -34,11 +34,9 @@ const radioGroupdStyle = {
 const start = async (
     history: History<any>,
     { name, viewport, ...input }: (CrawlerInput & { name: string, viewport: string }),
-    call: Call,
 ) => {
     try {
         await saveProject({ ...input, viewport: JSON.parse(viewport) }, name);
-        // await call(getCrawlers);
         history.push(getHomeRoute());
     } catch (error) {
         notification['error']({
@@ -48,21 +46,19 @@ const start = async (
     }
 }
 
-const handleSubmit = (history: History<any>, validateFields: any, call: Call) => (event: React.FormEvent<any>) => {
+const handleSubmit = (history: History<any>, validateFields: any) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     validateFields((err: any, values: any) => {
         if (!err) {
-            start(history, values, call);
+            start(history, values);
         }
     });
 }
 
 type Props = FormComponentProps & RouteComponentProps;
-const NewProject = ({ history, location: { search }, form: { getFieldDecorator, validateFields, getFieldValue } }: Props) => {
-    const { call } = useAsyncCache();
-
+const NewProject = ({ history, form: { getFieldDecorator, validateFields, getFieldValue } }: Props) => {
     return (
-        <Form onSubmit={handleSubmit(history, validateFields, call)}>
+        <Form onSubmit={handleSubmit(history, validateFields)}>
             <Form.Item>
                 {getFieldDecorator('name', {
                     rules: [{ required: true, message: 'Please give a name to the project.' }],
@@ -98,9 +94,7 @@ const NewProject = ({ history, location: { search }, form: { getFieldDecorator, 
                     )}
                 </Form.Item>
                 {getFieldValue('method') === 'spiderbot' && <Form.Item style={inlineStyle}>
-                    Limit {getFieldDecorator('limit', {
-                        // initialValue: preset.crawlerInput.limit,
-                    })(
+                    Limit {getFieldDecorator('limit')(
                         <InputNumber min={0} size="small" />
                     )}
                     &nbsp;<Popover content={<div>
@@ -134,7 +128,6 @@ const NewProject = ({ history, location: { search }, form: { getFieldDecorator, 
             <Form.Item>
                 {getFieldDecorator('autopin', {
                     valuePropName: 'checked',
-                    // initialValue: preset.crawlerInput.autopin,
                 })(
                     <Checkbox>Automatically pin new page founds.</Checkbox>
                 )}
