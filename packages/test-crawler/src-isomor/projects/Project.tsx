@@ -7,6 +7,7 @@ import { loadProject } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
 import Icon from 'antd/lib/icon';
+import Checkbox from 'antd/lib/checkbox';
 
 const load = async (
     id: string,
@@ -45,6 +46,7 @@ export const Project = ({
                         </>
                     }
                 </p>
+                <p><Checkbox>Automatically pin new page founds.</Checkbox></p>
             </>}
         </>
     );
