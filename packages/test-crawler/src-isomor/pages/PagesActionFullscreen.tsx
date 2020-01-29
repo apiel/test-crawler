@@ -23,7 +23,7 @@ interface Props {
         diff?: PngDiffData;
     };
 }
-
+// ToDo fix project id
 export const PagesActionFullscreen = ({ timestamp, id, png, url, pageError }: Props) => {
     const [visible, setVisible] = React.useState<boolean>(false);
     return (
@@ -37,6 +37,7 @@ export const PagesActionFullscreen = ({ timestamp, id, png, url, pageError }: Pr
             >
                 <div style={{position: "relative"}}>
                     <DiffImage
+                        projectId="yoyo"
                         folder={timestamp}
                         id={id}
                         zones={png.diff && png.diff.zones}

@@ -95,8 +95,8 @@ export class CrawlerProvider {
         return data;
     }
 
-    image(folder: string, id: string): Promise<Buffer> {
-        const target = folder === 'base' ? BASE_FOLDER : join(CRAWL_FOLDER, folder);
+    image(projectId: string, folder: string, id: string): Promise<Buffer> {
+        const target = folder === 'base' ? join(BASE_FOLDER, projectId) : join(CRAWL_FOLDER, projectId, folder);
         const filePath = getFilePath(id, target);
         return readFile(filePath('png'));
     }
@@ -137,8 +137,8 @@ export class CrawlerProvider {
         return this.getPageInFolder(BASE_FOLDER, id);
     }
 
-    getPages(timestamp: string): Promise<PageData[]> {
-        const folder = join(CRAWL_FOLDER, timestamp);
+    getPages(projectId: string, timestamp: string): Promise<PageData[]> {
+        const folder = join(CRAWL_FOLDER, projectId, timestamp);
         return this.getPagesInFolder(folder);
     }
 
@@ -208,7 +208,8 @@ export class CrawlerProvider {
     async startCrawlerFromProject(projectId: string): Promise<StartCrawler> {
         const project = await this.loadProject(projectId);
         // console.log('start project crawler', project);
-        return this.startCrawler(projectId, project.crawlerInput, false);
+        return this.startCrawler(projectId, project.crawlerInput);
+        // return this.startCrawler(projectId, project.crawlerInput, false);
     }
 
     async startCrawler(projectId: string, crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {
@@ -241,13 +242,17 @@ export class CrawlerProvider {
         if (runProcess) {
             // exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
             // exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
-            crawl(timestamp.toString());
+            crawl(join(projectId, timestamp.toString()), 30);
         }
 
         return {
             crawler,
             config: { MAX_HISTORY },
         };
+    }
+
+    async startCrawlers() {
+        crawl(undefined, 30);
     }
 
     private async startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {

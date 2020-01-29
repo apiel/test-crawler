@@ -22,10 +22,11 @@ interface Props {
         diff?: PngDiffData;
     };
 }
+// ToDo fix project id
 export const PinPage = ({ id, url, viewport, onImg, png }: Props) => (
     <Card
         style={cardStyle}
-        cover={png && <DiffImage folder='base' id={id} onImg={onImg} />}
+        cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId="yoyo" />}
         actions={[
             <Icon type="delete" title={`Delete pin`} onClick={() => alert('Not yet implemented')} />,
             (<Link to={{

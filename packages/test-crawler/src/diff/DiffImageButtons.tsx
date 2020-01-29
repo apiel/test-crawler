@@ -22,7 +22,8 @@ interface Props {
 
 const onSetStatus = (update: Update<PageData[]>, status: string, { timestamp, id, index }: Props) => async () => {
     try {
-        const pages = await setZoneStatus(timestamp.toString(), id, index, status);
+        // ToDo fix
+        const pages = await setZoneStatus('yoyo', timestamp.toString(), id, index, status);
         update(pages, getPages, timestamp);
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {

@@ -20,12 +20,13 @@ import { availableFilters } from '../search/search';
 import { setMasonry, onMasonryImg } from '../common/refreshMasonry';
 
 interface Props {
+    projectId: string;
     timestamp: string;
     lastUpdate: number;
 }
 
-export const Pages = ({ timestamp, lastUpdate }: Props) => {
-    const { response, error } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, timestamp);
+export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
+    const { response, error } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, projectId, timestamp);
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
@@ -44,6 +45,7 @@ export const Pages = ({ timestamp, lastUpdate }: Props) => {
                                 key={id}
                                 style={cardStyle}
                                 cover={png && <DiffImage
+                                    projectId={projectId}
                                     folder={timestamp}
                                     id={id}
                                     zones={png.diff && png.diff.zones}

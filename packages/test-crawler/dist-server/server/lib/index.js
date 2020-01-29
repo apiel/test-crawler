@@ -99,8 +99,8 @@ class CrawlerProvider {
             return data;
         });
     }
-    image(folder, id) {
-        const target = folder === 'base' ? config_1.BASE_FOLDER : path_1.join(config_1.CRAWL_FOLDER, folder);
+    image(projectId, folder, id) {
+        const target = folder === 'base' ? path_1.join(config_1.BASE_FOLDER, projectId) : path_1.join(config_1.CRAWL_FOLDER, projectId, folder);
         const filePath = utils_1.getFilePath(id, target);
         return fs_extra_1.readFile(filePath('png'));
     }
@@ -141,8 +141,8 @@ class CrawlerProvider {
     getBasePage(id) {
         return this.getPageInFolder(config_1.BASE_FOLDER, id);
     }
-    getPages(timestamp) {
-        const folder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
+    getPages(projectId, timestamp) {
+        const folder = path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp);
         return this.getPagesInFolder(folder);
     }
     getPageInFolder(folder, id) {
@@ -203,7 +203,7 @@ class CrawlerProvider {
     startCrawlerFromProject(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
             const project = yield this.loadProject(projectId);
-            return this.startCrawler(projectId, project.crawlerInput, false);
+            return this.startCrawler(projectId, project.crawlerInput);
         });
     }
     startCrawler(projectId, crawlerInput, runProcess = true) {
@@ -222,12 +222,17 @@ class CrawlerProvider {
                 yield this.startSpiderBotCrawling(crawlerInput, distFolder);
             }
             if (runProcess) {
-                crawl_1.crawl(timestamp.toString());
+                crawl_1.crawl(path_1.join(projectId, timestamp.toString()), 30);
             }
             return {
                 crawler,
                 config: { MAX_HISTORY: config_1.MAX_HISTORY },
             };
+        });
+    }
+    startCrawlers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            crawl_1.crawl(undefined, 30);
         });
     }
     startUrlsCrawling(crawlerInput, distFolder) {

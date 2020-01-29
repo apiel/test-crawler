@@ -10,6 +10,7 @@ import { DiffZone } from './DiffZone';
 import { PngDiffDataZone } from '../server/typing';
 
 interface Props {
+    projectId: string;
     folder: string;
     id: string;
     zones?: PngDiffDataZone[];
@@ -18,10 +19,10 @@ interface Props {
     onImg?: () => void;
 };
 
-export const DiffImage = ({ folder, id, zones, originalWidth = 0, onImg = () => {}, width = imgStyle.width }: Props) => {
+export const DiffImage = ({ projectId, folder, id, zones, originalWidth = 0, onImg = () => {}, width = imgStyle.width }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(folder, id, width));
+        setThumb(await getThumbnail(projectId, folder, id, width));
         onImg();
     }
     useEffect(() => { load(); }, []);

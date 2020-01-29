@@ -53,3 +53,6 @@ export function setStatus(...args: any) {
 export function startCrawlerFromProject(...args: any) {
   return isomorRemote("server-service", "test-crawler", "startCrawlerFromProject", args);
 }
+export function startCrawlers(...args: any) {
+  return isomorRemote("server-service", "test-crawler", "startCrawlers", args);
+}

@@ -10,7 +10,7 @@ import {
     USER_AGENT,
     CRAWL_FOLDER,
     BASE_FOLDER,
-    PROCESS_TIMEOUT,
+    CONSUME_TIMEOUT,
     CODE_FOLDER,
 } from '../config';
 import {
@@ -197,16 +197,20 @@ async function pickFromQueue(pagesFolder: string): Promise<ToCrawl> {
 }
 
 async function pickFromQueues(): Promise<ToCrawl> {
-    const pagesFolders = await readdir(CRAWL_FOLDER);
-    for (const pagesFolder of pagesFolders) {
-        const toCrawl = await pickFromQueue(pagesFolder);
-        if (toCrawl) {
-            return toCrawl;
+    const projectFolders = await readdir(CRAWL_FOLDER);
+    for (const projectFolder of projectFolders) {
+        const pagesFolders = await readdir(join(CRAWL_FOLDER, projectFolder));
+        for (const pagesFolder of pagesFolders) {
+            const toCrawl = await pickFromQueue(join(projectFolder, pagesFolder));
+            if (toCrawl) {
+                return toCrawl;
+            }
         }
     }
 }
 
-async function consumeQueues(pagesFolder?: string) {
+let consumeQueuesRetry = 0;
+async function consumeQueues(consumeTimeout: number, pagesFolder?: string) {
     if (consumerRunning < CONSUMER_COUNT) {
         let toCrawl: ToCrawl;
         if (pagesFolder) {
@@ -214,30 +218,26 @@ async function consumeQueues(pagesFolder?: string) {
         } else {
             toCrawl = await pickFromQueues();
         }
+        // console.log('toCrawl', toCrawl);
         if (toCrawl) {
+            consumeQueuesRetry = 0;
             const { id, url, distFolder } = toCrawl;
             loadPage(id, url, distFolder);
-            consumeQueues();
+            consumeQueues(consumeTimeout, pagesFolder);
             return;
         }
     }
-    setTimeout(consumeQueues, 500);
-    // process.stdout.write('.');
-}
-
-let processTimeoutTimer: NodeJS.Timeout;
-function processTimeout() {
-    if (PROCESS_TIMEOUT) {
-        clearTimeout(processTimeoutTimer);
-        processTimeoutTimer = setTimeout(() => {
-            info('Process timeout, exit', `${PROCESS_TIMEOUT} sec inactivity`);
-            process.exit(totalDiff);
-        }, PROCESS_TIMEOUT * 1000);
+    if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
+        consumeQueuesRetry++;
+        setTimeout(() => consumeQueues(consumeTimeout, pagesFolder), 500);
     }
 }
 
-async function consumeResults() {
+let consumeResultRetry = 0;
+async function consumeResults(consumeTimeout: number) {
+    // console.log('resultsQueue.length', resultsQueue.length);
     if (resultsQueue.length) {
+        consumeResultRetry = 0;
         const [{ folder, result, isError }] = resultsQueue.splice(0, 1);
         const file = join(folder, '_.json');
         const crawler: Crawler = await readJSON(file);
@@ -256,10 +256,10 @@ async function consumeResults() {
         crawler.lastUpdate = Date.now();
 
         await writeJSON(file, crawler, { spaces: 4 });
-        consumeResults();
-        processTimeout();
-    } else {
-        setTimeout(consumeResults, 1000);
+        consumeResults(consumeTimeout);
+    } else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
+        consumeResultRetry++;
+        setTimeout(() => consumeResults(consumeTimeout), 1000);
     }
 }
 
@@ -272,9 +272,8 @@ async function prepareFolders() {
     }
 }
 
-export async function crawl(pagesFolder?: string) {
+export async function crawl(pagesFolder?: string, consumeTimeout = CONSUME_TIMEOUT) {
     await prepareFolders();
-    consumeResults();
-    consumeQueues(pagesFolder);
-    processTimeout();
+    consumeResults(consumeTimeout);
+    consumeQueues(consumeTimeout, pagesFolder);
 }

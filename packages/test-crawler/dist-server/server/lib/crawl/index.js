@@ -152,16 +152,20 @@ function pickFromQueue(pagesFolder) {
 }
 function pickFromQueues() {
     return __awaiter(this, void 0, void 0, function* () {
-        const pagesFolders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
-        for (const pagesFolder of pagesFolders) {
-            const toCrawl = yield pickFromQueue(pagesFolder);
-            if (toCrawl) {
-                return toCrawl;
+        const projectFolders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
+        for (const projectFolder of projectFolders) {
+            const pagesFolders = yield fs_extra_1.readdir(path_1.join(config_1.CRAWL_FOLDER, projectFolder));
+            for (const pagesFolder of pagesFolders) {
+                const toCrawl = yield pickFromQueue(path_1.join(projectFolder, pagesFolder));
+                if (toCrawl) {
+                    return toCrawl;
+                }
             }
         }
     });
 }
-function consumeQueues(pagesFolder) {
+let consumeQueuesRetry = 0;
+function consumeQueues(consumeTimeout, pagesFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         if (consumerRunning < config_1.CONSUMER_COUNT) {
             let toCrawl;
@@ -172,28 +176,24 @@ function consumeQueues(pagesFolder) {
                 toCrawl = yield pickFromQueues();
             }
             if (toCrawl) {
+                consumeQueuesRetry = 0;
                 const { id, url, distFolder } = toCrawl;
                 loadPage(id, url, distFolder);
-                consumeQueues();
+                consumeQueues(consumeTimeout, pagesFolder);
                 return;
             }
         }
-        setTimeout(consumeQueues, 500);
+        if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
+            consumeQueuesRetry++;
+            setTimeout(() => consumeQueues(consumeTimeout, pagesFolder), 500);
+        }
     });
 }
-let processTimeoutTimer;
-function processTimeout() {
-    if (config_1.PROCESS_TIMEOUT) {
-        clearTimeout(processTimeoutTimer);
-        processTimeoutTimer = setTimeout(() => {
-            logol_1.info('Process timeout, exit', `${config_1.PROCESS_TIMEOUT} sec inactivity`);
-            process.exit(totalDiff);
-        }, config_1.PROCESS_TIMEOUT * 1000);
-    }
-}
-function consumeResults() {
+let consumeResultRetry = 0;
+function consumeResults(consumeTimeout) {
     return __awaiter(this, void 0, void 0, function* () {
         if (resultsQueue.length) {
+            consumeResultRetry = 0;
             const [{ folder, result, isError }] = resultsQueue.splice(0, 1);
             const file = path_1.join(folder, '_.json');
             const crawler = yield fs_extra_1.readJSON(file);
@@ -210,11 +210,11 @@ function consumeResults() {
             crawler.urlsCount = (yield fs_extra_1.readdir(folder)).filter(f => path_1.extname(f) === '.json' && f !== '_.json').length;
             crawler.lastUpdate = Date.now();
             yield fs_extra_1.writeJSON(file, crawler, { spaces: 4 });
-            consumeResults();
-            processTimeout();
+            consumeResults(consumeTimeout);
         }
-        else {
-            setTimeout(consumeResults, 1000);
+        else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
+            consumeResultRetry++;
+            setTimeout(() => consumeResults(consumeTimeout), 1000);
         }
     });
 }
@@ -228,12 +228,11 @@ function prepareFolders() {
         }
     });
 }
-function crawl(pagesFolder) {
+function crawl(pagesFolder, consumeTimeout = config_1.CONSUME_TIMEOUT) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
-        consumeResults();
-        consumeQueues(pagesFolder);
-        processTimeout();
+        consumeResults(consumeTimeout);
+        consumeQueues(consumeTimeout, pagesFolder);
     });
 }
 exports.crawl = crawl;

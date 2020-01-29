@@ -56,7 +56,7 @@ export const CrawlerResults = ({
     return response ? (
         <>
             <CrawlerInfo crawler={response} project={project} />
-            <Pages timestamp={timestamp} lastUpdate={lastUpdate} />
+            <Pages timestamp={timestamp} lastUpdate={lastUpdate} projectId={projectId} />
         </>
     ) : <Spin />;
 }

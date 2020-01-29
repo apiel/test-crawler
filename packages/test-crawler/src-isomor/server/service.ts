@@ -40,8 +40,8 @@ export function getCrawler(projectId: string, timestamp: string): Promise<Crawle
     return crawlerProvider.getCrawler(projectId, timestamp);
 }
 
-export function getPages(timestamp: string): Promise<PageData[]> {
-    return crawlerProvider.getPages(timestamp);
+export function getPages(projectId: string, timestamp: string): Promise<PageData[]> {
+    return crawlerProvider.getPages(projectId, timestamp);
 }
 
 export function getPins(): Promise<PageData[]> {
@@ -64,8 +64,8 @@ export function getCodes(): Promise<CodeInfoList> {
     return crawlerProvider.getCodeList();
 }
 
-export async function getThumbnail(folder: string, id: string, width: number = 300): Promise<string> {
-    const image = await crawlerProvider.image(folder, id);
+export async function getThumbnail(projectId: string, folder: string, id: string, width: number = 300): Promise<string> {
+    const image = await crawlerProvider.image(projectId, folder, id);
     // const sharpImg = width ? sharp(image).resize(width) : sharp(image);
     // return `data:image/png;base64, ${(await image.toBuffer()).toString('base64')}`;
     return `data:image/png;base64, ${(image).toString('base64')}`;
@@ -75,14 +75,14 @@ export function pin(timestamp: string, id: string): Promise<PageData> {
     return crawlerProvider.copyToBase(timestamp, id);
 }
 
-export async function setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData[]> {
+export async function setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData[]> {
     await crawlerProvider.setZoneStatus(timestamp, id, index, status);
-    return getPages(timestamp);
+    return getPages(projectId, timestamp);
 }
 
-export async function setZonesStatus(timestamp: string, id: string, status: string): Promise<PageData[]> {
+export async function setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData[]> {
     await crawlerProvider.setZonesStatus(timestamp, id, status);
-    return getPages(timestamp);
+    return getPages(projectId, timestamp);
 }
 
 export function setStatus(timestamp: string, status: string): Promise<Crawler> {
@@ -91,4 +91,8 @@ export function setStatus(timestamp: string, status: string): Promise<Crawler> {
 
 export function startCrawlerFromProject(projectId: string): Promise<StartCrawler> {
     return crawlerProvider.startCrawlerFromProject(projectId);
+}
+
+export function startCrawlers(): Promise<void> {
+    return crawlerProvider.startCrawlers();
 }

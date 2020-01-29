@@ -18,10 +18,11 @@ interface Props {
         diff?: PngDiffData;
     };
 }
+// ToDo fix projectId
 export const CodeCard = ({ id, png, url }: Props) => (
     <Card
         style={cardRightStyle}
-        cover={png && <DiffImage folder='base' id={id} />}
+        cover={png && <DiffImage folder='base' id={id} projectId="yoyo" />}
     >
         <p><Icon type="link" /> <a href={url}>{url}</a></p>
         {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}

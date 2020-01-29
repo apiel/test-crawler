@@ -37,8 +37,8 @@ function getCrawler(projectId, timestamp) {
     return crawlerProvider.getCrawler(projectId, timestamp);
 }
 exports.getCrawler = getCrawler;
-function getPages(timestamp) {
-    return crawlerProvider.getPages(timestamp);
+function getPages(projectId, timestamp) {
+    return crawlerProvider.getPages(projectId, timestamp);
 }
 exports.getPages = getPages;
 function getPins() {
@@ -61,9 +61,9 @@ function getCodes() {
     return crawlerProvider.getCodeList();
 }
 exports.getCodes = getCodes;
-function getThumbnail(folder, id, width = 300) {
+function getThumbnail(projectId, folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
-        const image = yield crawlerProvider.image(folder, id);
+        const image = yield crawlerProvider.image(projectId, folder, id);
         return `data:image/png;base64, ${(image).toString('base64')}`;
     });
 }
@@ -72,17 +72,17 @@ function pin(timestamp, id) {
     return crawlerProvider.copyToBase(timestamp, id);
 }
 exports.pin = pin;
-function setZoneStatus(timestamp, id, index, status) {
+function setZoneStatus(projectId, timestamp, id, index, status) {
     return __awaiter(this, void 0, void 0, function* () {
         yield crawlerProvider.setZoneStatus(timestamp, id, index, status);
-        return getPages(timestamp);
+        return getPages(projectId, timestamp);
     });
 }
 exports.setZoneStatus = setZoneStatus;
-function setZonesStatus(timestamp, id, status) {
+function setZonesStatus(projectId, timestamp, id, status) {
     return __awaiter(this, void 0, void 0, function* () {
         yield crawlerProvider.setZonesStatus(timestamp, id, status);
-        return getPages(timestamp);
+        return getPages(projectId, timestamp);
     });
 }
 exports.setZonesStatus = setZonesStatus;
@@ -94,3 +94,7 @@ function startCrawlerFromProject(projectId) {
     return crawlerProvider.startCrawlerFromProject(projectId);
 }
 exports.startCrawlerFromProject = startCrawlerFromProject;
+function startCrawlers() {
+    return crawlerProvider.startCrawlers();
+}
+exports.startCrawlers = startCrawlers;
