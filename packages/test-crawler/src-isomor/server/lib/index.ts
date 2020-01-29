@@ -164,16 +164,17 @@ export class CrawlerProvider {
         return crawler;
     }
 
-    getCrawler(timestamp: string): Promise<Crawler> {
-        return readJSON(join(CRAWL_FOLDER, timestamp, '_.json'));
+    getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
+        return readJSON(join(CRAWL_FOLDER, projectId, timestamp, '_.json'));
     }
 
-    async getAllCrawlers(): Promise<Crawler[]> {
-        await mkdirp(CRAWL_FOLDER);
-        const folders = await readdir(CRAWL_FOLDER);
+    async getAllCrawlers(projectId: string): Promise<Crawler[]> {
+        const projectFolder = join(CRAWL_FOLDER, projectId);
+        await mkdirp(projectFolder);
+        const folders = await readdir(projectFolder);
         const crawlers: Crawler[] = await Promise.all(
             folders.map(folder => readJSON(join(
-                CRAWL_FOLDER,
+                projectFolder,
                 folder,
                 '_.json',
             ))),
@@ -190,8 +191,8 @@ export class CrawlerProvider {
         );
     }
 
-    loadProject(id: string): Promise<Project> {
-        return readJSON(join(PROJECT_FOLDER, `${id}.json`));
+    loadProject(projectId: string): Promise<Project> {
+        return readJSON(join(PROJECT_FOLDER, `${projectId}.json`));
     }
 
     async saveProject(crawlerInput: CrawlerInput, name: string, id?: string): Promise<Project> {
@@ -204,14 +205,14 @@ export class CrawlerProvider {
         return project;
     }
 
-    async startCrawlerFromProject(file: string): Promise<CrawlerInput> {
-        const { crawlerInput } = await readJSON(file);
-        await this.startCrawler(crawlerInput, false);
-        return crawlerInput;
+    async startCrawlerFromProject(projectId: string): Promise<StartCrawler> {
+        const project = await this.loadProject(projectId);
+        // console.log('start project crawler', project);
+        return this.startCrawler(projectId, project.crawlerInput, false);
     }
 
-    async startCrawler(crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {
-        await this.cleanHistory();
+    async startCrawler(projectId: string, crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {
+        await this.cleanHistory(projectId);
         const timestamp = Math.floor(Date.now() / 1000);
         const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
 
@@ -228,7 +229,7 @@ export class CrawlerProvider {
             lastUpdate: Date.now(),
         };
 
-        const distFolder = join(CRAWL_FOLDER, (timestamp).toString());
+        const distFolder = join(CRAWL_FOLDER, projectId, (timestamp).toString());
         await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
 
         if (crawlerInput.method === CrawlerMethod.URLs) {
@@ -263,8 +264,8 @@ export class CrawlerProvider {
         }
     }
 
-    private async cleanHistory() {
-        const folders = await getFolders();
+    private async cleanHistory(projectId: string) {
+        const folders = await getFolders(projectId);
         const cleanUp = folders.slice(0, -(MAX_HISTORY - 1));
         cleanUp.forEach((folder) => {
             rimraf.sync(join(CRAWL_FOLDER, folder));

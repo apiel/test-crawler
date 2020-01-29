@@ -17,12 +17,12 @@ function getSettings() {
     });
 }
 exports.getSettings = getSettings;
-function getCrawlers() {
-    return crawlerProvider.getAllCrawlers();
+function getCrawlers(projectId) {
+    return crawlerProvider.getAllCrawlers(projectId);
 }
 exports.getCrawlers = getCrawlers;
-function loadProject(id) {
-    return crawlerProvider.loadProject(id);
+function loadProject(projectId) {
+    return crawlerProvider.loadProject(projectId);
 }
 exports.loadProject = loadProject;
 function loadProjects() {
@@ -33,8 +33,8 @@ function saveProject(crawlerInput, name, id) {
     return crawlerProvider.saveProject(crawlerInput, name, id);
 }
 exports.saveProject = saveProject;
-function getCrawler(timestamp) {
-    return crawlerProvider.getCrawler(timestamp);
+function getCrawler(projectId, timestamp) {
+    return crawlerProvider.getCrawler(projectId, timestamp);
 }
 exports.getCrawler = getCrawler;
 function getPages(timestamp) {
@@ -90,3 +90,7 @@ function setStatus(timestamp, status) {
     return crawlerProvider.setCrawlerStatus(timestamp, status);
 }
 exports.setStatus = setStatus;
+function startCrawlerFromProject(projectId) {
+    return crawlerProvider.startCrawlerFromProject(projectId);
+}
+exports.startCrawlerFromProject = startCrawlerFromProject;

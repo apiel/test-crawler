@@ -1,44 +1,63 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import { Project as ProjectType } from '../server/typing';
-import { loadProject, saveProject } from '../server/service';
+import { saveProject, startCrawlerFromProject } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
 import Icon from 'antd/lib/icon';
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox';
+import { History } from 'history';
+import { getResultsRoute } from '../routes';
+import Button from 'antd/lib/button';
+import { useProject } from './useProject';
+import { useCrawlers } from './useCrawlers';
+import List from 'antd/lib/list';
+import { timestampToString } from '../utils';
 
-const load = async (
-    id: string,
-    setProject: React.Dispatch<React.SetStateAction<ProjectType | undefined>>,
-) => {
+const onStart = (
+    history: History<any>,
+    projectId: string,
+) => async () => {
     try {
-        const list = await loadProject(id);
-        setProject(list);
+        const response = await startCrawlerFromProject(projectId);
+        history.push(getResultsRoute(projectId, response.crawler.timestamp.toString()));
     } catch (error) {
-        notification['warning']({
-            message: 'Something went wrong while loading project.',
+        notification['error']({
+            message: 'Something went wrong!',
             description: error.toString(),
         });
     }
 }
 
 const onAutoPinChange = (
-    { name, id, crawlerInput}: ProjectType,
+    { name, id, crawlerInput }: ProjectType,
     setProject: React.Dispatch<React.SetStateAction<ProjectType | undefined>>,
 ) => async ({ target: { checked } }: CheckboxChangeEvent) => {
     const project = await saveProject({ ...crawlerInput, autopin: checked }, name, id);
     setProject(project);
 }
 
-export const Project = ({
-    match: { params: { id } },
-    history,
-}: RouteComponentProps<{ id: string }>) => {
-    const [project, setProject] = React.useState<ProjectType>();
+const getCrawlerStatusIcon = (diffZoneCount: number, errorCount: number, status: string, inQueue: number) => {
+    if (inQueue > 0) {
+        return 'loading';
+    }
+    if (!diffZoneCount && errorCount === 0) {
+        return 'check';
+    }
+    if (status === 'done') {
+        return 'issues-close';
+    }
+    return 'exclamation-circle';
+}
 
-    React.useEffect(() => { load(id, setProject); }, []);
+export const Project = ({
+    match: { params: { projectId } },
+    history,
+}: RouteComponentProps<{ projectId: string }>) => {
+    const { project, setProject } = useProject(projectId);
+    const { crawlers, setCrawlers } = useCrawlers(projectId);
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>
@@ -62,6 +81,40 @@ export const Project = ({
                         Automatically pin new page founds.
                     </Checkbox>
                 </p>
+                <p>
+                    <Button
+                        icon="caret-right"
+                        size="small"
+                        onClick={onStart(history, projectId)}
+                    >
+                        Run
+                    </Button>
+                </p>
+                <List
+                    itemLayout="horizontal"
+                    bordered
+                    dataSource={crawlers}
+                    renderItem={({ timestamp, diffZoneCount, errorCount, status, inQueue }) => (
+                        <List.Item
+                            actions={[
+                                <Link to={getResultsRoute(projectId, timestamp.toString())}>
+                                    Open
+                                </Link>,
+                            ]}
+                        >
+                            <List.Item.Meta
+                                title={
+                                    <Link to={getResultsRoute(projectId, timestamp.toString())}>
+                                        {timestampToString(timestamp)}
+                                    </Link>}
+                                description={<>
+                                    <Icon type={getCrawlerStatusIcon(diffZoneCount, errorCount, status, inQueue)} />
+                                    <span> Diff: {diffZoneCount} - Error: {errorCount} - In queue: {inQueue}</span>
+                                </>}
+                            />
+                        </List.Item>
+                    )}
+                />
             </>}
         </>
     );

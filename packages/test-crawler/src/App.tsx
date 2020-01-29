@@ -51,8 +51,8 @@ const App = () => (
                 <Route path={getSettingsRoute()} exact component={Settings} />
                 <Route path={getCodeRoute(':id')} exact component={Code} />
                 <Route path={getCodesRoute()} exact component={Codes} />
-                <Route path={getResultsRoute(':timestamp')} component={CrawlerResults} />
-                <Route path={getProjectRoute(':id')} exact component={Project} />
+                <Route path={getResultsRoute(':projectId', ':timestamp')} component={CrawlerResults} />
+                <Route path={getProjectRoute(':projectId')} exact component={Project} />
             </Content>
         </Layout>
     </Router>

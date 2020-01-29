@@ -15,8 +15,8 @@ async function start() {
     if (option && value) {
         if (option === '--project') {
             const crawlerProvider = new CrawlerProvider();
-            const crawlerInput = await crawlerProvider.startCrawlerFromProject(value);
-            info('Start project', crawlerInput);
+            const result = await crawlerProvider.startCrawlerFromProject(value);
+            info('Start project', result);
         } else if (option === '--folder') {
             pagesFolder = value;
             info('Start to crawl specific queue', pagesFolder);

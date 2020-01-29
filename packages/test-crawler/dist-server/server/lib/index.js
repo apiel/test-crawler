@@ -166,14 +166,15 @@ class CrawlerProvider {
             return crawler;
         });
     }
-    getCrawler(timestamp) {
-        return fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, timestamp, '_.json'));
+    getCrawler(projectId, timestamp) {
+        return fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp, '_.json'));
     }
-    getAllCrawlers() {
+    getAllCrawlers(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield fs_extra_1.mkdirp(config_1.CRAWL_FOLDER);
-            const folders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
-            const crawlers = yield Promise.all(folders.map(folder => fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, folder, '_.json'))));
+            const projectFolder = path_1.join(config_1.CRAWL_FOLDER, projectId);
+            yield fs_extra_1.mkdirp(projectFolder);
+            const folders = yield fs_extra_1.readdir(projectFolder);
+            const crawlers = yield Promise.all(folders.map(folder => fs_extra_1.readJSON(path_1.join(projectFolder, folder, '_.json'))));
             return crawlers;
         });
     }
@@ -185,8 +186,8 @@ class CrawlerProvider {
                 .map(file => fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, file))));
         });
     }
-    loadProject(id) {
-        return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, `${id}.json`));
+    loadProject(projectId) {
+        return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, `${projectId}.json`));
     }
     saveProject(crawlerInput, name, id) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -199,21 +200,20 @@ class CrawlerProvider {
             return project;
         });
     }
-    startCrawlerFromProject(file) {
+    startCrawlerFromProject(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { crawlerInput } = yield fs_extra_1.readJSON(file);
-            yield this.startCrawler(crawlerInput, false);
-            return crawlerInput;
+            const project = yield this.loadProject(projectId);
+            return this.startCrawler(projectId, project.crawlerInput, false);
         });
     }
-    startCrawler(crawlerInput, runProcess = true) {
+    startCrawler(projectId, crawlerInput, runProcess = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.cleanHistory();
+            yield this.cleanHistory(projectId);
             const timestamp = Math.floor(Date.now() / 1000);
             const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
             const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp,
                 id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
-            const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
+            const distFolder = path_1.join(config_1.CRAWL_FOLDER, projectId, (timestamp).toString());
             yield fs_extra_1.outputJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
             if (crawlerInput.method === exports.CrawlerMethod.URLs) {
                 yield this.startUrlsCrawling(crawlerInput, distFolder);
@@ -245,9 +245,9 @@ class CrawlerProvider {
             }
         });
     }
-    cleanHistory() {
+    cleanHistory(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const folders = yield utils_1.getFolders();
+            const folders = yield utils_1.getFolders(projectId);
             const cleanUp = folders.slice(0, -(config_1.MAX_HISTORY - 1));
             cleanUp.forEach((folder) => {
                 rimraf.sync(path_1.join(config_1.CRAWL_FOLDER, folder));

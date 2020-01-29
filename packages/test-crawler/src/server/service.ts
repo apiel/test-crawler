@@ -50,3 +50,6 @@ export function setZonesStatus(...args: any) {
 export function setStatus(...args: any) {
   return isomorRemote("server-service", "test-crawler", "setStatus", args);
 }
+export function startCrawlerFromProject(...args: any) {
+  return isomorRemote("server-service", "test-crawler", "startCrawlerFromProject", args);
+}

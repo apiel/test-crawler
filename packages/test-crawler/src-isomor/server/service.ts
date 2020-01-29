@@ -20,12 +20,12 @@ export async function getSettings() {
     return crawlerProvider.getSettings();
 }
 
-export function getCrawlers(): Promise<Crawler[]> {
-    return crawlerProvider.getAllCrawlers();
+export function getCrawlers(projectId: string): Promise<Crawler[]> {
+    return crawlerProvider.getAllCrawlers(projectId);
 }
 
-export function loadProject(id: string): Promise<Project> {
-    return crawlerProvider.loadProject(id);
+export function loadProject(projectId: string): Promise<Project> {
+    return crawlerProvider.loadProject(projectId);
 }
 
 export function loadProjects(): Promise<Project[]> {
@@ -36,8 +36,8 @@ export function saveProject(crawlerInput: CrawlerInput, name: string, id?: strin
     return crawlerProvider.saveProject(crawlerInput, name, id);
 }
 
-export function getCrawler(timestamp: string): Promise<Crawler> {
-    return crawlerProvider.getCrawler(timestamp);
+export function getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
+    return crawlerProvider.getCrawler(projectId, timestamp);
 }
 
 export function getPages(timestamp: string): Promise<PageData[]> {
@@ -87,4 +87,8 @@ export async function setZonesStatus(timestamp: string, id: string, status: stri
 
 export function setStatus(timestamp: string, status: string): Promise<Crawler> {
     return crawlerProvider.setCrawlerStatus(timestamp, status);
+}
+
+export function startCrawlerFromProject(projectId: string): Promise<StartCrawler> {
+    return crawlerProvider.startCrawlerFromProject(projectId);
 }

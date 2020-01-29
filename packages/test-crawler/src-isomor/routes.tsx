@@ -4,5 +4,5 @@ export const getSettingsRoute = () => '/settings';
 export const getPinsRoute = () => '/pins';
 export const getCodeRoute = (id: string) => `/code/${id}`;
 export const getCodesRoute = () => `/code`;
-export const getResultsRoute = (timestamp: string) => `/results/${timestamp}`;
-export const getProjectRoute = (id: string) => `/project/${id}`;
+export const getResultsRoute = (projectId: string, timestamp: string) => `/results/${projectId}/${timestamp}`;
+export const getProjectRoute = (projectId: string) => `/project/${projectId}`;

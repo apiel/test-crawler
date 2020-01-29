@@ -10,6 +10,7 @@ import { Crawler } from '../server/typing';
 import { getCrawler, getCrawlers } from '../server/service';
 import { useAsyncCacheEffect, useAsyncCache, Cache, Update } from 'react-async-cache';
 import { ErrorHandler } from '../common/ErrorHandler';
+import { useProject } from '../projects/useProject';
 
 const parseRespAndUpdateCache = (
     response: Crawler,
@@ -39,11 +40,11 @@ const refreshTimeout = (call: () => Promise<string>) => {
 }
 
 export const CrawlerResults = ({
-    match: { params: { timestamp } },
-    history,
-}: RouteComponentProps<{ timestamp: string }>) => {
+    match: { params: { timestamp, projectId } },
+}: RouteComponentProps<{ timestamp: string, projectId: string }>) => {
+    const { project } = useProject(projectId);
     const { cache, update } = useAsyncCache<Crawler[]>();
-    const { error, call, response } = useAsyncCacheEffect<Crawler>(getCrawler, timestamp);
+    const { error, call, response } = useAsyncCacheEffect<Crawler>(getCrawler, projectId, timestamp);
     React.useEffect(() => {
         parseRespAndUpdateCache(response, cache, update);
     }, [response]);
@@ -54,7 +55,7 @@ export const CrawlerResults = ({
     refreshTimeout(call);
     return response ? (
         <>
-            <CrawlerInfo crawler={response} history={history} />
+            <CrawlerInfo crawler={response} project={project} />
             <Pages timestamp={timestamp} lastUpdate={lastUpdate} />
         </>
     ) : <Spin />;

@@ -13,9 +13,11 @@ const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const md5 = require("md5");
 const config_1 = require("./config");
-function getFolders() {
+function getFolders(projectId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const folders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
+        const projectFolder = path_1.join(config_1.CRAWL_FOLDER, projectId);
+        yield fs_extra_1.mkdirp(projectFolder);
+        const folders = yield fs_extra_1.readdir(projectFolder);
         folders.sort();
         return folders;
     });
