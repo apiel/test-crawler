@@ -6,6 +6,7 @@ import PagesActionPin from './PagesActionPin';
 import { PagesActionFullscreen } from './PagesActionFullscreen';
 
 interface Props {
+    projectId: string;
     timestamp: string;
     id: string;
     url: string;
@@ -16,8 +17,8 @@ interface Props {
     };
 }
 
-export const PagesActions = ({ timestamp, id, png, url, pageError }: Props) => [
-    ...[png && <PagesActionFullscreen png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
+export const PagesActions = ({ projectId, timestamp, id, png, url, pageError }: Props) => [
+    ...[png && <PagesActionFullscreen projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
     <PagesActionZone type="check" timestamp={timestamp} id={id} status={'valid'} zones={png && png.diff ? png.diff.zones : []} />,
     <PagesActionZone type="warning" timestamp={timestamp} id={id} status={'report'} zones={png && png.diff ? png.diff.zones : []} />,
     <PagesActionPin timestamp={timestamp} id={id} />,

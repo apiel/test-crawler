@@ -39,7 +39,7 @@ const onSetStatus = (
 }
 
 export const DiffImageButtons = (props: Props) => {
-    // ToDo fix
+    // ToDo fix, dont use async cache? see Pages.tsx
     const { update } = useAsyncCache();
     return (
         <>

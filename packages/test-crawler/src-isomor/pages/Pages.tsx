@@ -9,7 +9,6 @@ import {
     masonryOptions,
     cardStyle,
 } from './pageStyle';
-import { DiffImage } from '../diff/DiffImage'
 import { PageData } from '../server/typing';
 import { getPages } from '../server/service';
 import { ErrorHandler } from '../common/ErrorHandler';
@@ -18,6 +17,7 @@ import { Page } from './Page';
 import { PagesActions } from './PagesActions';
 import { availableFilters } from '../search/search';
 import { setMasonry, onMasonryImg } from '../common/refreshMasonry';
+import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 
 interface Props {
     projectId: string;
@@ -44,7 +44,7 @@ export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
                             <Card
                                 key={id}
                                 style={cardStyle}
-                                cover={png && <DiffImage
+                                cover={png && <DiffImageWithZone
                                     projectId={projectId}
                                     folder={timestamp}
                                     id={id}
@@ -52,7 +52,7 @@ export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
                                     originalWidth={png.width}
                                     onImg={onMasonryImg}
                                 />}
-                                actions={PagesActions({ id, timestamp, png, url, pageError })}
+                                actions={PagesActions({ projectId, id, timestamp, png, url, pageError })}
                             >
                                 <Page url={url} pageError={pageError} png={png} />
                             </Card>

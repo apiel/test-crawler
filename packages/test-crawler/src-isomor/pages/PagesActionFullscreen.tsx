@@ -1,9 +1,9 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
 import Modal from 'antd/lib/modal';
-import { DiffImage } from '../diff/DiffImage';
 import { PngDiffData } from '../server/typing';
 import { Page } from './Page';
+import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 
 const onClick = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => () => {
     setVisible(true);
@@ -14,6 +14,7 @@ const onCancel = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => 
 }
 
 interface Props {
+    projectId: string;
     timestamp: string;
     id: string;
     url: string;
@@ -23,8 +24,8 @@ interface Props {
         diff?: PngDiffData;
     };
 }
-// ToDo fix project id
-export const PagesActionFullscreen = ({ timestamp, id, png, url, pageError }: Props) => {
+
+export const PagesActionFullscreen = ({ projectId, timestamp, id, png, url, pageError }: Props) => {
     const [visible, setVisible] = React.useState<boolean>(false);
     return (
         <>
@@ -36,8 +37,8 @@ export const PagesActionFullscreen = ({ timestamp, id, png, url, pageError }: Pr
                 width={png.width + 40}
             >
                 <div style={{position: "relative"}}>
-                    <DiffImage
-                        projectId="yoyo"
+                    <DiffImageWithZone
+                        projectId={projectId}
                         folder={timestamp}
                         id={id}
                         zones={png.diff && png.diff.zones}
