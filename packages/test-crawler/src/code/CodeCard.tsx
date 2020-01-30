@@ -11,6 +11,7 @@ import { PngDiffData } from '../server/typing';
 import { cardRightStyle } from './codeStyle';
 
 interface Props {
+    projectId: string,
     id: string;
     url: string;
     png?: {
@@ -18,11 +19,11 @@ interface Props {
         diff?: PngDiffData;
     };
 }
-// ToDo fix projectId
-export const CodeCard = ({ id, png, url }: Props) => (
+
+export const CodeCard = ({ projectId, id, png, url }: Props) => (
     <Card
         style={cardRightStyle}
-        cover={png && <DiffImage folder='base' id={id} projectId="yoyo" />}
+        cover={png && <DiffImage folder='base' id={id} projectId={projectId} />}
     >
         <p><Icon type="link" /> <a href={url}>{url}</a></p>
         {!png && <p><Icon type="picture" theme={iconTheme} /> No screenshot available</p>}

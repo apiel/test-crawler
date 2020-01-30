@@ -32,7 +32,7 @@ function getLinks(page, crawler) {
         return hrefs.filter(href => href.indexOf(baseUrl) === 0);
     });
 }
-function loadPage(id, url, distFolder, retry = 0) {
+function loadPage(projectId, id, url, distFolder, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         consumerRunning++;
         let links;
@@ -68,7 +68,7 @@ function loadPage(id, url, distFolder, retry = 0) {
                 const urls = util_1.isArray(links) ? links : yield getLinks(page, crawler);
                 yield addUrls(urls, viewport, distFolder, limit);
             }
-            const result = yield diff_1.prepare(id, distFolder, crawler);
+            const result = yield diff_1.prepare(projectId, id, distFolder, crawler);
             resultsQueue.push({
                 result,
                 folder: distFolder,
@@ -79,7 +79,7 @@ function loadPage(id, url, distFolder, retry = 0) {
             logol_1.error(`Load page error (attempt ${retry + 1})`, err.toString());
             if (retry < 2) {
                 logol_1.warn('Retry crawl', url);
-                yield loadPage(id, url, distFolder, retry + 1);
+                yield loadPage(projectId, id, url, distFolder, retry + 1);
             }
             else {
                 yield utils_1.savePageInfo(filePath('json'), { url, id, error: err.toString() });
@@ -133,9 +133,9 @@ function addUrls(urls, viewport, distFolder, limit) {
     });
 }
 ;
-function pickFromQueue(pagesFolder) {
+function pickFromQueue(projectId, pagesFolder) {
     return __awaiter(this, void 0, void 0, function* () {
-        const distFolder = path_1.join(config_1.CRAWL_FOLDER, pagesFolder);
+        const distFolder = path_1.join(config_1.CRAWL_FOLDER, projectId, pagesFolder);
         const queueFolder = utils_1.getQueueFolder(distFolder);
         if (yield fs_extra_1.pathExists(queueFolder)) {
             const [file] = yield fs_extra_1.readdir(queueFolder);
@@ -145,7 +145,7 @@ function pickFromQueue(pagesFolder) {
                 const { id, url } = yield fs_extra_1.readJSON(queueFile);
                 const filePath = utils_1.getFilePath(id, distFolder);
                 yield fs_extra_1.move(queueFile, filePath('json'));
-                return { id, url, distFolder };
+                return { projectId, id, url, distFolder };
             }
         }
     });
@@ -153,10 +153,10 @@ function pickFromQueue(pagesFolder) {
 function pickFromQueues() {
     return __awaiter(this, void 0, void 0, function* () {
         const projectFolders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
-        for (const projectFolder of projectFolders) {
-            const pagesFolders = yield fs_extra_1.readdir(path_1.join(config_1.CRAWL_FOLDER, projectFolder));
+        for (const projectId of projectFolders) {
+            const pagesFolders = yield fs_extra_1.readdir(path_1.join(config_1.CRAWL_FOLDER, projectId));
             for (const pagesFolder of pagesFolders) {
-                const toCrawl = yield pickFromQueue(path_1.join(projectFolder, pagesFolder));
+                const toCrawl = yield pickFromQueue(projectId, pagesFolder);
                 if (toCrawl) {
                     return toCrawl;
                 }
@@ -165,27 +165,27 @@ function pickFromQueues() {
     });
 }
 let consumeQueuesRetry = 0;
-function consumeQueues(consumeTimeout, pagesFolder) {
+function consumeQueues(consumeTimeout, crawlTarget) {
     return __awaiter(this, void 0, void 0, function* () {
         if (consumerRunning < config_1.CONSUMER_COUNT) {
             let toCrawl;
-            if (pagesFolder) {
-                toCrawl = yield pickFromQueue(pagesFolder);
+            if (crawlTarget) {
+                toCrawl = yield pickFromQueue(crawlTarget.projectId, crawlTarget.pagesFolder);
             }
             else {
                 toCrawl = yield pickFromQueues();
             }
             if (toCrawl) {
                 consumeQueuesRetry = 0;
-                const { id, url, distFolder } = toCrawl;
-                loadPage(id, url, distFolder);
-                consumeQueues(consumeTimeout, pagesFolder);
+                const { projectId, id, url, distFolder } = toCrawl;
+                loadPage(projectId, id, url, distFolder);
+                consumeQueues(consumeTimeout, crawlTarget);
                 return;
             }
         }
         if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
             consumeQueuesRetry++;
-            setTimeout(() => consumeQueues(consumeTimeout, pagesFolder), 500);
+            setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
         }
     });
 }
@@ -228,11 +228,11 @@ function prepareFolders() {
         }
     });
 }
-function crawl(pagesFolder, consumeTimeout = config_1.CONSUME_TIMEOUT) {
+function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
         consumeResults(consumeTimeout);
-        consumeQueues(consumeTimeout, pagesFolder);
+        consumeQueues(consumeTimeout, crawlTarget);
     });
 }
 exports.crawl = crawl;

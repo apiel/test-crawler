@@ -13,6 +13,7 @@ import { getCodeRoute } from '../routes';
 import { getViewportName } from '../viewport';
 
 interface Props {
+    projectId: string;
     id: string;
     url: string;
     viewport?: Viewport,
@@ -22,11 +23,11 @@ interface Props {
         diff?: PngDiffData;
     };
 }
-// ToDo fix project id
-export const PinPage = ({ id, url, viewport, onImg, png }: Props) => (
+
+export const PinPage = ({ projectId, id, url, viewport, onImg, png }: Props) => (
     <Card
         style={cardStyle}
-        cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId="yoyo" />}
+        cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} />}
         actions={[
             <Icon type="delete" title={`Delete pin`} onClick={() => alert('Not yet implemented')} />,
             (<Link to={{

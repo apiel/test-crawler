@@ -14,11 +14,11 @@ export const SideMenu = () => (
                     <span className="nav-text">Projects</span>
                     <Link to={getHomeRoute()} />
                 </Menu.Item>
-                <Menu.Item key="pins">
+                {/* <Menu.Item key="pins">
                     <Icon type="pushpin" />
                     <span className="nav-text">Pins</span>
                     <Link to={getPinsRoute()} />
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item key="codes">
                     <Icon type="code" />
                     <span className="nav-text">Codes</span>

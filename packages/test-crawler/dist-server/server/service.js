@@ -34,19 +34,21 @@ function saveProject(crawlerInput, name, id) {
 }
 exports.saveProject = saveProject;
 function getCrawler(projectId, timestamp) {
-    return crawlerProvider.getCrawler(projectId, timestamp);
+    return __awaiter(this, void 0, void 0, function* () {
+        return crawlerProvider.getCrawler(projectId, timestamp);
+    });
 }
 exports.getCrawler = getCrawler;
 function getPages(projectId, timestamp) {
     return crawlerProvider.getPages(projectId, timestamp);
 }
 exports.getPages = getPages;
-function getPins() {
-    return crawlerProvider.getBasePages();
+function getPins(projectId) {
+    return crawlerProvider.getBasePages(projectId);
 }
 exports.getPins = getPins;
-function getPin(id) {
-    return crawlerProvider.getBasePage(id);
+function getPin(projectId, id) {
+    return crawlerProvider.getBasePage(projectId, id);
 }
 exports.getPin = getPin;
 function setCode(code) {
@@ -68,20 +70,20 @@ function getThumbnail(projectId, folder, id, width = 300) {
     });
 }
 exports.getThumbnail = getThumbnail;
-function pin(timestamp, id) {
-    return crawlerProvider.copyToBase(timestamp, id);
+function pin(projectId, timestamp, id) {
+    return crawlerProvider.copyToBase(projectId, timestamp, id);
 }
 exports.pin = pin;
 function setZoneStatus(projectId, timestamp, id, index, status) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield crawlerProvider.setZoneStatus(timestamp, id, index, status);
+        yield crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
         return getPages(projectId, timestamp);
     });
 }
 exports.setZoneStatus = setZoneStatus;
 function setZonesStatus(projectId, timestamp, id, status) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield crawlerProvider.setZonesStatus(timestamp, id, status);
+        yield crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
         return getPages(projectId, timestamp);
     });
 }

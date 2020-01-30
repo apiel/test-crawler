@@ -42,19 +42,20 @@ interface Props {
     index: number;
     status: string;
     width: number;
+    projectId: string;
 };
 
-export const DiffZone = ({ folder, id, index, originalWidth, zone, status, width }: Props) => {
+export const DiffZone = ({ projectId, folder, id, index, originalWidth, zone, status, width }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail('base', id, width));
+        setThumb(await getThumbnail(projectId, 'base', id, width));
     }
     useEffect(() => { load(); }, []);
     const [hover, setHover] = useState(false);
     const ratio = originalWidth / width;
     return (
         <Popover key={`${id}-${index}`} content={(
-            <DiffImageButtons index={index} timestamp={folder} id={id} />
+            <DiffImageButtons index={index} timestamp={folder} id={id} projectId={projectId} />
         )} trigger="click">
             <div
                 style={zoneStyle(zone, ratio, thumb, hover, status) as any}

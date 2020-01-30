@@ -16,6 +16,7 @@ const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");
 const index_1 = require("../index");
+const path_1 = require("path");
 function parsePng(data, filePath, basePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = filePath('png');
@@ -64,9 +65,9 @@ function parseZones(basePath, zones) {
         }));
     });
 }
-function prepare(id, distFolder, crawler) {
+function prepare(projectId, id, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        const basePath = utils_1.getFilePath(id, config_1.BASE_FOLDER);
+        const basePath = utils_1.getFilePath(id, path_1.join(config_1.BASE_FOLDER, projectId));
         const filePath = utils_1.getFilePath(id, distFolder);
         const data = yield fs_extra_1.readJson(filePath('json'));
         let diffZoneCount = 0;
@@ -80,7 +81,7 @@ function prepare(id, distFolder, crawler) {
         }
         else if (crawler.autopin) {
             const crawlerProvider = new index_1.CrawlerProvider();
-            crawlerProvider.copyToBase(crawler.timestamp.toString(), id);
+            crawlerProvider.copyToBase(projectId, crawler.timestamp.toString(), id);
         }
         return {
             diffZoneCount,

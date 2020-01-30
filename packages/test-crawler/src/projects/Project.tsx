@@ -9,7 +9,7 @@ import { getViewportName } from '../viewport';
 import Icon from 'antd/lib/icon';
 import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { History } from 'history';
-import { getResultsRoute } from '../routes';
+import { getResultsRoute, getPinsRoute } from '../routes';
 import Button from 'antd/lib/button';
 import { useProject } from './useProject';
 import { useCrawlers } from './useCrawlers';
@@ -88,7 +88,15 @@ export const Project = ({
                         onClick={onStart(history, projectId)}
                     >
                         Run
-                    </Button>
+                    </Button> &nbsp;
+                    <Link to={getPinsRoute(projectId)}>
+                        <Button
+                            icon="pushpin"
+                            size="small"
+                        >
+                            Pins
+                        </Button>
+                    </Link>
                 </p>
                 <List
                     itemLayout="horizontal"

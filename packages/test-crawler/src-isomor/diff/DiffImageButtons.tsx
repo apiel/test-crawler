@@ -18,13 +18,17 @@ interface Props {
     index: number;
     timestamp: string;
     id: string;
+    projectId: string;
 }
 
-const onSetStatus = (update: Update<PageData[]>, status: string, { timestamp, id, index }: Props) => async () => {
+const onSetStatus = (
+    update: Update<PageData[]>,
+    status: string,
+    { timestamp, id, index, projectId }: Props,
+) => async () => {
     try {
-        // ToDo fix
-        const pages = await setZoneStatus('yoyo', timestamp.toString(), id, index, status);
-        update(pages, getPages, timestamp);
+        const pages = await setZoneStatus(projectId, timestamp.toString(), id, index, status);
+        update(pages, getPages, projectId, timestamp);
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {
         notification['error']({
@@ -35,6 +39,7 @@ const onSetStatus = (update: Update<PageData[]>, status: string, { timestamp, id
 }
 
 export const DiffImageButtons = (props: Props) => {
+    // ToDo fix
     const { update } = useAsyncCache();
     return (
         <>

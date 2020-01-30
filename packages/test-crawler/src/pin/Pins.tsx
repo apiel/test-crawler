@@ -14,11 +14,16 @@ import { ErrorHandler } from '../common/ErrorHandler';
 import { PinPage } from './PinPage';
 import { Search } from '../search/Search';
 import { setMasonry, onMasonryImg } from '../common/refreshMasonry';
+import { RouteComponentProps } from 'react-router-dom';
+import { usePins } from './usePins';
+import { ProjectName } from '../projects/ProjectName';
 
 const { Title } = Typography;
 
-export const Pins = () => {
-    const { response, error } = useAsyncCacheEffect<PageData[]>(getPins);
+export const Pins = ({
+    match: { params: { projectId } },
+}: RouteComponentProps<{ projectId: string }>) => {
+    const { pins: response, error } = usePins(projectId);
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
@@ -26,6 +31,7 @@ export const Pins = () => {
     return (
         <>
             <Title level={3}>Pins</Title>
+            <ProjectName projectId={projectId} />
             <Search response={response}>
                 {(pins) => pins ? (
                     <Masonry
@@ -35,6 +41,7 @@ export const Pins = () => {
                     >
                         {pins.map(({ id, url, png, viewport }: PageData) => (
                             <PinPage
+                                projectId={projectId}
                                 id={id}
                                 key={id}
                                 url={url}

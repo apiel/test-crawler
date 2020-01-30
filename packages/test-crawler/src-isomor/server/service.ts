@@ -36,7 +36,7 @@ export function saveProject(crawlerInput: CrawlerInput, name: string, id?: strin
     return crawlerProvider.saveProject(crawlerInput, name, id);
 }
 
-export function getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
+export async function getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
     return crawlerProvider.getCrawler(projectId, timestamp);
 }
 
@@ -44,12 +44,12 @@ export function getPages(projectId: string, timestamp: string): Promise<PageData
     return crawlerProvider.getPages(projectId, timestamp);
 }
 
-export function getPins(): Promise<PageData[]> {
-    return crawlerProvider.getBasePages();
+export function getPins(projectId: string): Promise<PageData[]> {
+    return crawlerProvider.getBasePages(projectId);
 }
 
-export function getPin(id: string): Promise<PageData> {
-    return crawlerProvider.getBasePage(id);
+export function getPin(projectId: string, id: string): Promise<PageData> {
+    return crawlerProvider.getBasePage(projectId, id);
 }
 
 export function setCode(code: Code): Promise<void> {
@@ -71,17 +71,17 @@ export async function getThumbnail(projectId: string, folder: string, id: string
     return `data:image/png;base64, ${(image).toString('base64')}`;
 }
 
-export function pin(timestamp: string, id: string): Promise<PageData> {
-    return crawlerProvider.copyToBase(timestamp, id);
+export function pin(projectId: string, timestamp: string, id: string): Promise<PageData> {
+    return crawlerProvider.copyToBase(projectId, timestamp, id);
 }
 
 export async function setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData[]> {
-    await crawlerProvider.setZoneStatus(timestamp, id, index, status);
+    await crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
     return getPages(projectId, timestamp);
 }
 
 export async function setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData[]> {
-    await crawlerProvider.setZonesStatus(timestamp, id, status);
+    await crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
     return getPages(projectId, timestamp);
 }
 

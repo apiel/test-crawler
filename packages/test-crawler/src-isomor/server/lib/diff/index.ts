@@ -8,6 +8,7 @@ import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
 import { PageData, Crawler } from '../../typing';
 import { FilePath } from '../utils';
 import { CrawlerProvider } from '../index';
+import { join } from 'path';
 
 async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
     const file = filePath('png');
@@ -69,8 +70,8 @@ async function parseZones(basePath: FilePath, zones: Zone[]) {
     }));
 }
 
-export async function prepare(id: string, distFolder: string, crawler: Crawler) {
-    const basePath = getFilePath(id, BASE_FOLDER);
+export async function prepare(projectId: string, id: string, distFolder: string, crawler: Crawler) {
+    const basePath = getFilePath(id, join(BASE_FOLDER, projectId));
     const filePath = getFilePath(id, distFolder);
     const data = await readJson(filePath('json'));
 
@@ -83,7 +84,7 @@ export async function prepare(id: string, distFolder: string, crawler: Crawler) 
         }
     } else if (crawler.autopin) {
         const crawlerProvider = new CrawlerProvider();
-        crawlerProvider.copyToBase(crawler.timestamp.toString(), id);
+        crawlerProvider.copyToBase(projectId, crawler.timestamp.toString(), id);
         // we might want to put a flag to the page saying that it was automatically pin
     }
     return {

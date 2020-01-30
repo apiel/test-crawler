@@ -47,7 +47,7 @@ const App = () => (
             <Content style={contentStyle}>
                 <Route path={getHomeRoute()} exact component={Projects} />
                 <Route path={getNewProjectRoute()} exact component={NewProject} />
-                <Route path={getPinsRoute()} exact component={Pins} />
+                <Route path={getPinsRoute(':projectId')} exact component={Pins} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
                 <Route path={getCodeRoute(':id')} exact component={Code} />
                 <Route path={getCodesRoute()} exact component={Codes} />

@@ -2,15 +2,14 @@ import React from 'react';
 import Typography from 'antd/lib/typography';
 import Progress from 'antd/lib/progress';
 import Icon from 'antd/lib/icon';
-import { Crawler, Project } from '../server/typing';
+import { Crawler } from '../server/typing';
 import { duration } from 'moment';
 import 'moment-duration-format';
 
 import { timestampToString } from '../utils';
 import { SwitchStatus } from './SwitchStatus';
 import { getViewportName } from '../viewport';
-import { Link } from 'react-router-dom';
-import { getProjectRoute } from '../routes';
+import { ProjectName } from '../projects/ProjectName';
 
 const { Title } = Typography;
 
@@ -38,8 +37,8 @@ export const CrawlerInfo = ({
         limit,
         viewport,
     },
-    project,
-}: { crawler: Crawler, project?: Project }) => {
+    projectId,
+}: { crawler: Crawler, projectId: string }) => {
     const total = urlsCount + inQueue;
     const percent = Math.floor(urlsCount / total * 100);
     const screen = getViewportName(viewport);
@@ -48,9 +47,7 @@ export const CrawlerInfo = ({
             <Title level={3}>{timestampToString(timestamp)}</Title>
             {(diffZoneCount > 0 || errorCount > 0)
                 && <p><SwitchStatus status={status} timestamp={timestamp} /></p>}
-            {!!project && <p><b>Project:</b> <Link to={getProjectRoute(project.id)}>
-                {project.name}
-            </Link></p>}
+            <ProjectName projectId={projectId} />
             <p><b>URL:</b> {url}</p>
             <p><b>Screen:</b> {screen}</p>
             <p>

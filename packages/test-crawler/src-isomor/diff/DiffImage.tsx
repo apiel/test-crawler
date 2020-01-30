@@ -19,7 +19,15 @@ interface Props {
     onImg?: () => void;
 };
 
-export const DiffImage = ({ projectId, folder, id, zones, originalWidth = 0, onImg = () => {}, width = imgStyle.width }: Props) => {
+export const DiffImage = ({
+    projectId,
+    folder,
+    id,
+    zones,
+    originalWidth = 0,
+    onImg = () => { },
+    width = imgStyle.width,
+}: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
         setThumb(await getThumbnail(projectId, folder, id, width));
@@ -29,7 +37,10 @@ export const DiffImage = ({ projectId, folder, id, zones, originalWidth = 0, onI
     return thumb ? (
         <div style={coverStyle as any}>
             {zones && zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
-                <DiffZone {...{ folder, id, index, originalWidth, zone, status, width }} key={`zone-${id}-${index}`} />)}
+                <DiffZone
+                    {...{ projectId, folder, id, index, originalWidth, zone, status, width }}
+                    key={`zone-${id}-${index}`}
+                />)}
             <img style={{ width }} alt="" src={thumb} />
         </div>) : null;
 }

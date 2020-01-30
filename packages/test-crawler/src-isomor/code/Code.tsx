@@ -63,7 +63,7 @@ export const Code = ({ match: { params: { id } }, location }: Props) => {
                                 : `module.exports = async function run(page) {\n// your code\n}`}
                             style={aceEditorStyle}
                         />
-                        {/* {pin && <CodeCard id={pin.id} png={pin.png} url={pin.url} />} */}
+                        {/* {pin && <CodeCard id={pin.id} png={pin.png} url={pin.url} projectId={projectId} />} */}
                     </Form>
                 ) : <Spin />
             }

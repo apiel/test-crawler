@@ -47,7 +47,7 @@ async function getLinks(page: Page, crawler: Crawler): Promise<string[]> {
     return hrefs.filter(href => href.indexOf(baseUrl) === 0);
 }
 
-async function loadPage(id: string, url: string, distFolder: string, retry: number = 0) {
+async function loadPage(projectId: string, id: string, url: string, distFolder: string, retry: number = 0) {
     consumerRunning++;
     let links: string[];
     const filePath = getFilePath(id, distFolder);
@@ -98,7 +98,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
             await addUrls(urls, viewport, distFolder, limit);
         }
 
-        const result = await prepare(id, distFolder, crawler);
+        const result = await prepare(projectId, id, distFolder, crawler);
         resultsQueue.push({
             result,
             folder: distFolder,
@@ -108,7 +108,7 @@ async function loadPage(id: string, url: string, distFolder: string, retry: numb
         error(`Load page error (attempt ${retry + 1})`, err.toString());
         if (retry < 2) {
             warn('Retry crawl', url);
-            await loadPage(id, url, distFolder, retry + 1);
+            await loadPage(projectId, id, url, distFolder, retry + 1);
         } else {
             await savePageInfo(filePath('json'), { url, id, error: err.toString() });
             resultsQueue.push({
@@ -175,13 +175,14 @@ async function addUrls(urls: string[], viewport: Viewport, distFolder: string, l
 }
 
 interface ToCrawl {
+    projectId: string;
     id: any;
     url: any;
     distFolder: string;
 };
 
-async function pickFromQueue(pagesFolder: string): Promise<ToCrawl> {
-    const distFolder = join(CRAWL_FOLDER, pagesFolder);
+async function pickFromQueue(projectId: string, pagesFolder: string): Promise<ToCrawl> {
+    const distFolder = join(CRAWL_FOLDER, projectId, pagesFolder);
     const queueFolder = getQueueFolder(distFolder);
     if (await pathExists(queueFolder)) {
         const [file] = await readdir(queueFolder);
@@ -191,17 +192,17 @@ async function pickFromQueue(pagesFolder: string): Promise<ToCrawl> {
             const { id, url } = await readJSON(queueFile);
             const filePath = getFilePath(id, distFolder);
             await move(queueFile, filePath('json'));
-            return { id, url, distFolder };
+            return { projectId, id, url, distFolder };
         }
     }
 }
 
 async function pickFromQueues(): Promise<ToCrawl> {
     const projectFolders = await readdir(CRAWL_FOLDER);
-    for (const projectFolder of projectFolders) {
-        const pagesFolders = await readdir(join(CRAWL_FOLDER, projectFolder));
+    for (const projectId of projectFolders) {
+        const pagesFolders = await readdir(join(CRAWL_FOLDER, projectId));
         for (const pagesFolder of pagesFolders) {
-            const toCrawl = await pickFromQueue(join(projectFolder, pagesFolder));
+            const toCrawl = await pickFromQueue(projectId, pagesFolder);
             if (toCrawl) {
                 return toCrawl;
             }
@@ -210,26 +211,26 @@ async function pickFromQueues(): Promise<ToCrawl> {
 }
 
 let consumeQueuesRetry = 0;
-async function consumeQueues(consumeTimeout: number, pagesFolder?: string) {
+async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
     if (consumerRunning < CONSUMER_COUNT) {
         let toCrawl: ToCrawl;
-        if (pagesFolder) {
-            toCrawl = await pickFromQueue(pagesFolder);
+        if (crawlTarget) {
+            toCrawl = await pickFromQueue(crawlTarget.projectId, crawlTarget.pagesFolder);
         } else {
             toCrawl = await pickFromQueues();
         }
         // console.log('toCrawl', toCrawl);
         if (toCrawl) {
             consumeQueuesRetry = 0;
-            const { id, url, distFolder } = toCrawl;
-            loadPage(id, url, distFolder);
-            consumeQueues(consumeTimeout, pagesFolder);
+            const { projectId, id, url, distFolder } = toCrawl;
+            loadPage(projectId, id, url, distFolder);
+            consumeQueues(consumeTimeout, crawlTarget);
             return;
         }
     }
     if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
         consumeQueuesRetry++;
-        setTimeout(() => consumeQueues(consumeTimeout, pagesFolder), 500);
+        setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
     }
 }
 
@@ -272,8 +273,12 @@ async function prepareFolders() {
     }
 }
 
-export async function crawl(pagesFolder?: string, consumeTimeout = CONSUME_TIMEOUT) {
+interface CrawlTarget {
+    pagesFolder: string;
+    projectId: string;
+}
+export async function crawl(crawlTarget?: CrawlTarget, consumeTimeout = CONSUME_TIMEOUT) {
     await prepareFolders();
     consumeResults(consumeTimeout);
-    consumeQueues(consumeTimeout, pagesFolder);
+    consumeQueues(consumeTimeout, crawlTarget);
 }

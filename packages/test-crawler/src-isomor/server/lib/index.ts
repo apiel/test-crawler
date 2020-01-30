@@ -43,12 +43,12 @@ export class CrawlerProvider {
         };
     }
 
-    async setZoneStatus(timestamp: string, id: string, index: number, status: string): Promise<PageData> {
-        const folder = join(CRAWL_FOLDER, timestamp);
+    async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
+        const folder = join(CRAWL_FOLDER, projectId, timestamp);
         const filePath = getFilePath(id, folder);
         const data: PageData = await readJson(filePath('json'));
         if (status === 'pin') {
-            const basePath = getFilePath(id, BASE_FOLDER);
+            const basePath = getFilePath(id, join(BASE_FOLDER, projectId));
             const base: PageData = await readJson(basePath('json'));
 
             base.png.diff.zones.push({ ...data.png.diff.zones[index], status });
@@ -64,22 +64,23 @@ export class CrawlerProvider {
         return data;
     }
 
-    async setZonesStatus(timestamp: string, id: string, status: string): Promise<PageData> {
-        const folder = join(CRAWL_FOLDER, timestamp);
+    async setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
+        const folder = join(CRAWL_FOLDER, projectId, timestamp);
         const filePath = getFilePath(id, folder);
         const page: PageData = await readJson(filePath('json'));
         let newPage: PageData;
         for (let index = 0; index < page.png.diff.zones.length; index++) {
-            newPage = await this.setZoneStatus(timestamp, id, index, status);
+            newPage = await this.setZoneStatus(projectId, timestamp, id, index, status);
         }
         return newPage;
     }
 
-    async copyToBase(timestamp: string, id: string): Promise<PageData> {
-        await mkdirp(BASE_FOLDER);
-        const folder = join(CRAWL_FOLDER, timestamp);
+    async copyToBase(projectId: string, timestamp: string, id: string): Promise<PageData> {
+        const baseFolder = join(BASE_FOLDER, projectId);
+        await mkdirp(baseFolder);
+        const folder = join(CRAWL_FOLDER, projectId, timestamp);
         const filePath = getFilePath(id, folder);
-        const basePath = getFilePath(id, BASE_FOLDER);
+        const basePath = getFilePath(id, baseFolder);
 
         const data: PageData = await readJson(filePath('json'));
         data.png.diff = {
@@ -129,12 +130,14 @@ export class CrawlerProvider {
         return getCodeList();
     }
 
-    getBasePages(): Promise<PageData[]> {
-        return this.getPagesInFolder(BASE_FOLDER);
+    getBasePages(projectId: string): Promise<PageData[]> {
+        const folder = join(BASE_FOLDER, projectId);
+        return this.getPagesInFolder(folder);
     }
 
-    getBasePage(id: string): Promise<PageData> {
-        return this.getPageInFolder(BASE_FOLDER, id);
+    getBasePage(projectId: string, id: string): Promise<PageData> {
+        const folder = join(BASE_FOLDER, projectId);
+        return this.getPageInFolder(folder, id);
     }
 
     getPages(projectId: string, timestamp: string): Promise<PageData[]> {
@@ -242,7 +245,7 @@ export class CrawlerProvider {
         if (runProcess) {
             // exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
             // exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
-            crawl(join(projectId, timestamp.toString()), 30);
+            crawl({ projectId, pagesFolder: timestamp.toString() }, 30);
         }
 
         return {
