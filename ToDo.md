@@ -1,3 +1,8 @@
+- breadcrumb
+- 
+
+
+
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)
 - make it easy to setup
 - need to work globally

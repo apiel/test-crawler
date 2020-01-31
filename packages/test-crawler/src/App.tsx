@@ -1,13 +1,13 @@
 import React from 'react';
 import Layout from 'antd/lib/layout';
 import Typography from 'antd/lib/typography';
+import Breadcrumb from 'antd/lib/breadcrumb';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import './App.css';
 import NewProject from './new-project/NewProject';
 import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
-import { SideMenu } from './side-menu/SideMenu';
 import {
     getHomeRoute, getResultsRoute, getPinsRoute, getProjectRoute,
     getCodeRoute, getSettingsRoute, getNewProjectRoute
@@ -18,6 +18,10 @@ import { Settings } from './Settings';
 import { Project } from './projects/Project';
 import Menu from 'antd/lib/menu';
 import Icon from 'antd/lib/icon';
+import { ProjectBreadcrumb } from './projects/ProjectBreadcrumb';
+import { CrawlerResultsBreadcrumb } from './crawler/CrawlerResultsBreadcrumb';
+import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
+import { CodeBreadcrumb } from './code/CodeBreadcrumb';
 
 const { Sider, Content, Header } = Layout;
 const { Title } = Typography;
@@ -64,6 +68,12 @@ const App = () => (
                     </Menu.Item>
                 </Menu>
             </Header>
+            <Breadcrumb style={{ margin: '10px 0 0 10px' }}>
+                <Route path={getProjectRoute(':projectId')} exact component={ProjectBreadcrumb} />
+                <Route path={getResultsRoute(':projectId', ':timestamp')} exact component={CrawlerResultsBreadcrumb} />
+                <Route path={getPinsRoute(':projectId')} exact component={PinsBreadcrumb} />
+                <Route path={getCodeRoute(':projectId', ':id')} exact component={CodeBreadcrumb} />
+            </Breadcrumb>
             <Content style={contentStyle}>
                 <Route path={getHomeRoute()} exact component={Projects} />
                 <Route path={getNewProjectRoute()} exact component={NewProject} />

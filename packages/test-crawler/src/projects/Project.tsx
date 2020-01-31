@@ -58,7 +58,7 @@ export const Project = ({
     history,
 }: RouteComponentProps<{ projectId: string }>) => {
     const { project, setProject } = useProject(projectId);
-    const { crawlers, setCrawlers } = useCrawlers(projectId);
+    const { crawlers } = useCrawlers(projectId);
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>
