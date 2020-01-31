@@ -9,9 +9,10 @@ import {
     TIMEOUT,
     USER_AGENT,
     CRAWL_FOLDER,
-    BASE_FOLDER,
+    PIN_FOLDER,
     CONSUME_TIMEOUT,
     CODE_FOLDER,
+    PROJECT_FOLDER,
 } from '../config';
 import {
     getFilePath,
@@ -140,7 +141,7 @@ async function injectCodes(
     }) as any;
     info(toInject.length, 'code(s) to inject for', url);
     for (const codeInfo of toInject) {
-        const sourcePath = join(CODE_FOLDER, `${codeInfo.id}.js`);
+        const sourcePath = join(PROJECT_FOLDER, projectId, CODE_FOLDER, `${codeInfo.id}.js`);
         links = await injectCode(sourcePath, page, id, url, links, distFolder, crawler);
     }
     return links;
@@ -183,7 +184,7 @@ interface ToCrawl {
 };
 
 async function pickFromQueue(projectId: string, pagesFolder: string): Promise<ToCrawl> {
-    const distFolder = join(CRAWL_FOLDER, projectId, pagesFolder);
+    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, pagesFolder);
     const queueFolder = getQueueFolder(distFolder);
     if (await pathExists(queueFolder)) {
         const [file] = await readdir(queueFolder);
@@ -199,9 +200,9 @@ async function pickFromQueue(projectId: string, pagesFolder: string): Promise<To
 }
 
 async function pickFromQueues(): Promise<ToCrawl> {
-    const projectFolders = await readdir(CRAWL_FOLDER);
+    const projectFolders = await readdir(PROJECT_FOLDER);
     for (const projectId of projectFolders) {
-        const pagesFolders = await readdir(join(CRAWL_FOLDER, projectId));
+        const pagesFolders = await readdir(join(PROJECT_FOLDER, projectId, CRAWL_FOLDER));
         for (const pagesFolder of pagesFolders) {
             const toCrawl = await pickFromQueue(projectId, pagesFolder);
             if (toCrawl) {
@@ -266,11 +267,8 @@ async function consumeResults(consumeTimeout: number) {
 }
 
 async function prepareFolders() {
-    if (!(await pathExists(CRAWL_FOLDER))) {
-        await mkdirp(CRAWL_FOLDER);
-    }
-    if (!(await pathExists(BASE_FOLDER))) {
-        await mkdirp(BASE_FOLDER);
+    if (!(await pathExists(PROJECT_FOLDER))) {
+        await mkdirp(PROJECT_FOLDER);
     }
 }
 

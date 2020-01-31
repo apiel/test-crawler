@@ -1,6 +1,6 @@
 import { info } from 'logol';
 import { getFilePath } from '../utils';
-import { BASE_FOLDER } from '../config';
+import { PIN_FOLDER, PROJECT_FOLDER } from '../config';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
@@ -71,7 +71,7 @@ async function parseZones(basePath: FilePath, zones: Zone[]) {
 }
 
 export async function prepare(projectId: string, id: string, distFolder: string, crawler: Crawler) {
-    const basePath = getFilePath(id, join(BASE_FOLDER, projectId));
+    const basePath = getFilePath(id, join(PROJECT_FOLDER, projectId, PIN_FOLDER));
     const filePath = getFilePath(id, distFolder);
     const data = await readJson(filePath('json'));
 

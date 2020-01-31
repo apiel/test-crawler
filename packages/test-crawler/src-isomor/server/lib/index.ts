@@ -16,7 +16,7 @@ import axios from 'axios';
 import { exec } from 'child_process';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
-import { CRAWL_FOLDER, MAX_HISTORY, BASE_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
+import { CRAWL_FOLDER, MAX_HISTORY, PIN_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
 import { getFolders, addToQueue, getFilePath, FilePath, getCodeList } from './utils';
 
 import * as config from './config';
@@ -44,11 +44,11 @@ export class CrawlerProvider {
     }
 
     async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
-        const folder = join(CRAWL_FOLDER, projectId, timestamp);
+        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const data: PageData = await readJson(filePath('json'));
         if (status === 'pin') {
-            const basePath = getFilePath(id, join(BASE_FOLDER, projectId));
+            const basePath = getFilePath(id, join(PROJECT_FOLDER, projectId, PIN_FOLDER));
             const base: PageData = await readJson(basePath('json'));
 
             base.png.diff.zones.push({ ...data.png.diff.zones[index], status });
@@ -65,7 +65,7 @@ export class CrawlerProvider {
     }
 
     async setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
-        const folder = join(CRAWL_FOLDER, projectId, timestamp);
+        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const page: PageData = await readJson(filePath('json'));
         let newPage: PageData;
@@ -76,9 +76,9 @@ export class CrawlerProvider {
     }
 
     async copyToBase(projectId: string, timestamp: string, id: string): Promise<PageData> {
-        const baseFolder = join(BASE_FOLDER, projectId);
+        const baseFolder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
         await mkdirp(baseFolder);
-        const folder = join(CRAWL_FOLDER, projectId, timestamp);
+        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const basePath = getFilePath(id, baseFolder);
 
@@ -97,7 +97,9 @@ export class CrawlerProvider {
     }
 
     image(projectId: string, folder: string, id: string): Promise<Buffer> {
-        const target = folder === 'base' ? join(BASE_FOLDER, projectId) : join(CRAWL_FOLDER, projectId, folder);
+        const target = folder === 'base' ?
+            join(PROJECT_FOLDER, projectId, PIN_FOLDER)
+            : join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, folder);
         const filePath = getFilePath(id, target);
         return readFile(filePath('png'));
     }
@@ -106,14 +108,14 @@ export class CrawlerProvider {
         const { source, ...codeInfo } = code;
         const list = await this.getCodeList(projectId);
         list[code.id] = codeInfo;
-        outputJSON(join(CODE_FOLDER, projectId, `list.json`), { ...list }, { spaces: 4 }); // for some reason it need a copy
-        outputFile(join(CODE_FOLDER, projectId, `${code.id}.js`), source);
+        outputJSON(join(PROJECT_FOLDER, projectId, CODE_FOLDER, `list.json`), { ...list }, { spaces: 4 }); // for some reason it need a copy
+        outputFile(join(PROJECT_FOLDER, projectId, CODE_FOLDER, `${code.id}.js`), source);
     }
 
     async loadCode(projectId: string, id: string): Promise<Code> {
         const list = await this.getCodeList(projectId);
         const codeInfo = list[id];
-        const sourcePath = join(CODE_FOLDER, projectId, `${id}.js`);
+        const sourcePath = join(PROJECT_FOLDER, projectId, CODE_FOLDER, `${id}.js`);
         if (!codeInfo || !(await pathExists(sourcePath))) {
             return {
                 id,
@@ -131,17 +133,17 @@ export class CrawlerProvider {
     }
 
     getBasePages(projectId: string): Promise<PageData[]> {
-        const folder = join(BASE_FOLDER, projectId);
+        const folder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
         return this.getPagesInFolder(folder);
     }
 
     getBasePage(projectId: string, id: string): Promise<PageData> {
-        const folder = join(BASE_FOLDER, projectId);
+        const folder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
         return this.getPageInFolder(folder, id);
     }
 
     getPages(projectId: string, timestamp: string): Promise<PageData[]> {
-        const folder = join(CRAWL_FOLDER, projectId, timestamp);
+        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
         return this.getPagesInFolder(folder);
     }
 
@@ -160,7 +162,7 @@ export class CrawlerProvider {
     }
 
     async setCrawlerStatus(projectId: string, timestamp: string, status: string): Promise<Crawler> {
-        const file = join(CRAWL_FOLDER, projectId, timestamp, '_.json');
+        const file = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, '_.json');
         const crawler: Crawler = await readJson(file);
         crawler.status = status;
         await outputJSON(file, crawler, { spaces: 4 });
@@ -168,11 +170,11 @@ export class CrawlerProvider {
     }
 
     getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
-        return readJSON(join(CRAWL_FOLDER, projectId, timestamp, '_.json'));
+        return readJSON(join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, '_.json'));
     }
 
     async getAllCrawlers(projectId: string): Promise<Crawler[]> {
-        const projectFolder = join(CRAWL_FOLDER, projectId);
+        const projectFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
         await mkdirp(projectFolder);
         const folders = await readdir(projectFolder);
         const crawlers: Crawler[] = await Promise.all(
@@ -187,22 +189,22 @@ export class CrawlerProvider {
 
     async loadProjects(): Promise<Project[]> {
         await mkdirp(PROJECT_FOLDER);
-        const files = await readdir(PROJECT_FOLDER);
+        const projects = await readdir(PROJECT_FOLDER);
         return Promise.all(
-            files.filter(file => extname(file) === '.json')
-                .map(file => readJSON(join(PROJECT_FOLDER, file))),
+            projects.map(projectId => readJSON(join(PROJECT_FOLDER, projectId, 'project.json'))),
         );
     }
 
     loadProject(projectId: string): Promise<Project> {
-        return readJSON(join(PROJECT_FOLDER, `${projectId}.json`));
+        return readJSON(join(PROJECT_FOLDER, projectId, `project.json`));
     }
 
     async saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
         if (!projectId) {
             projectId = md5(name);
         }
-        const file = join(PROJECT_FOLDER, `${projectId}.json`);
+        const file = join(PROJECT_FOLDER, projectId, `project.json`);
+        console.log('file', file);
         const project = { id: projectId, name, crawlerInput };
         await outputJSON(file, project, { spaces: 4 });
         return project;
@@ -233,7 +235,7 @@ export class CrawlerProvider {
             lastUpdate: Date.now(),
         };
 
-        const distFolder = join(CRAWL_FOLDER, projectId, (timestamp).toString());
+        const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, (timestamp).toString());
         await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
 
         if (crawlerInput.method === CrawlerMethod.URLs) {

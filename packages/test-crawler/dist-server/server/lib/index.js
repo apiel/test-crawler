@@ -51,11 +51,11 @@ class CrawlerProvider {
     }
     setZoneStatus(projectId, timestamp, id, index, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const folder = path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp);
+            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const data = yield fs_extra_1.readJson(filePath('json'));
             if (status === 'pin') {
-                const basePath = utils_1.getFilePath(id, path_1.join(config_1.BASE_FOLDER, projectId));
+                const basePath = utils_1.getFilePath(id, path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER));
                 const base = yield fs_extra_1.readJson(basePath('json'));
                 base.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
                 const zones = base.png.diff.zones.map(item => item.zone);
@@ -71,7 +71,7 @@ class CrawlerProvider {
     }
     setZonesStatus(projectId, timestamp, id, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const folder = path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp);
+            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const page = yield fs_extra_1.readJson(filePath('json'));
             let newPage;
@@ -83,9 +83,9 @@ class CrawlerProvider {
     }
     copyToBase(projectId, timestamp, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const baseFolder = path_1.join(config_1.BASE_FOLDER, projectId);
+            const baseFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
             yield fs_extra_1.mkdirp(baseFolder);
-            const folder = path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp);
+            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const basePath = utils_1.getFilePath(id, baseFolder);
             const data = yield fs_extra_1.readJson(filePath('json'));
@@ -101,7 +101,9 @@ class CrawlerProvider {
         });
     }
     image(projectId, folder, id) {
-        const target = folder === 'base' ? path_1.join(config_1.BASE_FOLDER, projectId) : path_1.join(config_1.CRAWL_FOLDER, projectId, folder);
+        const target = folder === 'base' ?
+            path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER)
+            : path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, folder);
         const filePath = utils_1.getFilePath(id, target);
         return fs_extra_1.readFile(filePath('png'));
     }
@@ -110,15 +112,15 @@ class CrawlerProvider {
             const { source } = code, codeInfo = __rest(code, ["source"]);
             const list = yield this.getCodeList(projectId);
             list[code.id] = codeInfo;
-            fs_extra_1.outputJSON(path_1.join(config_1.CODE_FOLDER, projectId, `list.json`), Object.assign({}, list), { spaces: 4 });
-            fs_extra_1.outputFile(path_1.join(config_1.CODE_FOLDER, projectId, `${code.id}.js`), source);
+            fs_extra_1.outputJSON(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `list.json`), Object.assign({}, list), { spaces: 4 });
+            fs_extra_1.outputFile(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${code.id}.js`), source);
         });
     }
     loadCode(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
             const list = yield this.getCodeList(projectId);
             const codeInfo = list[id];
-            const sourcePath = path_1.join(config_1.CODE_FOLDER, projectId, `${id}.js`);
+            const sourcePath = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${id}.js`);
             if (!codeInfo || !(yield fs_extra_1.pathExists(sourcePath))) {
                 return {
                     id,
@@ -137,15 +139,15 @@ class CrawlerProvider {
         });
     }
     getBasePages(projectId) {
-        const folder = path_1.join(config_1.BASE_FOLDER, projectId);
+        const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
         return this.getPagesInFolder(folder);
     }
     getBasePage(projectId, id) {
-        const folder = path_1.join(config_1.BASE_FOLDER, projectId);
+        const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
         return this.getPageInFolder(folder, id);
     }
     getPages(projectId, timestamp) {
-        const folder = path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp);
+        const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
         return this.getPagesInFolder(folder);
     }
     getPageInFolder(folder, id) {
@@ -162,7 +164,7 @@ class CrawlerProvider {
     }
     setCrawlerStatus(projectId, timestamp, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const file = path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp, '_.json');
+            const file = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, '_.json');
             const crawler = yield fs_extra_1.readJson(file);
             crawler.status = status;
             yield fs_extra_1.outputJSON(file, crawler, { spaces: 4 });
@@ -170,11 +172,11 @@ class CrawlerProvider {
         });
     }
     getCrawler(projectId, timestamp) {
-        return fs_extra_1.readJSON(path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp, '_.json'));
+        return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, '_.json'));
     }
     getAllCrawlers(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const projectFolder = path_1.join(config_1.CRAWL_FOLDER, projectId);
+            const projectFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
             yield fs_extra_1.mkdirp(projectFolder);
             const folders = yield fs_extra_1.readdir(projectFolder);
             const crawlers = yield Promise.all(folders.map(folder => fs_extra_1.readJSON(path_1.join(projectFolder, folder, '_.json'))));
@@ -184,20 +186,20 @@ class CrawlerProvider {
     loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
             yield fs_extra_1.mkdirp(config_1.PROJECT_FOLDER);
-            const files = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
-            return Promise.all(files.filter(file => path_1.extname(file) === '.json')
-                .map(file => fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, file))));
+            const projects = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
+            return Promise.all(projects.map(projectId => fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, projectId, 'project.json'))));
         });
     }
     loadProject(projectId) {
-        return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, `${projectId}.json`));
+        return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, projectId, `project.json`));
     }
     saveProject(crawlerInput, name, projectId) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!projectId) {
                 projectId = md5(name);
             }
-            const file = path_1.join(config_1.PROJECT_FOLDER, `${projectId}.json`);
+            const file = path_1.join(config_1.PROJECT_FOLDER, projectId, `project.json`);
+            console.log('file', file);
             const project = { id: projectId, name, crawlerInput };
             yield fs_extra_1.outputJSON(file, project, { spaces: 4 });
             return project;
@@ -216,7 +218,7 @@ class CrawlerProvider {
             const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
             const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp,
                 id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
-            const distFolder = path_1.join(config_1.CRAWL_FOLDER, projectId, (timestamp).toString());
+            const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, (timestamp).toString());
             yield fs_extra_1.outputJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
             if (crawlerInput.method === exports.CrawlerMethod.URLs) {
                 yield this.startUrlsCrawling(crawlerInput, distFolder);

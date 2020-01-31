@@ -1,11 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
-exports.PAGES_FOLDER = process.env.PAGES_FOLDER || path_1.join(__dirname, '../../../pages');
-exports.CRAWL_FOLDER = path_1.join(exports.PAGES_FOLDER, 'crawl');
-exports.PROJECT_FOLDER = path_1.join(exports.PAGES_FOLDER, 'project');
-exports.BASE_FOLDER = path_1.join(exports.PAGES_FOLDER, 'base');
-exports.CODE_FOLDER = path_1.join(exports.PAGES_FOLDER, 'code');
+exports.PROJECT_FOLDER = process.env.PAGES_FOLDER || path_1.join(__dirname, '../../../pages');
+exports.CRAWL_FOLDER = 'crawl';
+exports.PIN_FOLDER = 'pin';
+exports.CODE_FOLDER = 'code';
 exports.MAX_HISTORY = 10;
 exports.TIMEOUT = 10000;
 exports.CONSUMER_COUNT = 5;

@@ -28,12 +28,12 @@ const radioGroupdStyle = {
     marginRight: 30,
 }
 
-const start = async (
+const save = async (
     history: History<any>,
     { name, viewport, ...input }: (CrawlerInput & { name: string, viewport: string }),
 ) => {
     try {
-        await saveProject({ ...input, viewport: JSON.parse(viewport) }, name);
+        await saveProject({ ...input, viewport: JSON.parse(viewport) }, name, undefined);
         history.push(getHomeRoute());
     } catch (error) {
         notification['error']({
@@ -47,7 +47,7 @@ const handleSubmit = (history: History<any>, validateFields: any) => (event: Rea
     event.preventDefault();
     validateFields((err: any, values: any) => {
         if (!err) {
-            start(history, values);
+            save(history, values);
         }
     });
 }

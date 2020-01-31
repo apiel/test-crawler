@@ -1,11 +1,10 @@
 import { join } from 'path';
 
 // Need to implement env variable
-export const PAGES_FOLDER = process.env.PAGES_FOLDER || join(__dirname, '../../../pages');
-export const CRAWL_FOLDER = join(PAGES_FOLDER, 'crawl');
-export const PROJECT_FOLDER = join(PAGES_FOLDER, 'project');
-export const BASE_FOLDER = join(PAGES_FOLDER, 'base');
-export const CODE_FOLDER = join(PAGES_FOLDER, 'code');
+export const PROJECT_FOLDER = process.env.PAGES_FOLDER || join(__dirname, '../../../pages');
+export const CRAWL_FOLDER = 'crawl';
+export const PIN_FOLDER = 'pin';
+export const CODE_FOLDER = 'code';
 export const MAX_HISTORY = 10;
 export const TIMEOUT = 10000; // 10 sec
 export const CONSUMER_COUNT = 5;

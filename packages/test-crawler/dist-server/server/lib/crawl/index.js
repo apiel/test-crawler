@@ -103,7 +103,7 @@ function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
         });
         logol_1.info(toInject.length, 'code(s) to inject for', url);
         for (const codeInfo of toInject) {
-            const sourcePath = path_1.join(config_1.CODE_FOLDER, `${codeInfo.id}.js`);
+            const sourcePath = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${codeInfo.id}.js`);
             links = yield injectCode(sourcePath, page, id, url, links, distFolder, crawler);
         }
         return links;
@@ -135,7 +135,7 @@ function addUrls(urls, viewport, distFolder, limit) {
 ;
 function pickFromQueue(projectId, pagesFolder) {
     return __awaiter(this, void 0, void 0, function* () {
-        const distFolder = path_1.join(config_1.CRAWL_FOLDER, projectId, pagesFolder);
+        const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, pagesFolder);
         const queueFolder = utils_1.getQueueFolder(distFolder);
         if (yield fs_extra_1.pathExists(queueFolder)) {
             const [file] = yield fs_extra_1.readdir(queueFolder);
@@ -152,9 +152,9 @@ function pickFromQueue(projectId, pagesFolder) {
 }
 function pickFromQueues() {
     return __awaiter(this, void 0, void 0, function* () {
-        const projectFolders = yield fs_extra_1.readdir(config_1.CRAWL_FOLDER);
+        const projectFolders = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
         for (const projectId of projectFolders) {
-            const pagesFolders = yield fs_extra_1.readdir(path_1.join(config_1.CRAWL_FOLDER, projectId));
+            const pagesFolders = yield fs_extra_1.readdir(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER));
             for (const pagesFolder of pagesFolders) {
                 const toCrawl = yield pickFromQueue(projectId, pagesFolder);
                 if (toCrawl) {
@@ -220,11 +220,8 @@ function consumeResults(consumeTimeout) {
 }
 function prepareFolders() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!(yield fs_extra_1.pathExists(config_1.CRAWL_FOLDER))) {
-            yield fs_extra_1.mkdirp(config_1.CRAWL_FOLDER);
-        }
-        if (!(yield fs_extra_1.pathExists(config_1.BASE_FOLDER))) {
-            yield fs_extra_1.mkdirp(config_1.BASE_FOLDER);
+        if (!(yield fs_extra_1.pathExists(config_1.PROJECT_FOLDER))) {
+            yield fs_extra_1.mkdirp(config_1.PROJECT_FOLDER);
         }
     });
 }
