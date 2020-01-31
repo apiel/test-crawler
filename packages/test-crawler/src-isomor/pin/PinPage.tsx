@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from 'antd/lib/card';
 import Icon from 'antd/lib/icon';
+import message from 'antd/lib/message';
 
 import {
     cardStyle,
@@ -29,9 +30,9 @@ export const PinPage = ({ projectId, id, url, viewport, onImg, png }: Props) => 
         style={cardStyle}
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} />}
         actions={[
-            <Icon type="delete" title={`Delete pin`} onClick={() => alert('Not yet implemented')} />,
+            <Icon type="delete" title={`Delete pin`} onClick={() => message.warn('To be implemented.', 2)} />,
             (<Link to={{
-                pathname: getCodeRoute(id),
+                pathname: getCodeRoute(projectId, id),
                 state: { pattern: url }
             }}>
                 <Icon type="code" title={`Insert code while crawling`} />

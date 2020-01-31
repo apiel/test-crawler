@@ -10,11 +10,10 @@ import { CrawlerResults } from './crawler/CrawlerResults';
 import { SideMenu } from './side-menu/SideMenu';
 import {
     getHomeRoute, getResultsRoute, getPinsRoute, getProjectRoute,
-    getCodeRoute, getSettingsRoute, getCodesRoute, getNewProjectRoute
+    getCodeRoute, getSettingsRoute, getNewProjectRoute
 } from './routes';
 import { Pins } from './pin/Pins';
 import { Code } from './code/Code';
-import { Codes } from './code/Codes';
 import { Settings } from './Settings';
 import { Project } from './projects/Project';
 
@@ -49,8 +48,7 @@ const App = () => (
                 <Route path={getNewProjectRoute()} exact component={NewProject} />
                 <Route path={getPinsRoute(':projectId')} exact component={Pins} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
-                <Route path={getCodeRoute(':id')} exact component={Code} />
-                <Route path={getCodesRoute()} exact component={Codes} />
+                <Route path={getCodeRoute(':projectId', ':id')} exact component={Code} />
                 <Route path={getResultsRoute(':projectId', ':timestamp')} component={CrawlerResults} />
                 <Route path={getProjectRoute(':projectId')} exact component={Project} />
             </Content>

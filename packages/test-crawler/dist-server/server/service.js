@@ -29,8 +29,8 @@ function loadProjects() {
     return crawlerProvider.loadProjects();
 }
 exports.loadProjects = loadProjects;
-function saveProject(crawlerInput, name, id) {
-    return crawlerProvider.saveProject(crawlerInput, name, id);
+function saveProject(crawlerInput, name, projectId) {
+    return crawlerProvider.saveProject(crawlerInput, name, projectId);
 }
 exports.saveProject = saveProject;
 function getCrawler(projectId, timestamp) {
@@ -51,16 +51,16 @@ function getPin(projectId, id) {
     return crawlerProvider.getBasePage(projectId, id);
 }
 exports.getPin = getPin;
-function setCode(code) {
-    return crawlerProvider.saveCode(code);
+function setCode(projectId, code) {
+    return crawlerProvider.saveCode(projectId, code);
 }
 exports.setCode = setCode;
-function getCode(id) {
-    return crawlerProvider.loadCode(id);
+function getCode(projectId, id) {
+    return crawlerProvider.loadCode(projectId, id);
 }
 exports.getCode = getCode;
-function getCodes() {
-    return crawlerProvider.getCodeList();
+function getCodes(projectId) {
+    return crawlerProvider.getCodeList(projectId);
 }
 exports.getCodes = getCodes;
 function getThumbnail(projectId, folder, id, width = 300) {

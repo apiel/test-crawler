@@ -54,8 +54,8 @@ export function savePageInfo(file: string, pageData: PageData) {
     return outputJson(file, pageData, { spaces: 4 });
 }
 
-export async function getCodeList(): Promise<CodeInfoList> {
-    const listPath = join(CODE_FOLDER, `list.json`);
+export async function getCodeList(projectId: string): Promise<CodeInfoList> {
+    const listPath = join(CODE_FOLDER, projectId, `list.json`);
     if (!(await pathExists(listPath))) {
         return {};
     }

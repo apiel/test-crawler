@@ -32,8 +32,8 @@ export function loadProjects(): Promise<Project[]> {
     return crawlerProvider.loadProjects();
 }
 
-export function saveProject(crawlerInput: CrawlerInput, name: string, id?: string): Promise<Project> {
-    return crawlerProvider.saveProject(crawlerInput, name, id);
+export function saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
+    return crawlerProvider.saveProject(crawlerInput, name, projectId);
 }
 
 export async function getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
@@ -52,16 +52,16 @@ export function getPin(projectId: string, id: string): Promise<PageData> {
     return crawlerProvider.getBasePage(projectId, id);
 }
 
-export function setCode(code: Code): Promise<void> {
-    return crawlerProvider.saveCode(code);
+export function setCode(projectId: string, code: Code): Promise<void> {
+    return crawlerProvider.saveCode(projectId, code);
 }
 
-export function getCode(id: string): Promise<Code> {
-    return crawlerProvider.loadCode(id);
+export function getCode(projectId: string, id: string): Promise<Code> {
+    return crawlerProvider.loadCode(projectId, id);
 }
 
-export function getCodes(): Promise<CodeInfoList> {
-    return crawlerProvider.getCodeList();
+export function getCodes(projectId: string): Promise<CodeInfoList> {
+    return crawlerProvider.getCodeList(projectId);
 }
 
 export async function getThumbnail(projectId: string, folder: string, id: string, width: number = 300): Promise<string> {

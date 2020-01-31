@@ -27,12 +27,13 @@ const onPlay = () => {
 }
 
 const save = async (
+    projectId: string,
     id: string,
     source: string,
     info: FormInput,
 ) => {
     try {
-        await setCode({
+        await setCode(projectId, {
             id,
             source,
             ...info,
@@ -47,6 +48,7 @@ const save = async (
 }
 
 const handleSubmit = (
+    projectId: string,
     id: string,
     source: string,
     validateFields: any,
@@ -54,12 +56,13 @@ const handleSubmit = (
     event.preventDefault();
     validateFields((err: any, info: FormInput) => {
         if (!err) {
-            save(id, source, info);
+            save(projectId, id, source, info);
         }
     });
 }
 
 type Props = FormComponentProps & {
+    projectId: string;
     id: string;
     code: Code;
     location: Location<{ pattern: string }>;
@@ -67,6 +70,7 @@ type Props = FormComponentProps & {
 };
 
 const CodeFormComponent = ({
+    projectId,
     setSource,
     id,
     code,
@@ -74,7 +78,7 @@ const CodeFormComponent = ({
     location: { state },
 }: Props) => {
     return (
-        <Form onSubmit={handleSubmit(id, code.source, validateFields)}>
+        <Form onSubmit={handleSubmit(projectId, id, code.source, validateFields)}>
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('name', {
                     initialValue: code.name || '',

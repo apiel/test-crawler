@@ -63,9 +63,9 @@ function savePageInfo(file, pageData) {
     return fs_extra_1.outputJson(file, pageData, { spaces: 4 });
 }
 exports.savePageInfo = savePageInfo;
-function getCodeList() {
+function getCodeList(projectId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const listPath = path_1.join(config_1.CODE_FOLDER, `list.json`);
+        const listPath = path_1.join(config_1.CODE_FOLDER, projectId, `list.json`);
         if (!(yield fs_extra_1.pathExists(listPath))) {
             return {};
         }

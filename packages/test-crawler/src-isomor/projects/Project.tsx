@@ -15,6 +15,7 @@ import { useProject } from './useProject';
 import { useCrawlers } from './useCrawlers';
 import List from 'antd/lib/list';
 import { timestampToString } from '../utils';
+import { Codes } from '../code/Codes';
 
 const onStart = (
     history: History<any>,
@@ -124,6 +125,8 @@ export const Project = ({
                     )}
                 />
             </>}
+            <br />
+            <Codes projectId={projectId} />
         </>
     );
 }

@@ -55,7 +55,7 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
             let codeErr;
             try {
                 const injectLinks = yield getLinks(page, crawler);
-                links = yield injectCodes(page, id, url, injectLinks, distFolder, crawler);
+                links = yield injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
             }
             catch (err) {
                 codeErr = err.toString();
@@ -95,9 +95,9 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
         consumerRunning--;
     });
 }
-function injectCodes(page, id, url, links, distFolder, crawler) {
+function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        const list = yield utils_1.getCodeList();
+        const list = yield utils_1.getCodeList(projectId);
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });

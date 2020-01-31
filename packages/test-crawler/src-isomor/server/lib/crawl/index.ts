@@ -78,7 +78,7 @@ async function loadPage(projectId: string, id: string, url: string, distFolder: 
         let codeErr: string;
         try {
             const injectLinks = await getLinks(page, crawler);
-            links = await injectCodes(page, id, url, injectLinks, distFolder, crawler);
+            links = await injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
             // console.log('links', links);
         } catch (err) {
             codeErr = err.toString();
@@ -125,13 +125,14 @@ async function loadPage(projectId: string, id: string, url: string, distFolder: 
 
 async function injectCodes(
     page: Page,
+    projectId: string,
     id: string,
     url: string,
     links: string[],
     distFolder: string,
     crawler: Crawler,
 ) {
-    const list = await getCodeList();
+    const list = await getCodeList(projectId);
     // console.log('injectCodes list', list);
     // console.log('Object.values', Object.values(list));
     const toInject = Object.values(list).filter(({ pattern }) => {

@@ -4,24 +4,24 @@ import Typography from 'antd/lib/typography';
 import Form from 'antd/lib/form';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';
-import { Code as CodeType, PageData } from '../server/typing';
-import { useAsyncCacheEffect } from 'react-async-cache';
+import { Code as CodeType } from '../server/typing';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
 
-import { getPin, getCode } from '../server/service';
+import { getCode } from '../server/service';
 import { CodeInfo } from './CodeInfo';
 import { aceEditorStyle } from './codeStyle';
-import { CodeCard } from './CodeCard';
 import { CodeForm } from './CodeFrom';
 import { ErrorHandler } from '../common/ErrorHandler';
+import { ProjectName } from '../projects/ProjectName';
+import { useAsync } from '../hook/useAsync';
 
 const { Title } = Typography;
 
 const setSource = (
     code: CodeType,
-    setCode: React.Dispatch<React.SetStateAction<CodeType | undefined>>,
+    setCode: React.Dispatch<React.SetStateAction<CodeType>>,
 ) => (source: string) => {
     setCode({
         ...code,
@@ -29,10 +29,10 @@ const setSource = (
     })
 }
 
-type Props = RouteComponentProps<{ id: string }>;
+type Props = RouteComponentProps<{ id: string, projectId: string }>;
 
-export const Code = ({ match: { params: { id } }, location }: Props) => {
-    const { error, response: code, update: setCode } = useAsyncCacheEffect<CodeType>(getCode, id);
+export const Code = ({ match: { params: { id, projectId } }, location }: Props) => {
+    const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(projectId, id));
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
@@ -47,7 +47,9 @@ export const Code = ({ match: { params: { id } }, location }: Props) => {
                 code ? (
                     <Form>
                         <CodeInfo />
+                        <ProjectName projectId={projectId} />
                         <CodeForm
+                            projectId={projectId}
                             id={id}
                             code={code}
                             setSource={setSource(code, setCode)}

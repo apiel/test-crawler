@@ -102,18 +102,18 @@ export class CrawlerProvider {
         return readFile(filePath('png'));
     }
 
-    async saveCode(code: Code): Promise<void> {
+    async saveCode(projectId: string, code: Code): Promise<void> {
         const { source, ...codeInfo } = code;
-        const list = await this.getCodeList();
+        const list = await this.getCodeList(projectId);
         list[code.id] = codeInfo;
-        outputJSON(join(CODE_FOLDER, `list.json`), { ...list }, { spaces: 4 }); // for some reason it need a copy
-        outputFile(join(CODE_FOLDER, `${code.id}.js`), source);
+        outputJSON(join(CODE_FOLDER, projectId, `list.json`), { ...list }, { spaces: 4 }); // for some reason it need a copy
+        outputFile(join(CODE_FOLDER, projectId, `${code.id}.js`), source);
     }
 
-    async loadCode(id: string): Promise<Code> {
-        const list = await this.getCodeList();
+    async loadCode(projectId: string, id: string): Promise<Code> {
+        const list = await this.getCodeList(projectId);
         const codeInfo = list[id];
-        const sourcePath = join(CODE_FOLDER, `${id}.js`);
+        const sourcePath = join(CODE_FOLDER, projectId, `${id}.js`);
         if (!codeInfo || !(await pathExists(sourcePath))) {
             return {
                 id,
@@ -126,8 +126,8 @@ export class CrawlerProvider {
         return { ...codeInfo, source };
     }
 
-    async getCodeList(): Promise<CodeInfoList> {
-        return getCodeList();
+    async getCodeList(projectId: string): Promise<CodeInfoList> {
+        return getCodeList(projectId);
     }
 
     getBasePages(projectId: string): Promise<PageData[]> {
@@ -198,12 +198,12 @@ export class CrawlerProvider {
         return readJSON(join(PROJECT_FOLDER, `${projectId}.json`));
     }
 
-    async saveProject(crawlerInput: CrawlerInput, name: string, id?: string): Promise<Project> {
-        if (!id) {
-            id = md5(name);
+    async saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
+        if (!projectId) {
+            projectId = md5(name);
         }
-        const file = join(PROJECT_FOLDER, `${id}.json`);
-        const project = { id, name, crawlerInput };
+        const file = join(PROJECT_FOLDER, `${projectId}.json`);
+        const project = { id: projectId, name, crawlerInput };
         await outputJSON(file, project, { spaces: 4 });
         return project;
     }

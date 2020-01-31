@@ -105,20 +105,20 @@ class CrawlerProvider {
         const filePath = utils_1.getFilePath(id, target);
         return fs_extra_1.readFile(filePath('png'));
     }
-    saveCode(code) {
+    saveCode(projectId, code) {
         return __awaiter(this, void 0, void 0, function* () {
             const { source } = code, codeInfo = __rest(code, ["source"]);
-            const list = yield this.getCodeList();
+            const list = yield this.getCodeList(projectId);
             list[code.id] = codeInfo;
-            fs_extra_1.outputJSON(path_1.join(config_1.CODE_FOLDER, `list.json`), Object.assign({}, list), { spaces: 4 });
-            fs_extra_1.outputFile(path_1.join(config_1.CODE_FOLDER, `${code.id}.js`), source);
+            fs_extra_1.outputJSON(path_1.join(config_1.CODE_FOLDER, projectId, `list.json`), Object.assign({}, list), { spaces: 4 });
+            fs_extra_1.outputFile(path_1.join(config_1.CODE_FOLDER, projectId, `${code.id}.js`), source);
         });
     }
-    loadCode(id) {
+    loadCode(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const list = yield this.getCodeList();
+            const list = yield this.getCodeList(projectId);
             const codeInfo = list[id];
-            const sourcePath = path_1.join(config_1.CODE_FOLDER, `${id}.js`);
+            const sourcePath = path_1.join(config_1.CODE_FOLDER, projectId, `${id}.js`);
             if (!codeInfo || !(yield fs_extra_1.pathExists(sourcePath))) {
                 return {
                     id,
@@ -131,9 +131,9 @@ class CrawlerProvider {
             return Object.assign(Object.assign({}, codeInfo), { source });
         });
     }
-    getCodeList() {
+    getCodeList(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return utils_1.getCodeList();
+            return utils_1.getCodeList(projectId);
         });
     }
     getBasePages(projectId) {
@@ -192,13 +192,13 @@ class CrawlerProvider {
     loadProject(projectId) {
         return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, `${projectId}.json`));
     }
-    saveProject(crawlerInput, name, id) {
+    saveProject(crawlerInput, name, projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!id) {
-                id = md5(name);
+            if (!projectId) {
+                projectId = md5(name);
             }
-            const file = path_1.join(config_1.PROJECT_FOLDER, `${id}.json`);
-            const project = { id, name, crawlerInput };
+            const file = path_1.join(config_1.PROJECT_FOLDER, `${projectId}.json`);
+            const project = { id: projectId, name, crawlerInput };
             yield fs_extra_1.outputJSON(file, project, { spaces: 4 });
             return project;
         });
