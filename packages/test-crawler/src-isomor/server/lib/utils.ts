@@ -2,11 +2,11 @@ import { readdir, pathExists, outputJson, readFile, outputFile, readJSON, mkdirp
 import { join } from 'path';
 import * as md5 from 'md5';
 
-import { CRAWL_FOLDER, CODE_FOLDER } from './config';
+import { CRAWL_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { PageData, Viewport, CodeInfoList } from '../typing';
 
 export async function getFolders(projectId: string) {
-    const projectFolder = join(CRAWL_FOLDER, projectId);
+    const projectFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
     await mkdirp(projectFolder);
     const folders = await readdir(projectFolder);
     folders.sort();
@@ -55,7 +55,7 @@ export function savePageInfo(file: string, pageData: PageData) {
 }
 
 export async function getCodeList(projectId: string): Promise<CodeInfoList> {
-    const listPath = join(CODE_FOLDER, projectId, `list.json`);
+    const listPath = join(PROJECT_FOLDER, projectId, CODE_FOLDER, `list.json`);
     if (!(await pathExists(listPath))) {
         return {};
     }

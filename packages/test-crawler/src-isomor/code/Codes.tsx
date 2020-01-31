@@ -29,16 +29,30 @@ export const Codes = ({ projectId }: Props) => {
             {
                 result
                     ? <List
+                        bordered
                         dataSource={Object.values(result)}
-                        renderItem={({ id, name, pattern}) => (
-                            <List.Item>
-                                <Link to={getCodeRoute(projectId, id)}>{name} <Text code>{pattern}</Text></Link>
+                        renderItem={({ id, name, pattern }) => (
+                            <List.Item
+                                actions={[
+                                    <Link to={getCodeRoute(projectId, id)}>
+                                        Edit
+                                    </Link>,
+                                ]}
+                            >
+                                <List.Item.Meta
+                                    title={
+                                        <Link to={getCodeRoute(projectId, id)}>
+                                            {name} <Text code>{pattern}</Text>
+                                        </Link>
+                                    }
+                                />
                             </List.Item>
                         )}
                     />
                     : <Spin />
             }
-            <Link to={getCodeRoute(projectId, Math.floor(Date.now()/1000).toString())}>
+            <br />
+            <Link to={getCodeRoute(projectId, Math.floor(Date.now() / 1000).toString())}>
                 <Button icon="plus" size="small">New</Button>
             </Link>
         </>

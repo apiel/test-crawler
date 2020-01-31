@@ -31,6 +31,7 @@ export const Projects = () => {
             <Typography.Title level={3}>Projects</Typography.Title>
             <List
                 itemLayout="horizontal"
+                bordered
                 dataSource={projects}
                 renderItem={({ id, name, crawlerInput: { url } }) => (
                     <List.Item
@@ -47,6 +48,7 @@ export const Projects = () => {
                     </List.Item>
                 )}
             />
+            <br />
             <Link to={getNewProjectRoute()}>
                 <Button icon="plus" size="small">New</Button>
             </Link>

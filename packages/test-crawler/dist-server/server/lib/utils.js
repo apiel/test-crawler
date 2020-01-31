@@ -15,7 +15,7 @@ const md5 = require("md5");
 const config_1 = require("./config");
 function getFolders(projectId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const projectFolder = path_1.join(config_1.CRAWL_FOLDER, projectId);
+        const projectFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
         yield fs_extra_1.mkdirp(projectFolder);
         const folders = yield fs_extra_1.readdir(projectFolder);
         folders.sort();
@@ -65,7 +65,7 @@ function savePageInfo(file, pageData) {
 exports.savePageInfo = savePageInfo;
 function getCodeList(projectId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const listPath = path_1.join(config_1.CODE_FOLDER, projectId, `list.json`);
+        const listPath = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `list.json`);
         if (!(yield fs_extra_1.pathExists(listPath))) {
             return {};
         }

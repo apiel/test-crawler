@@ -23,7 +23,7 @@ import { CrawlerResultsBreadcrumb } from './crawler/CrawlerResultsBreadcrumb';
 import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
 import { CodeBreadcrumb } from './code/CodeBreadcrumb';
 
-const { Sider, Content, Header } = Layout;
+const { Content, Header } = Layout;
 const { Title } = Typography;
 
 const layoutStyle = {
