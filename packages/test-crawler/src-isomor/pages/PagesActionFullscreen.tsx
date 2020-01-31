@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
 import Modal from 'antd/lib/modal';
-import { PngDiffData } from '../server/typing';
+import { PngDiffData, PageData } from '../server/typing';
 import { Page } from './Page';
 import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 
@@ -23,9 +23,10 @@ interface Props {
         width: number;
         diff?: PngDiffData;
     };
+    setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
-export const PagesActionFullscreen = ({ projectId, timestamp, id, png, url, pageError }: Props) => {
+export const PagesActionFullscreen = ({ setPages, projectId, timestamp, id, png, url, pageError }: Props) => {
     const [visible, setVisible] = React.useState<boolean>(false);
     return (
         <>
@@ -36,8 +37,9 @@ export const PagesActionFullscreen = ({ projectId, timestamp, id, png, url, page
                 footer={null}
                 width={png.width + 40}
             >
-                <div style={{position: "relative"}}>
+                <div style={{ position: "relative" }}>
                     <DiffImageWithZone
+                        setPages={setPages}
                         projectId={projectId}
                         folder={timestamp}
                         id={id}

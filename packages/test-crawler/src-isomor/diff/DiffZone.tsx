@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Popover from 'antd/lib/popover';
 
 import {
-    imgStyle,
     imgMargin,
 } from '../pages/pageStyle';
 
 import { DiffImageButtons } from './DiffImageButtons';
 import { getThumbnail } from '../server/service';
-import { Zone } from '../server/typing';
+import { Zone, PageData } from '../server/typing';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {
@@ -43,9 +42,10 @@ interface Props {
     status: string;
     width: number;
     projectId: string;
+    setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
-export const DiffZone = ({ projectId, folder, id, index, originalWidth, zone, status, width }: Props) => {
+export const DiffZone = ({ setPages, projectId, folder, id, index, originalWidth, zone, status, width }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
         setThumb(await getThumbnail(projectId, 'base', id, width));
@@ -55,7 +55,7 @@ export const DiffZone = ({ projectId, folder, id, index, originalWidth, zone, st
     const ratio = originalWidth / width;
     return (
         <Popover key={`${id}-${index}`} content={(
-            <DiffImageButtons index={index} timestamp={folder} id={id} projectId={projectId} />
+            <DiffImageButtons index={index} timestamp={folder} id={id} projectId={projectId} setPages={setPages} />
         )} trigger="click">
             <div
                 style={zoneStyle(zone, ratio, thumb, hover, status) as any}

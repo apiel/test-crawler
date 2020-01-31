@@ -18,6 +18,7 @@ import { PagesActions } from './PagesActions';
 import { availableFilters } from '../search/search';
 import { setMasonry, onMasonryImg } from '../common/refreshMasonry';
 import { DiffImageWithZone } from '../diff/DiffImageWithZone';
+import { useAsync } from '../hook/useAsync';
 
 interface Props {
     projectId: string;
@@ -26,13 +27,16 @@ interface Props {
 }
 
 export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
-    const { response, error } = useAsyncCacheEffect<PageData[]>([lastUpdate], getPages, projectId, timestamp);
+    const { result: pages, error, setResult: setPages } = useAsync<PageData[]>(
+        () => getPages(projectId, timestamp),
+        [lastUpdate],
+    );
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
 
     return (
-        <Search response={response} withFilters={availableFilters}>
+        <Search response={pages} withFilters={availableFilters}>
             {(pagesFiltered) => pagesFiltered ? (
                 <Masonry
                     style={masonryStyle}
@@ -51,8 +55,9 @@ export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
                                     zones={png.diff && png.diff.zones}
                                     originalWidth={png.width}
                                     onImg={onMasonryImg}
+                                    setPages={setPages}
                                 />}
-                                actions={PagesActions({ projectId, id, timestamp, png, url, pageError })}
+                                actions={PagesActions({ setPages, projectId, id, timestamp, png, url, pageError })}
                             >
                                 <Page url={url} pageError={pageError} png={png} />
                             </Card>

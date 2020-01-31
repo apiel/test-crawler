@@ -33,7 +33,7 @@ const onStart = (
 
 const onAutoPinChange = (
     { name, id, crawlerInput }: ProjectType,
-    setProject: React.Dispatch<React.SetStateAction<ProjectType | undefined>>,
+    setProject: React.Dispatch<React.SetStateAction<ProjectType>>,
 ) => async ({ target: { checked } }: CheckboxChangeEvent) => {
     const project = await saveProject({ ...crawlerInput, autopin: checked }, name, id);
     setProject(project);

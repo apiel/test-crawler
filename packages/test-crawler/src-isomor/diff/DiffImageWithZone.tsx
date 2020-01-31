@@ -5,12 +5,13 @@ import {
 } from '../pages/pageStyle';
 
 import { DiffZone } from './DiffZone';
-import { PngDiffDataZone } from '../server/typing';
+import { PngDiffDataZone, PageData } from '../server/typing';
 import { Props as DiffImageProps, DiffImage } from './DiffImage';
 
 interface Props {
     zones?: PngDiffDataZone[];
     originalWidth?: number;
+    setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
 export const DiffImageWithZone = ({
@@ -20,6 +21,7 @@ export const DiffImageWithZone = ({
     zones,
     originalWidth = 0,
     width = imgStyle.width,
+    setPages,
     ...props
 }: Props & DiffImageProps) =>
     <DiffImage projectId={projectId} folder={folder} id={id} width={width} {...props}>
@@ -34,5 +36,6 @@ export const DiffImageWithZone = ({
                 status={status}
                 zone={zone}
                 key={`zone-${id}-${index}`}
+                setPages={setPages}
             />)}
     </DiffImage>

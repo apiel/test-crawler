@@ -1,5 +1,5 @@
 import React from 'react';
-import { PngDiffData } from '../server/typing';
+import { PngDiffData, PageData } from '../server/typing';
 
 import { PagesActionZone } from './PagesActionZone';
 import PagesActionPin from './PagesActionPin';
@@ -15,10 +15,11 @@ interface Props {
         width: number;
         diff?: PngDiffData;
     };
+    setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
-export const PagesActions = ({ projectId, timestamp, id, png, url, pageError }: Props) => [
-    ...[png && <PagesActionFullscreen projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
+export const PagesActions = ({ setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
+    ...[png && <PagesActionFullscreen setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
     <PagesActionZone type="check" timestamp={timestamp} id={id} status={'valid'} zones={png && png.diff ? png.diff.zones : []} />,
     <PagesActionZone type="warning" timestamp={timestamp} id={id} status={'report'} zones={png && png.diff ? png.diff.zones : []} />,
     <PagesActionPin timestamp={timestamp} id={id} />,

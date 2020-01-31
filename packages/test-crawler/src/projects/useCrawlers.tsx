@@ -1,27 +1,18 @@
-import React from 'react';
 import notification from 'antd/lib/notification';
-import { Crawler } from '../server/typing';
 import { getCrawlers } from '../server/service';
+import { useAsync } from '../hook/useAsync';
+import { Crawler } from '../server/typing';
 
-const load = async (
-    projectId: string,
-    setCrawlers: React.Dispatch<React.SetStateAction<Crawler[]>>,
-) => {
-    try {
+export const useCrawlers = (projectId: string) => {
+    const { result: crawlers, setResult: setCrawlers, error } = useAsync<Crawler[]>(async () => {
         const list = await getCrawlers(projectId);
-        list.sort(({ timestamp: a }: any, { timestamp: b }: any) => b - a);
-        setCrawlers(list);
-    } catch (error) {
+        return list.sort(({ timestamp: a }: any, { timestamp: b }: any) => b - a);
+    });
+    if (error) {
         notification['warning']({
             message: 'Something went wrong while loading crawlers from project.',
             description: error.toString(),
         });
     }
-}
-
-export const useCrawlers = (projectId: string) => {
-    const [crawlers, setCrawlers] = React.useState<Crawler[]>([]);
-    React.useEffect(() => { load(projectId, setCrawlers); }, []);
-
-    return { crawlers, setCrawlers };
+    return {crawlers, setCrawlers };
 }
