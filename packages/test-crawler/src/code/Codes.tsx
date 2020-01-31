@@ -53,7 +53,7 @@ export const Codes = ({ projectId }: Props) => {
             }
             <br />
             <Link to={getCodeRoute(projectId, Math.floor(Date.now() / 1000).toString())}>
-                <Button icon="plus" size="small">New</Button>
+                <Button icon="plus" size="small">New code</Button>
             </Link>
         </>
     );
