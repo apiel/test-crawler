@@ -22,6 +22,6 @@ export const PagesActions = ({ setPages, projectId, timestamp, id, png, url, pag
     ...[png && <PagesActionFullscreen setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
     <PagesActionZone type="check" setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
     <PagesActionZone type="warning" setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
-    <PagesActionPin timestamp={timestamp} id={id} />,
+    <PagesActionPin projectId={projectId} timestamp={timestamp} id={id} />,
     // <Icon type="ellipsis" title="more" />,
 ];

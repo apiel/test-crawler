@@ -5,9 +5,9 @@ import notification from 'antd/lib/notification';
 import { pin } from '../server/service';
 
 
-const onPin = ({ timestamp, id }: any) => async () => {
+const onPin = ({ projectId, timestamp, id }: Props) => async () => {
     try {
-        await pin(timestamp.toString(), id);
+        await pin(projectId, timestamp.toString(), id);
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {
         notification['error']({
@@ -17,13 +17,19 @@ const onPin = ({ timestamp, id }: any) => async () => {
     }
 }
 
-const PagesActionPin = (props: any) =>
+interface Props {
+    timestamp: string,
+    id: string,
+    projectId: string,
+}
+
+const PagesActionPin = (props: Props) =>
     <Icon
         type="pushpin"
         title="pin as reference for comparison"
         onClick={onPin(props)}
     />;
 
-export default function(props: any) {
+export default function(props: Props) {
     return PagesActionPin(props);
 }
