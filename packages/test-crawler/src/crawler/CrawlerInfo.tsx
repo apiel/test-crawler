@@ -22,6 +22,12 @@ const limitStyle = {
     fontSize: 11,
 };
 
+interface Props {
+    setCrawler: React.Dispatch<React.SetStateAction<Crawler>>;
+    crawler: Crawler;
+    projectId: string;
+}
+
 // need to flatten props and use react memo
 export const CrawlerInfo = ({
     crawler: {
@@ -38,7 +44,8 @@ export const CrawlerInfo = ({
         viewport,
     },
     projectId,
-}: { crawler: Crawler, projectId: string }) => {
+    setCrawler,
+}: Props) => {
     const total = urlsCount + inQueue;
     const percent = Math.floor(urlsCount / total * 100);
     const screen = getViewportName(viewport);
@@ -46,7 +53,7 @@ export const CrawlerInfo = ({
         <>
             <Title level={3}>{timestampToString(timestamp)}</Title>
             {(diffZoneCount > 0 || errorCount > 0)
-                && <p><SwitchStatus status={status} timestamp={timestamp} /></p>}
+                && <p><SwitchStatus setCrawler={setCrawler} projectId={projectId} status={status} timestamp={timestamp} /></p>}
             <ProjectName projectId={projectId} />
             <p><b>URL:</b> {url}</p>
             <p><b>Screen:</b> {screen}</p>

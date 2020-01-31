@@ -159,8 +159,8 @@ export class CrawlerProvider {
         );
     }
 
-    async setCrawlerStatus(timestamp: string, status: string): Promise<Crawler> {
-        const file = join(CRAWL_FOLDER, timestamp, '_.json');
+    async setCrawlerStatus(projectId: string, timestamp: string, status: string): Promise<Crawler> {
+        const file = join(CRAWL_FOLDER, projectId, timestamp, '_.json');
         const crawler: Crawler = await readJson(file);
         crawler.status = status;
         await outputJSON(file, crawler, { spaces: 4 });

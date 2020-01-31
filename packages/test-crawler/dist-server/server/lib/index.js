@@ -160,9 +160,9 @@ class CrawlerProvider {
                 .map(file => fs_extra_1.readJSON(path_1.join(folder, file))));
         });
     }
-    setCrawlerStatus(timestamp, status) {
+    setCrawlerStatus(projectId, timestamp, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const file = path_1.join(config_1.CRAWL_FOLDER, timestamp, '_.json');
+            const file = path_1.join(config_1.CRAWL_FOLDER, projectId, timestamp, '_.json');
             const crawler = yield fs_extra_1.readJson(file);
             crawler.status = status;
             yield fs_extra_1.outputJSON(file, crawler, { spaces: 4 });

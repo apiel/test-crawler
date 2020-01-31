@@ -88,8 +88,8 @@ function setZonesStatus(projectId, timestamp, id, status) {
     });
 }
 exports.setZonesStatus = setZonesStatus;
-function setStatus(timestamp, status) {
-    return crawlerProvider.setCrawlerStatus(timestamp, status);
+function setStatus(projectId, timestamp, status) {
+    return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 exports.setStatus = setStatus;
 function startCrawlerFromProject(projectId) {

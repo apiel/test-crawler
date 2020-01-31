@@ -85,8 +85,8 @@ export async function setZonesStatus(projectId: string, timestamp: string, id: s
     return getPages(projectId, timestamp);
 }
 
-export function setStatus(timestamp: string, status: string): Promise<Crawler> {
-    return crawlerProvider.setCrawlerStatus(timestamp, status);
+export function setStatus(projectId: string, timestamp: string, status: string): Promise<Crawler> {
+    return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 
 export function startCrawlerFromProject(projectId: string): Promise<StartCrawler> {

@@ -2,14 +2,18 @@ import React from 'react';
 import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
-import { setStatus, getCrawler } from '../server/service';
-import { useAsyncCache } from 'react-async-cache';
+import { setStatus } from '../server/service';
+import { Crawler } from '../server/typing';
 
-const onChange = (update: any, timestamp: string) => async (value: boolean) => {
+const onChange = (
+    projectId: string,
+    timestamp: string,
+    setCrawler: React.Dispatch<React.SetStateAction<Crawler>>,
+) => async (value: boolean) => {
     try {
         const status = value ? 'done' : 'review';
-        const crawler = await setStatus(timestamp, status);
-        update(crawler);
+        const crawler = await setStatus(projectId, timestamp, status);
+        setCrawler(crawler);
         message.success(`Status set to "${status}".`, 2);
     } catch (error) {
         notification['error']({
@@ -19,12 +23,17 @@ const onChange = (update: any, timestamp: string) => async (value: boolean) => {
     }
 }
 
-export const SwitchStatus = ({ timestamp, status }: any) => {
-    const { update } = useAsyncCache(getCrawler, timestamp.toString());
+interface Props {
+    projectId: string;
+    timestamp: number;
+    status: string;
+    setCrawler: React.Dispatch<React.SetStateAction<Crawler>>;
+}
+export const SwitchStatus = ({ timestamp, status, projectId, setCrawler }: Props) => {
     return <Switch
         checkedChildren="done"
         unCheckedChildren="review"
         checked={status === 'done'}
-        onChange={onChange(update, timestamp.toString())}
+        onChange={onChange(projectId, timestamp.toString(), setCrawler)}
     />;
 }

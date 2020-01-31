@@ -7,8 +7,8 @@ export const useCrawler = (
     projectId: string,
     timestamp: string,
 ) => {
-    const { result: crawler, call, error } = useAsync<Crawler>(() => getCrawler(projectId, timestamp));
-    return {crawler, call, error };
+    const { result: crawler, call, error, setResult: setCrawler } = useAsync<Crawler>(() => getCrawler(projectId, timestamp));
+    return {crawler, call, error, setCrawler };
 }
 
 let timer: NodeJS.Timeout;
