@@ -2,13 +2,15 @@ import React from 'react';
 import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
-import { useAsyncCache } from 'react-async-cache';
-import { setZonesStatus, getPages } from '../server/service';
+import { setZonesStatus } from '../server/service';
+import { PageData } from '../server/typing';
 
-const onClick = (update: any, { timestamp, id, status }: any) => async () => {
+const onClick = (
+    { timestamp, id, status, projectId, setPages }: Props,
+) => async () => {
     try {
-        const pages = await setZonesStatus(timestamp.toString(), id, status);
-        update(pages, getPages, timestamp);
+        const pages = await setZonesStatus(projectId, timestamp.toString(), id, status);
+        setPages(pages);
         message.success(`All zone are set to "${status}".`, 2);
     } catch (error) {
         notification['error']({
@@ -18,10 +20,17 @@ const onClick = (update: any, { timestamp, id, status }: any) => async () => {
     }
 }
 
-export const PagesActionZone = (props: any) => {
-    const { update } = useAsyncCache();
+interface Props {
+    setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
+    projectId: string;
+    timestamp: string;
+    id: string;
+    status: string;
+    type: string;
+}
+export const PagesActionZone = (props: Props) => {
     const { status, type } = props;
     return (
-        <Icon type={type} title={`Set all zone to "${status}".`} onClick={onClick(update, props)} />
+        <Icon type={type} title={`Set all zone to "${status}".`} onClick={onClick(props)} />
     );
 }

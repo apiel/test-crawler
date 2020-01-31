@@ -20,8 +20,8 @@ interface Props {
 
 export const PagesActions = ({ setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
     ...[png && <PagesActionFullscreen setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
-    <PagesActionZone type="check" timestamp={timestamp} id={id} status={'valid'} zones={png && png.diff ? png.diff.zones : []} />,
-    <PagesActionZone type="warning" timestamp={timestamp} id={id} status={'report'} zones={png && png.diff ? png.diff.zones : []} />,
+    <PagesActionZone type="check" setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
+    <PagesActionZone type="warning" setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
     <PagesActionPin timestamp={timestamp} id={id} />,
     // <Icon type="ellipsis" title="more" />,
 ];
