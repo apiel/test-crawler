@@ -10,13 +10,13 @@ import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 import { RouteComponentProps } from 'react-router';
-import { CrawlerInput } from '../server/typing';
+import { CrawlerInput } from '../../server/typing';
 
-import { getHomeRoute } from '../routes';
-import { saveProject } from '../server/service';
-import { Info } from '../common/Info';
+import { getHomeRoute } from '../../routes';
+import { saveProject } from '../../server/service';
+import { Info } from '../../common/Info';
 import { Viewport } from './Viewport';
-import { getDefaultViewport } from '../viewport';
+import { getDefaultViewport } from '../../viewport';
 import { History } from 'history';
 
 const inlineStyle = {

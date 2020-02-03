@@ -5,7 +5,7 @@ import Breadcrumb from 'antd/lib/breadcrumb';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import './App.css';
-import NewProject from './new-project/NewProject';
+import NewProject from './projects/new/NewProject';
 import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
 import {

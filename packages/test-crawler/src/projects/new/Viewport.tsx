@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Select from 'antd/lib/select';
-import { viewportsStr, getDefaultViewportStr } from '../viewport';
+import { viewportsStr, getDefaultViewportStr } from '../../viewport';
 
 const { Option } = Select;
 
