@@ -205,13 +205,13 @@ class CrawlerProvider {
             return project;
         });
     }
-    startCrawlerFromProject(projectId) {
+    startCrawlerFromProject(projectId, push) {
         return __awaiter(this, void 0, void 0, function* () {
             const project = yield this.loadProject(projectId);
-            return this.startCrawler(projectId, project.crawlerInput);
+            return this.startCrawler(projectId, project.crawlerInput, push);
         });
     }
-    startCrawler(projectId, crawlerInput, runProcess = true) {
+    startCrawler(projectId, crawlerInput, push, runProcess = true) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.cleanHistory(projectId);
             const timestamp = Math.floor(Date.now() / 1000);
@@ -227,7 +227,7 @@ class CrawlerProvider {
                 yield this.startSpiderBotCrawling(crawlerInput, distFolder);
             }
             if (runProcess) {
-                crawl_1.crawl({ projectId, pagesFolder: timestamp.toString() }, 30);
+                crawl_1.crawl({ projectId, pagesFolder: timestamp.toString() }, 30, push);
             }
             return {
                 crawler,
@@ -235,9 +235,9 @@ class CrawlerProvider {
             };
         });
     }
-    startCrawlers() {
+    startCrawlers(push) {
         return __awaiter(this, void 0, void 0, function* () {
-            crawl_1.crawl(undefined, 30);
+            crawl_1.crawl(undefined, 30, push);
         });
     }
     startUrlsCrawling(crawlerInput, distFolder) {

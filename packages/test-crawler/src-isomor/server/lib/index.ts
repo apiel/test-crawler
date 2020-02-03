@@ -210,14 +210,14 @@ export class CrawlerProvider {
         return project;
     }
 
-    async startCrawlerFromProject(projectId: string): Promise<StartCrawler> {
+    async startCrawlerFromProject(projectId: string, push?: (payload: any) => void): Promise<StartCrawler> {
         const project = await this.loadProject(projectId);
         // console.log('start project crawler', project);
-        return this.startCrawler(projectId, project.crawlerInput);
+        return this.startCrawler(projectId, project.crawlerInput, push);
         // return this.startCrawler(projectId, project.crawlerInput, false);
     }
 
-    async startCrawler(projectId: string, crawlerInput: CrawlerInput, runProcess = true): Promise<StartCrawler> {
+    async startCrawler(projectId: string, crawlerInput: CrawlerInput, push?: (payload: any) => void, runProcess = true): Promise<StartCrawler> {
         await this.cleanHistory(projectId);
         const timestamp = Math.floor(Date.now() / 1000);
         const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
@@ -247,7 +247,7 @@ export class CrawlerProvider {
         if (runProcess) {
             // exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
             // exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
-            crawl({ projectId, pagesFolder: timestamp.toString() }, 30);
+            crawl({ projectId, pagesFolder: timestamp.toString() }, 30, push);
         }
 
         return {
@@ -256,8 +256,8 @@ export class CrawlerProvider {
         };
     }
 
-    async startCrawlers() {
-        crawl(undefined, 30);
+    async startCrawlers(push?: (payload: any) => void) {
+        crawl(undefined, 30, push);
     }
 
     private async startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {

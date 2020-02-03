@@ -93,10 +93,12 @@ function setStatus(projectId, timestamp, status) {
 }
 exports.setStatus = setStatus;
 function startCrawlerFromProject(projectId) {
-    return crawlerProvider.startCrawlerFromProject(projectId);
+    const { push } = this;
+    return crawlerProvider.startCrawlerFromProject(projectId, push);
 }
 exports.startCrawlerFromProject = startCrawlerFromProject;
 function startCrawlers() {
-    return crawlerProvider.startCrawlers();
+    const { push } = this;
+    return crawlerProvider.startCrawlers(push);
 }
 exports.startCrawlers = startCrawlers;

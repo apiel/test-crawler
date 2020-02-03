@@ -190,7 +190,7 @@ function consumeQueues(consumeTimeout, crawlTarget) {
     });
 }
 let consumeResultRetry = 0;
-function consumeResults(consumeTimeout) {
+function consumeResults(consumeTimeout, push) {
     return __awaiter(this, void 0, void 0, function* () {
         if (resultsQueue.length) {
             consumeResultRetry = 0;
@@ -210,11 +210,12 @@ function consumeResults(consumeTimeout) {
             crawler.urlsCount = (yield fs_extra_1.readdir(folder)).filter(f => path_1.extname(f) === '.json' && f !== '_.json').length;
             crawler.lastUpdate = Date.now();
             yield fs_extra_1.writeJSON(file, crawler, { spaces: 4 });
-            consumeResults(consumeTimeout);
+            push && push(crawler);
+            consumeResults(consumeTimeout, push);
         }
         else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
             consumeResultRetry++;
-            setTimeout(() => consumeResults(consumeTimeout), 1000);
+            setTimeout(() => consumeResults(consumeTimeout, push), 1000);
         }
     });
 }
@@ -225,10 +226,10 @@ function prepareFolders() {
         }
     });
 }
-function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT) {
+function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
-        consumeResults(consumeTimeout);
+        consumeResults(consumeTimeout, push);
         consumeQueues(consumeTimeout, crawlTarget);
     });
 }

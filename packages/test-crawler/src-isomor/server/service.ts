@@ -1,5 +1,7 @@
 // import * as sharp from 'sharp';
 
+import { WsContext } from 'isomor-server';
+
 import {
     CrawlerProvider,
 } from './lib';
@@ -90,9 +92,11 @@ export function setStatus(projectId: string, timestamp: string, status: string):
 }
 
 export function startCrawlerFromProject(projectId: string): Promise<StartCrawler> {
-    return crawlerProvider.startCrawlerFromProject(projectId);
+    const { push }: WsContext = this;
+    return crawlerProvider.startCrawlerFromProject(projectId, push);
 }
 
 export function startCrawlers(): Promise<void> {
-    return crawlerProvider.startCrawlers();
+    const { push }: WsContext = this;
+    return crawlerProvider.startCrawlers(push);
 }

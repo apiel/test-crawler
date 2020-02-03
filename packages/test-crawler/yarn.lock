@@ -8441,6 +8441,27 @@ isomor-server@^2.0.5:
     typescript "^3.7.4"
     ws "^7.2.1"
 
+isomor-server@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-2.0.6.tgz#a49b4f30707532a3e58b292ef14fe895f1ce11f8"
+  dependencies:
+    "@types/fs-extra" "^8.0.1"
+    "@types/morgan" "^1.7.37"
+    "@types/ws" "^7.2.1"
+    ajv "^6.10.2"
+    body-parser "^1.18.3"
+    cookie-parser "^1.4.4"
+    express "^4.17.1"
+    fs-extra "^8.1.0"
+    isomor "^2.0.6"
+    isomor-core "^2.0.5"
+    logol "^0.0.3"
+    morgan "^1.9.1"
+    please-upgrade-node "^3.2.0"
+    swagger-ui-express "^4.1.2"
+    typescript "^3.7.4"
+    ws "^7.2.1"
+
 isomor-transpiler@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-2.0.5.tgz#33769185e2577148c273118c31f67f390e1f47f2"
@@ -8470,6 +8491,17 @@ isomor@^2.0.5:
     chalk "^3.0.0"
     inquirer "^7.0.1"
     isomor-server "^2.0.5"
+    isomor-transpiler "^2.0.5"
+    typescript "^3.7.4"
+
+isomor@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-2.0.6.tgz#0495f025db8924b638de6fa73932ef82f2d376ea"
+  dependencies:
+    axios "^0.19.0"
+    chalk "^3.0.0"
+    inquirer "^7.0.1"
+    isomor-server "^2.0.6"
     isomor-transpiler "^2.0.5"
     typescript "^3.7.4"
 

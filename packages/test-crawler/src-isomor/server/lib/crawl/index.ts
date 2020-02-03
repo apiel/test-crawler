@@ -237,7 +237,7 @@ async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
 }
 
 let consumeResultRetry = 0;
-async function consumeResults(consumeTimeout: number) {
+async function consumeResults(consumeTimeout: number, push?: (payload: any) => void) {
     // console.log('resultsQueue.length', resultsQueue.length);
     if (resultsQueue.length) {
         consumeResultRetry = 0;
@@ -259,10 +259,11 @@ async function consumeResults(consumeTimeout: number) {
         crawler.lastUpdate = Date.now();
 
         await writeJSON(file, crawler, { spaces: 4 });
-        consumeResults(consumeTimeout);
+        push && push(crawler);
+        consumeResults(consumeTimeout, push);
     } else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
         consumeResultRetry++;
-        setTimeout(() => consumeResults(consumeTimeout), 1000);
+        setTimeout(() => consumeResults(consumeTimeout, push), 1000);
     }
 }
 
@@ -276,8 +277,12 @@ interface CrawlTarget {
     pagesFolder: string;
     projectId: string;
 }
-export async function crawl(crawlTarget?: CrawlTarget, consumeTimeout = CONSUME_TIMEOUT) {
+export async function crawl(
+    crawlTarget?: CrawlTarget,
+    consumeTimeout = CONSUME_TIMEOUT,
+    push?: (payload: any) => void,
+) {
     await prepareFolders();
-    consumeResults(consumeTimeout);
+    consumeResults(consumeTimeout, push);
     consumeQueues(consumeTimeout, crawlTarget);
 }

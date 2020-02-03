@@ -1,4 +1,6 @@
 import { isomorRemote } from "isomor";
+// import * as sharp from 'sharp';
+import { WsContext } from 'isomor-server';
 export function getSettings(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getSettings", args);
 }
