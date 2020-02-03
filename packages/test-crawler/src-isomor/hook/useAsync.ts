@@ -3,10 +3,11 @@ import React from 'react';
 const load = <T>(
     fn: () => Promise<any>,
     setResult: React.Dispatch<React.SetStateAction<T>>,
-    setError: React.Dispatch<React.SetStateAction<string>>,
+    setError: React.Dispatch<React.SetStateAction<any | undefined>>,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) => async () => {
     try {
+        setError(undefined);
         setLoading(true);
         const result = await fn();
         setResult(result);
