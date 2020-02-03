@@ -39,7 +39,6 @@ export const Code = ({ match: { params: { id, projectId } }, location }: Props) 
     // instead to getPin, there should be a special endpoint retriving a
     // list of pages matching the pattern
     // (when it is coming from pin, pattern should be already be filled out)
-    // const { response: pin } = useAsyncCacheEffect<PageData>(getPin, id);
     return (
         <>
             <Title level={3}>Add some code</Title>
