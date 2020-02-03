@@ -22,10 +22,10 @@ function start() {
         const [, , option, value] = process.argv;
         let pagesFolder;
         if (option && value) {
-            if (option === '--preset') {
+            if (option === '--project') {
                 const crawlerProvider = new lib_1.CrawlerProvider();
-                const crawlerInput = yield crawlerProvider.startCrawlerFromProject(value);
-                logol_1.info('Start with preset', crawlerInput);
+                const result = yield crawlerProvider.startCrawlerFromProject(value);
+                logol_1.info('Start project', result);
             }
             else if (option === '--folder') {
                 pagesFolder = value;
