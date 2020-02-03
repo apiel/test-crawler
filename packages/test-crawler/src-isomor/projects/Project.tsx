@@ -64,6 +64,7 @@ export const Project = ({
             <Typography.Title level={3}>Project</Typography.Title>
             {!project ? <Spin /> : <>
                 <p><b>Name:</b> {project.name}</p>
+                <p><b>ID:</b> {projectId}</p>
                 <p><b>URL:</b> {project.crawlerInput.url}</p>
                 <p><b>Screen:</b> {getViewportName(project.crawlerInput.viewport)}</p>
                 <p><b>Method:</b>
