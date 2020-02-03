@@ -15,7 +15,8 @@ yarn global add test-crawler
 test-crawler
 ```
 
-Open url http://127.0.0.1:3005/
+Open url http://127.0.0.1:3005/ and create a new project:
+
 ![screenshot-start](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-new.png?raw=true)
 
 There is two way to crawl pages:
@@ -131,22 +132,8 @@ You can find this code by clicking the button `Code snippet` of the code editor.
 You can run test directly from the cli. This can be useful for continuous integration test.
 
 ```bash
-test-crawler-cli --preset ./preset.json
-```
-
-Preset file should look like:
-
-```json
-{
-    "crawlerInput": {
-        "url": "http://localhost:3003/",
-        "method": "spiderbot",
-        "viewport": {
-            "width": 800,
-            "height": 600
-        }
-    }
-}
+# test-crawler-cli --project the_id_of_the_project
+test-crawler-cli --project f0258b6685684c113bad94d91b8fa02a
 ```
 
 ## Continuous integration Travis
