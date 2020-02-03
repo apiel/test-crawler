@@ -15,8 +15,9 @@ yarn global add test-crawler
 test-crawler
 ```
 
-Open url http://127.0.0.1:3005/
-![screenshot-start](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-new.jpeg?raw=true)
+Open url http://127.0.0.1:3005/ and create a new project:
+
+![screenshot-start](https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-new.png?raw=true)
 
 There is two way to crawl pages:
 
