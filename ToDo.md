@@ -1,3 +1,5 @@
+- **we could track the number of query per page and see if there is some changes...**
+
 - breadcrumb
 - 
 
