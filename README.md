@@ -188,8 +188,8 @@ in `package.json` add the following scripts:
 ```json
   "scripts": {
     "start": "...",
-    "test:crawler": "PAGES_FOLDER=./test-crawler test-crawler",
-    "test:crawler:cli": "PROCESS_TIMEOUT=10 PAGES_FOLDER=./test-crawler test-crawler-cli test-crawler.preset.json"
+    "test:crawler": "PROJECT_FOLDER=./test-crawler test-crawler",
+    "test:crawler:cli": "PROCESS_TIMEOUT=10 PROJECT_FOLDER=./test-crawler test-crawler-cli --project here_is_the_project_id"
   }
 ```
-> **Note:** For `test-crawler-cli` and preset, see previous section.
+> **Note:** For `test-crawler-cli` and project, see previous section.
