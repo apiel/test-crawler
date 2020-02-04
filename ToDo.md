@@ -1,15 +1,11 @@
 - **we could track the number of query per page and see if there is some changes...**
 
+- implement delete pin
 - breadcrumb
-- 
 
 
 
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)
-- make it easy to setup
-- need to work globally
-- move all package for test-crawler in a single folder?
-- rerun doesnt work properly
 - should keep log for each url: see why code didn't execute...
 - need to handle error properly?
 
