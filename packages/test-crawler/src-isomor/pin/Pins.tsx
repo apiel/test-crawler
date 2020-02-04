@@ -7,9 +7,7 @@ import {
     masonryStyle,
     masonryOptions,
 } from '../pages/pageStyle';
-import { getPins } from '../server/service';
 import { PageData } from '../server/typing';
-import { useAsyncCacheEffect } from 'react-async-cache';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { PinPage } from './PinPage';
 import { Search } from '../search/Search';
