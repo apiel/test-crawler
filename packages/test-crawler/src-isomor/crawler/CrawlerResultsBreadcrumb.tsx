@@ -3,7 +3,6 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { getHomeRoute, getProjectRoute, getResultsRoute } from '../routes';
 import { useProject } from '../projects/useProject';
-import { useCrawler } from './useCrawler';
 import { timestampToString } from '../utils';
 
 export const CrawlerResultsBreadcrumb = ({

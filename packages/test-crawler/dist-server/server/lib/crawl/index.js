@@ -229,6 +229,8 @@ function prepareFolders() {
 function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
+        consumeQueuesRetry = 0;
+        consumeResultRetry = 0;
         consumeResults(consumeTimeout, push);
         consumeQueues(consumeTimeout, crawlTarget);
     });

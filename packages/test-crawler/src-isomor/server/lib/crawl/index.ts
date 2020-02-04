@@ -238,7 +238,7 @@ async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
 
 let consumeResultRetry = 0;
 async function consumeResults(consumeTimeout: number, push?: (payload: any) => void) {
-    // console.log('resultsQueue.length', resultsQueue.length);
+    // console.log('resultsQueue.length', resultsQueue.length, consumeResultRetry, consumeTimeout);
     if (resultsQueue.length) {
         consumeResultRetry = 0;
         const [{ folder, result, isError }] = resultsQueue.splice(0, 1);
@@ -283,6 +283,8 @@ export async function crawl(
     push?: (payload: any) => void,
 ) {
     await prepareFolders();
+    consumeQueuesRetry = 0;
+    consumeResultRetry = 0;
     consumeResults(consumeTimeout, push);
     consumeQueues(consumeTimeout, crawlTarget);
 }

@@ -214,7 +214,6 @@ export class CrawlerProvider {
         const project = await this.loadProject(projectId);
         // console.log('start project crawler', project);
         return this.startCrawler(projectId, project.crawlerInput, push);
-        // return this.startCrawler(projectId, project.crawlerInput, false);
     }
 
     async startCrawler(projectId: string, crawlerInput: CrawlerInput, push?: (payload: any) => void, runProcess = true): Promise<StartCrawler> {
