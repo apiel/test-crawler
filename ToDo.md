@@ -1,7 +1,8 @@
 - **we could track the number of query per page and see if there is some changes...**
 
-- fix diff in small view
-- breadcrumb
+- use github to save project folder (or git in general)
+    + could be for all projects
+    + or per project
 
 
 
