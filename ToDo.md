@@ -1,6 +1,6 @@
 - **we could track the number of query per page and see if there is some changes...**
 
-- implement delete pin
+- fix diff in small view
 - breadcrumb
 
 
@@ -9,7 +9,6 @@
 - should keep log for each url: see why code didn't execute...
 - need to handle error properly?
 
-- in new page, instead of new have list of project, button new would create a new project (preset)
 
 
 
