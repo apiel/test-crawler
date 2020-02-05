@@ -40,10 +40,17 @@ export interface CrawlerInput {
     autopin: boolean;
 }
 
+export interface Git {
+    url: string;
+    // gitBranch
+    // gitFolder
+}
+
 export interface Project {
     id: string;
     name: string;
     crawlerInput: CrawlerInput;
+    git?: Git;
 }
 
 export interface Crawler extends CrawlerInput {

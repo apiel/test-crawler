@@ -4,6 +4,8 @@ import { WsContext } from 'isomor-server';
 
 import {
     CrawlerProvider,
+    CrawlerLocalProvider,
+    CrawlerGitProvider,
 } from './lib';
 
 import {
@@ -16,14 +18,11 @@ import {
     CodeInfoList,
 } from './typing';
 
-const crawlerProvider = new CrawlerProvider()
+const crawlerProvider = new CrawlerProvider();
 
+// Force getSettings to be a async since crawlerProvider.getSettings is sync
 export async function getSettings() {
     return crawlerProvider.getSettings();
-}
-
-export function getCrawlers(projectId: string): Promise<Crawler[]> {
-    return crawlerProvider.getAllCrawlers(projectId);
 }
 
 export function loadProject(projectId: string): Promise<Project> {
@@ -38,8 +37,12 @@ export function saveProject(crawlerInput: CrawlerInput, name: string, projectId?
     return crawlerProvider.saveProject(crawlerInput, name, projectId);
 }
 
-export async function getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
+export function getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
     return crawlerProvider.getCrawler(projectId, timestamp);
+}
+
+export function getCrawlers(projectId: string): Promise<Crawler[]> {
+    return crawlerProvider.getAllCrawlers(projectId);
 }
 
 export function getPages(projectId: string, timestamp: string): Promise<PageData[]> {

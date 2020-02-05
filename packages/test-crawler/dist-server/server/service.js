@@ -17,10 +17,6 @@ function getSettings() {
     });
 }
 exports.getSettings = getSettings;
-function getCrawlers(projectId) {
-    return crawlerProvider.getAllCrawlers(projectId);
-}
-exports.getCrawlers = getCrawlers;
 function loadProject(projectId) {
     return crawlerProvider.loadProject(projectId);
 }
@@ -34,11 +30,13 @@ function saveProject(crawlerInput, name, projectId) {
 }
 exports.saveProject = saveProject;
 function getCrawler(projectId, timestamp) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return crawlerProvider.getCrawler(projectId, timestamp);
-    });
+    return crawlerProvider.getCrawler(projectId, timestamp);
 }
 exports.getCrawler = getCrawler;
+function getCrawlers(projectId) {
+    return crawlerProvider.getAllCrawlers(projectId);
+}
+exports.getCrawlers = getCrawlers;
 function getPages(projectId, timestamp) {
     return crawlerProvider.getPages(projectId, timestamp);
 }

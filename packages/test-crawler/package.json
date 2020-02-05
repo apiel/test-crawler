@@ -45,6 +45,7 @@
   ],
   "proxy": "http://127.0.0.1:3005",
   "dependencies": {
+    "@types/nodegit": "^0.26.1",
     "ansi-to-html": "^0.6.13",
     "antd": "^3.26.8",
     "axios": "^0.19.2",
@@ -59,6 +60,7 @@
     "minimatch": "^3.0.4",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
+    "nodegit": "^0.26.4",
     "pixdiff-zone": "^1.0.0-alpha.0",
     "pngjs": "^3.3.3",
     "puppeteer": "^2.1.0",

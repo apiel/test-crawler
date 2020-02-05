@@ -30,11 +30,33 @@ const config_1 = require("./config");
 const utils_1 = require("./utils");
 const crawl_1 = require("./crawl");
 const _1 = require(".");
+const CrawlerLocalProvider_1 = require("./CrawlerLocalProvider");
+const CrawlerGitProvider_1 = require("./CrawlerGitProvider");
+const crawlerLocalProvider = new CrawlerLocalProvider_1.CrawlerLocalProvider();
+const crawlerGitProvider = new CrawlerGitProvider_1.CrawlerGitProvider();
 class CrawlerProvider {
     getSettings() {
         return {
             dir: __dirname,
         };
+    }
+    getCrawler(projectId, timestamp) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { git } = yield this.loadProject(projectId);
+            if (git) {
+                return crawlerGitProvider.getCrawler(git, timestamp);
+            }
+            return crawlerLocalProvider.getCrawler(projectId, timestamp);
+        });
+    }
+    getAllCrawlers(projectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { git } = yield this.loadProject(projectId);
+            if (git) {
+                return crawlerGitProvider.getAllCrawlers(git);
+            }
+            return crawlerLocalProvider.getAllCrawlers(projectId);
+        });
     }
     setZoneStatus(projectId, timestamp, id, index, status) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -184,23 +206,11 @@ class CrawlerProvider {
             return crawler;
         });
     }
-    getCrawler(projectId, timestamp) {
-        return fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, '_.json'));
-    }
-    getAllCrawlers(projectId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const projectFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
-            yield fs_extra_1.mkdirp(projectFolder);
-            const folders = yield fs_extra_1.readdir(projectFolder);
-            const crawlers = yield Promise.all(folders.map(folder => fs_extra_1.readJSON(path_1.join(projectFolder, folder, '_.json'))));
-            return crawlers;
-        });
-    }
     loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
             yield fs_extra_1.mkdirp(config_1.PROJECT_FOLDER);
             const projects = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
-            return Promise.all(projects.map(projectId => fs_extra_1.readJSON(path_1.join(config_1.PROJECT_FOLDER, projectId, 'project.json'))));
+            return Promise.all(projects.map(projectId => this.loadProject(projectId)));
         });
     }
     loadProject(projectId) {

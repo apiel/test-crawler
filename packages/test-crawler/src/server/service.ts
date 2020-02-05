@@ -4,9 +4,6 @@ import { WsContext } from 'isomor-server';
 export function getSettings(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getSettings", args);
 }
-export function getCrawlers(...args: any) {
-  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getCrawlers", args);
-}
 export function loadProject(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "loadProject", args);
 }
@@ -18,6 +15,9 @@ export function saveProject(...args: any) {
 }
 export function getCrawler(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getCrawler", args);
+}
+export function getCrawlers(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getCrawlers", args);
 }
 export function getPages(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getPages", args);

@@ -23,12 +23,33 @@ import { getFolders, addToQueue, getFilePath, FilePath, getCodeList } from './ut
 import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerMethod } from '.';
+import { CrawlerLocalProvider } from './CrawlerLocalProvider';
+import { CrawlerGitProvider } from './CrawlerGitProvider';
+
+const crawlerLocalProvider = new CrawlerLocalProvider();
+const crawlerGitProvider = new CrawlerGitProvider();
 
 export class CrawlerProvider {
     getSettings() {
         return {
             dir: __dirname,
         };
+    }
+
+    async getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
+        const { git } = await this.loadProject(projectId);
+        if (git) {
+            return crawlerGitProvider.getCrawler(git, timestamp);
+        }
+        return crawlerLocalProvider.getCrawler(projectId, timestamp);
+    }
+
+    async getAllCrawlers(projectId: string): Promise<Crawler[]> {
+        const { git } = await this.loadProject(projectId);
+        if (git) {
+            return crawlerGitProvider.getAllCrawlers(git);
+        }
+        return crawlerLocalProvider.getAllCrawlers(projectId);
     }
 
     async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
@@ -183,29 +204,11 @@ export class CrawlerProvider {
         return crawler;
     }
 
-    getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
-        return readJSON(join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, '_.json'));
-    }
-
-    async getAllCrawlers(projectId: string): Promise<Crawler[]> {
-        const projectFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
-        await mkdirp(projectFolder);
-        const folders = await readdir(projectFolder);
-        const crawlers: Crawler[] = await Promise.all(
-            folders.map(folder => readJSON(join(
-                projectFolder,
-                folder,
-                '_.json',
-            ))),
-        );
-        return crawlers;
-    }
-
     async loadProjects(): Promise<Project[]> {
         await mkdirp(PROJECT_FOLDER);
         const projects = await readdir(PROJECT_FOLDER);
         return Promise.all(
-            projects.map(projectId => readJSON(join(PROJECT_FOLDER, projectId, 'project.json'))),
+            projects.map(projectId => this.loadProject(projectId)),
         );
     }
 
