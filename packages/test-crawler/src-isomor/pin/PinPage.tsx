@@ -1,22 +1,33 @@
 import React from 'react';
 import Card from 'antd/lib/card';
 import Icon from 'antd/lib/icon';
-import message from 'antd/lib/message';
+import Popconfirm from 'antd/lib/popconfirm';
 
 import {
     cardStyle,
     iconTheme,
 } from '../pages/pageStyle';
 import { DiffImage } from '../diff/DiffImage';
-import { PngDiffData, Viewport } from '../server/typing';
+import { PngDiffData, Viewport, PageData } from '../server/typing';
 import { Link } from 'react-router-dom';
 import { getCodeRoute } from '../routes';
 import { getViewportName } from '../viewport';
+import { removePin } from '../server/service';
+
+const handleDelete = (
+    projectId: string,
+    id: string,
+    setPins: React.Dispatch<React.SetStateAction<PageData[]>>,
+) => async () => {
+    const pins = await removePin(projectId, id);
+    setPins(pins);
+}
 
 interface Props {
     projectId: string;
     id: string;
     url: string;
+    setPins: React.Dispatch<React.SetStateAction<PageData[]>>;
     viewport?: Viewport,
     onImg: () => void;
     png?: {
@@ -25,12 +36,19 @@ interface Props {
     };
 }
 
-export const PinPage = ({ projectId, id, url, viewport, onImg, png }: Props) => (
+export const PinPage = ({ projectId, id, url, viewport, onImg, png, setPins }: Props) => (
     <Card
         style={cardStyle}
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} />}
         actions={[
-            <Icon type="delete" title={`Delete pin`} onClick={() => message.warn('To be implemented.', 2)} />,
+            <Popconfirm
+                title="Are you sure delete this pin?"
+                onConfirm={handleDelete(projectId, id, setPins)}
+                okText="Yes"
+                cancelText="No"
+            >
+                <Icon type="delete" title={`Delete pin`} />
+            </Popconfirm>,
             (<Link to={{
                 pathname: getCodeRoute(projectId, id),
                 state: { pattern: url }

@@ -44,11 +44,11 @@ function getPages(projectId, timestamp) {
 }
 exports.getPages = getPages;
 function getPins(projectId) {
-    return crawlerProvider.getBasePages(projectId);
+    return crawlerProvider.getPins(projectId);
 }
 exports.getPins = getPins;
 function getPin(projectId, id) {
-    return crawlerProvider.getBasePage(projectId, id);
+    return crawlerProvider.getPin(projectId, id);
 }
 exports.getPin = getPin;
 function setCode(projectId, code) {
@@ -70,8 +70,12 @@ function getThumbnail(projectId, folder, id, width = 300) {
     });
 }
 exports.getThumbnail = getThumbnail;
+function removePin(projectId, id) {
+    return crawlerProvider.removeFromPins(projectId, id);
+}
+exports.removePin = removePin;
 function pin(projectId, timestamp, id) {
-    return crawlerProvider.copyToBase(projectId, timestamp, id);
+    return crawlerProvider.copyToPins(projectId, timestamp, id);
 }
 exports.pin = pin;
 function setZoneStatus(projectId, timestamp, id, index, status) {

@@ -193,3 +193,26 @@ in `package.json` add the following scripts:
   }
 ```
 > **Note:** For `test-crawler-cli` and project, see previous section.
+
+## Contribution
+
+If you are interested to work on this project, you are really welcome.
+There is many way to bring help, testing, documentation, bug fixes, new features...
+
+For the one who to dive in the code, you need to know about TypeScript, React and eventually Puppeteer but **the most important thing to be aware is that test-crawler is base on [isomor](https://www.npmjs.com/package/isomor)**. It might be useful to undertsand the concept of this tool before to touch the code.
+
+Since you was reading the doc, you now know that the code should be modified in "src-isomor".
+
+To start the project in dev mode:
+
+```shell
+git clone https://github.com/apiel/test-crawler.git
+cd test-crawler
+npx lerna bootstrap
+cd packages/test-crawler
+yarn dev
+```
+
+`yarn dev` will start 3 processes using [run-screen](https://www.npmjs.com/package/run-screen). The first process is the isomor-transpiler, the second is the backend server and the third is react server. To switch between process, press 1, 2 or 3.
+
+If you have any question, feel free to contact me at alexandre.piel@gmail.com

@@ -36,14 +36,6 @@ exports.CrawlerMethod = {
     SPIDER_BOT: 'spiderbot',
 };
 class CrawlerProvider {
-    copyFile(filePath, basePath, extension) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const file = filePath(extension);
-            if (yield fs_extra_1.pathExists(file)) {
-                yield fs_extra_1.copy(file, basePath(extension), { overwrite: true });
-            }
-        });
-    }
     getSettings() {
         return {
             dir: __dirname,
@@ -81,13 +73,21 @@ class CrawlerProvider {
             return newPage;
         });
     }
-    copyToBase(projectId, timestamp, id) {
+    copyFile(filePath, basePath, extension) {
         return __awaiter(this, void 0, void 0, function* () {
-            const baseFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
-            yield fs_extra_1.mkdirp(baseFolder);
+            const file = filePath(extension);
+            if (yield fs_extra_1.pathExists(file)) {
+                yield fs_extra_1.copy(file, basePath(extension), { overwrite: true });
+            }
+        });
+    }
+    copyToPins(projectId, timestamp, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pinFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
+            yield fs_extra_1.mkdirp(pinFolder);
             const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
-            const basePath = utils_1.getFilePath(id, baseFolder);
+            const basePath = utils_1.getFilePath(id, pinFolder);
             const data = yield fs_extra_1.readJson(filePath('json'));
             data.png.diff = {
                 pixelDiffRatio: 0,
@@ -98,6 +98,24 @@ class CrawlerProvider {
             yield this.copyFile(filePath, basePath, 'html');
             yield this.copyFile(filePath, basePath, 'json');
             return data;
+        });
+    }
+    removeFile(filePath, extension) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const file = filePath(extension);
+            if (yield fs_extra_1.pathExists(file)) {
+                yield fs_extra_1.remove(file);
+            }
+        });
+    }
+    removeFromPins(projectId, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pinFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
+            const filePath = utils_1.getFilePath(id, pinFolder);
+            yield this.removeFile(filePath, 'png');
+            yield this.removeFile(filePath, 'html');
+            yield this.removeFile(filePath, 'json');
+            return this.getPins(projectId);
         });
     }
     image(projectId, folder, id) {
@@ -138,23 +156,23 @@ class CrawlerProvider {
             return utils_1.getCodeList(projectId);
         });
     }
-    getBasePages(projectId) {
+    getPins(projectId) {
         const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
-        return this.getPagesInFolder(folder);
+        return this.getPinsInFolder(folder);
     }
-    getBasePage(projectId, id) {
+    getPin(projectId, id) {
         const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
         return this.getPageInFolder(folder, id);
     }
     getPages(projectId, timestamp) {
         const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
-        return this.getPagesInFolder(folder);
+        return this.getPinsInFolder(folder);
     }
     getPageInFolder(folder, id) {
         const filePath = utils_1.getFilePath(id, folder);
         return fs_extra_1.readJSON(filePath('json'));
     }
-    getPagesInFolder(folder) {
+    getPinsInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {
             yield fs_extra_1.mkdirp(folder);
             const files = yield fs_extra_1.readdir(folder);

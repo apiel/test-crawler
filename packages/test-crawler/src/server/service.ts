@@ -40,6 +40,9 @@ export function getCodes(...args: any) {
 export function getThumbnail(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getThumbnail", args);
 }
+export function removePin(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "removePin", args);
+}
 export function pin(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "pin", args);
 }

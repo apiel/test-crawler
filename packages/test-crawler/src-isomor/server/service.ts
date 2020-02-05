@@ -47,11 +47,11 @@ export function getPages(projectId: string, timestamp: string): Promise<PageData
 }
 
 export function getPins(projectId: string): Promise<PageData[]> {
-    return crawlerProvider.getBasePages(projectId);
+    return crawlerProvider.getPins(projectId);
 }
 
 export function getPin(projectId: string, id: string): Promise<PageData> {
-    return crawlerProvider.getBasePage(projectId, id);
+    return crawlerProvider.getPin(projectId, id);
 }
 
 export function setCode(projectId: string, code: Code): Promise<void> {
@@ -73,8 +73,12 @@ export async function getThumbnail(projectId: string, folder: string, id: string
     return `data:image/png;base64, ${(image).toString('base64')}`;
 }
 
+export function removePin(projectId: string, id: string): Promise<PageData[]> {
+    return crawlerProvider.removeFromPins(projectId, id);
+}
+
 export function pin(projectId: string, timestamp: string, id: string): Promise<PageData> {
-    return crawlerProvider.copyToBase(projectId, timestamp, id);
+    return crawlerProvider.copyToPins(projectId, timestamp, id);
 }
 
 export async function setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData[]> {

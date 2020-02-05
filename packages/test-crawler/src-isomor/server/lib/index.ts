@@ -6,6 +6,7 @@ import {
     readFile,
     pathExists,
     copy,
+    remove,
     readJson,
     mkdirp,
 } from 'fs-extra';
@@ -30,13 +31,6 @@ export const CrawlerMethod = {
 };
 
 export class CrawlerProvider {
-    private async copyFile(filePath: FilePath, basePath: FilePath, extension: string) {
-        const file = filePath(extension);
-        if (await pathExists(file)) {
-            await copy(file, basePath(extension), { overwrite: true });
-        }
-    }
-
     getSettings() {
         return {
             dir: __dirname,
@@ -75,12 +69,19 @@ export class CrawlerProvider {
         return newPage;
     }
 
-    async copyToBase(projectId: string, timestamp: string, id: string): Promise<PageData> {
-        const baseFolder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
-        await mkdirp(baseFolder);
+    private async copyFile(filePath: FilePath, basePath: FilePath, extension: string) {
+        const file = filePath(extension);
+        if (await pathExists(file)) {
+            await copy(file, basePath(extension), { overwrite: true });
+        }
+    }
+
+    async copyToPins(projectId: string, timestamp: string, id: string): Promise<PageData> {
+        const pinFolder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
+        await mkdirp(pinFolder);
         const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
-        const basePath = getFilePath(id, baseFolder);
+        const basePath = getFilePath(id, pinFolder);
 
         const data: PageData = await readJson(filePath('json'));
         data.png.diff = {
@@ -94,6 +95,25 @@ export class CrawlerProvider {
         await this.copyFile(filePath, basePath, 'json');
 
         return data;
+    }
+
+    private async removeFile(filePath: FilePath, extension: string) {
+        const file = filePath(extension);
+        if (await pathExists(file)) {
+            await remove(file);
+        }
+    }
+
+    async removeFromPins(projectId: string, id: string): Promise<PageData[]> {
+        const pinFolder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
+
+        const filePath = getFilePath(id, pinFolder);
+
+        await this.removeFile(filePath, 'png');
+        await this.removeFile(filePath, 'html');
+        await this.removeFile(filePath, 'json');
+
+        return this.getPins(projectId);
     }
 
     image(projectId: string, folder: string, id: string): Promise<Buffer> {
@@ -132,19 +152,19 @@ export class CrawlerProvider {
         return getCodeList(projectId);
     }
 
-    getBasePages(projectId: string): Promise<PageData[]> {
+    getPins(projectId: string): Promise<PageData[]> {
         const folder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
-        return this.getPagesInFolder(folder);
+        return this.getPinsInFolder(folder);
     }
 
-    getBasePage(projectId: string, id: string): Promise<PageData> {
+    getPin(projectId: string, id: string): Promise<PageData> {
         const folder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
         return this.getPageInFolder(folder, id);
     }
 
     getPages(projectId: string, timestamp: string): Promise<PageData[]> {
         const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
-        return this.getPagesInFolder(folder);
+        return this.getPinsInFolder(folder);
     }
 
     private getPageInFolder(folder: string, id: string): Promise<PageData> {
@@ -152,7 +172,7 @@ export class CrawlerProvider {
         return readJSON(filePath('json'));
     }
 
-    private async getPagesInFolder(folder: string): Promise<PageData[]> {
+    private async getPinsInFolder(folder: string): Promise<PageData[]> {
         await mkdirp(folder);
         const files = await readdir(folder);
         return Promise.all(

@@ -13,15 +13,18 @@ import { PinPage } from './PinPage';
 import { Search } from '../search/Search';
 import { setMasonry, onMasonryImg } from '../common/refreshMasonry';
 import { RouteComponentProps } from 'react-router-dom';
-import { usePins } from './usePins';
 import { ProjectName } from '../projects/ProjectName';
+import { useAsync } from '../hook/useAsync';
+import { getPins } from '../server/service';
 
 const { Title } = Typography;
 
 export const Pins = ({
     match: { params: { projectId } },
 }: RouteComponentProps<{ projectId: string }>) => {
-    const { pins: response, error } = usePins(projectId);
+    const { result, error, setResult: setPins } = useAsync<PageData[]>(
+        () => getPins(projectId)
+    );
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
@@ -30,7 +33,7 @@ export const Pins = ({
         <>
             <Title level={3}>Pins</Title>
             <ProjectName projectId={projectId} />
-            <Search response={response}>
+            <Search response={result}>
                 {(pins) => pins ? (
                     <Masonry
                         style={masonryStyle}
@@ -43,6 +46,7 @@ export const Pins = ({
                                 id={id}
                                 key={id}
                                 url={url}
+                                setPins={setPins}
                                 png={png}
                                 viewport={viewport}
                                 onImg={onMasonryImg}
