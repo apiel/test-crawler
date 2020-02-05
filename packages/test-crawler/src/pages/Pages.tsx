@@ -8,6 +8,7 @@ import {
     masonryStyle,
     masonryOptions,
     cardStyle,
+    cardImgMargin,
 } from './pageStyle';
 import { PageData } from '../server/typing';
 import { getPages } from '../server/service';
@@ -56,6 +57,7 @@ export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
                                     originalWidth={png.width}
                                     onImg={onMasonryImg}
                                     setPages={setPages}
+                                    marginLeft={cardImgMargin}
                                 />}
                                 actions={PagesActions({ setPages, projectId, id, timestamp, png, url, pageError })}
                             >

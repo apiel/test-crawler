@@ -7,10 +7,10 @@ export const imgStyle = {
     width: 300,
 }
 
-export const imgMargin = 10;
+export const cardImgMargin = 10;
 
 export const cardStyle = {
-    width: imgStyle.width + imgMargin*2,
+    width: imgStyle.width + cardImgMargin*2,
     marginBottom: 10,
 };
 

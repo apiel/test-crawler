@@ -46,6 +46,7 @@ export const PagesActionFullscreen = ({ setPages, projectId, timestamp, id, png,
                         zones={png.diff && png.diff.zones}
                         originalWidth={png.width}
                         width={png.width}
+                        marginLeft={0}
                     />
                     <Page url={url} pageError={pageError} png={png} />
                 </div>

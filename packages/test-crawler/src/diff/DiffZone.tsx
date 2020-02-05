@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Popover from 'antd/lib/popover';
 
-import {
-    imgMargin,
-} from '../pages/pageStyle';
-
 import { DiffImageButtons } from './DiffImageButtons';
 import { getThumbnail } from '../server/service';
 import { Zone, PageData } from '../server/typing';
@@ -18,7 +14,15 @@ export const getColorByStatus = (status: string) => {
     return 'yellow';
 }
 
-const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, width: number, img: string | undefined, over: boolean, status: string) => {
+const zoneStyle = (
+    { xMin, yMin, xMax, yMax }: any,
+    ratio: number,
+    width: number,
+    marginLeft: number,
+    img: string | undefined,
+    over: boolean,
+    status: string,
+) => {
     const top = yMin / ratio - 1;
     const left = xMin / ratio - 1;
     return ({
@@ -27,11 +31,11 @@ const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, width: number
         // width: 200,
         // height: 100,
         top,
-        left: left  + imgMargin,
+        left: left + marginLeft,
         border: `1px solid ${getColorByStatus(status)}`,
         position: 'absolute',
         backgroundImage: over ? `url("${img}")` : 'none',
-        backgroundPosition: `${-(left+1)}px ${-(top+1)}px`,
+        backgroundPosition: `${-(left + 1)}px ${-(top + 1)}px`,
         backgroundSize: width,
     });
 }
@@ -44,11 +48,12 @@ interface Props {
     index: number;
     status: string;
     width: number;
+    marginLeft: number;
     projectId: string;
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
-export const DiffZone = ({ setPages, projectId, folder, id, index, originalWidth, zone, status, width }: Props) => {
+export const DiffZone = ({ setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
         setThumb(await getThumbnail(projectId, 'base', id, width));
@@ -61,7 +66,7 @@ export const DiffZone = ({ setPages, projectId, folder, id, index, originalWidth
             <DiffImageButtons index={index} timestamp={folder} id={id} projectId={projectId} setPages={setPages} />
         )} trigger="click">
             <div
-                style={zoneStyle(zone, ratio, width, thumb, hover, status) as any}
+                style={zoneStyle(zone, ratio, width, marginLeft, thumb, hover, status) as any}
                 onMouseOver={() => setHover(true)}
                 onMouseOut={() => setHover(false)}
             />

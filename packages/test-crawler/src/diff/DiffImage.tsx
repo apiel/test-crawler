@@ -13,6 +13,7 @@ export interface Props {
     id: string;
     width?: number;
     onImg?: () => void;
+    marginLeft: number;
 };
 
 export const DiffImage = ({

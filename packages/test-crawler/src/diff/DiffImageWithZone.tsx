@@ -22,6 +22,7 @@ export const DiffImageWithZone = ({
     originalWidth = 0,
     width = imgStyle.width,
     setPages,
+    marginLeft,
     ...props
 }: Props & DiffImageProps) =>
     <DiffImage projectId={projectId} folder={folder} id={id} width={width} {...props}>
@@ -33,6 +34,7 @@ export const DiffImageWithZone = ({
                 width={width}
                 index={index}
                 originalWidth={originalWidth}
+                marginLeft={marginLeft}
                 status={status}
                 zone={zone}
                 key={`zone-${id}-${index}`}
