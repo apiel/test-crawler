@@ -18,18 +18,21 @@ export const getColorByStatus = (status: string) => {
     return 'yellow';
 }
 
-const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, img: string | undefined, over: boolean, status: string) => {
-    const top = yMin / ratio;
-    const left = xMin / ratio;
+const zoneStyle = ({ xMin, yMin, xMax, yMax }: any, ratio: number, width: number, img: string | undefined, over: boolean, status: string) => {
+    const top = yMin / ratio - 1;
+    const left = xMin / ratio - 1;
     return ({
-        width: (xMax - xMin) / ratio + 1,
-        height: (yMax - yMin) / ratio + 1,
+        width: (xMax - xMin) / ratio + 2,
+        height: (yMax - yMin) / ratio + 2,
+        // width: 200,
+        // height: 100,
         top,
-        left: left + imgMargin,
+        left: left  + imgMargin,
         border: `1px solid ${getColorByStatus(status)}`,
         position: 'absolute',
         backgroundImage: over ? `url("${img}")` : 'none',
-        backgroundPosition: `${-left}px ${-top}px`,
+        backgroundPosition: `${-(left+1)}px ${-(top+1)}px`,
+        backgroundSize: width,
     });
 }
 
@@ -58,7 +61,7 @@ export const DiffZone = ({ setPages, projectId, folder, id, index, originalWidth
             <DiffImageButtons index={index} timestamp={folder} id={id} projectId={projectId} setPages={setPages} />
         )} trigger="click">
             <div
-                style={zoneStyle(zone, ratio, thumb, hover, status) as any}
+                style={zoneStyle(zone, ratio, width, thumb, hover, status) as any}
                 onMouseOver={() => setHover(true)}
                 onMouseOut={() => setHover(false)}
             />
