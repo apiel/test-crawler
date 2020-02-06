@@ -4,6 +4,9 @@
     + could be for all projects
     + or per project
 
+- move html in json maybe using base64
+- move image in json using base64
+
 
 
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)

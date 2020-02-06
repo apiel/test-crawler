@@ -7,7 +7,9 @@ import { pin } from '../server/service';
 
 const onPin = ({ projectId, timestamp, id }: Props) => async () => {
     try {
+        const hide = message.loading('Pin in progress..', 0);
         await pin(projectId, timestamp.toString(), id);
+        hide();
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {
         notification['error']({
