@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from 'antd/lib/card';
 import Icon from 'antd/lib/icon';
+import message from 'antd/lib/message';
 import Popconfirm from 'antd/lib/popconfirm';
 
 import {
@@ -19,8 +20,10 @@ const handleDelete = (
     id: string,
     setPins: React.Dispatch<React.SetStateAction<PageData[]>>,
 ) => async () => {
+    const hide = message.loading('Delete in progress..', 0);
     const pins = await removePin(projectId, id);
     setPins(pins);
+    hide();
 }
 
 interface Props {
