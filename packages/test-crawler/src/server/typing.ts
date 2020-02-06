@@ -34,8 +34,14 @@ export interface CrawlerInput {
   limit?: number;
   autopin: boolean;
 }
-export interface Git {
-  url: string; // gitBranch
+export enum RemoteType {
+  GitHub,
+}
+export interface RemoteGitHub {
+  type: RemoteType.GitHub;
+  user: string;
+  repo: string;
+  token: string; // gitBranch
   // gitFolder
 
 }
@@ -43,7 +49,7 @@ export interface Project {
   id: string;
   name: string;
   crawlerInput: CrawlerInput;
-  git?: Git;
+  remote?: RemoteGitHub;
 }
 export interface Crawler extends CrawlerInput {
   id: string;

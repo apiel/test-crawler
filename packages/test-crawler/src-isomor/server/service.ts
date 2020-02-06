@@ -4,8 +4,6 @@ import { WsContext } from 'isomor-server';
 
 import {
     CrawlerProvider,
-    CrawlerLocalProvider,
-    CrawlerGitProvider,
 } from './lib';
 
 import {

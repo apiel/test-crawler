@@ -20,36 +20,31 @@ import { groupOverlappingZone } from 'pixdiff-zone';
 import { CRAWL_FOLDER, MAX_HISTORY, PIN_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
 import { getFolders, addToQueue, getFilePath, FilePath, getCodeList } from './utils';
 
-import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList } from '../typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList, RemoteType } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerMethod } from '.';
-import { CrawlerLocalProvider } from './CrawlerLocalProvider';
-import { CrawlerGitProvider } from './CrawlerGitProvider';
+import { CrawlerProviderBase } from './CrawlerProviderBase';
 
-const crawlerLocalProvider = new CrawlerLocalProvider();
-const crawlerGitProvider = new CrawlerGitProvider();
-
-export class CrawlerProvider {
+export class CrawlerProvider extends CrawlerProviderBase {
     getSettings() {
         return {
             dir: __dirname,
         };
     }
 
-    async getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
-        const { git } = await this.loadProject(projectId);
-        if (git) {
-            return crawlerGitProvider.getCrawler(git, timestamp);
-        }
-        return crawlerLocalProvider.getCrawler(projectId, timestamp);
+    getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
+        // return readJSON(join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, '_.json'));
+        return this.readJSON(projectId, join(CRAWL_FOLDER, timestamp, '_.json'));
     }
 
     async getAllCrawlers(projectId: string): Promise<Crawler[]> {
-        const { git } = await this.loadProject(projectId);
-        if (git) {
-            return crawlerGitProvider.getAllCrawlers(git);
-        }
-        return crawlerLocalProvider.getAllCrawlers(projectId);
+        const projectFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
+        await mkdirp(projectFolder);
+        const folders = await readdir(projectFolder);
+        const crawlers: Crawler[] = await Promise.all(
+            folders.map(timestamp => this.getCrawler(projectId, timestamp)),
+        );
+        return crawlers;
     }
 
     async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
@@ -213,7 +208,7 @@ export class CrawlerProvider {
     }
 
     loadProject(projectId: string): Promise<Project> {
-        return readJSON(join(PROJECT_FOLDER, projectId, `project.json`));
+        return this.readJSONLocal(projectId, `project.json`);
     }
 
     async saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
