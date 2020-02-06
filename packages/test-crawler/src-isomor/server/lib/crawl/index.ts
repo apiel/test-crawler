@@ -19,12 +19,12 @@ import {
     savePageInfo,
     addToQueue,
     getQueueFolder,
-    getCodeList,
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
 import { Crawler } from '../../typing';
 import { isArray } from 'util';
+import { CrawlerProvider } from '../CrawlerProvider';
 
 interface ResultQueue {
     result?: {
@@ -133,7 +133,8 @@ async function injectCodes(
     distFolder: string,
     crawler: Crawler,
 ) {
-    const list = await getCodeList(projectId);
+    const crawlerProvider = new CrawlerProvider();
+    const list = await crawlerProvider.getCodeList(projectId);
     // console.log('injectCodes list', list);
     // console.log('Object.values', Object.values(list));
     const toInject = Object.values(list).filter(({ pattern }) => {

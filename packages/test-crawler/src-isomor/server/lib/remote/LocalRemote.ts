@@ -8,6 +8,7 @@ import {
     copy,
     pathExists,
     remove,
+    outputFile,
 } from 'fs-extra';
 import { join } from 'path';
 import { PROJECT_FOLDER } from '../config';
@@ -23,16 +24,26 @@ export class LocalRemote extends Remote {
         return readdir(fullpath);
     }
 
-    read(path: string) {
-        return readFile(this.getPath(path));
+    async read(path: string) {
+        const fullpath = this.getPath(path);
+        if (await pathExists(fullpath)) {
+            return readFile(fullpath);
+        }
     }
 
-    readJSON(path: string) {
-        return readJSON(this.getPath(path));
+    async readJSON(path: string) {
+        const fullpath = this.getPath(path);
+        if (await pathExists(fullpath)) {
+            return readJSON(fullpath);
+        }
     }
 
     saveJSON(file: string, data: any) {
         return outputJSON(this.getPath(file), data, { spaces: 4 });
+    }
+
+    saveFile(file: string, data: string) {
+        return outputFile(this.getPath(file), data);
     }
 
     async copy(src: string, dst: string) {

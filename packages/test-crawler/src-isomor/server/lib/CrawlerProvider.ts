@@ -2,11 +2,6 @@ import {
     readdir,
     readJSON,
     outputJSON,
-    outputFile,
-    readFile,
-    pathExists,
-    copy,
-    remove,
     readJson,
     mkdirp,
 } from 'fs-extra';
@@ -18,9 +13,9 @@ import { exec } from 'child_process';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
 import { CRAWL_FOLDER, MAX_HISTORY, PIN_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
-import { getFolders, addToQueue, getFilePath, FilePath, getCodeList } from './utils';
+import { getFolders, addToQueue, getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList, RemoteType } from '../typing';
+import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerMethod } from '.';
 import { CrawlerProviderBase, LOCAL } from './CrawlerProviderBase';
@@ -107,28 +102,32 @@ export class CrawlerProvider extends CrawlerProviderBase {
         const { source, ...codeInfo } = code;
         const list = await this.getCodeList(projectId);
         list[code.id] = codeInfo;
-        outputJSON(join(PROJECT_FOLDER, projectId, CODE_FOLDER, `list.json`), { ...list }, { spaces: 4 }); // for some reason it need a copy
-        outputFile(join(PROJECT_FOLDER, projectId, CODE_FOLDER, `${code.id}.js`), source);
+        await this.saveJSON(projectId, join(CODE_FOLDER, `list.json`), { ...list }); // for some reason it need a copy
+        await this.saveFile(projectId, join(CODE_FOLDER, `${code.id}.js`), source);
     }
 
     async loadCode(projectId: string, id: string): Promise<Code> {
         const list = await this.getCodeList(projectId);
         const codeInfo = list[id];
-        const sourcePath = join(PROJECT_FOLDER, projectId, CODE_FOLDER, `${id}.js`);
-        if (!codeInfo || !(await pathExists(sourcePath))) {
-            return {
-                id,
-                name: '',
-                pattern: '',
-                source: '',
-            };
+        const sourcePath = join(CODE_FOLDER, `${id}.js`);
+        if (codeInfo) {
+            const buffer = await this.read(projectId, sourcePath);
+            if (buffer) {
+                const source = buffer.toString();
+                return { ...codeInfo, source };
+            }
         }
-        const source = (await readFile(sourcePath)).toString();
-        return { ...codeInfo, source };
+        return {
+            id,
+            name: '',
+            pattern: '',
+            source: '',
+        };
     }
 
     async getCodeList(projectId: string): Promise<CodeInfoList> {
-        return getCodeList(projectId);
+        const listPath = join(CODE_FOLDER, `list.json`);
+        return this.readJSON(projectId, listPath);
     }
 
     getPins(projectId: string): Promise<PageData[]> {

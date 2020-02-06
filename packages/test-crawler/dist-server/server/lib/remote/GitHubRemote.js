@@ -50,7 +50,7 @@ class GitHubRemote extends Remote_1.Remote {
             });
         });
     }
-    save(file, content) {
+    saveFile(file, content) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data: { sha } } = yield this.getContents(file);
             const data = JSON.stringify({
@@ -67,14 +67,14 @@ class GitHubRemote extends Remote_1.Remote {
     }
     saveJSON(file, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.save(file, JSON.stringify(content, null, 4));
+            return this.saveFile(file, JSON.stringify(content, null, 4));
         });
     }
     copy(src, dst) {
         return __awaiter(this, void 0, void 0, function* () {
             const srcData = yield this.read(src);
             if (srcData) {
-                this.save(dst, srcData);
+                this.saveFile(dst, srcData.toString());
             }
         });
     }

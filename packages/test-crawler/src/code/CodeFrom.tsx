@@ -33,11 +33,13 @@ const save = async (
     info: FormInput,
 ) => {
     try {
+        const hide = message.loading('Saving in progress..', 0);
         await setCode(projectId, {
             id,
             source,
             ...info,
         });
+        hide();
         message.success('Code saved.', 2);
     } catch (error) {
         notification['error']({

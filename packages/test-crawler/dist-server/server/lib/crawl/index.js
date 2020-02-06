@@ -19,6 +19,7 @@ const utils_1 = require("../utils");
 const index_1 = require("../index");
 const diff_1 = require("../diff");
 const util_1 = require("util");
+const CrawlerProvider_1 = require("../CrawlerProvider");
 let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
@@ -97,7 +98,8 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
 }
 function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        const list = yield utils_1.getCodeList(projectId);
+        const crawlerProvider = new CrawlerProvider_1.CrawlerProvider();
+        const list = yield crawlerProvider.getCodeList(projectId);
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });

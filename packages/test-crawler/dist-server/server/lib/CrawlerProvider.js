@@ -103,30 +103,34 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             const { source } = code, codeInfo = __rest(code, ["source"]);
             const list = yield this.getCodeList(projectId);
             list[code.id] = codeInfo;
-            fs_extra_1.outputJSON(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `list.json`), Object.assign({}, list), { spaces: 4 });
-            fs_extra_1.outputFile(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${code.id}.js`), source);
+            yield this.saveJSON(projectId, path_1.join(config_1.CODE_FOLDER, `list.json`), Object.assign({}, list));
+            yield this.saveFile(projectId, path_1.join(config_1.CODE_FOLDER, `${code.id}.js`), source);
         });
     }
     loadCode(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
             const list = yield this.getCodeList(projectId);
             const codeInfo = list[id];
-            const sourcePath = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${id}.js`);
-            if (!codeInfo || !(yield fs_extra_1.pathExists(sourcePath))) {
-                return {
-                    id,
-                    name: '',
-                    pattern: '',
-                    source: '',
-                };
+            const sourcePath = path_1.join(config_1.CODE_FOLDER, `${id}.js`);
+            if (codeInfo) {
+                const buffer = yield this.read(projectId, sourcePath);
+                if (buffer) {
+                    const source = buffer.toString();
+                    return Object.assign(Object.assign({}, codeInfo), { source });
+                }
             }
-            const source = (yield fs_extra_1.readFile(sourcePath)).toString();
-            return Object.assign(Object.assign({}, codeInfo), { source });
+            return {
+                id,
+                name: '',
+                pattern: '',
+                source: '',
+            };
         });
     }
     getCodeList(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return utils_1.getCodeList(projectId);
+            const listPath = path_1.join(config_1.CODE_FOLDER, `list.json`);
+            return this.readJSON(projectId, listPath);
         });
     }
     getPins(projectId) {

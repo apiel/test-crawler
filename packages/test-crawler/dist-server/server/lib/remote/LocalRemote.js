@@ -26,13 +26,26 @@ class LocalRemote extends Remote_1.Remote {
         });
     }
     read(path) {
-        return fs_extra_1.readFile(this.getPath(path));
+        return __awaiter(this, void 0, void 0, function* () {
+            const fullpath = this.getPath(path);
+            if (yield fs_extra_1.pathExists(fullpath)) {
+                return fs_extra_1.readFile(fullpath);
+            }
+        });
     }
     readJSON(path) {
-        return fs_extra_1.readJSON(this.getPath(path));
+        return __awaiter(this, void 0, void 0, function* () {
+            const fullpath = this.getPath(path);
+            if (yield fs_extra_1.pathExists(fullpath)) {
+                return fs_extra_1.readJSON(fullpath);
+            }
+        });
     }
     saveJSON(file, data) {
         return fs_extra_1.outputJSON(this.getPath(file), data, { spaces: 4 });
+    }
+    saveFile(file, data) {
+        return fs_extra_1.outputFile(this.getPath(file), data);
     }
     copy(src, dst) {
         return __awaiter(this, void 0, void 0, function* () {

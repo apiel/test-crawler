@@ -55,6 +55,15 @@ class CrawlerProviderBase {
             return remote.readJSON(path);
         });
     }
+    saveFile(projectId, file, content, local = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (local) {
+                return this.getLocal(projectId).saveFile(file, content);
+            }
+            const remote = yield this.getRemote(projectId);
+            return remote.saveFile(file, content);
+        });
+    }
     saveJSON(projectId, file, content, local = false) {
         return __awaiter(this, void 0, void 0, function* () {
             if (local) {

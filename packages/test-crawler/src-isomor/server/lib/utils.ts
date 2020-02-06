@@ -53,11 +53,3 @@ export function getQueueFolder(distFolder: string) {
 export function savePageInfo(file: string, pageData: PageData) {
     return outputJson(file, pageData, { spaces: 4 });
 }
-
-export async function getCodeList(projectId: string): Promise<CodeInfoList> {
-    const listPath = join(PROJECT_FOLDER, projectId, CODE_FOLDER, `list.json`);
-    if (!(await pathExists(listPath))) {
-        return {};
-    }
-    return readJSON(listPath);
-}

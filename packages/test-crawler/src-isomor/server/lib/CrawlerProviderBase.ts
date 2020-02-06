@@ -45,6 +45,14 @@ export abstract class CrawlerProviderBase {
         return remote.readJSON(path);
     }
 
+    protected async saveFile(projectId: string, file: string, content: string, local = false) {
+        if (local) {
+            return this.getLocal(projectId).saveFile(file, content);
+        }
+        const remote = await this.getRemote(projectId);
+        return remote.saveFile(file, content);
+    }
+
     protected async saveJSON(projectId: string, file: string, content: any, local = false) {
         if (local) {
             return this.getLocal(projectId).saveJSON(file, content);

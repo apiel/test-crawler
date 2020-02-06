@@ -45,7 +45,7 @@ export class GitHubRemote extends Remote {
         });
     }
 
-    async save(file: string, content: any) {
+    async saveFile(file: string, content: string) {
         const { data: { sha } } = await this.getContents(file);
         const data = JSON.stringify({
             message: `[${COMMIT}] save json`,
@@ -60,13 +60,13 @@ export class GitHubRemote extends Remote {
     }
 
     async saveJSON(file: string, content: any) {
-        return this.save(file, JSON.stringify(content, null, 4))
+        return this.saveFile(file, JSON.stringify(content, null, 4))
     }
 
     async copy(src: string, dst: string) {
         const srcData = await this.read(src);
         if (srcData) {
-            this.save(dst, srcData);
+            this.saveFile(dst, srcData.toString());
         }
     }
 
