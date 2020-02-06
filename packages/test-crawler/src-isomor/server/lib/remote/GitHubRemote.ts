@@ -32,6 +32,19 @@ export class GitHubRemote extends Remote {
         return JSON.parse((await this.read(path)).toString());
     }
 
+    async remove(file: string) {
+        const { data: { sha } } = await this.getContents(file);
+        const data = JSON.stringify({
+            message: `[${COMMIT}] save json`,
+            sha,
+        });
+        await this.call({
+            method: 'DELETE',
+            url: `${this.contentsUrl}/${file}`,
+            data,
+        });
+    }
+
     async save(file: string, content: any) {
         const { data: { sha } } = await this.getContents(file);
         const data = JSON.stringify({

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typing_1 = require("../typing");
 const LocalRemote_1 = require("./remote/LocalRemote");
 const GitHubRemote_1 = require("./remote/GitHubRemote");
+exports.LOCAL = true;
 class CrawlerProviderBase {
     getRemote(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,50 +28,59 @@ class CrawlerProviderBase {
     getLocal(projectId) {
         return new LocalRemote_1.LocalRemote(projectId);
     }
-    readdir(projectId, path) {
+    readdir(projectId, path, local = false) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (local) {
+                return this.getLocal(projectId).readdir(path);
+            }
             const remote = yield this.getRemote(projectId);
             return remote.readdir(path);
         });
     }
-    readdirLocal(projectId, path) {
-        return this.getLocal(projectId).readdir(path);
-    }
-    read(projectId, path) {
+    read(projectId, path, local = false) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (local) {
+                return this.getLocal(projectId).read(path);
+            }
             const remote = yield this.getRemote(projectId);
             return remote.read(path);
         });
     }
-    readLocal(projectId, path) {
-        return this.getLocal(projectId).read(path);
-    }
-    readJSON(projectId, path) {
+    readJSON(projectId, path, local = false) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (local) {
+                return this.getLocal(projectId).readJSON(path);
+            }
             const remote = yield this.getRemote(projectId);
             return remote.readJSON(path);
         });
     }
-    readJSONLocal(projectId, path) {
-        return this.getLocal(projectId).readJSON(path);
-    }
-    saveJSON(projectId, file, content) {
+    saveJSON(projectId, file, content, local = false) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (local) {
+                return this.getLocal(projectId).saveJSON(file, content);
+            }
             const remote = yield this.getRemote(projectId);
             return remote.saveJSON(file, content);
         });
     }
-    saveJSONLocal(projectId, file, content) {
-        return this.getLocal(projectId).saveJSON(file, content);
-    }
-    copy(projectId, src, dst) {
+    remove(projectId, file, local = false) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (local) {
+                return this.getLocal(projectId).remove(file);
+            }
+            const remote = yield this.getRemote(projectId);
+            return remote.remove(file);
+        });
+    }
+    copy(projectId, src, dst, local = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (local) {
+                return this.getLocal(projectId).copy(src, dst);
+            }
             const remote = yield this.getRemote(projectId);
             return remote.copy(src, dst);
         });
-    }
-    copyLocal(projectId, src, dst) {
-        return this.getLocal(projectId).copy(src, dst);
     }
 }
 exports.CrawlerProviderBase = CrawlerProviderBase;

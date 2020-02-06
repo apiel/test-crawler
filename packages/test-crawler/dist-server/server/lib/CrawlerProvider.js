@@ -38,11 +38,11 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
         };
     }
     loadProject(projectId) {
-        return this.readJSONLocal(projectId, `project.json`);
+        return this.readJSON(projectId, `project.json`, CrawlerProviderBase_1.LOCAL);
     }
     loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
-            const projects = yield this.readdirLocal('', '');
+            const projects = yield this.readdir('', '', CrawlerProviderBase_1.LOCAL);
             return Promise.all(projects.map(projectId => this.loadProject(projectId)));
         });
     }
@@ -52,7 +52,7 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
                 projectId = md5(name);
             }
             const project = { id: projectId, name, crawlerInput };
-            yield this.saveJSONLocal(projectId, 'project.json', project);
+            yield this.saveJSON(projectId, 'project.json', project, CrawlerProviderBase_1.LOCAL);
             return project;
         });
     }
@@ -66,54 +66,37 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             return crawlers;
         });
     }
-    copyFile(projectId, srcPath, dstPath, extension) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.copy(projectId, srcPath(extension), dstPath(extension));
-        });
-    }
-    copyToPins(projectId, timestamp, id) {
+    copyToPins(projectId, timestamp, id, local = false) {
         return __awaiter(this, void 0, void 0, function* () {
             const crawlerFolder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
             const crawlerFolderPath = utils_1.getFilePath(id, crawlerFolder);
-            const data = yield this.readJSON(projectId, crawlerFolderPath('json'));
+            const data = yield this.readJSON(projectId, crawlerFolderPath('json'), local);
             data.png.diff = {
                 pixelDiffRatio: 0,
                 zones: [],
             };
             if (data.png.diff.pixelDiffRatio > 0) {
-                yield this.saveJSON(projectId, crawlerFolderPath('json'), data);
+                yield this.saveJSON(projectId, crawlerFolderPath('json'), data, local);
             }
             const pinFolderPath = utils_1.getFilePath(id, config_1.PIN_FOLDER);
-            yield this.saveJSON(projectId, pinFolderPath('json'), data);
-            yield this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'html');
-            yield this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'png');
+            yield this.saveJSON(projectId, pinFolderPath('json'), data, local);
+            yield this.copy(projectId, crawlerFolderPath('html'), pinFolderPath('html'), local);
+            yield this.copy(projectId, crawlerFolderPath('png'), pinFolderPath('png'), local);
             return data;
-        });
-    }
-    removeFile(filePath, extension) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const file = filePath(extension);
-            if (yield fs_extra_1.pathExists(file)) {
-                yield fs_extra_1.remove(file);
-            }
         });
     }
     removeFromPins(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const pinFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
-            const filePath = utils_1.getFilePath(id, pinFolder);
-            yield this.removeFile(filePath, 'png');
-            yield this.removeFile(filePath, 'html');
-            yield this.removeFile(filePath, 'json');
+            const pinFolderPath = utils_1.getFilePath(id, config_1.PIN_FOLDER);
+            yield this.remove(projectId, pinFolderPath('png'));
+            yield this.remove(projectId, pinFolderPath('html'));
+            yield this.remove(projectId, pinFolderPath('json'));
             return this.getPins(projectId);
         });
     }
     image(projectId, folder, id) {
-        const target = folder === 'base' ?
-            path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER)
-            : path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, folder);
-        const filePath = utils_1.getFilePath(id, target);
-        return fs_extra_1.readFile(filePath('png'));
+        const target = folder === 'base' ? config_1.PIN_FOLDER : path_1.join(config_1.CRAWL_FOLDER, folder);
+        return this.read(projectId, utils_1.getFilePath(id, target)('png'));
     }
     saveCode(projectId, code) {
         return __awaiter(this, void 0, void 0, function* () {

@@ -4,4 +4,5 @@ export abstract class Remote {
     abstract readdir(path: string): Promise<string[]>;
     abstract saveJSON(file: string, data: any): Promise<void>;
     abstract copy(src: string, dst: string): Promise<void>;
+    abstract remove(file: string): Promise<void>;
 }

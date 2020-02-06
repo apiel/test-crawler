@@ -7,6 +7,7 @@ import {
     outputJSON,
     copy,
     pathExists,
+    remove,
 } from 'fs-extra';
 import { join } from 'path';
 import { PROJECT_FOLDER } from '../config';
@@ -39,6 +40,10 @@ export class LocalRemote extends Remote {
         if (await pathExists(srcFile)) {
             return copy(srcFile, this.getPath(dst), { overwrite: true });
         }
+    }
+
+    remove(file: string) {
+        return remove(this.getPath(file));
     }
 
     protected getPath(path: string) {

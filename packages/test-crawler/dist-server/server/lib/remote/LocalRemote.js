@@ -42,6 +42,9 @@ class LocalRemote extends Remote_1.Remote {
             }
         });
     }
+    remove(file) {
+        return fs_extra_1.remove(this.getPath(file));
+    }
     getPath(path) {
         return path_1.join(config_1.PROJECT_FOLDER, this.projectId, path);
     }

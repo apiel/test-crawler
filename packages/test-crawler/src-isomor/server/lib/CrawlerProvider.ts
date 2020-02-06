@@ -23,7 +23,7 @@ import { getFolders, addToQueue, getFilePath, FilePath, getCodeList } from './ut
 import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList, RemoteType } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerMethod } from '.';
-import { CrawlerProviderBase } from './CrawlerProviderBase';
+import { CrawlerProviderBase, LOCAL } from './CrawlerProviderBase';
 
 export class CrawlerProvider extends CrawlerProviderBase {
     getSettings() {
@@ -33,11 +33,11 @@ export class CrawlerProvider extends CrawlerProviderBase {
     }
 
     loadProject(projectId: string): Promise<Project> {
-        return this.readJSONLocal(projectId, `project.json`);
+        return this.readJSON(projectId, `project.json`, LOCAL);
     }
 
     async loadProjects(): Promise<Project[]> {
-        const projects = await this.readdirLocal('', ''); // to get list of the root folder
+        const projects = await this.readdir('', '', LOCAL); // to get list of the root folder
         return Promise.all(
             projects.map(projectId => this.loadProject(projectId)),
         );
@@ -48,7 +48,7 @@ export class CrawlerProvider extends CrawlerProviderBase {
             projectId = md5(name);
         }
         const project = { id: projectId, name, crawlerInput };
-        await this.saveJSONLocal(projectId, 'project.json', project);
+        await this.saveJSON(projectId, 'project.json', project, LOCAL);
         return project;
     }
 
@@ -64,59 +64,43 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return crawlers;
     }
 
-    private async copyFile(projectId: string, srcPath: FilePath, dstPath: FilePath, extension: string) {
-        return this.copy(projectId,srcPath(extension), dstPath(extension));
-    }
-
-    async copyToPins(projectId: string, timestamp: string, id: string): Promise<PageData> {
+    async copyToPins(projectId: string, timestamp: string, id: string, local = false): Promise<PageData> {
         const crawlerFolder = join(CRAWL_FOLDER, timestamp);
         const crawlerFolderPath = getFilePath(id, crawlerFolder);
 
         // set diff to 0
         // instead to load this file again, we could get the data from the frontend?
-        const data: PageData = await this.readJSON(projectId, crawlerFolderPath('json'));
+        const data: PageData = await this.readJSON(projectId, crawlerFolderPath('json'), local);
         data.png.diff = {
             pixelDiffRatio: 0,
             zones: [],
         };
         if (data.png.diff.pixelDiffRatio > 0) {
-            await this.saveJSON(projectId, crawlerFolderPath('json'), data);
+            await this.saveJSON(projectId, crawlerFolderPath('json'), data, local);
         }
 
         // copy files
         const pinFolderPath = getFilePath(id, PIN_FOLDER);
-        await this.saveJSON(projectId, pinFolderPath('json'), data);
-        await this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'html');
-        await this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'png');
+        await this.saveJSON(projectId, pinFolderPath('json'), data, local);
+        await this.copy(projectId, crawlerFolderPath('html'), pinFolderPath('html'), local);
+        await this.copy(projectId, crawlerFolderPath('png'), pinFolderPath('png'), local);
 
         return data;
     }
 
-    private async removeFile(filePath: FilePath, extension: string) {
-        const file = filePath(extension);
-        if (await pathExists(file)) {
-            await remove(file);
-        }
-    }
-
     async removeFromPins(projectId: string, id: string): Promise<PageData[]> {
-        const pinFolder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
+        const pinFolderPath = getFilePath(id, PIN_FOLDER);
 
-        const filePath = getFilePath(id, pinFolder);
-
-        await this.removeFile(filePath, 'png');
-        await this.removeFile(filePath, 'html');
-        await this.removeFile(filePath, 'json');
+        await this.remove(projectId, pinFolderPath('png'));
+        await this.remove(projectId, pinFolderPath('html'));
+        await this.remove(projectId, pinFolderPath('json'));
 
         return this.getPins(projectId);
     }
 
     image(projectId: string, folder: string, id: string): Promise<Buffer> {
-        const target = folder === 'base' ?
-            join(PROJECT_FOLDER, projectId, PIN_FOLDER)
-            : join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, folder);
-        const filePath = getFilePath(id, target);
-        return readFile(filePath('png'));
+        const target = folder === 'base' ? PIN_FOLDER : join(CRAWL_FOLDER, folder);
+        return this.read(projectId, getFilePath(id, target)('png'));
     }
 
     async saveCode(projectId: string, code: Code): Promise<void> {

@@ -36,6 +36,20 @@ class GitHubRemote extends Remote_1.Remote {
             return JSON.parse((yield this.read(path)).toString());
         });
     }
+    remove(file) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data: { sha } } = yield this.getContents(file);
+            const data = JSON.stringify({
+                message: `[${COMMIT}] save json`,
+                sha,
+            });
+            yield this.call({
+                method: 'DELETE',
+                url: `${this.contentsUrl}/${file}`,
+                data,
+            });
+        });
+    }
     save(file, content) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data: { sha } } = yield this.getContents(file);

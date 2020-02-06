@@ -2,6 +2,8 @@ import { Project, RemoteType } from '../typing';
 import { LocalRemote } from './remote/LocalRemote';
 import { GitHubRemote } from './remote/GitHubRemote';
 
+export const LOCAL = true;
+
 export abstract class CrawlerProviderBase {
     abstract loadProject(projectId: string): Promise<Project>;
 
@@ -19,48 +21,51 @@ export abstract class CrawlerProviderBase {
         return new LocalRemote(projectId);
     }
 
-    protected async readdir(projectId: string, path: string) {
+    protected async readdir(projectId: string, path: string, local = false) {
+        if (local) {
+            return this.getLocal(projectId).readdir(path);
+        }
         const remote = await this.getRemote(projectId);
         return remote.readdir(path);
     }
 
-    protected readdirLocal(projectId: string, path: string) {
-        return this.getLocal(projectId).readdir(path);
-    }
-
-    protected async read(projectId: string, path: string) {
+    protected async read(projectId: string, path: string, local = false) {
+        if (local) {
+            return this.getLocal(projectId).read(path);
+        }
         const remote = await this.getRemote(projectId);
         return remote.read(path);
     }
 
-    protected readLocal(projectId: string, path: string) {
-        return this.getLocal(projectId).read(path);
-    }
-
-    protected async readJSON(projectId: string, path: string) {
+    protected async readJSON(projectId: string, path: string, local = false) {
+        if (local) {
+            return this.getLocal(projectId).readJSON(path);
+        }
         const remote = await this.getRemote(projectId);
         return remote.readJSON(path);
     }
 
-    protected readJSONLocal(projectId: string, path: string) {
-        return this.getLocal(projectId).readJSON(path);
-    }
-
-    protected async saveJSON(projectId: string, file: string, content: any) {
+    protected async saveJSON(projectId: string, file: string, content: any, local = false) {
+        if (local) {
+            return this.getLocal(projectId).saveJSON(file, content);
+        }
         const remote = await this.getRemote(projectId);
         return remote.saveJSON(file, content);
     }
 
-    protected saveJSONLocal(projectId: string, file: string, content: any) {
-        return this.getLocal(projectId).saveJSON(file, content);
+    protected async remove(projectId: string, file: string, local = false) {
+        if (local) {
+            return this.getLocal(projectId).remove(file);
+        }
+        const remote = await this.getRemote(projectId);
+        return remote.remove(file);
     }
 
-    protected async copy(projectId: string, src: string, dst: string) {
+    protected async copy(projectId: string, src: string, dst: string, local = false) {
+        if (local) {
+            return this.getLocal(projectId).copy(src, dst);
+        }
         const remote = await this.getRemote(projectId);
         return remote.copy(src, dst);
-    }
-
-    protected copyLocal(projectId: string, src: string, dst: string) {
-        return this.getLocal(projectId).copy(src, dst);
     }
 }
