@@ -34,9 +34,7 @@ class CrawlerProviderBase {
         });
     }
     readdirLocal(projectId, path) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.getLocal(projectId).readdir(path);
-        });
+        return this.getLocal(projectId).readdir(path);
     }
     read(projectId, path) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -45,9 +43,7 @@ class CrawlerProviderBase {
         });
     }
     readLocal(projectId, path) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.getLocal(projectId).read(path);
-        });
+        return this.getLocal(projectId).read(path);
     }
     readJSON(projectId, path) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -56,9 +52,16 @@ class CrawlerProviderBase {
         });
     }
     readJSONLocal(projectId, path) {
+        return this.getLocal(projectId).readJSON(path);
+    }
+    saveJSON(projectId, file, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.getLocal(projectId).readJSON(path);
+            const remote = yield this.getRemote(projectId);
+            return remote.saveJSON(file, content);
         });
+    }
+    saveJSONLocal(projectId, file, content) {
+        return this.getLocal(projectId).saveJSON(file, content);
     }
 }
 exports.CrawlerProviderBase = CrawlerProviderBase;

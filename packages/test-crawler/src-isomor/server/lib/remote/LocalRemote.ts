@@ -4,6 +4,7 @@ import {
     readFile,
     readdir,
     mkdirp,
+    outputJSON,
 } from 'fs-extra';
 import { join } from 'path';
 import { PROJECT_FOLDER } from '../config';
@@ -25,6 +26,10 @@ export class LocalRemote extends Remote {
 
     readJSON(path: string) {
         return readJSON(this.getPath(path));
+    }
+
+    saveJSON(file: string, data: any) {
+        return outputJSON(this.getPath(file), data, { spaces: 4 });
     }
 
     protected getPath(path: string) {

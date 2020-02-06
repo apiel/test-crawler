@@ -11,6 +11,7 @@ import { RemoteGitHub } from '../../typing';
 
 const BASE_URL = 'https://api.github.com';
 const FOLDER = 'test-crawler';
+const COMMIT = 'test-crawler';
 
 export class GitHubRemote extends Remote {
     constructor(private config: RemoteGitHub) {
@@ -23,12 +24,24 @@ export class GitHubRemote extends Remote {
     }
 
     async read(path: string) {
-        const { data: { content }} = await this.getContents(path);
+        const { data: { content } } = await this.getContents(path);
         return Buffer.from(content, 'base64');
     }
 
     async readJSON(path: string) {
         return JSON.parse((await this.read(path)).toString());
+    }
+
+    async saveJSON(file: string, content: any) {
+        const data = JSON.stringify({
+            message: `[${COMMIT}] save json`,
+            content: Buffer.from(content).toString('base64'),
+        }, undefined, 4);
+        await this.call({
+            method: 'PUT',
+            url: `${this.contentsUrl}/${file}`,
+            data,
+        });
     }
 
     protected call(config: AxiosRequestConfig) {

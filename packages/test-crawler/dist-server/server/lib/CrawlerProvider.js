@@ -37,6 +37,25 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             dir: __dirname,
         };
     }
+    loadProject(projectId) {
+        return this.readJSONLocal(projectId, `project.json`);
+    }
+    loadProjects() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const projects = yield this.readdirLocal('', '');
+            return Promise.all(projects.map(projectId => this.loadProject(projectId)));
+        });
+    }
+    saveProject(crawlerInput, name, projectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!projectId) {
+                projectId = md5(name);
+            }
+            const project = { id: projectId, name, crawlerInput };
+            yield this.saveJSONLocal(projectId, 'project.json', project);
+            return project;
+        });
+    }
     getCrawler(projectId, timestamp) {
         return this.readJSON(projectId, path_1.join(config_1.CRAWL_FOLDER, timestamp, '_.json'));
     }
@@ -45,38 +64,6 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             const folders = yield this.readdir(projectId, config_1.CRAWL_FOLDER);
             const crawlers = yield Promise.all(folders.map(timestamp => this.getCrawler(projectId, timestamp)));
             return crawlers;
-        });
-    }
-    setZoneStatus(projectId, timestamp, id, index, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
-            const filePath = utils_1.getFilePath(id, folder);
-            const data = yield fs_extra_1.readJson(filePath('json'));
-            if (status === 'pin') {
-                const basePath = utils_1.getFilePath(id, path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER));
-                const base = yield fs_extra_1.readJson(basePath('json'));
-                base.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
-                const zones = base.png.diff.zones.map(item => item.zone);
-                zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
-                const groupedZones = pixdiff_zone_1.groupOverlappingZone(zones);
-                base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
-                yield fs_extra_1.outputJSON(basePath('json'), base, { spaces: 4 });
-            }
-            data.png.diff.zones[index].status = status;
-            yield fs_extra_1.outputJSON(filePath('json'), data, { spaces: 4 });
-            return data;
-        });
-    }
-    setZonesStatus(projectId, timestamp, id, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
-            const filePath = utils_1.getFilePath(id, folder);
-            const page = yield fs_extra_1.readJson(filePath('json'));
-            let newPage;
-            for (let index = 0; index < page.png.diff.zones.length; index++) {
-                newPage = yield this.setZoneStatus(projectId, timestamp, id, index, status);
-            }
-            return newPage;
         });
     }
     copyFile(filePath, basePath, extension) {
@@ -195,26 +182,36 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             return crawler;
         });
     }
-    loadProjects() {
+    setZoneStatus(projectId, timestamp, id, index, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield fs_extra_1.mkdirp(config_1.PROJECT_FOLDER);
-            const projects = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
-            return Promise.all(projects.map(projectId => this.loadProject(projectId)));
+            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
+            const filePath = utils_1.getFilePath(id, folder);
+            const data = yield fs_extra_1.readJson(filePath('json'));
+            if (status === 'pin') {
+                const basePath = utils_1.getFilePath(id, path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER));
+                const base = yield fs_extra_1.readJson(basePath('json'));
+                base.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
+                const zones = base.png.diff.zones.map(item => item.zone);
+                zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
+                const groupedZones = pixdiff_zone_1.groupOverlappingZone(zones);
+                base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
+                yield fs_extra_1.outputJSON(basePath('json'), base, { spaces: 4 });
+            }
+            data.png.diff.zones[index].status = status;
+            yield fs_extra_1.outputJSON(filePath('json'), data, { spaces: 4 });
+            return data;
         });
     }
-    loadProject(projectId) {
-        return this.readJSONLocal(projectId, `project.json`);
-    }
-    saveProject(crawlerInput, name, projectId) {
+    setZonesStatus(projectId, timestamp, id, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!projectId) {
-                projectId = md5(name);
+            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
+            const filePath = utils_1.getFilePath(id, folder);
+            const page = yield fs_extra_1.readJson(filePath('json'));
+            let newPage;
+            for (let index = 0; index < page.png.diff.zones.length; index++) {
+                newPage = yield this.setZoneStatus(projectId, timestamp, id, index, status);
             }
-            const file = path_1.join(config_1.PROJECT_FOLDER, projectId, `project.json`);
-            console.log('file', file);
-            const project = { id: projectId, name, crawlerInput };
-            yield fs_extra_1.outputJSON(file, project, { spaces: 4 });
-            return project;
+            return newPage;
         });
     }
     startCrawlerFromProject(projectId, push) {

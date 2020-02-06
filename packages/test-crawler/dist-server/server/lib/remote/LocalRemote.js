@@ -31,6 +31,9 @@ class LocalRemote extends Remote_1.Remote {
     readJSON(path) {
         return fs_extra_1.readJSON(this.getPath(path));
     }
+    saveJSON(file, data) {
+        return fs_extra_1.outputJSON(this.getPath(file), data, { spaces: 4 });
+    }
     getPath(path) {
         return path_1.join(config_1.PROJECT_FOLDER, this.projectId, path);
     }

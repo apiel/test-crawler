@@ -13,6 +13,7 @@ const Remote_1 = require("./Remote");
 const axios_1 = require("axios");
 const BASE_URL = 'https://api.github.com';
 const FOLDER = 'test-crawler';
+const COMMIT = 'test-crawler';
 class GitHubRemote extends Remote_1.Remote {
     constructor(config) {
         super();
@@ -33,6 +34,19 @@ class GitHubRemote extends Remote_1.Remote {
     readJSON(path) {
         return __awaiter(this, void 0, void 0, function* () {
             return JSON.parse((yield this.read(path)).toString());
+        });
+    }
+    saveJSON(file, content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const data = JSON.stringify({
+                message: `[${COMMIT}] save json`,
+                content: Buffer.from(content).toString('base64'),
+            }, undefined, 4);
+            yield this.call({
+                method: 'PUT',
+                url: `${this.contentsUrl}/${file}`,
+                data,
+            });
         });
     }
     call(config) {

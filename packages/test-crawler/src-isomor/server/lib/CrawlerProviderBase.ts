@@ -24,7 +24,7 @@ export abstract class CrawlerProviderBase {
         return remote.readdir(path);
     }
 
-    protected async readdirLocal(projectId: string, path: string) {
+    protected readdirLocal(projectId: string, path: string) {
         return this.getLocal(projectId).readdir(path);
     }
 
@@ -33,7 +33,7 @@ export abstract class CrawlerProviderBase {
         return remote.read(path);
     }
 
-    protected async readLocal(projectId: string, path: string) {
+    protected readLocal(projectId: string, path: string) {
         return this.getLocal(projectId).read(path);
     }
 
@@ -42,7 +42,16 @@ export abstract class CrawlerProviderBase {
         return remote.readJSON(path);
     }
 
-    protected async readJSONLocal(projectId: string, path: string) {
+    protected readJSONLocal(projectId: string, path: string) {
         return this.getLocal(projectId).readJSON(path);
+    }
+
+    protected async saveJSON(projectId: string, file: string, content: any) {
+        const remote = await this.getRemote(projectId);
+        return remote.saveJSON(file, content);
+    }
+
+    protected saveJSONLocal(projectId: string, file: string, content: any) {
+        return this.getLocal(projectId).saveJSON(file, content);
     }
 }

@@ -32,6 +32,26 @@ export class CrawlerProvider extends CrawlerProviderBase {
         };
     }
 
+    loadProject(projectId: string): Promise<Project> {
+        return this.readJSONLocal(projectId, `project.json`);
+    }
+
+    async loadProjects(): Promise<Project[]> {
+        const projects = await this.readdirLocal('', ''); // to get list of the root folder
+        return Promise.all(
+            projects.map(projectId => this.loadProject(projectId)),
+        );
+    }
+
+    async saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
+        if (!projectId) {
+            projectId = md5(name);
+        }
+        const project = { id: projectId, name, crawlerInput };
+        await this.saveJSONLocal(projectId, 'project.json', project);
+        return project;
+    }
+
     getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
         return this.readJSON(projectId, join(CRAWL_FOLDER, timestamp, '_.json'));
     }
@@ -42,38 +62,6 @@ export class CrawlerProvider extends CrawlerProviderBase {
             folders.map(timestamp => this.getCrawler(projectId, timestamp)),
         );
         return crawlers;
-    }
-
-    async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
-        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
-        const data: PageData = await readJson(filePath('json'));
-        if (status === 'pin') {
-            const basePath = getFilePath(id, join(PROJECT_FOLDER, projectId, PIN_FOLDER));
-            const base: PageData = await readJson(basePath('json'));
-
-            base.png.diff.zones.push({ ...data.png.diff.zones[index], status });
-            const zones = base.png.diff.zones.map(item => item.zone);
-            zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
-            const groupedZones = groupOverlappingZone(zones);
-            base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
-
-            await outputJSON(basePath('json'), base, { spaces: 4 });
-        }
-        data.png.diff.zones[index].status = status;
-        await outputJSON(filePath('json'), data, { spaces: 4 });
-        return data;
-    }
-
-    async setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
-        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
-        const page: PageData = await readJson(filePath('json'));
-        let newPage: PageData;
-        for (let index = 0; index < page.png.diff.zones.length; index++) {
-            newPage = await this.setZoneStatus(projectId, timestamp, id, index, status);
-        }
-        return newPage;
     }
 
     private async copyFile(filePath: FilePath, basePath: FilePath, extension: string) {
@@ -196,27 +184,36 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return crawler;
     }
 
-    async loadProjects(): Promise<Project[]> {
-        await mkdirp(PROJECT_FOLDER);
-        const projects = await readdir(PROJECT_FOLDER);
-        return Promise.all(
-            projects.map(projectId => this.loadProject(projectId)),
-        );
-    }
+    async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
+        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
+        const filePath = getFilePath(id, folder);
+        const data: PageData = await readJson(filePath('json'));
+        if (status === 'pin') {
+            const basePath = getFilePath(id, join(PROJECT_FOLDER, projectId, PIN_FOLDER));
+            const base: PageData = await readJson(basePath('json'));
 
-    loadProject(projectId: string): Promise<Project> {
-        return this.readJSONLocal(projectId, `project.json`);
-    }
+            base.png.diff.zones.push({ ...data.png.diff.zones[index], status });
+            const zones = base.png.diff.zones.map(item => item.zone);
+            zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
+            const groupedZones = groupOverlappingZone(zones);
+            base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
 
-    async saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
-        if (!projectId) {
-            projectId = md5(name);
+            await outputJSON(basePath('json'), base, { spaces: 4 });
         }
-        const file = join(PROJECT_FOLDER, projectId, `project.json`);
-        console.log('file', file);
-        const project = { id: projectId, name, crawlerInput };
-        await outputJSON(file, project, { spaces: 4 });
-        return project;
+        data.png.diff.zones[index].status = status;
+        await outputJSON(filePath('json'), data, { spaces: 4 });
+        return data;
+    }
+
+    async setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
+        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
+        const filePath = getFilePath(id, folder);
+        const page: PageData = await readJson(filePath('json'));
+        let newPage: PageData;
+        for (let index = 0; index < page.png.diff.zones.length; index++) {
+            newPage = await this.setZoneStatus(projectId, timestamp, id, index, status);
+        }
+        return newPage;
     }
 
     async startCrawlerFromProject(projectId: string, push?: (payload: any) => void): Promise<StartCrawler> {
