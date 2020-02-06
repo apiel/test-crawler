@@ -58,7 +58,7 @@ export const Project = ({
     history,
 }: RouteComponentProps<{ projectId: string }>) => {
     const { project, setProject } = useProject(projectId);
-    const { crawlers } = useCrawlers(projectId);
+    const { crawlers, loading } = useCrawlers(projectId);
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>
@@ -103,6 +103,7 @@ export const Project = ({
                 <List
                     itemLayout="horizontal"
                     bordered
+                    loading={loading}
                     dataSource={crawlers}
                     renderItem={({ timestamp, diffZoneCount, errorCount, status, inQueue }) => (
                         <List.Item

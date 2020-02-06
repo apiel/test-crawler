@@ -33,14 +33,11 @@ export class CrawlerProvider extends CrawlerProviderBase {
     }
 
     getCrawler(projectId: string, timestamp: string): Promise<Crawler> {
-        // return readJSON(join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, '_.json'));
         return this.readJSON(projectId, join(CRAWL_FOLDER, timestamp, '_.json'));
     }
 
     async getAllCrawlers(projectId: string): Promise<Crawler[]> {
-        const projectFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
-        await mkdirp(projectFolder);
-        const folders = await readdir(projectFolder);
+        const folders = await this.readdir(projectId, CRAWL_FOLDER);
         const crawlers: Crawler[] = await Promise.all(
             folders.map(timestamp => this.getCrawler(projectId, timestamp)),
         );

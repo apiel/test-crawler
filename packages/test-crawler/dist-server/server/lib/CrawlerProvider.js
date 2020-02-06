@@ -42,9 +42,7 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
     }
     getAllCrawlers(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const projectFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
-            yield fs_extra_1.mkdirp(projectFolder);
-            const folders = yield fs_extra_1.readdir(projectFolder);
+            const folders = yield this.readdir(projectId, config_1.CRAWL_FOLDER);
             const crawlers = yield Promise.all(folders.map(timestamp => this.getCrawler(projectId, timestamp)));
             return crawlers;
         });

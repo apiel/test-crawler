@@ -17,21 +17,30 @@ export class GitHubRemote extends Remote {
         super();
     }
 
-    async read(projectId: string, path: string) {
-        const response = await this.call({
-            url: `${this.contentsUrl}/${path}`,
-        });
-        return Buffer.from(response.data.content, 'base64');
+    async readdir(path: string) {
+        const { data } = await this.getContents(path);
+        return data.map(({ name }) => name); // type is also available so we could filter for type === 'file'
     }
 
-    async readJSON(projectId: string, path: string) {
-        return JSON.parse((await this.read(projectId, path)).toString());
+    async read(path: string) {
+        const { data: { content }} = await this.getContents(path);
+        return Buffer.from(content, 'base64');
+    }
+
+    async readJSON(path: string) {
+        return JSON.parse((await this.read(path)).toString());
     }
 
     protected call(config: AxiosRequestConfig) {
         return axios({
             ...config,
             headers: { ...config?.headers, 'Authorization': `token ${this.config.token}` },
+        });
+    }
+
+    protected getContents(path: string) {
+        return this.call({
+            url: `${this.contentsUrl}/${path}`,
         });
     }
 

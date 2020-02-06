@@ -18,22 +18,31 @@ class GitHubRemote extends Remote_1.Remote {
         super();
         this.config = config;
     }
-    read(projectId, path) {
+    readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.call({
-                url: `${this.contentsUrl}/${path}`,
-            });
-            return Buffer.from(response.data.content, 'base64');
+            const { data } = yield this.getContents(path);
+            return data.map(({ name }) => name);
         });
     }
-    readJSON(projectId, path) {
+    read(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            return JSON.parse((yield this.read(projectId, path)).toString());
+            const { data: { content } } = yield this.getContents(path);
+            return Buffer.from(content, 'base64');
+        });
+    }
+    readJSON(path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return JSON.parse((yield this.read(path)).toString());
         });
     }
     call(config) {
         var _a;
         return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { 'Authorization': `token ${this.config.token}` }) }));
+    }
+    getContents(path) {
+        return this.call({
+            url: `${this.contentsUrl}/${path}`,
+        });
     }
     get contentsUrl() {
         return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents/${FOLDER}`;

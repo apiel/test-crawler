@@ -2,8 +2,6 @@ import { Project, RemoteType } from '../typing';
 import { LocalRemote } from './remote/LocalRemote';
 import { GitHubRemote } from './remote/GitHubRemote';
 
-const local = new LocalRemote();
-
 export abstract class CrawlerProviderBase {
     abstract loadProject(projectId: string): Promise<Project>;
 
@@ -14,24 +12,37 @@ export abstract class CrawlerProviderBase {
                 return new GitHubRemote(remote);
             }
         }
-        return local; // we should watch out cause it might be possible to set a none existing rmeote
+        return this.getLocal(projectId); // we should watch out cause it might be possible to set a none existing rmeote
+    }
+
+    protected getLocal(projectId: string) {
+        return new LocalRemote(projectId);
+    }
+
+    protected async readdir(projectId: string, path: string) {
+        const remote = await this.getRemote(projectId);
+        return remote.readdir(path);
+    }
+
+    protected async readdirLocal(projectId: string, path: string) {
+        return this.getLocal(projectId).readdir(path);
     }
 
     protected async read(projectId: string, path: string) {
         const remote = await this.getRemote(projectId);
-        return remote.read(projectId, path);
+        return remote.read(path);
     }
 
     protected async readLocal(projectId: string, path: string) {
-        return local.read(projectId, path);
+        return this.getLocal(projectId).read(path);
     }
 
     protected async readJSON(projectId: string, path: string) {
         const remote = await this.getRemote(projectId);
-        return remote.readJSON(projectId, path);
+        return remote.readJSON(path);
     }
 
     protected async readJSONLocal(projectId: string, path: string) {
-        return local.readJSON(projectId, path);
+        return this.getLocal(projectId).readJSON(path);
     }
 }

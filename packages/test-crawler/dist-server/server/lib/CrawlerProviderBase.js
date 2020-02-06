@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typing_1 = require("../typing");
 const LocalRemote_1 = require("./remote/LocalRemote");
 const GitHubRemote_1 = require("./remote/GitHubRemote");
-const local = new LocalRemote_1.LocalRemote();
 class CrawlerProviderBase {
     getRemote(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -22,29 +21,43 @@ class CrawlerProviderBase {
                     return new GitHubRemote_1.GitHubRemote(remote);
                 }
             }
-            return local;
+            return this.getLocal(projectId);
+        });
+    }
+    getLocal(projectId) {
+        return new LocalRemote_1.LocalRemote(projectId);
+    }
+    readdir(projectId, path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const remote = yield this.getRemote(projectId);
+            return remote.readdir(path);
+        });
+    }
+    readdirLocal(projectId, path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.getLocal(projectId).readdir(path);
         });
     }
     read(projectId, path) {
         return __awaiter(this, void 0, void 0, function* () {
             const remote = yield this.getRemote(projectId);
-            return remote.read(projectId, path);
+            return remote.read(path);
         });
     }
     readLocal(projectId, path) {
         return __awaiter(this, void 0, void 0, function* () {
-            return local.read(projectId, path);
+            return this.getLocal(projectId).read(path);
         });
     }
     readJSON(projectId, path) {
         return __awaiter(this, void 0, void 0, function* () {
             const remote = yield this.getRemote(projectId);
-            return remote.readJSON(projectId, path);
+            return remote.readJSON(path);
         });
     }
     readJSONLocal(projectId, path) {
         return __awaiter(this, void 0, void 0, function* () {
-            return local.readJSON(projectId, path);
+            return this.getLocal(projectId).readJSON(path);
         });
     }
 }

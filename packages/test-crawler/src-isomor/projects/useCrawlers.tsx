@@ -4,7 +4,7 @@ import { useAsync } from '../hook/useAsync';
 import { Crawler } from '../server/typing';
 
 export const useCrawlers = (projectId: string) => {
-    const { result: crawlers, setResult: setCrawlers, error } = useAsync<Crawler[]>(async () => {
+    const { result: crawlers, setResult: setCrawlers, error, loading } = useAsync<Crawler[]>(async () => {
         const list = await getCrawlers(projectId);
         return list.sort(({ timestamp: a }: any, { timestamp: b }: any) => b - a);
     });
@@ -14,5 +14,5 @@ export const useCrawlers = (projectId: string) => {
             description: error.toString(),
         });
     }
-    return {crawlers, setCrawlers };
+    return {crawlers, setCrawlers, loading };
 }

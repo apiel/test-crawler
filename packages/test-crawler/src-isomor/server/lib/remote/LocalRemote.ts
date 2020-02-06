@@ -2,16 +2,32 @@ import { Remote } from './Remote';
 import {
     readJSON,
     readFile,
+    readdir,
+    mkdirp,
 } from 'fs-extra';
 import { join } from 'path';
 import { PROJECT_FOLDER } from '../config';
 
 export class LocalRemote extends Remote {
-    read(projectId: string, path: string) {
-        return readFile(join(PROJECT_FOLDER, projectId, path));
+    constructor(private projectId: string) {
+        super();
     }
 
-    readJSON(projectId: string, path: string) {
-        return readJSON(join(PROJECT_FOLDER, projectId, path));
+    async readdir(path: string) {
+        const fullpath = this.getPath(path);
+        await mkdirp(fullpath);
+        return readdir(fullpath);
+    }
+
+    read(path: string) {
+        return readFile(this.getPath(path));
+    }
+
+    readJSON(path: string) {
+        return readJSON(this.getPath(path));
+    }
+
+    protected getPath(path: string) {
+        return join(PROJECT_FOLDER, this.projectId, path);
     }
 }
