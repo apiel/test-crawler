@@ -20,8 +20,11 @@ export class LocalRemote extends Remote {
 
     async readdir(path: string) {
         const fullpath = this.getPath(path);
-        await mkdirp(fullpath);
-        return readdir(fullpath);
+        if (await pathExists(fullpath)) {
+            await mkdirp(fullpath);
+            return readdir(fullpath);
+        }
+        return [] as string[];
     }
 
     async read(path: string) {

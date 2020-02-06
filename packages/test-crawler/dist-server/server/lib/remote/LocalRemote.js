@@ -21,8 +21,11 @@ class LocalRemote extends Remote_1.Remote {
     readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {
             const fullpath = this.getPath(path);
-            yield fs_extra_1.mkdirp(fullpath);
-            return fs_extra_1.readdir(fullpath);
+            if (yield fs_extra_1.pathExists(fullpath)) {
+                yield fs_extra_1.mkdirp(fullpath);
+                return fs_extra_1.readdir(fullpath);
+            }
+            return [];
         });
     }
     read(path) {

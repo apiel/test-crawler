@@ -131,31 +131,26 @@ export class CrawlerProvider extends CrawlerProviderBase {
     }
 
     getPins(projectId: string): Promise<PageData[]> {
-        const folder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
-        return this.getPinsInFolder(folder);
+        return this.getPinsInFolder(projectId, PIN_FOLDER);
     }
 
     getPin(projectId: string, id: string): Promise<PageData> {
-        const folder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
-        return this.getPageInFolder(folder, id);
+        return this.getPageInFolder(projectId, PIN_FOLDER, id);
     }
 
     getPages(projectId: string, timestamp: string): Promise<PageData[]> {
-        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
-        return this.getPinsInFolder(folder);
+        return this.getPinsInFolder(projectId, join(CRAWL_FOLDER, timestamp));
     }
 
-    private getPageInFolder(folder: string, id: string): Promise<PageData> {
-        const filePath = getFilePath(id, folder);
-        return readJSON(filePath('json'));
+    private getPageInFolder(projectId: string, folder: string, id: string): Promise<PageData> {
+        return this.readJSON(projectId, getFilePath(id, folder)('json'));
     }
 
-    private async getPinsInFolder(folder: string): Promise<PageData[]> {
-        await mkdirp(folder);
-        const files = await readdir(folder);
+    private async getPinsInFolder(projectId: string, folder: string): Promise<PageData[]> {
+        const files = await this.readdir(projectId, folder);
         return Promise.all(
             files.filter(file => extname(file) === '.json' && file !== '_.json')
-                .map(file => readJSON(join(folder, file))),
+                .map(file => this.readJSON(projectId, join(folder, file))),
         );
     }
 

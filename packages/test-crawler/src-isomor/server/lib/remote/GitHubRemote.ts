@@ -20,7 +20,7 @@ export class GitHubRemote extends Remote {
 
     async readdir(path: string) {
         const { data } = await this.getContents(path);
-        return data.map(({ name }) => name); // type is also available so we could filter for type === 'file'
+        return data.map(({ name }) => name) as string[]; // type is also available so we could filter for type === 'file'
     }
 
     async read(path: string) {

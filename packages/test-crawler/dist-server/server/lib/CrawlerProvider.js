@@ -134,27 +134,22 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
         });
     }
     getPins(projectId) {
-        const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
-        return this.getPinsInFolder(folder);
+        return this.getPinsInFolder(projectId, config_1.PIN_FOLDER);
     }
     getPin(projectId, id) {
-        const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
-        return this.getPageInFolder(folder, id);
+        return this.getPageInFolder(projectId, config_1.PIN_FOLDER, id);
     }
     getPages(projectId, timestamp) {
-        const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
-        return this.getPinsInFolder(folder);
+        return this.getPinsInFolder(projectId, path_1.join(config_1.CRAWL_FOLDER, timestamp));
     }
-    getPageInFolder(folder, id) {
-        const filePath = utils_1.getFilePath(id, folder);
-        return fs_extra_1.readJSON(filePath('json'));
+    getPageInFolder(projectId, folder, id) {
+        return this.readJSON(projectId, utils_1.getFilePath(id, folder)('json'));
     }
-    getPinsInFolder(folder) {
+    getPinsInFolder(projectId, folder) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield fs_extra_1.mkdirp(folder);
-            const files = yield fs_extra_1.readdir(folder);
+            const files = yield this.readdir(projectId, folder);
             return Promise.all(files.filter(file => path_1.extname(file) === '.json' && file !== '_.json')
-                .map(file => fs_extra_1.readJSON(path_1.join(folder, file))));
+                .map(file => this.readJSON(projectId, path_1.join(folder, file))));
         });
     }
     setCrawlerStatus(projectId, timestamp, status) {
