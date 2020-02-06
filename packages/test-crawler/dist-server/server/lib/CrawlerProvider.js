@@ -66,30 +66,27 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             return crawlers;
         });
     }
-    copyFile(filePath, basePath, extension) {
+    copyFile(projectId, srcPath, dstPath, extension) {
         return __awaiter(this, void 0, void 0, function* () {
-            const file = filePath(extension);
-            if (yield fs_extra_1.pathExists(file)) {
-                yield fs_extra_1.copy(file, basePath(extension), { overwrite: true });
-            }
+            return this.copy(projectId, srcPath(extension), dstPath(extension));
         });
     }
     copyToPins(projectId, timestamp, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const pinFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER);
-            yield fs_extra_1.mkdirp(pinFolder);
-            const folder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
-            const filePath = utils_1.getFilePath(id, folder);
-            const basePath = utils_1.getFilePath(id, pinFolder);
-            const data = yield fs_extra_1.readJson(filePath('json'));
+            const crawlerFolder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
+            const crawlerFolderPath = utils_1.getFilePath(id, crawlerFolder);
+            const data = yield this.readJSON(projectId, crawlerFolderPath('json'));
             data.png.diff = {
                 pixelDiffRatio: 0,
                 zones: [],
             };
-            yield fs_extra_1.outputJSON(filePath('json'), data, { spaces: 4 });
-            yield this.copyFile(filePath, basePath, 'png');
-            yield this.copyFile(filePath, basePath, 'html');
-            yield this.copyFile(filePath, basePath, 'json');
+            if (data.png.diff.pixelDiffRatio > 0) {
+                yield this.saveJSON(projectId, crawlerFolderPath('json'), data);
+            }
+            const pinFolderPath = utils_1.getFilePath(id, config_1.PIN_FOLDER);
+            yield this.saveJSON(projectId, pinFolderPath('json'), data);
+            yield this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'html');
+            yield this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'png');
             return data;
         });
     }

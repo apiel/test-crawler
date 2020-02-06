@@ -54,4 +54,13 @@ export abstract class CrawlerProviderBase {
     protected saveJSONLocal(projectId: string, file: string, content: any) {
         return this.getLocal(projectId).saveJSON(file, content);
     }
+
+    protected async copy(projectId: string, src: string, dst: string) {
+        const remote = await this.getRemote(projectId);
+        return remote.copy(src, dst);
+    }
+
+    protected copyLocal(projectId: string, src: string, dst: string) {
+        return this.getLocal(projectId).copy(src, dst);
+    }
 }

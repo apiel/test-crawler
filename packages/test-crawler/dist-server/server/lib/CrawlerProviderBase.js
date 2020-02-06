@@ -63,5 +63,14 @@ class CrawlerProviderBase {
     saveJSONLocal(projectId, file, content) {
         return this.getLocal(projectId).saveJSON(file, content);
     }
+    copy(projectId, src, dst) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const remote = yield this.getRemote(projectId);
+            return remote.copy(src, dst);
+        });
+    }
+    copyLocal(projectId, src, dst) {
+        return this.getLocal(projectId).copy(src, dst);
+    }
 }
 exports.CrawlerProviderBase = CrawlerProviderBase;

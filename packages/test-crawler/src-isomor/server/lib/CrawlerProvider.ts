@@ -64,30 +64,30 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return crawlers;
     }
 
-    private async copyFile(filePath: FilePath, basePath: FilePath, extension: string) {
-        const file = filePath(extension);
-        if (await pathExists(file)) {
-            await copy(file, basePath(extension), { overwrite: true });
-        }
+    private async copyFile(projectId: string, srcPath: FilePath, dstPath: FilePath, extension: string) {
+        return this.copy(projectId,srcPath(extension), dstPath(extension));
     }
 
     async copyToPins(projectId: string, timestamp: string, id: string): Promise<PageData> {
-        const pinFolder = join(PROJECT_FOLDER, projectId, PIN_FOLDER);
-        await mkdirp(pinFolder);
-        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
-        const basePath = getFilePath(id, pinFolder);
+        const crawlerFolder = join(CRAWL_FOLDER, timestamp);
+        const crawlerFolderPath = getFilePath(id, crawlerFolder);
 
-        const data: PageData = await readJson(filePath('json'));
+        // set diff to 0
+        // instead to load this file again, we could get the data from the frontend?
+        const data: PageData = await this.readJSON(projectId, crawlerFolderPath('json'));
         data.png.diff = {
             pixelDiffRatio: 0,
             zones: [],
         };
-        await outputJSON(filePath('json'), data, { spaces: 4 });
+        if (data.png.diff.pixelDiffRatio > 0) {
+            await this.saveJSON(projectId, crawlerFolderPath('json'), data);
+        }
 
-        await this.copyFile(filePath, basePath, 'png');
-        await this.copyFile(filePath, basePath, 'html');
-        await this.copyFile(filePath, basePath, 'json');
+        // copy files
+        const pinFolderPath = getFilePath(id, PIN_FOLDER);
+        await this.saveJSON(projectId, pinFolderPath('json'), data);
+        await this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'html');
+        await this.copyFile(projectId, crawlerFolderPath, pinFolderPath, 'png');
 
         return data;
     }

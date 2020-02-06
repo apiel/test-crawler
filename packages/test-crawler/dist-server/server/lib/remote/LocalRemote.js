@@ -34,6 +34,14 @@ class LocalRemote extends Remote_1.Remote {
     saveJSON(file, data) {
         return fs_extra_1.outputJSON(this.getPath(file), data, { spaces: 4 });
     }
+    copy(src, dst) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const srcFile = this.getPath(src);
+            if (yield fs_extra_1.pathExists(srcFile)) {
+                return fs_extra_1.copy(srcFile, this.getPath(dst), { overwrite: true });
+            }
+        });
+    }
     getPath(path) {
         return path_1.join(config_1.PROJECT_FOLDER, this.projectId, path);
     }

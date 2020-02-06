@@ -32,16 +32,29 @@ export class GitHubRemote extends Remote {
         return JSON.parse((await this.read(path)).toString());
     }
 
-    async saveJSON(file: string, content: any) {
+    async save(file: string, content: any) {
+        const { data: { sha } } = await this.getContents(file);
         const data = JSON.stringify({
             message: `[${COMMIT}] save json`,
             content: Buffer.from(content).toString('base64'),
-        }, undefined, 4);
+            sha,
+        });
         await this.call({
             method: 'PUT',
             url: `${this.contentsUrl}/${file}`,
             data,
         });
+    }
+
+    async saveJSON(file: string, content: any) {
+        return this.save(file, JSON.stringify(content, null, 4))
+    }
+
+    async copy(src: string, dst: string) {
+        const srcData = await this.read(src);
+        if (srcData) {
+            this.save(dst, srcData);
+        }
     }
 
     protected call(config: AxiosRequestConfig) {

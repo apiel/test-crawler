@@ -5,6 +5,8 @@ import {
     readdir,
     mkdirp,
     outputJSON,
+    copy,
+    pathExists,
 } from 'fs-extra';
 import { join } from 'path';
 import { PROJECT_FOLDER } from '../config';
@@ -30,6 +32,13 @@ export class LocalRemote extends Remote {
 
     saveJSON(file: string, data: any) {
         return outputJSON(this.getPath(file), data, { spaces: 4 });
+    }
+
+    async copy(src: string, dst: string) {
+        const srcFile = this.getPath(src);
+        if (await pathExists(srcFile)) {
+            return copy(srcFile, this.getPath(dst), { overwrite: true });
+        }
     }
 
     protected getPath(path: string) {
