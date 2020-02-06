@@ -153,7 +153,7 @@ export class CrawlerProvider extends CrawlerProviderBase {
                 .map(file => this.readJSON(projectId, join(folder, file))),
         );
     }
-
+// ------
     async setCrawlerStatus(projectId: string, timestamp: string, status: string): Promise<Crawler> {
         const file = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, '_.json');
         const crawler: Crawler = await readJson(file);
