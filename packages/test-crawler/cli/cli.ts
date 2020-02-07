@@ -11,19 +11,16 @@ const lockFile = join(__dirname, '../../test-crawler.lock');
 
 async function start() {
     const [, , option, value] = process.argv;
-    let pagesFolder: string | undefined;
     if (option && value) {
         if (option === '--project') {
             const crawlerProvider = new CrawlerProvider();
             const result = await crawlerProvider.startCrawler(value);
             info('Start project', result);
-        } else if (option === '--folder') {
-            pagesFolder = value;
-            info('Start to crawl specific queue', pagesFolder);
+            return;
         }
     }
     info('Config', configs);
-    crawl(pagesFolder);
+    crawl(undefined, 30);
 }
 
 if (!checkSync(lockFile)) {

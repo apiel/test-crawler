@@ -196,11 +196,15 @@ async function pickFromQueue(projectId: string, pagesFolder: string): Promise<To
         const [file] = await readdir(queueFolder);
         if (file) {
             info('Crawl', file);
-            const queueFile = join(queueFolder, file);
-            const { id, url } = await readJSON(queueFile);
-            const filePath = getFilePath(id, distFolder);
-            await move(queueFile, filePath('json'));
-            return { projectId, id, url, distFolder };
+            try {
+                const queueFile = join(queueFolder, file);
+                const { id, url } = await readJSON(queueFile);
+                const filePath = getFilePath(id, distFolder);
+                await move(queueFile, filePath('json'));
+                return { projectId, id, url, distFolder };
+            } catch (error) {
+                warn('Crawl possible error', error);
+            }
         }
     }
 }
@@ -239,6 +243,8 @@ async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
     if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
         consumeQueuesRetry++;
         setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
+    } else {
+        info('consumeQueues timeout');
     }
 }
 
@@ -270,6 +276,8 @@ async function consumeResults(consumeTimeout: number, push?: (payload: any) => v
     } else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
         consumeResultRetry++;
         setTimeout(() => consumeResults(consumeTimeout, push), 1000);
+    } else {
+        info('consumeResults timeout');
     }
 }
 

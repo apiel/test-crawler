@@ -146,11 +146,16 @@ function pickFromQueue(projectId, pagesFolder) {
             const [file] = yield fs_extra_1.readdir(queueFolder);
             if (file) {
                 logol_1.info('Crawl', file);
-                const queueFile = path_1.join(queueFolder, file);
-                const { id, url } = yield fs_extra_1.readJSON(queueFile);
-                const filePath = utils_1.getFilePath(id, distFolder);
-                yield fs_extra_1.move(queueFile, filePath('json'));
-                return { projectId, id, url, distFolder };
+                try {
+                    const queueFile = path_1.join(queueFolder, file);
+                    const { id, url } = yield fs_extra_1.readJSON(queueFile);
+                    const filePath = utils_1.getFilePath(id, distFolder);
+                    yield fs_extra_1.move(queueFile, filePath('json'));
+                    return { projectId, id, url, distFolder };
+                }
+                catch (error) {
+                    logol_1.warn('Crawl possible error', error);
+                }
             }
         }
     });
@@ -192,6 +197,9 @@ function consumeQueues(consumeTimeout, crawlTarget) {
             consumeQueuesRetry++;
             setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
         }
+        else {
+            logol_1.info('consumeQueues timeout');
+        }
     });
 }
 let consumeResultRetry = 0;
@@ -221,6 +229,9 @@ function consumeResults(consumeTimeout, push) {
         else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
             consumeResultRetry++;
             setTimeout(() => consumeResults(consumeTimeout, push), 1000);
+        }
+        else {
+            logol_1.info('consumeResults timeout');
         }
     });
 }

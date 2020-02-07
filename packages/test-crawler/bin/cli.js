@@ -20,20 +20,16 @@ const lockFile = path_1.join(__dirname, '../../test-crawler.lock');
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         const [, , option, value] = process.argv;
-        let pagesFolder;
         if (option && value) {
             if (option === '--project') {
                 const crawlerProvider = new lib_1.CrawlerProvider();
                 const result = yield crawlerProvider.startCrawler(value);
                 logol_1.info('Start project', result);
-            }
-            else if (option === '--folder') {
-                pagesFolder = value;
-                logol_1.info('Start to crawl specific queue', pagesFolder);
+                return;
             }
         }
         logol_1.info('Config', configs);
-        crawl_1.crawl(pagesFolder);
+        crawl_1.crawl(undefined, 30);
     });
 }
 if (!lockfile_1.checkSync(lockFile)) {
