@@ -97,6 +97,11 @@ export interface PageData {
     };
 }
 
+export interface CrawlTarget {
+    pagesFolder: string;
+    projectId: string;
+}
+
 export interface PageMetrics {
     Timestamp: number;
     Documents: number;

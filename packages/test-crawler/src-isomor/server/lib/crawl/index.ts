@@ -22,7 +22,7 @@ import {
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler, CrawlerInput } from '../../typing';
+import { Crawler, CrawlerInput, CrawlTarget } from '../../typing';
 import { isArray, promisify } from 'util';
 import { CrawlerProvider } from '../CrawlerProvider';
 import rimraf = require('rimraf');
@@ -334,10 +334,6 @@ async function startSpiderBotCrawling({ url, viewport, limit }: CrawlerInput, di
     }
 }
 
-interface CrawlTarget {
-    pagesFolder: string;
-    projectId: string;
-}
 export async function crawl(
     crawlTarget?: CrawlTarget,
     consumeTimeout = CONSUME_TIMEOUT,

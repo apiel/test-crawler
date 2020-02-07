@@ -191,13 +191,14 @@ export class CrawlerProvider extends CrawlerProviderBase {
 
     async startCrawler(projectId: string, push?: (payload: any) => void): Promise<string> {
         const pagesFolder = Math.floor(Date.now() / 1000).toString();
-        // to fix we should not start if remote
-        crawl({ projectId, pagesFolder }, 30, push);
+        this.crawl(projectId, pagesFolder, 30, push);
 
         return pagesFolder;
     }
 
     async startCrawlers(push?: (payload: any) => void) {
+        // for the moment this would only start locally
+        // we will have to make a specific one to start remotely
         crawl(undefined, 30, push);
     }
 }

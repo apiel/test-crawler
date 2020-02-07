@@ -1,4 +1,4 @@
-import { Project, RemoteType } from '../typing';
+import { Project, RemoteType, CrawlTarget } from '../typing';
 import { LocalRemote } from './remote/LocalRemote';
 import { GitHubRemote } from './remote/GitHubRemote';
 
@@ -75,5 +75,20 @@ export abstract class CrawlerProviderBase {
         }
         const remote = await this.getRemote(projectId);
         return remote.copy(src, dst);
+    }
+
+    protected async crawl(
+        projectId: string,
+        pagesFolder: string,
+        consumeTimeout?: number,
+        push?: (payload: any) => void,
+        local = false,
+    ) {
+        const crawlTarget = { projectId, pagesFolder };
+        if (local) {
+            return this.getLocal(projectId).crawl(crawlTarget, consumeTimeout, push);
+        }
+        const remote = await this.getRemote(projectId);
+        return remote.crawl(crawlTarget, consumeTimeout, push);
     }
 }

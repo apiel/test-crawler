@@ -1,3 +1,5 @@
+import { CrawlTarget } from '../../typing';
+
 export abstract class Remote {
     abstract read(path: string): Promise<Buffer>;
     abstract readJSON(path: string): Promise<any>;
@@ -6,4 +8,5 @@ export abstract class Remote {
     abstract saveFile(file: string, data: string): Promise<void>;
     abstract copy(src: string, dst: string): Promise<void>;
     abstract remove(file: string): Promise<void>;
+    abstract crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void): Promise<void>;
 }

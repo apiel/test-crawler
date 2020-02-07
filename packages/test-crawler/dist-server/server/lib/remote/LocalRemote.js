@@ -13,6 +13,7 @@ const Remote_1 = require("./Remote");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("../config");
+const crawl_1 = require("../crawl");
 class LocalRemote extends Remote_1.Remote {
     constructor(projectId) {
         super();
@@ -60,6 +61,9 @@ class LocalRemote extends Remote_1.Remote {
     }
     remove(file) {
         return fs_extra_1.remove(this.getPath(file));
+    }
+    crawl(crawlTarget, consumeTimeout, push) {
+        return crawl_1.crawl(crawlTarget, consumeTimeout, push);
     }
     getPath(path) {
         return path_1.join(config_1.PROJECT_FOLDER, this.projectId, path);

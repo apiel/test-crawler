@@ -78,6 +78,11 @@ class GitHubRemote extends Remote_1.Remote {
             }
         });
     }
+    crawl(crawlTarget, consumeTimeout, push) {
+        return __awaiter(this, void 0, void 0, function* () {
+            throw new Error('To be implemented');
+        });
+    }
     call(config) {
         var _a;
         return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { 'Authorization': `token ${this.config.token}` }) }));

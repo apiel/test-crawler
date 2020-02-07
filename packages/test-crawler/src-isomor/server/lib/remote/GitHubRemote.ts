@@ -2,7 +2,7 @@ import { Remote } from './Remote';
 
 import axios, { AxiosRequestConfig } from 'axios';
 import { join } from 'path';
-import { RemoteGitHub } from '../../typing';
+import { RemoteGitHub, CrawlTarget } from '../../typing';
 
 // https://developer.github.com/v3/repos/contents/#create-or-update-a-file
 // https://api.github.com/repos/apiel/test-crawler-remote-folder/commits
@@ -68,6 +68,10 @@ export class GitHubRemote extends Remote {
         if (srcData) {
             this.saveFile(dst, srcData.toString());
         }
+    }
+
+    async crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
+        throw new Error('To be implemented');
     }
 
     protected call(config: AxiosRequestConfig) {

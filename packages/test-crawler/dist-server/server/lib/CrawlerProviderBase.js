@@ -91,5 +91,15 @@ class CrawlerProviderBase {
             return remote.copy(src, dst);
         });
     }
+    crawl(projectId, pagesFolder, consumeTimeout, push, local = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const crawlTarget = { projectId, pagesFolder };
+            if (local) {
+                return this.getLocal(projectId).crawl(crawlTarget, consumeTimeout, push);
+            }
+            const remote = yield this.getRemote(projectId);
+            return remote.crawl(crawlTarget, consumeTimeout, push);
+        });
+    }
 }
 exports.CrawlerProviderBase = CrawlerProviderBase;

@@ -12,6 +12,8 @@ import {
 } from 'fs-extra';
 import { join } from 'path';
 import { PROJECT_FOLDER } from '../config';
+import { CrawlTarget } from '../../typing';
+import { crawl } from '../crawl';
 
 export class LocalRemote extends Remote {
     constructor(private projectId: string) {
@@ -58,6 +60,10 @@ export class LocalRemote extends Remote {
 
     remove(file: string) {
         return remove(this.getPath(file));
+    }
+
+    crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
+        return crawl(crawlTarget, consumeTimeout, push);
     }
 
     protected getPath(path: string) {
