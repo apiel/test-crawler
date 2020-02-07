@@ -6,6 +6,9 @@
 
 - move html in json maybe using base64
 - move image in json using base64
+- group all the result in a single file?
+    - or group all the diff result in a seprate file
+    -> so we can update only this, then we could eventually use CI to populate those changes in each files
 
 
 

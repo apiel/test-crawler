@@ -20,6 +20,7 @@ const index_1 = require("../index");
 const diff_1 = require("../diff");
 const util_1 = require("util");
 const CrawlerProvider_1 = require("../CrawlerProvider");
+const rimraf = require("rimraf");
 let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
@@ -64,7 +65,7 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
             }
             yield page.screenshot({ path: filePath('png'), fullPage: true });
             const png = { width: viewport.width };
-            yield utils_1.savePageInfo(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr });
+            yield fs_extra_1.outputJson(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr }, { spaces: 4 });
             if (method !== index_1.CrawlerMethod.URLs) {
                 const urls = util_1.isArray(links) ? links : yield getLinks(page, crawler);
                 yield addUrls(urls, viewport, distFolder, limit);
@@ -83,7 +84,7 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
                 yield loadPage(projectId, id, url, distFolder, retry + 1);
             }
             else {
-                yield utils_1.savePageInfo(filePath('json'), { url, id, error: err.toString() });
+                yield fs_extra_1.outputJson(filePath('json'), { url, id, error: err.toString() }, { spaces: 4 });
                 resultsQueue.push({
                     folder: distFolder,
                     isError: true,
@@ -99,7 +100,7 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
 function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new CrawlerProvider_1.CrawlerProvider();
-        const list = yield crawlerProvider.getCodeList(projectId);
+        const list = yield crawlerProvider.getCodeList(projectId, true);
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });
@@ -225,6 +226,19 @@ function prepareFolders() {
     return __awaiter(this, void 0, void 0, function* () {
         if (!(yield fs_extra_1.pathExists(config_1.PROJECT_FOLDER))) {
             yield fs_extra_1.mkdirp(config_1.PROJECT_FOLDER);
+        }
+        return cleanHistory();
+    });
+}
+function cleanHistory() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const projects = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
+        for (const project of projects) {
+            const results = yield fs_extra_1.readdir(path_1.join(config_1.PROJECT_FOLDER, project, config_1.CRAWL_FOLDER));
+            const cleanUp = results.slice(0, -(config_1.MAX_HISTORY - 1));
+            for (const toRemove of cleanUp) {
+                yield util_1.promisify(rimraf)(path_1.join(config_1.PROJECT_FOLDER, project, config_1.CRAWL_FOLDER, toRemove));
+            }
         }
     });
 }

@@ -59,26 +59,26 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return crawlers;
     }
 
-    async copyToPins(projectId: string, timestamp: string, id: string, local = false): Promise<PageData> {
+    async copyToPins(projectId: string, timestamp: string, id: string, forceLocal = false): Promise<PageData> {
         const crawlerFolder = join(CRAWL_FOLDER, timestamp);
         const crawlerFolderPath = getFilePath(id, crawlerFolder);
 
         // set diff to 0
         // instead to load this file again, we could get the data from the frontend?
-        const data: PageData = await this.readJSON(projectId, crawlerFolderPath('json'), local);
+        const data: PageData = await this.readJSON(projectId, crawlerFolderPath('json'), forceLocal);
         data.png.diff = {
             pixelDiffRatio: 0,
             zones: [],
         };
         if (data.png.diff.pixelDiffRatio > 0) {
-            await this.saveJSON(projectId, crawlerFolderPath('json'), data, local);
+            await this.saveJSON(projectId, crawlerFolderPath('json'), data, forceLocal);
         }
 
         // copy files
         const pinFolderPath = getFilePath(id, PIN_FOLDER);
-        await this.saveJSON(projectId, pinFolderPath('json'), data, local);
-        await this.copy(projectId, crawlerFolderPath('html'), pinFolderPath('html'), local);
-        await this.copy(projectId, crawlerFolderPath('png'), pinFolderPath('png'), local);
+        await this.saveJSON(projectId, pinFolderPath('json'), data, forceLocal);
+        await this.copy(projectId, crawlerFolderPath('html'), pinFolderPath('html'), forceLocal);
+        await this.copy(projectId, crawlerFolderPath('png'), pinFolderPath('png'), forceLocal);
 
         return data;
     }
@@ -125,9 +125,10 @@ export class CrawlerProvider extends CrawlerProviderBase {
         };
     }
 
-    async getCodeList(projectId: string): Promise<CodeInfoList> {
+    async getCodeList(projectId: string, forceLocal = false): Promise<CodeInfoList> {
         const listPath = join(CODE_FOLDER, `list.json`);
-        return this.readJSON(projectId, listPath);
+        const list = await this.readJSON(projectId, listPath, forceLocal);
+        return list || {};
     }
 
     getPins(projectId: string): Promise<PageData[]> {
@@ -153,40 +154,40 @@ export class CrawlerProvider extends CrawlerProviderBase {
                 .map(file => this.readJSON(projectId, join(folder, file))),
         );
     }
-// ------
+
     async setCrawlerStatus(projectId: string, timestamp: string, status: string): Promise<Crawler> {
-        const file = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, '_.json');
-        const crawler: Crawler = await readJson(file);
+        const file = join(CRAWL_FOLDER, timestamp, '_.json');
+        const crawler: Crawler = await this.readJSON(projectId, file);
         crawler.status = status;
-        await outputJSON(file, crawler, { spaces: 4 });
+        await this.saveJSON(projectId, file, crawler);
         return crawler;
     }
 
     async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
-        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
+        const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
-        const data: PageData = await readJson(filePath('json'));
+        const data: PageData = await this.readJSON(projectId, filePath('json'));
         if (status === 'pin') {
-            const basePath = getFilePath(id, join(PROJECT_FOLDER, projectId, PIN_FOLDER));
-            const base: PageData = await readJson(basePath('json'));
+            const pinPath = getFilePath(id, PIN_FOLDER);
+            const pin: PageData = await readJson(pinPath('json'));
 
-            base.png.diff.zones.push({ ...data.png.diff.zones[index], status });
-            const zones = base.png.diff.zones.map(item => item.zone);
+            pin.png.diff.zones.push({ ...data.png.diff.zones[index], status });
+            const zones = pin.png.diff.zones.map(item => item.zone);
             zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
             const groupedZones = groupOverlappingZone(zones);
-            base.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
+            pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
 
-            await outputJSON(basePath('json'), base, { spaces: 4 });
+            await this.saveJSON(projectId, pinPath('json'), pin);
         }
         data.png.diff.zones[index].status = status;
-        await outputJSON(filePath('json'), data, { spaces: 4 });
+        await this.saveJSON(projectId, filePath('json'), data);
         return data;
     }
 
     async setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
-        const folder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
+        const folder = join(CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
-        const page: PageData = await readJson(filePath('json'));
+        const page: PageData = await this.readJSON(projectId, filePath('json'));
         let newPage: PageData;
         for (let index = 0; index < page.png.diff.zones.length; index++) {
             newPage = await this.setZoneStatus(projectId, timestamp, id, index, status);
@@ -201,7 +202,6 @@ export class CrawlerProvider extends CrawlerProviderBase {
     }
 
     async startCrawler(projectId: string, crawlerInput: CrawlerInput, push?: (payload: any) => void, runProcess = true): Promise<StartCrawler> {
-        await this.cleanHistory(projectId);
         const timestamp = Math.floor(Date.now() / 1000);
         const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
 
@@ -218,16 +218,17 @@ export class CrawlerProvider extends CrawlerProviderBase {
             lastUpdate: Date.now(),
         };
 
-        const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, (timestamp).toString());
-        await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
+        const distFolder = join(CRAWL_FOLDER, (timestamp).toString());
+        await this.saveJSON(projectId, join(distFolder, '_.json'), crawler);
 
         if (crawlerInput.method === CrawlerMethod.URLs) {
-            await this.startUrlsCrawling(crawlerInput, distFolder);
+            await this.startUrlsCrawling(crawlerInput, join(PROJECT_FOLDER ,projectId, distFolder));
         } else {
-            await this.startSpiderBotCrawling(crawlerInput, distFolder);
+            await this.startSpiderBotCrawling(crawlerInput, join(PROJECT_FOLDER ,projectId, distFolder));
         }
 
         if (runProcess) {
+            // to fix we should not start if remote
             // exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
             // exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
             crawl({ projectId, pagesFolder: timestamp.toString() }, 30, push);
@@ -255,13 +256,5 @@ export class CrawlerProvider extends CrawlerProviderBase {
         if (!addedToqueue) {
             throw (new Error('Something went wrong while adding job to queue'));
         }
-    }
-
-    private async cleanHistory(projectId: string) {
-        const folders = await getFolders(projectId);
-        const cleanUp = folders.slice(0, -(MAX_HISTORY - 1));
-        cleanUp.forEach((folder) => {
-            rimraf.sync(join(CRAWL_FOLDER, folder));
-        });
     }
 }

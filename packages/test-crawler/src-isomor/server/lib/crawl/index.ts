@@ -1,6 +1,6 @@
 import { launch, Page, Viewport } from 'puppeteer';
 import { error, info, warn } from 'logol';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson } from 'fs-extra';
 import { join, extname } from 'path';
 import * as minimatch from 'minimatch';
 
@@ -13,18 +13,19 @@ import {
     CONSUME_TIMEOUT,
     CODE_FOLDER,
     PROJECT_FOLDER,
+    MAX_HISTORY,
 } from '../config';
 import {
     getFilePath,
-    savePageInfo,
     addToQueue,
     getQueueFolder,
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
 import { Crawler } from '../../typing';
-import { isArray } from 'util';
+import { isArray, promisify } from 'util';
 import { CrawlerProvider } from '../CrawlerProvider';
+import rimraf = require('rimraf');
 
 interface ResultQueue {
     result?: {
@@ -89,10 +90,12 @@ async function loadPage(projectId: string, id: string, url: string, distFolder: 
         await page.screenshot({ path: filePath('png'), fullPage: true });
 
         const png = { width: viewport.width };
-        await savePageInfo(
+        await outputJson(
             filePath('json'),
             { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr },
+            { spaces: 4 },
         );
+
 
         if (method !== CrawlerMethod.URLs) {
             const urls = isArray(links) ? links : await getLinks(page, crawler);
@@ -111,7 +114,7 @@ async function loadPage(projectId: string, id: string, url: string, distFolder: 
             warn('Retry crawl', url);
             await loadPage(projectId, id, url, distFolder, retry + 1);
         } else {
-            await savePageInfo(filePath('json'), { url, id, error: err.toString() });
+            await outputJson(filePath('json'), { url, id, error: err.toString() }, { spaces: 4 });
             resultsQueue.push({
                 folder: distFolder,
                 isError: true,
@@ -134,7 +137,7 @@ async function injectCodes(
     crawler: Crawler,
 ) {
     const crawlerProvider = new CrawlerProvider();
-    const list = await crawlerProvider.getCodeList(projectId);
+    const list = await crawlerProvider.getCodeList(projectId, true);
     // console.log('injectCodes list', list);
     // console.log('Object.values', Object.values(list));
     const toInject = Object.values(list).filter(({ pattern }) => {
@@ -271,6 +274,18 @@ async function consumeResults(consumeTimeout: number, push?: (payload: any) => v
 async function prepareFolders() {
     if (!(await pathExists(PROJECT_FOLDER))) {
         await mkdirp(PROJECT_FOLDER);
+    }
+    return cleanHistory();
+}
+
+async function cleanHistory() {
+    const projects = await readdir(PROJECT_FOLDER);
+    for (const project of projects) {
+        const results = await readdir(join(PROJECT_FOLDER, project, CRAWL_FOLDER));
+        const cleanUp = results.slice(0, -(MAX_HISTORY - 1));
+        for (const toRemove of cleanUp) {
+            await promisify(rimraf)(join(PROJECT_FOLDER, project, CRAWL_FOLDER, toRemove));
+        }
     }
 }
 

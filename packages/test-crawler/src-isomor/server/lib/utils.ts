@@ -20,13 +20,14 @@ export const getFilePath = (id: string, distFolder: string): FilePath => (extens
 };
 
 export async function addToQueue(url: string, viewport: Viewport, distFolder: string, limit: number = 0): Promise<boolean> {
+    console.log('addToQueue', url, viewport, distFolder);
     const id = md5(`${url}-${JSON.stringify(viewport)}`);
     const histFile = getFilePath(id, distFolder)('json');
     const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
 
     if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
         if (!limit || (await updateSiblingCount(url, distFolder)) < limit) {
-            await savePageInfo(queueFile, { url, id });
+            await outputJson(queueFile, { url, id }, { spaces: 4 });
         }
         return true;
     }
@@ -48,8 +49,4 @@ async function updateSiblingCount(url: string, distFolder: string) {
 
 export function getQueueFolder(distFolder: string) {
     return join(distFolder, 'queue');
-}
-
-export function savePageInfo(file: string, pageData: PageData) {
-    return outputJson(file, pageData, { spaces: 4 });
 }
