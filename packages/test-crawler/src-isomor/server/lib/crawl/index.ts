@@ -1,6 +1,6 @@
 import { launch, Page, Viewport } from 'puppeteer';
 import { error, info, warn } from 'logol';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson, outputJSON } from 'fs-extra';
 import { join, extname } from 'path';
 import * as minimatch from 'minimatch';
 
@@ -22,10 +22,12 @@ import {
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler } from '../../typing';
+import { Crawler, CrawlerInput } from '../../typing';
 import { isArray, promisify } from 'util';
 import { CrawlerProvider } from '../CrawlerProvider';
 import rimraf = require('rimraf');
+import Axios from 'axios';
+import md5 = require('md5');
 
 interface ResultQueue {
     result?: {
@@ -289,6 +291,49 @@ async function cleanHistory() {
     }
 }
 
+async function startCrawler({ projectId, pagesFolder }: CrawlTarget) {
+    const crawlerProvider = new CrawlerProvider();
+    const { crawlerInput } = await crawlerProvider.loadProject(projectId);
+
+    const id = md5(`${pagesFolder}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
+
+    const crawler: Crawler = {
+        ...crawlerInput,
+        timestamp: pagesFolder,
+        id,
+        diffZoneCount: 0,
+        errorCount: 0,
+        status: 'review',
+        inQueue: 1,
+        urlsCount: 0,
+        startAt: Date.now(),
+        lastUpdate: Date.now(),
+    };
+
+    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, pagesFolder);
+    await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
+
+    if (crawlerInput.method === CrawlerMethod.URLs) {
+        await startUrlsCrawling(crawlerInput, distFolder);
+    } else {
+        await startSpiderBotCrawling(crawlerInput, distFolder);
+    }
+}
+
+async function startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
+    const { data } = await Axios.get(crawlerInput.url);
+    const urls = data.split(`\n`).filter((url: string) => url.trim());
+    await Promise.all(urls.map((url: string) =>
+        addToQueue(url, crawlerInput.viewport, distFolder)));
+}
+
+async function startSpiderBotCrawling({ url, viewport, limit }: CrawlerInput, distFolder: string) {
+    const addedToqueue = await addToQueue(url, viewport, distFolder, limit);
+    if (!addedToqueue) {
+        throw (new Error('Something went wrong while adding job to queue'));
+    }
+}
+
 interface CrawlTarget {
     pagesFolder: string;
     projectId: string;
@@ -299,6 +344,7 @@ export async function crawl(
     push?: (payload: any) => void,
 ) {
     await prepareFolders();
+    crawlTarget && startCrawler(crawlTarget);
     consumeQueuesRetry = 0;
     consumeResultRetry = 0;
     consumeResults(consumeTimeout, push);

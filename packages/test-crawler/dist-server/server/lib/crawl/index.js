@@ -21,6 +21,8 @@ const diff_1 = require("../diff");
 const util_1 = require("util");
 const CrawlerProvider_1 = require("../CrawlerProvider");
 const rimraf = require("rimraf");
+const axios_1 = require("axios");
+const md5 = require("md5");
 let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
@@ -242,9 +244,41 @@ function cleanHistory() {
         }
     });
 }
+function startCrawler({ projectId, pagesFolder }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const crawlerProvider = new CrawlerProvider_1.CrawlerProvider();
+        const { crawlerInput } = yield crawlerProvider.loadProject(projectId);
+        const id = md5(`${pagesFolder}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
+        const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp: pagesFolder, id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
+        const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, pagesFolder);
+        yield fs_extra_1.outputJSON(path_1.join(distFolder, '_.json'), crawler, { spaces: 4 });
+        if (crawlerInput.method === index_1.CrawlerMethod.URLs) {
+            yield startUrlsCrawling(crawlerInput, distFolder);
+        }
+        else {
+            yield startSpiderBotCrawling(crawlerInput, distFolder);
+        }
+    });
+}
+function startUrlsCrawling(crawlerInput, distFolder) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { data } = yield axios_1.default.get(crawlerInput.url);
+        const urls = data.split(`\n`).filter((url) => url.trim());
+        yield Promise.all(urls.map((url) => utils_1.addToQueue(url, crawlerInput.viewport, distFolder)));
+    });
+}
+function startSpiderBotCrawling({ url, viewport, limit }, distFolder) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const addedToqueue = yield utils_1.addToQueue(url, viewport, distFolder, limit);
+        if (!addedToqueue) {
+            throw (new Error('Something went wrong while adding job to queue'));
+        }
+    });
+}
 function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
+        crawlTarget && startCrawler(crawlTarget);
         consumeQueuesRetry = 0;
         consumeResultRetry = 0;
         consumeResults(consumeTimeout, push);

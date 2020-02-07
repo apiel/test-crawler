@@ -189,59 +189,15 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return newPage;
     }
 
-    async startCrawler(projectId: string, push?: (payload: any) => void, runProcess = true): Promise<string> {
-        const { crawlerInput} = await this.loadProject(projectId);
+    async startCrawler(projectId: string, push?: (payload: any) => void): Promise<string> {
+        const pagesFolder = Math.floor(Date.now() / 1000).toString();
+        // to fix we should not start if remote
+        crawl({ projectId, pagesFolder }, 30, push);
 
-        const timestamp = Math.floor(Date.now() / 1000).toString();
-        const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
-
-        const crawler: Crawler = {
-            ...crawlerInput,
-            timestamp,
-            id,
-            diffZoneCount: 0,
-            errorCount: 0,
-            status: 'review',
-            inQueue: 1,
-            urlsCount: 0,
-            startAt: Date.now(),
-            lastUpdate: Date.now(),
-        };
-
-        const distFolder = join(CRAWL_FOLDER, timestamp);
-        await this.saveJSON(projectId, join(distFolder, '_.json'), crawler);
-
-        if (crawlerInput.method === CrawlerMethod.URLs) {
-            await this.startUrlsCrawling(crawlerInput, join(PROJECT_FOLDER ,projectId, distFolder));
-        } else {
-            await this.startSpiderBotCrawling(crawlerInput, join(PROJECT_FOLDER ,projectId, distFolder));
-        }
-
-        if (runProcess) {
-            // to fix we should not start if remote
-            // exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
-            // exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
-            crawl({ projectId, pagesFolder: timestamp }, 30, push);
-        }
-
-        return timestamp;
+        return pagesFolder;
     }
 
     async startCrawlers(push?: (payload: any) => void) {
         crawl(undefined, 30, push);
-    }
-
-    private async startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
-        const { data } = await axios.get(crawlerInput.url);
-        const urls = data.split(`\n`).filter((url: string) => url.trim());
-        await Promise.all(urls.map((url: string) =>
-            addToQueue(url, crawlerInput.viewport, distFolder)));
-    }
-
-    private async startSpiderBotCrawling({ url, viewport, limit }: CrawlerInput, distFolder: string) {
-        const addedToqueue = await addToQueue(url, viewport, distFolder, limit);
-        if (!addedToqueue) {
-            throw (new Error('Something went wrong while adding job to queue'));
-        }
     }
 }

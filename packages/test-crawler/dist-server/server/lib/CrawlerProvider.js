@@ -23,12 +23,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const md5 = require("md5");
-const axios_1 = require("axios");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
 const crawl_1 = require("./crawl");
-const _1 = require(".");
 const CrawlerProviderBase_1 = require("./CrawlerProviderBase");
 class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
     getSettings() {
@@ -193,45 +191,16 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             return newPage;
         });
     }
-    startCrawler(projectId, push, runProcess = true) {
+    startCrawler(projectId, push) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { crawlerInput } = yield this.loadProject(projectId);
-            const timestamp = Math.floor(Date.now() / 1000).toString();
-            const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
-            const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp,
-                id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
-            const distFolder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
-            yield this.saveJSON(projectId, path_1.join(distFolder, '_.json'), crawler);
-            if (crawlerInput.method === _1.CrawlerMethod.URLs) {
-                yield this.startUrlsCrawling(crawlerInput, path_1.join(config_1.PROJECT_FOLDER, projectId, distFolder));
-            }
-            else {
-                yield this.startSpiderBotCrawling(crawlerInput, path_1.join(config_1.PROJECT_FOLDER, projectId, distFolder));
-            }
-            if (runProcess) {
-                crawl_1.crawl({ projectId, pagesFolder: timestamp }, 30, push);
-            }
-            return timestamp;
+            const pagesFolder = Math.floor(Date.now() / 1000).toString();
+            crawl_1.crawl({ projectId, pagesFolder }, 30, push);
+            return pagesFolder;
         });
     }
     startCrawlers(push) {
         return __awaiter(this, void 0, void 0, function* () {
             crawl_1.crawl(undefined, 30, push);
-        });
-    }
-    startUrlsCrawling(crawlerInput, distFolder) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { data } = yield axios_1.default.get(crawlerInput.url);
-            const urls = data.split(`\n`).filter((url) => url.trim());
-            yield Promise.all(urls.map((url) => utils_1.addToQueue(url, crawlerInput.viewport, distFolder)));
-        });
-    }
-    startSpiderBotCrawling({ url, viewport, limit }, distFolder) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const addedToqueue = yield utils_1.addToQueue(url, viewport, distFolder, limit);
-            if (!addedToqueue) {
-                throw (new Error('Something went wrong while adding job to queue'));
-            }
         });
     }
 }
