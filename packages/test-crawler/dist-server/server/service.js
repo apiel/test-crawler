@@ -94,11 +94,11 @@ function setStatus(projectId, timestamp, status) {
     return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 exports.setStatus = setStatus;
-function startCrawlerFromProject(projectId) {
+function startCrawler(projectId) {
     const { push } = this;
-    return crawlerProvider.startCrawlerFromProject(projectId, push);
+    return crawlerProvider.startCrawler(projectId, push);
 }
-exports.startCrawlerFromProject = startCrawlerFromProject;
+exports.startCrawler = startCrawler;
 function startCrawlers() {
     const { push } = this;
     return crawlerProvider.startCrawlers(push);

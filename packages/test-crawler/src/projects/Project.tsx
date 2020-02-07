@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import { Project as ProjectType } from '../server/typing';
-import { saveProject, startCrawlerFromProject } from '../server/service';
+import { saveProject, startCrawler } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
 import Icon from 'antd/lib/icon';
@@ -22,8 +22,8 @@ const onStart = (
     projectId: string,
 ) => async () => {
     try {
-        const response = await startCrawlerFromProject(projectId);
-        history.push(getResultsRoute(projectId, response.crawler.timestamp.toString()));
+        const timestamp = await startCrawler(projectId);
+        history.push(getResultsRoute(projectId, timestamp));
     } catch (error) {
         notification['error']({
             message: 'Something went wrong!',
@@ -108,14 +108,14 @@ export const Project = ({
                     renderItem={({ timestamp, diffZoneCount, errorCount, status, inQueue }) => (
                         <List.Item
                             actions={[
-                                <Link to={getResultsRoute(projectId, timestamp.toString())}>
+                                <Link to={getResultsRoute(projectId, timestamp)}>
                                     Open
                                 </Link>,
                             ]}
                         >
                             <List.Item.Meta
                                 title={
-                                    <Link to={getResultsRoute(projectId, timestamp.toString())}>
+                                    <Link to={getResultsRoute(projectId, timestamp)}>
                                         {timestampToString(timestamp)}
                                     </Link>}
                                 description={<>

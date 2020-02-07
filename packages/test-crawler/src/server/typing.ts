@@ -53,7 +53,7 @@ export interface Project {
 }
 export interface Crawler extends CrawlerInput {
   id: string;
-  timestamp: number;
+  timestamp: string;
   diffZoneCount: number;
   errorCount: number;
   inQueue: number;
@@ -61,12 +61,6 @@ export interface Crawler extends CrawlerInput {
   status: string;
   startAt: number;
   lastUpdate: number;
-}
-export interface StartCrawler {
-  crawler: Crawler;
-  config: {
-    MAX_HISTORY: number;
-  };
 }
 export interface PngDiffDataZone {
   zone: Zone;

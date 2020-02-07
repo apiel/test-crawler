@@ -25,7 +25,7 @@ const onChange = (
 
 interface Props {
     projectId: string;
-    timestamp: number;
+    timestamp: string;
     status: string;
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>;
 }
@@ -34,6 +34,6 @@ export const SwitchStatus = ({ timestamp, status, projectId, setCrawler }: Props
         checkedChildren="done"
         unCheckedChildren="review"
         checked={status === 'done'}
-        onChange={onChange(projectId, timestamp.toString(), setCrawler)}
+        onChange={onChange(projectId, timestamp, setCrawler)}
     />;
 }

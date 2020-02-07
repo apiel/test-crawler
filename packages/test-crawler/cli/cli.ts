@@ -15,7 +15,7 @@ async function start() {
     if (option && value) {
         if (option === '--project') {
             const crawlerProvider = new CrawlerProvider();
-            const result = await crawlerProvider.startCrawlerFromProject(value);
+            const result = await crawlerProvider.startCrawler(value);
             info('Start project', result);
         } else if (option === '--folder') {
             pagesFolder = value;

@@ -84,7 +84,7 @@ export async function prepare(projectId: string, id: string, distFolder: string,
         }
     } else if (crawler.autopin) {
         const crawlerProvider = new CrawlerProvider();
-        crawlerProvider.copyToPins(projectId, crawler.timestamp.toString(), id, true);
+        crawlerProvider.copyToPins(projectId, crawler.timestamp, id, true);
         // we might want to put a flag to the page saying that it was automatically pin
     }
     return {

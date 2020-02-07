@@ -1,21 +1,15 @@
 import {
-    readdir,
-    readJSON,
-    outputJSON,
     readJson,
-    mkdirp,
 } from 'fs-extra';
 import { join, extname } from 'path';
-import * as rimraf from 'rimraf';
 import * as md5 from 'md5';
 import axios from 'axios';
-import { exec } from 'child_process';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
-import { CRAWL_FOLDER, MAX_HISTORY, PIN_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
-import { getFolders, addToQueue, getFilePath } from './utils';
+import { CRAWL_FOLDER, PIN_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
+import { addToQueue, getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, StartCrawler, PageData, Project, Code, CodeInfoList } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerMethod } from '.';
 import { CrawlerProviderBase, LOCAL } from './CrawlerProviderBase';
@@ -195,14 +189,10 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return newPage;
     }
 
-    async startCrawlerFromProject(projectId: string, push?: (payload: any) => void): Promise<StartCrawler> {
-        const project = await this.loadProject(projectId);
-        // console.log('start project crawler', project);
-        return this.startCrawler(projectId, project.crawlerInput, push);
-    }
+    async startCrawler(projectId: string, push?: (payload: any) => void, runProcess = true): Promise<string> {
+        const { crawlerInput} = await this.loadProject(projectId);
 
-    async startCrawler(projectId: string, crawlerInput: CrawlerInput, push?: (payload: any) => void, runProcess = true): Promise<StartCrawler> {
-        const timestamp = Math.floor(Date.now() / 1000);
+        const timestamp = Math.floor(Date.now() / 1000).toString();
         const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
 
         const crawler: Crawler = {
@@ -218,7 +208,7 @@ export class CrawlerProvider extends CrawlerProviderBase {
             lastUpdate: Date.now(),
         };
 
-        const distFolder = join(CRAWL_FOLDER, (timestamp).toString());
+        const distFolder = join(CRAWL_FOLDER, timestamp);
         await this.saveJSON(projectId, join(distFolder, '_.json'), crawler);
 
         if (crawlerInput.method === CrawlerMethod.URLs) {
@@ -231,13 +221,10 @@ export class CrawlerProvider extends CrawlerProviderBase {
             // to fix we should not start if remote
             // exec(`PROCESS_TIMEOUT=60 test-crawler-cli > ${this.getLogFile()} 2>&1 &`);
             // exec(`PROCESS_TIMEOUT=60 npm run cli > ${this.getLogFile()} 2>&1 &`);
-            crawl({ projectId, pagesFolder: timestamp.toString() }, 30, push);
+            crawl({ projectId, pagesFolder: timestamp }, 30, push);
         }
 
-        return {
-            crawler,
-            config: { MAX_HISTORY },
-        };
+        return timestamp;
     }
 
     async startCrawlers(push?: (payload: any) => void) {

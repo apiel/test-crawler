@@ -15,7 +15,7 @@ export const CrawlerResultsBreadcrumb = ({
             <Breadcrumb.Item><Link to={getProjectRoute(projectId)}>{project?.name}</Link></Breadcrumb.Item>
             <Breadcrumb.Item>
                 <Link to={getResultsRoute(projectId, timestamp)}>
-                    Results: {timestampToString(parseInt(timestamp, 10))}
+                    Results: {timestampToString(timestamp)}
                 </Link>
             </Breadcrumb.Item>
         </>

@@ -9,7 +9,6 @@ import {
 import {
     Crawler,
     CrawlerInput,
-    StartCrawler,
     PageData,
     Project,
     Code,
@@ -96,9 +95,9 @@ export function setStatus(projectId: string, timestamp: string, status: string):
     return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 
-export function startCrawlerFromProject(projectId: string): Promise<StartCrawler> {
+export function startCrawler(projectId: string): Promise<string> {
     const { push }: WsContext = this;
-    return crawlerProvider.startCrawlerFromProject(projectId, push);
+    return crawlerProvider.startCrawler(projectId, push);
 }
 
 export function startCrawlers(): Promise<void> {

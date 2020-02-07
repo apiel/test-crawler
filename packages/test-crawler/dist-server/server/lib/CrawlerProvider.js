@@ -193,19 +193,14 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             return newPage;
         });
     }
-    startCrawlerFromProject(projectId, push) {
+    startCrawler(projectId, push, runProcess = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            const project = yield this.loadProject(projectId);
-            return this.startCrawler(projectId, project.crawlerInput, push);
-        });
-    }
-    startCrawler(projectId, crawlerInput, push, runProcess = true) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const timestamp = Math.floor(Date.now() / 1000);
+            const { crawlerInput } = yield this.loadProject(projectId);
+            const timestamp = Math.floor(Date.now() / 1000).toString();
             const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
             const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp,
                 id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
-            const distFolder = path_1.join(config_1.CRAWL_FOLDER, (timestamp).toString());
+            const distFolder = path_1.join(config_1.CRAWL_FOLDER, timestamp);
             yield this.saveJSON(projectId, path_1.join(distFolder, '_.json'), crawler);
             if (crawlerInput.method === _1.CrawlerMethod.URLs) {
                 yield this.startUrlsCrawling(crawlerInput, path_1.join(config_1.PROJECT_FOLDER, projectId, distFolder));
@@ -214,12 +209,9 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
                 yield this.startSpiderBotCrawling(crawlerInput, path_1.join(config_1.PROJECT_FOLDER, projectId, distFolder));
             }
             if (runProcess) {
-                crawl_1.crawl({ projectId, pagesFolder: timestamp.toString() }, 30, push);
+                crawl_1.crawl({ projectId, pagesFolder: timestamp }, 30, push);
             }
-            return {
-                crawler,
-                config: { MAX_HISTORY: config_1.MAX_HISTORY },
-            };
+            return timestamp;
         });
     }
     startCrawlers(push) {
