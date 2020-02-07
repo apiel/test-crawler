@@ -24,7 +24,7 @@ function start() {
         if (option && value) {
             if (option === '--project') {
                 const crawlerProvider = new lib_1.CrawlerProvider();
-                const result = yield crawlerProvider.startCrawlerFromProject(value);
+                const result = yield crawlerProvider.startCrawler(value);
                 logol_1.info('Start project', result);
             }
             else if (option === '--folder') {
