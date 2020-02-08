@@ -1,6 +1,7 @@
 import { CrawlTarget } from '../../typing';
 
 export abstract class Remote {
+    abstract blob(path: string): Promise<Buffer>;
     abstract read(path: string): Promise<Buffer>;
     abstract readJSON(path: string): Promise<any>;
     abstract readdir(path: string): Promise<string[]>;

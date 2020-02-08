@@ -22,7 +22,7 @@ export const Search = ({ children, response, withFilters }: Props) => {
     React.useEffect(() => {
         setPages(response);
         onFilter(setPagesFiltered, response, setSelectedFilters)(selectedFilters);
-    }, [response]);
+    }, [response, setSelectedFilters, selectedFilters]);
 
     return (
         <>

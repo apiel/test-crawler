@@ -40,6 +40,10 @@ export class LocalRemote extends Remote {
         }
     }
 
+    blob(path: string) {
+        return this.read(path);
+    }
+
     saveJSON(file: string, data: any) {
         return outputJSON(this.root(file), data, { spaces: 4 });
     }

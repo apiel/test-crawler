@@ -28,37 +28,42 @@ export abstract class CrawlerProviderBase {
         return remote.readdir(path);
     }
 
-    protected async read(remoteType: RemoteType, path: string) {
+    protected read(remoteType: RemoteType, path: string) {
         const remote = this.getRemote(remoteType);
         return remote.read(path);
     }
 
-    protected async readJSON(remoteType: RemoteType, path: string) {
+    protected blob(remoteType: RemoteType, path: string) {
+        const remote = this.getRemote(remoteType);
+        return remote.blob(path);
+    }
+
+    protected readJSON(remoteType: RemoteType, path: string) {
         const remote = this.getRemote(remoteType);
         return remote.readJSON(path);
     }
 
-    protected async saveFile(remoteType: RemoteType, file: string, content: string) {
+    protected saveFile(remoteType: RemoteType, file: string, content: string) {
         const remote = this.getRemote(remoteType);
         return remote.saveFile(file, content);
     }
 
-    protected async saveJSON(remoteType: RemoteType, file: string, content: any) {
+    protected saveJSON(remoteType: RemoteType, file: string, content: any) {
         const remote = this.getRemote(remoteType);
         return remote.saveJSON(file, content);
     }
 
-    protected async remove(remoteType: RemoteType, file: string) {
+    protected remove(remoteType: RemoteType, file: string) {
         const remote = this.getRemote(remoteType);
         return remote.remove(file);
     }
 
-    protected async copy(remoteType: RemoteType, src: string, dst: string) {
+    protected copy(remoteType: RemoteType, src: string, dst: string) {
         const remote = this.getRemote(remoteType);
         return remote.copy(src, dst);
     }
 
-    protected async crawl(
+    protected crawl(
         remoteType: RemoteType,
         projectId: string,
         pagesFolder: string,

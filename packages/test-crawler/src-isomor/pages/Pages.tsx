@@ -2,7 +2,6 @@ import React from 'react';
 import Card from 'antd/lib/card';
 import Spin from 'antd/lib/spin';
 import Masonry from 'react-masonry-component';
-import { useAsyncCacheEffect } from 'react-async-cache';
 
 import {
     masonryStyle,

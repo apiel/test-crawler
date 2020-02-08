@@ -1,5 +1,6 @@
 import { Remote } from './Remote';
 
+import { basename, dirname } from 'path';
 import axios, { AxiosRequestConfig } from 'axios';
 import { CrawlTarget } from '../../typing';
 import { config, GitHubConfig } from '../config';
@@ -27,13 +28,30 @@ export class GitHubRemote extends Remote {
         return data.map(({ name }) => name) as string[]; // type is also available so we could filter for type === 'file'
     }
 
+    async blob(path: string) {
+        const { data } = await this.getContents(dirname(path));
+        const filename = basename(path);
+        const filedata = data.find((item: any) => item.name === filename);
+        if (!filedata) {
+            return;
+        }
+        const { data: { content } } = await this.call({
+            url: `${this.blobUrl}/${filedata.sha}`,
+        });
+        return Buffer.from(content, 'base64');
+    }
+
     async read(path: string) {
         const { data: { content } } = await this.getContents(path);
         return Buffer.from(content, 'base64');
     }
 
     async readJSON(path: string) {
-        return JSON.parse((await this.read(path)).toString());
+        try {
+            return JSON.parse((await this.read(path)).toString());
+        } catch (error) {
+            return undefined;
+        }
     }
 
     async remove(file: string) {
@@ -93,6 +111,10 @@ export class GitHubRemote extends Remote {
 
     protected get contentsUrl() {
         return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents`;
+    }
+
+    protected get blobUrl() {
+        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/git/blobs`;
     }
 
     // protected get repoUrl() {

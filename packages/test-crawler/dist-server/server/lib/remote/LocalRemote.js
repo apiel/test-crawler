@@ -41,6 +41,9 @@ class LocalRemote extends Remote_1.Remote {
             }
         });
     }
+    blob(path) {
+        return this.read(path);
+    }
     saveJSON(file, data) {
         return fs_extra_1.outputJSON(this.root(file), data, { spaces: 4 });
     }

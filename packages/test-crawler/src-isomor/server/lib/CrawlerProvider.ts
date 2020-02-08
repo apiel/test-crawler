@@ -98,7 +98,7 @@ export class CrawlerProvider extends CrawlerProviderBase {
         const target = folder === 'base'
             ? this.join(projectId, PIN_FOLDER)
             : this.join(projectId, CRAWL_FOLDER, folder);
-        return this.read(remoteType, getFilePath(id, target)('png'));
+        return this.blob(remoteType, getFilePath(id, target)('png'));
     }
 
     async saveCode(remoteType: RemoteType, projectId: string, code: Code): Promise<void> {

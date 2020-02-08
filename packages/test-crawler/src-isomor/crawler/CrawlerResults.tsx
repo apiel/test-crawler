@@ -19,7 +19,7 @@ export const CrawlerResults = ({
     React.useEffect(() => {
         const id = subscrib(setCrawler);
         return () => unsubscrib(id);
-    }, [crawler]);
+    }, [crawler, setCrawler]);
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }

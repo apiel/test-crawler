@@ -102,7 +102,7 @@ const CodeFormComponent = ({
             </Form.Item>
             <Info>
                 <Paragraph>
-                    Pattern is using <a href="https://www.npmjs.com/package/minimatch" target="_blank">minimatch</a> to
+                    Pattern is using <a href="https://www.npmjs.com/package/minimatch" target="_blank" rel="noopener noreferrer">minimatch</a> to
                     match the urls to inject the code.
                     It works by converting glob expressions into JavaScript RegExp objects.
                 </Paragraph>

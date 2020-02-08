@@ -101,7 +101,7 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
         const target = folder === 'base'
             ? this.join(projectId, config_1.PIN_FOLDER)
             : this.join(projectId, config_1.CRAWL_FOLDER, folder);
-        return this.read(remoteType, utils_1.getFilePath(id, target)('png'));
+        return this.blob(remoteType, utils_1.getFilePath(id, target)('png'));
     }
     saveCode(remoteType, projectId, code) {
         return __awaiter(this, void 0, void 0, function* () {

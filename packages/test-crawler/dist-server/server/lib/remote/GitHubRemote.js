@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Remote_1 = require("./Remote");
+const path_1 = require("path");
 const axios_1 = require("axios");
 const config_1 = require("../config");
 const BASE_URL = 'https://api.github.com';
@@ -28,6 +29,20 @@ class GitHubRemote extends Remote_1.Remote {
             return data.map(({ name }) => name);
         });
     }
+    blob(path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data } = yield this.getContents(path_1.dirname(path));
+            const filename = path_1.basename(path);
+            const filedata = data.find((item) => item.name === filename);
+            if (!filedata) {
+                return;
+            }
+            const { data: { content } } = yield this.call({
+                url: `${this.blobUrl}/${filedata.sha}`,
+            });
+            return Buffer.from(content, 'base64');
+        });
+    }
     read(path) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data: { content } } = yield this.getContents(path);
@@ -36,7 +51,12 @@ class GitHubRemote extends Remote_1.Remote {
     }
     readJSON(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            return JSON.parse((yield this.read(path)).toString());
+            try {
+                return JSON.parse((yield this.read(path)).toString());
+            }
+            catch (error) {
+                return undefined;
+            }
         });
     }
     remove(file) {
@@ -97,6 +117,9 @@ class GitHubRemote extends Remote_1.Remote {
     }
     get contentsUrl() {
         return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents`;
+    }
+    get blobUrl() {
+        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/git/blobs`;
     }
 }
 exports.GitHubRemote = GitHubRemote;
