@@ -1,4 +1,5 @@
 import { join } from 'path';
+import Cookies from 'universal-cookie';
 
 export const ROOT_FOLDER = process.env.ROOT_FOLDER || join(__dirname, '../../..');
 export const PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';
@@ -20,7 +21,17 @@ function getConfig(): Config {
         config = require(configFile);
     }
     catch (e) {
-        config = {};
+        try {
+            const cookies = new Cookies();
+            config = {
+                remote: {
+                    github: cookies.get('github'),
+                }
+            };
+        }
+        catch (e) {
+            config = {};
+        }
     }
     return {
         remote: {},

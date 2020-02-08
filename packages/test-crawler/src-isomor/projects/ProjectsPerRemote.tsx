@@ -7,6 +7,7 @@ import { StorageType } from '../server/storage.typing';
 import { getProjectRoute } from '../routes';
 import { useProjects } from './useProjects';
 import Spin from 'antd/lib/spin';
+import { useError } from '../hook/useError';
 
 interface Props {
     title: string;
@@ -14,7 +15,8 @@ interface Props {
 }
 
 export const ProjectsPerRemote = ({ title, storageType }: Props) => {
-    const { projects } = useProjects(storageType);
+    const { projects, error } = useProjects(storageType);
+    useError(error);
     return (
         <>
             <Typography.Title level={4}>{title}</Typography.Title>

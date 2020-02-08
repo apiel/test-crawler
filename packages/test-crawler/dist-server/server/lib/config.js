@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
+const universal_cookie_1 = require("universal-cookie");
 exports.ROOT_FOLDER = process.env.ROOT_FOLDER || path_1.join(__dirname, '../../..');
 exports.PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';
 exports.CRAWL_FOLDER = 'crawl';
@@ -19,7 +20,17 @@ function getConfig() {
         config = require(configFile);
     }
     catch (e) {
-        config = {};
+        try {
+            const cookies = new universal_cookie_1.default();
+            config = {
+                remote: {
+                    github: cookies.get('github'),
+                }
+            };
+        }
+        catch (e) {
+            config = {};
+        }
     }
     return Object.assign({ remote: {} }, config);
 }

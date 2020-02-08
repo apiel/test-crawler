@@ -13,6 +13,8 @@
 make test crawler purely client side for github
 https://developer.github.com/v3/#authentication
 https://developer.github.com/v3/guides/basics-of-authentication/
+https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/
+https://developer.github.com/apps/building-github-apps/authenticating-with-github-apps/
 
 we might use token for simple solution but it would have some security issue since token would be stored in browser
 the second auth options would be to create create an app, more complicated to setup for the user but more safe.

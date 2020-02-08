@@ -13,5 +13,5 @@ export const useProjects = (storageType: StorageType) => {
             description: error.toString(),
         });
     }
-    return { projects, loading };
+    return { projects, loading, error };
 }

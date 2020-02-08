@@ -4,22 +4,15 @@ import { basename, dirname } from 'path';
 import axios, { AxiosRequestConfig } from 'axios';
 import { CrawlTarget } from '../../typing';
 import { config, GitHubConfig } from '../config';
-
-// https://developer.github.com/v3/repos/contents/#create-or-update-a-file
-// https://api.github.com/repos/apiel/test-crawler-remote-folder/commits
-// https://api.github.com/repos/apiel/test-crawler-remote-folder/contents/test-crawler/crawl
-// https://api.github.com/repos/apiel/test-crawler-remote-folder/contents/yo.txt
+import { ERR } from '../../error';
 
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
 
 export class GitHubStorage extends Storage {
-    private config: GitHubConfig;
+    private config: GitHubConfig | undefined;
     constructor() {
         super();
-        if (!config.remote.github) {
-            throw new Error('cannot use GitHub if no config provided');
-        }
         this.config = config.remote.github;
     }
 
@@ -97,6 +90,9 @@ export class GitHubStorage extends Storage {
     }
 
     protected call(config: AxiosRequestConfig) {
+        if (!this.config) {
+            throw new Error(ERR.missingGitHubConfig);
+        }
         return axios({
             ...config,
             headers: { ...config?.headers, 'Authorization': `token ${this.config.token}` },
@@ -110,11 +106,11 @@ export class GitHubStorage extends Storage {
     }
 
     protected get contentsUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents`;
+        return `${BASE_URL}/repos/${this.config?.user}/${this.config?.repo}/contents`;
     }
 
     protected get blobUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/git/blobs`;
+        return `${BASE_URL}/repos/${this.config?.user}/${this.config?.repo}/git/blobs`;
     }
 
     // protected get repoUrl() {

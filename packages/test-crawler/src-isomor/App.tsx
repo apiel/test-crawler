@@ -10,7 +10,7 @@ import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
 import {
     getHomeRoute, getResultsRoute, getPinsRoute, getProjectRoute,
-    getCodeRoute, getSettingsRoute, getNewProjectRoute
+    getCodeRoute, getSettingsRoute, getNewProjectRoute, getAuthGitHubRoute
 } from './routes';
 import { Pins } from './pin/Pins';
 import { Code } from './code/Code';
@@ -22,6 +22,7 @@ import { ProjectBreadcrumb } from './projects/ProjectBreadcrumb';
 import { CrawlerResultsBreadcrumb } from './crawler/CrawlerResultsBreadcrumb';
 import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
 import { CodeBreadcrumb } from './code/CodeBreadcrumb';
+import { GitHubAuth } from './auth/GitHubAuth';
 
 const { Content, Header } = Layout;
 const { Title } = Typography;
@@ -78,6 +79,8 @@ const App = () => (
                 <Route path={getHomeRoute()} exact component={Projects} />
                 <Route path={getNewProjectRoute()} exact component={NewProject} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
+                <Route path={getAuthGitHubRoute()} exact component={GitHubAuth} />
+
                 <Route path={getPinsRoute(':storageType', ':projectId')} exact component={Pins} />
                 <Route path={getCodeRoute(':storageType', ':projectId', ':id')} exact component={Code} />
                 <Route path={getResultsRoute(':storageType', ':projectId', ':timestamp')} component={CrawlerResults} />

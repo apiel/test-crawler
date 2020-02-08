@@ -13,14 +13,12 @@ const Storage_1 = require("./Storage");
 const path_1 = require("path");
 const axios_1 = require("axios");
 const config_1 = require("../config");
+const error_1 = require("../../error");
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
 class GitHubStorage extends Storage_1.Storage {
     constructor() {
         super();
-        if (!config_1.config.remote.github) {
-            throw new Error('cannot use GitHub if no config provided');
-        }
         this.config = config_1.config.remote.github;
     }
     readdir(path) {
@@ -108,6 +106,9 @@ class GitHubStorage extends Storage_1.Storage {
     }
     call(config) {
         var _a;
+        if (!this.config) {
+            throw new Error(error_1.ERR.missingGitHubConfig);
+        }
         return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { 'Authorization': `token ${this.config.token}` }) }));
     }
     getContents(path) {
@@ -116,10 +117,12 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     get contentsUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents`;
+        var _a, _b;
+        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${(_b = this.config) === null || _b === void 0 ? void 0 : _b.repo}/contents`;
     }
     get blobUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/git/blobs`;
+        var _a, _b;
+        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${(_b = this.config) === null || _b === void 0 ? void 0 : _b.repo}/git/blobs`;
     }
 }
 exports.GitHubStorage = GitHubStorage;
