@@ -32,7 +32,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "github:build": "cp -r src-isomor src && rm src/server/lib/CrawlerProviderStorage.ts && mv src/server/lib/CrawlerProviderGitHubStorage.ts src/server/lib/CrawlerProviderStorage.ts && rm src/server/storage.typing.ts && mv src/server/storageGitHub.typing.ts src/server/storage.typing.ts && rm -rf src/server/lib/crawl  && rm -rf src/server/lib/diff && rm src/server/lib/utils.ts && rm src/server/lib/storage/LocalStorage.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

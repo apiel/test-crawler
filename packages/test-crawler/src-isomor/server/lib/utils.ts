@@ -1,9 +1,9 @@
-import { readdir, pathExists, outputJson, readFile, outputFile, readJSON, mkdirp } from 'fs-extra';
+import { readdir, pathExists, outputJson, readFile, outputFile, mkdirp } from 'fs-extra';
 import { join } from 'path';
 import * as md5 from 'md5';
 
-import { CRAWL_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
-import { PageData, Viewport, CodeInfoList } from '../typing';
+import { CRAWL_FOLDER, PROJECT_FOLDER } from './config';
+import { Viewport } from '../typing';
 
 export async function getFolders(projectId: string) {
     const projectFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
