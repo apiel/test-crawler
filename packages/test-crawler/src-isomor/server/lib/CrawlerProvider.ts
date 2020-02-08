@@ -1,16 +1,13 @@
-import {
-    readJson,
-} from 'fs-extra';
 import { join, extname } from 'path';
 import * as md5 from 'md5';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
-import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER, ROOT_FOLDER } from './config';
+import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
 import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, Projects, RemoteType } from '../typing';
 import { crawl } from './crawl';
-import { CrawlerProviderBase, LOCAL } from './CrawlerProviderBase';
+import { CrawlerProviderBase } from './CrawlerProviderBase';
 
 export class CrawlerProvider extends CrawlerProviderBase {
     getSettings() {
