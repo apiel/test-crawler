@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
 import Modal from 'antd/lib/modal';
-import { PngDiffData, PageData, RemoteType } from '../server/typing';
+import { PngDiffData, PageData, StorageType } from '../server/typing';
 import { Page } from './Page';
 import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 
@@ -14,7 +14,7 @@ const onCancel = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => 
 }
 
 interface Props {
-    remoteType: RemoteType;
+    storageType: StorageType;
     projectId: string;
     timestamp: string;
     id: string;
@@ -27,7 +27,7 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
-export const PagesActionFullscreen = ({ remoteType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => {
+export const PagesActionFullscreen = ({ storageType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => {
     const [visible, setVisible] = React.useState<boolean>(false);
     return (
         <>
@@ -40,7 +40,7 @@ export const PagesActionFullscreen = ({ remoteType, setPages, projectId, timesta
             >
                 <div style={{ position: "relative" }}>
                     <DiffImageWithZone
-                        remoteType={remoteType}
+                        storageType={storageType}
                         setPages={setPages}
                         projectId={projectId}
                         folder={timestamp}

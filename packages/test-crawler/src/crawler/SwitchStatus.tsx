@@ -3,17 +3,17 @@ import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { setStatus } from '../server/service';
-import { Crawler, RemoteType } from '../server/typing';
+import { Crawler, StorageType } from '../server/typing';
 
 const onChange = (
-    remoteType: RemoteType,
+    storageType: StorageType,
     projectId: string,
     timestamp: string,
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>,
 ) => async (value: boolean) => {
     try {
         const status = value ? 'done' : 'review';
-        const crawler = await setStatus(remoteType, projectId, timestamp, status);
+        const crawler = await setStatus(storageType, projectId, timestamp, status);
         setCrawler(crawler);
         message.success(`Status set to "${status}".`, 2);
     } catch (error) {
@@ -25,17 +25,17 @@ const onChange = (
 }
 
 interface Props {
-    remoteType: RemoteType;
+    storageType: StorageType;
     projectId: string;
     timestamp: string;
     status: string;
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>;
 }
-export const SwitchStatus = ({ remoteType, timestamp, status, projectId, setCrawler }: Props) => {
+export const SwitchStatus = ({ storageType, timestamp, status, projectId, setCrawler }: Props) => {
     return <Switch
         checkedChildren="done"
         unCheckedChildren="review"
         checked={status === 'done'}
-        onChange={onChange(remoteType, projectId, timestamp, setCrawler)}
+        onChange={onChange(storageType, projectId, timestamp, setCrawler)}
     />;
 }

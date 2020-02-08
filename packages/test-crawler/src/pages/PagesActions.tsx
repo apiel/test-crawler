@@ -1,12 +1,12 @@
 import React from 'react';
-import { PngDiffData, PageData, RemoteType } from '../server/typing';
+import { PngDiffData, PageData, StorageType } from '../server/typing';
 
 import { PagesActionZone } from './PagesActionZone';
 import PagesActionPin from './PagesActionPin';
 import { PagesActionFullscreen } from './PagesActionFullscreen';
 
 interface Props {
-    remoteType: RemoteType;
+    storageType: StorageType;
     projectId: string;
     timestamp: string;
     id: string;
@@ -19,10 +19,10 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
-export const PagesActions = ({ remoteType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
-    ...[png && <PagesActionFullscreen remoteType={remoteType} setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
-    <PagesActionZone remoteType={remoteType} type="check" setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
-    <PagesActionZone remoteType={remoteType} type="warning" setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
-    <PagesActionPin remoteType={remoteType} projectId={projectId} timestamp={timestamp} id={id} />,
+export const PagesActions = ({ storageType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
+    ...[png && <PagesActionFullscreen storageType={storageType} setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
+    <PagesActionZone storageType={storageType} type="check" setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
+    <PagesActionZone storageType={storageType} type="warning" setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
+    <PagesActionPin storageType={storageType} projectId={projectId} timestamp={timestamp} id={id} />,
     // <Icon type="ellipsis" title="more" />,
 ];

@@ -4,7 +4,7 @@ import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 
 import { setZoneStatus } from '../server/service';
-import { PageData, RemoteType } from '../server/typing';
+import { PageData, StorageType } from '../server/typing';
 
 const buttonStyle = {
     marginLeft: 5,
@@ -16,16 +16,16 @@ interface Props {
     timestamp: string;
     id: string;
     projectId: string;
-    remoteType: RemoteType;
+    storageType: StorageType;
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
 const onSetStatus = (
     status: string,
-    { timestamp, id, index, projectId, setPages, remoteType }: Props,
+    { timestamp, id, index, projectId, setPages, storageType }: Props,
 ) => async () => {
     try {
-        const pages = await setZoneStatus(remoteType, projectId, timestamp, id, index, status);
+        const pages = await setZoneStatus(storageType, projectId, timestamp, id, index, status);
         setPages(pages);
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {

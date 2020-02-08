@@ -33,87 +33,87 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             dir: __dirname,
         };
     }
-    loadProject(remoteType, projectId) {
-        return this.readJSON(remoteType, this.join(projectId, `project.json`));
+    loadProject(storageType, projectId) {
+        return this.readJSON(storageType, this.join(projectId, `project.json`));
     }
-    loadProjects(remoteType) {
+    loadProjects(storageType) {
         return __awaiter(this, void 0, void 0, function* () {
-            const projects = yield this.readdir(remoteType, config_1.PROJECT_FOLDER);
-            return Promise.all(projects.map(projectId => this.loadProject(remoteType, projectId)));
+            const projects = yield this.readdir(storageType, config_1.PROJECT_FOLDER);
+            return Promise.all(projects.map(projectId => this.loadProject(storageType, projectId)));
         });
     }
-    saveProject(remoteType, crawlerInput, name, projectId) {
+    saveProject(storageType, crawlerInput, name, projectId) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!projectId) {
                 projectId = md5(name);
             }
             const project = { id: projectId, name, crawlerInput };
-            yield this.saveJSON(remoteType, 'project.json', project);
+            yield this.saveJSON(storageType, 'project.json', project);
             return project;
         });
     }
-    getCrawler(remoteType, projectId, timestamp) {
+    getCrawler(storageType, projectId, timestamp) {
         const path = this.join(projectId, config_1.CRAWL_FOLDER, timestamp, '_.json');
-        return this.readJSON(remoteType, path);
+        return this.readJSON(storageType, path);
     }
-    getAllCrawlers(remoteType, projectId) {
+    getAllCrawlers(storageType, projectId) {
         return __awaiter(this, void 0, void 0, function* () {
             const path = this.join(projectId, config_1.CRAWL_FOLDER);
-            const folders = yield this.readdir(remoteType, path);
-            const crawlers = yield Promise.all(folders.map(timestamp => this.getCrawler(remoteType, projectId, timestamp)));
+            const folders = yield this.readdir(storageType, path);
+            const crawlers = yield Promise.all(folders.map(timestamp => this.getCrawler(storageType, projectId, timestamp)));
             return crawlers;
         });
     }
-    copyToPins(remoteType, projectId, timestamp, id) {
+    copyToPins(storageType, projectId, timestamp, id) {
         return __awaiter(this, void 0, void 0, function* () {
             const crawlerFolder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
             const crawlerFolderPath = utils_1.getFilePath(id, crawlerFolder);
-            const data = yield this.readJSON(remoteType, crawlerFolderPath('json'));
+            const data = yield this.readJSON(storageType, crawlerFolderPath('json'));
             data.png.diff = {
                 pixelDiffRatio: 0,
                 zones: [],
             };
             if (data.png.diff.pixelDiffRatio > 0) {
-                yield this.saveJSON(remoteType, crawlerFolderPath('json'), data);
+                yield this.saveJSON(storageType, crawlerFolderPath('json'), data);
             }
             const pinFolderPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
-            yield this.saveJSON(remoteType, pinFolderPath('json'), data);
-            yield this.copy(remoteType, crawlerFolderPath('html'), pinFolderPath('html'));
-            yield this.copy(remoteType, crawlerFolderPath('png'), pinFolderPath('png'));
+            yield this.saveJSON(storageType, pinFolderPath('json'), data);
+            yield this.copy(storageType, crawlerFolderPath('html'), pinFolderPath('html'));
+            yield this.copy(storageType, crawlerFolderPath('png'), pinFolderPath('png'));
             return data;
         });
     }
-    removeFromPins(remoteType, projectId, id) {
+    removeFromPins(storageType, projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
             const pinFolderPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
-            yield this.remove(remoteType, pinFolderPath('png'));
-            yield this.remove(remoteType, pinFolderPath('html'));
-            yield this.remove(remoteType, pinFolderPath('json'));
-            return this.getPins(remoteType, projectId);
+            yield this.remove(storageType, pinFolderPath('png'));
+            yield this.remove(storageType, pinFolderPath('html'));
+            yield this.remove(storageType, pinFolderPath('json'));
+            return this.getPins(storageType, projectId);
         });
     }
-    image(remoteType, projectId, folder, id) {
+    image(storageType, projectId, folder, id) {
         const target = folder === 'base'
             ? this.join(projectId, config_1.PIN_FOLDER)
             : this.join(projectId, config_1.CRAWL_FOLDER, folder);
-        return this.blob(remoteType, utils_1.getFilePath(id, target)('png'));
+        return this.blob(storageType, utils_1.getFilePath(id, target)('png'));
     }
-    saveCode(remoteType, projectId, code) {
+    saveCode(storageType, projectId, code) {
         return __awaiter(this, void 0, void 0, function* () {
             const { source } = code, codeInfo = __rest(code, ["source"]);
-            const list = yield this.getCodeList(remoteType, projectId);
+            const list = yield this.getCodeList(storageType, projectId);
             list[code.id] = codeInfo;
-            yield this.saveJSON(remoteType, this.join(projectId, config_1.CODE_FOLDER, `list.json`), Object.assign({}, list));
-            yield this.saveFile(remoteType, this.join(projectId, config_1.CODE_FOLDER, `${code.id}.js`), source);
+            yield this.saveJSON(storageType, this.join(projectId, config_1.CODE_FOLDER, `list.json`), Object.assign({}, list));
+            yield this.saveFile(storageType, this.join(projectId, config_1.CODE_FOLDER, `${code.id}.js`), source);
         });
     }
-    loadCode(remoteType, projectId, id) {
+    loadCode(storageType, projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const list = yield this.getCodeList(remoteType, projectId);
+            const list = yield this.getCodeList(storageType, projectId);
             const codeInfo = list[id];
             const sourcePath = this.join(projectId, config_1.CODE_FOLDER, `${id}.js`);
             if (codeInfo) {
-                const buffer = yield this.read(remoteType, sourcePath);
+                const buffer = yield this.read(storageType, sourcePath);
                 if (buffer) {
                     const source = buffer.toString();
                     return Object.assign(Object.assign({}, codeInfo), { source });
@@ -127,77 +127,77 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
             };
         });
     }
-    getCodeList(remoteType, projectId, forceLocal = false) {
+    getCodeList(storageType, projectId, forceLocal = false) {
         return __awaiter(this, void 0, void 0, function* () {
             const listPath = this.join(projectId, config_1.CODE_FOLDER, `list.json`);
-            const list = yield this.readJSON(remoteType, listPath);
+            const list = yield this.readJSON(storageType, listPath);
             return list || {};
         });
     }
-    getPins(remoteType, projectId) {
-        return this.getPinsInFolder(remoteType, this.join(projectId, config_1.PIN_FOLDER));
+    getPins(storageType, projectId) {
+        return this.getPinsInFolder(storageType, this.join(projectId, config_1.PIN_FOLDER));
     }
-    getPin(remoteType, projectId, id) {
-        return this.getPageInFolder(remoteType, this.join(projectId, config_1.PIN_FOLDER), id);
+    getPin(storageType, projectId, id) {
+        return this.getPageInFolder(storageType, this.join(projectId, config_1.PIN_FOLDER), id);
     }
-    getPages(remoteType, projectId, timestamp) {
-        return this.getPinsInFolder(remoteType, this.join(projectId, config_1.CRAWL_FOLDER, timestamp));
+    getPages(storageType, projectId, timestamp) {
+        return this.getPinsInFolder(storageType, this.join(projectId, config_1.CRAWL_FOLDER, timestamp));
     }
-    getPageInFolder(remoteType, folder, id) {
-        return this.readJSON(remoteType, utils_1.getFilePath(id, folder)('json'));
+    getPageInFolder(storageType, folder, id) {
+        return this.readJSON(storageType, utils_1.getFilePath(id, folder)('json'));
     }
-    getPinsInFolder(remoteType, folder) {
+    getPinsInFolder(storageType, folder) {
         return __awaiter(this, void 0, void 0, function* () {
-            const files = yield this.readdir(remoteType, folder);
+            const files = yield this.readdir(storageType, folder);
             return Promise.all(files.filter(file => path_1.extname(file) === '.json' && file !== '_.json')
-                .map(file => this.readJSON(remoteType, path_1.join(folder, file))));
+                .map(file => this.readJSON(storageType, path_1.join(folder, file))));
         });
     }
-    setCrawlerStatus(remoteType, projectId, timestamp, status) {
+    setCrawlerStatus(storageType, projectId, timestamp, status) {
         return __awaiter(this, void 0, void 0, function* () {
             const file = this.join(projectId, config_1.CRAWL_FOLDER, timestamp, '_.json');
-            const crawler = yield this.readJSON(remoteType, file);
+            const crawler = yield this.readJSON(storageType, file);
             crawler.status = status;
-            yield this.saveJSON(remoteType, file, crawler);
+            yield this.saveJSON(storageType, file, crawler);
             return crawler;
         });
     }
-    setZoneStatus(remoteType, projectId, timestamp, id, index, status) {
+    setZoneStatus(storageType, projectId, timestamp, id, index, status) {
         return __awaiter(this, void 0, void 0, function* () {
             const folder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
-            const data = yield this.readJSON(remoteType, filePath('json'));
+            const data = yield this.readJSON(storageType, filePath('json'));
             if (status === 'pin') {
                 const pinPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
-                const pin = yield this.readJSON(remoteType, pinPath('json'));
+                const pin = yield this.readJSON(storageType, pinPath('json'));
                 pin.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
                 const zones = pin.png.diff.zones.map(item => item.zone);
                 zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
                 const groupedZones = pixdiff_zone_1.groupOverlappingZone(zones);
                 pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
-                yield this.saveJSON(remoteType, pinPath('json'), pin);
+                yield this.saveJSON(storageType, pinPath('json'), pin);
             }
             data.png.diff.zones[index].status = status;
-            yield this.saveJSON(remoteType, filePath('json'), data);
+            yield this.saveJSON(storageType, filePath('json'), data);
             return data;
         });
     }
-    setZonesStatus(remoteType, projectId, timestamp, id, status) {
+    setZonesStatus(storageType, projectId, timestamp, id, status) {
         return __awaiter(this, void 0, void 0, function* () {
             const folder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
-            const page = yield this.readJSON(remoteType, filePath('json'));
+            const page = yield this.readJSON(storageType, filePath('json'));
             let newPage;
             for (let index = 0; index < page.png.diff.zones.length; index++) {
-                newPage = yield this.setZoneStatus(remoteType, projectId, timestamp, id, index, status);
+                newPage = yield this.setZoneStatus(storageType, projectId, timestamp, id, index, status);
             }
             return newPage;
         });
     }
-    startCrawler(remoteType, projectId, push) {
+    startCrawler(storageType, projectId, push) {
         return __awaiter(this, void 0, void 0, function* () {
             const pagesFolder = Math.floor(Date.now() / 1000).toString();
-            this.crawl(remoteType, projectId, pagesFolder, 30, push);
+            this.crawl(storageType, projectId, pagesFolder, 30, push);
             return pagesFolder;
         });
     }

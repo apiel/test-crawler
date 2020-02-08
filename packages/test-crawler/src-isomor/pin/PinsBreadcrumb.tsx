@@ -3,17 +3,17 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { getHomeRoute, getProjectRoute, getPinsRoute } from '../routes';
 import { useProject } from '../projects/useProject';
-import { RemoteType } from '../server/typing';
+import { StorageType } from '../server/typing';
 
 export const PinsBreadcrumb = ({
-    match: { params: { projectId, remoteType } },
-}: RouteComponentProps<{ projectId: string, remoteType: RemoteType }>) => {
-    const { project } = useProject(remoteType, projectId);
+    match: { params: { projectId, storageType } },
+}: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
+    const { project } = useProject(storageType, projectId);
     return (
         <>
             <Breadcrumb.Item><Link to={getHomeRoute()}>Projects</Link></Breadcrumb.Item>
-            <Breadcrumb.Item><Link to={getProjectRoute(remoteType, projectId)}>{project?.name}</Link></Breadcrumb.Item>
-            <Breadcrumb.Item><Link to={getPinsRoute(remoteType, projectId)}>Pins</Link></Breadcrumb.Item>
+            <Breadcrumb.Item><Link to={getProjectRoute(storageType, projectId)}>{project?.name}</Link></Breadcrumb.Item>
+            <Breadcrumb.Item><Link to={getPinsRoute(storageType, projectId)}>Pins</Link></Breadcrumb.Item>
         </>
     );
 }

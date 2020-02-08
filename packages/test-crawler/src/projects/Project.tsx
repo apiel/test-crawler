@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
-import { Project as ProjectType, RemoteType } from '../server/typing';
+import { Project as ProjectType, StorageType } from '../server/typing';
 import { saveProject, startCrawler } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
@@ -20,11 +20,11 @@ import { Codes } from '../code/Codes';
 const onStart = (
     history: History<any>,
     projectId: string,
-    remoteType: RemoteType,
+    storageType: StorageType,
 ) => async () => {
     try {
-        const timestamp = await startCrawler(remoteType, projectId);
-        history.push(getResultsRoute(remoteType, projectId, timestamp));
+        const timestamp = await startCrawler(storageType, projectId);
+        history.push(getResultsRoute(storageType, projectId, timestamp));
     } catch (error) {
         notification['error']({
             message: 'Something went wrong!',
@@ -34,11 +34,11 @@ const onStart = (
 }
 
 const onAutoPinChange = (
-    remoteType: RemoteType,
+    storageType: StorageType,
     { name, id, crawlerInput }: ProjectType,
     setProject: React.Dispatch<React.SetStateAction<ProjectType>>,
 ) => async ({ target: { checked } }: CheckboxChangeEvent) => {
-    const project = await saveProject(remoteType, { ...crawlerInput, autopin: checked }, name, id);
+    const project = await saveProject(storageType, { ...crawlerInput, autopin: checked }, name, id);
     setProject(project);
 }
 
@@ -56,11 +56,11 @@ const getCrawlerStatusIcon = (diffZoneCount: number, errorCount: number, status:
 }
 
 export const Project = ({
-    match: { params: { projectId, remoteType } },
+    match: { params: { projectId, storageType } },
     history,
-}: RouteComponentProps<{ projectId: string, remoteType: RemoteType }>) => {
-    const { project, setProject } = useProject(remoteType, projectId);
-    const { crawlers, loading } = useCrawlers(remoteType, projectId);
+}: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
+    const { project, setProject } = useProject(storageType, projectId);
+    const { crawlers, loading } = useCrawlers(storageType, projectId);
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>
@@ -81,7 +81,7 @@ export const Project = ({
                 <p>
                     <Checkbox
                         checked={project.crawlerInput.autopin}
-                        onChange={onAutoPinChange(remoteType, project, setProject)}
+                        onChange={onAutoPinChange(storageType, project, setProject)}
                     >
                         Automatically pin new page founds.
                     </Checkbox>
@@ -90,11 +90,11 @@ export const Project = ({
                     <Button
                         icon="caret-right"
                         size="small"
-                        onClick={onStart(history, projectId, remoteType)}
+                        onClick={onStart(history, projectId, storageType)}
                     >
                         Run
                     </Button> &nbsp;
-                    <Link to={getPinsRoute(remoteType, projectId)}>
+                    <Link to={getPinsRoute(storageType, projectId)}>
                         <Button
                             icon="pushpin"
                             size="small"
@@ -111,14 +111,14 @@ export const Project = ({
                     renderItem={({ timestamp, diffZoneCount, errorCount, status, inQueue }) => (
                         <List.Item
                             actions={[
-                                <Link to={getResultsRoute(remoteType, projectId, timestamp)}>
+                                <Link to={getResultsRoute(storageType, projectId, timestamp)}>
                                     Open
                                 </Link>,
                             ]}
                         >
                             <List.Item.Meta
                                 title={
-                                    <Link to={getResultsRoute(remoteType, projectId, timestamp)}>
+                                    <Link to={getResultsRoute(storageType, projectId, timestamp)}>
                                         {timestampToString(timestamp)}
                                     </Link>}
                                 description={<>
@@ -131,7 +131,7 @@ export const Project = ({
                 />
             </>}
             <br />
-            <Codes projectId={projectId} remoteType={remoteType} />
+            <Codes projectId={projectId} storageType={storageType} />
         </>
     );
 }

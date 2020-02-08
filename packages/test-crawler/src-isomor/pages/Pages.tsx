@@ -9,7 +9,7 @@ import {
     cardStyle,
     cardImgMargin,
 } from './pageStyle';
-import { PageData, RemoteType } from '../server/typing';
+import { PageData, StorageType } from '../server/typing';
 import { getPages } from '../server/service';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { Search } from '../search/Search';
@@ -21,15 +21,15 @@ import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 import { useAsync } from '../hook/useAsync';
 
 interface Props {
-    remoteType: RemoteType;
+    storageType: StorageType;
     projectId: string;
     timestamp: string;
     lastUpdate: number;
 }
 
-export const Pages = ({ projectId, timestamp, lastUpdate, remoteType }: Props) => {
+export const Pages = ({ projectId, timestamp, lastUpdate, storageType }: Props) => {
     const { result: pages, error, setResult: setPages } = useAsync<PageData[]>(
-        () => getPages(remoteType, projectId, timestamp),
+        () => getPages(storageType, projectId, timestamp),
         [lastUpdate],
     );
     if (error) {
@@ -50,7 +50,7 @@ export const Pages = ({ projectId, timestamp, lastUpdate, remoteType }: Props) =
                                 key={id}
                                 style={cardStyle}
                                 cover={png && <DiffImageWithZone
-                                    remoteType={remoteType}
+                                    storageType={storageType}
                                     projectId={projectId}
                                     folder={timestamp}
                                     id={id}
@@ -60,7 +60,7 @@ export const Pages = ({ projectId, timestamp, lastUpdate, remoteType }: Props) =
                                     setPages={setPages}
                                     marginLeft={cardImgMargin}
                                 />}
-                                actions={PagesActions({ remoteType, setPages, projectId, id, timestamp, png, url, pageError })}
+                                actions={PagesActions({ storageType, setPages, projectId, id, timestamp, png, url, pageError })}
                             >
                                 <Page url={url} pageError={pageError} png={png} />
                             </Card>

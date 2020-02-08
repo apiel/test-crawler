@@ -5,7 +5,7 @@ import { groupOverlappingZone } from 'pixdiff-zone';
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, RemoteType } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StorageType } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerProviderBase } from './CrawlerProviderBase';
 
@@ -16,102 +16,102 @@ export class CrawlerProvider extends CrawlerProviderBase {
         };
     }
 
-    loadProject(remoteType: RemoteType, projectId: string): Promise<Project> {
-        return this.readJSON(remoteType, this.join(projectId, `project.json`));
+    loadProject(storageType: StorageType, projectId: string): Promise<Project> {
+        return this.readJSON(storageType, this.join(projectId, `project.json`));
     }
 
-    async loadProjects(remoteType: RemoteType): Promise<Project[]> {
+    async loadProjects(storageType: StorageType): Promise<Project[]> {
         // we should use accumulator
-        const projects = await this.readdir(remoteType, PROJECT_FOLDER);
+        const projects = await this.readdir(storageType, PROJECT_FOLDER);
         return Promise.all(
-            projects.map(projectId => this.loadProject(remoteType, projectId)),
+            projects.map(projectId => this.loadProject(storageType, projectId)),
         );
     }
 
-    async saveProject(remoteType: RemoteType, crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
+    async saveProject(storageType: StorageType, crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
         if (!projectId) {
             projectId = md5(name);
         }
         const project = { id: projectId, name, crawlerInput };
-        await this.saveJSON(remoteType, 'project.json', project);
+        await this.saveJSON(storageType, 'project.json', project);
         return project;
     }
 
-    getCrawler(remoteType: RemoteType, projectId: string, timestamp: string): Promise<Crawler> {
+    getCrawler(storageType: StorageType, projectId: string, timestamp: string): Promise<Crawler> {
         const path = this.join(projectId, CRAWL_FOLDER, timestamp, '_.json');
-        return this.readJSON(remoteType, path);
+        return this.readJSON(storageType, path);
     }
 
-    async getAllCrawlers(remoteType: RemoteType, projectId: string): Promise<Crawler[]> {
+    async getAllCrawlers(storageType: StorageType, projectId: string): Promise<Crawler[]> {
         const path = this.join(projectId, CRAWL_FOLDER);
-        const folders = await this.readdir(remoteType, path);
+        const folders = await this.readdir(storageType, path);
         const crawlers: Crawler[] = await Promise.all(
-            folders.map(timestamp => this.getCrawler(remoteType, projectId, timestamp)),
+            folders.map(timestamp => this.getCrawler(storageType, projectId, timestamp)),
         );
         return crawlers;
     }
 
-    async copyToPins(remoteType: RemoteType, projectId: string, timestamp: string, id: string): Promise<PageData> {
+    async copyToPins(storageType: StorageType, projectId: string, timestamp: string, id: string): Promise<PageData> {
         const crawlerFolder = this.join(projectId, CRAWL_FOLDER, timestamp);
         const crawlerFolderPath = getFilePath(id, crawlerFolder);
 
         // set diff to 0
         // instead to load this file again, we could get the data from the frontend?
-        const data: PageData = await this.readJSON(remoteType, crawlerFolderPath('json'));
+        const data: PageData = await this.readJSON(storageType, crawlerFolderPath('json'));
         data.png.diff = {
             pixelDiffRatio: 0,
             zones: [],
         };
         if (data.png.diff.pixelDiffRatio > 0) {
-            await this.saveJSON(remoteType, crawlerFolderPath('json'), data);
+            await this.saveJSON(storageType, crawlerFolderPath('json'), data);
         }
 
         // copy files
         const pinFolderPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
-        await this.saveJSON(remoteType, pinFolderPath('json'), data);
-        await this.copy(remoteType, crawlerFolderPath('html'), pinFolderPath('html'));
-        await this.copy(remoteType, crawlerFolderPath('png'), pinFolderPath('png'));
+        await this.saveJSON(storageType, pinFolderPath('json'), data);
+        await this.copy(storageType, crawlerFolderPath('html'), pinFolderPath('html'));
+        await this.copy(storageType, crawlerFolderPath('png'), pinFolderPath('png'));
 
         return data;
     }
 
-    async removeFromPins(remoteType: RemoteType, projectId: string, id: string): Promise<PageData[]> {
+    async removeFromPins(storageType: StorageType, projectId: string, id: string): Promise<PageData[]> {
         const pinFolderPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
 
-        await this.remove(remoteType, pinFolderPath('png'));
-        await this.remove(remoteType, pinFolderPath('html'));
-        await this.remove(remoteType, pinFolderPath('json'));
+        await this.remove(storageType, pinFolderPath('png'));
+        await this.remove(storageType, pinFolderPath('html'));
+        await this.remove(storageType, pinFolderPath('json'));
 
-        return this.getPins(remoteType, projectId);
+        return this.getPins(storageType, projectId);
     }
 
-    image(remoteType: RemoteType, projectId: string, folder: string, id: string): Promise<Buffer> {
+    image(storageType: StorageType, projectId: string, folder: string, id: string): Promise<Buffer> {
         const target = folder === 'base'
             ? this.join(projectId, PIN_FOLDER)
             : this.join(projectId, CRAWL_FOLDER, folder);
-        return this.blob(remoteType, getFilePath(id, target)('png'));
+        return this.blob(storageType, getFilePath(id, target)('png'));
     }
 
-    async saveCode(remoteType: RemoteType, projectId: string, code: Code): Promise<void> {
+    async saveCode(storageType: StorageType, projectId: string, code: Code): Promise<void> {
         const { source, ...codeInfo } = code;
-        const list = await this.getCodeList(remoteType, projectId);
+        const list = await this.getCodeList(storageType, projectId);
         list[code.id] = codeInfo;
         await this.saveJSON(
-            remoteType,
+            storageType,
             this.join(projectId, CODE_FOLDER, `list.json`),
             { ...list }); // for some reason it need a copy
         await this.saveFile(
-            remoteType,
+            storageType,
             this.join(projectId, CODE_FOLDER, `${code.id}.js`),
             source);
     }
 
-    async loadCode(remoteType: RemoteType, projectId: string, id: string): Promise<Code> {
-        const list = await this.getCodeList(remoteType, projectId);
+    async loadCode(storageType: StorageType, projectId: string, id: string): Promise<Code> {
+        const list = await this.getCodeList(storageType, projectId);
         const codeInfo = list[id];
         const sourcePath = this.join(projectId, CODE_FOLDER, `${id}.js`);
         if (codeInfo) {
-            const buffer = await this.read(remoteType, sourcePath);
+            const buffer = await this.read(storageType, sourcePath);
             if (buffer) {
                 const source = buffer.toString();
                 return { ...codeInfo, source };
@@ -125,54 +125,54 @@ export class CrawlerProvider extends CrawlerProviderBase {
         };
     }
 
-    async getCodeList(remoteType: RemoteType, projectId: string, forceLocal = false): Promise<CodeInfoList> {
+    async getCodeList(storageType: StorageType, projectId: string, forceLocal = false): Promise<CodeInfoList> {
         const listPath = this.join(projectId, CODE_FOLDER, `list.json`);
-        const list = await this.readJSON(remoteType, listPath);
+        const list = await this.readJSON(storageType, listPath);
         return list || {};
     }
 
-    getPins(remoteType: RemoteType,projectId: string): Promise<PageData[]> {
-        return this.getPinsInFolder(remoteType, this.join(projectId, PIN_FOLDER));
+    getPins(storageType: StorageType,projectId: string): Promise<PageData[]> {
+        return this.getPinsInFolder(storageType, this.join(projectId, PIN_FOLDER));
     }
 
-    getPin(remoteType: RemoteType, projectId: string, id: string): Promise<PageData> {
-        return this.getPageInFolder(remoteType, this.join(projectId, PIN_FOLDER), id);
+    getPin(storageType: StorageType, projectId: string, id: string): Promise<PageData> {
+        return this.getPageInFolder(storageType, this.join(projectId, PIN_FOLDER), id);
     }
 
-    getPages(remoteType: RemoteType, projectId: string, timestamp: string): Promise<PageData[]> {
+    getPages(storageType: StorageType, projectId: string, timestamp: string): Promise<PageData[]> {
         return this.getPinsInFolder(
-            remoteType,
+            storageType,
             this.join(projectId, CRAWL_FOLDER, timestamp),
         );
     }
 
-    private getPageInFolder(remoteType: RemoteType, folder: string, id: string): Promise<PageData> {
-        return this.readJSON(remoteType, getFilePath(id, folder)('json'));
+    private getPageInFolder(storageType: StorageType, folder: string, id: string): Promise<PageData> {
+        return this.readJSON(storageType, getFilePath(id, folder)('json'));
     }
 
-    private async getPinsInFolder(remoteType: RemoteType, folder: string): Promise<PageData[]> {
-        const files = await this.readdir(remoteType, folder);
+    private async getPinsInFolder(storageType: StorageType, folder: string): Promise<PageData[]> {
+        const files = await this.readdir(storageType, folder);
         return Promise.all(
             files.filter(file => extname(file) === '.json' && file !== '_.json')
-                .map(file => this.readJSON(remoteType, join(folder, file))),
+                .map(file => this.readJSON(storageType, join(folder, file))),
         );
     }
 
-    async setCrawlerStatus(remoteType: RemoteType, projectId: string, timestamp: string, status: string): Promise<Crawler> {
+    async setCrawlerStatus(storageType: StorageType, projectId: string, timestamp: string, status: string): Promise<Crawler> {
         const file = this.join(projectId, CRAWL_FOLDER, timestamp, '_.json');
-        const crawler: Crawler = await this.readJSON(remoteType, file);
+        const crawler: Crawler = await this.readJSON(storageType, file);
         crawler.status = status;
-        await this.saveJSON(remoteType, file, crawler);
+        await this.saveJSON(storageType, file, crawler);
         return crawler;
     }
 
-    async setZoneStatus(remoteType: RemoteType, projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
+    async setZoneStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
-        const data: PageData = await this.readJSON(remoteType, filePath('json'));
+        const data: PageData = await this.readJSON(storageType, filePath('json'));
         if (status === 'pin') {
             const pinPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
-            const pin: PageData = await this.readJSON(remoteType, pinPath('json'));
+            const pin: PageData = await this.readJSON(storageType, pinPath('json'));
 
             pin.png.diff.zones.push({ ...data.png.diff.zones[index], status });
             const zones = pin.png.diff.zones.map(item => item.zone);
@@ -180,27 +180,27 @@ export class CrawlerProvider extends CrawlerProviderBase {
             const groupedZones = groupOverlappingZone(zones);
             pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
 
-            await this.saveJSON(remoteType, pinPath('json'), pin);
+            await this.saveJSON(storageType, pinPath('json'), pin);
         }
         data.png.diff.zones[index].status = status;
-        await this.saveJSON(remoteType, filePath('json'), data);
+        await this.saveJSON(storageType, filePath('json'), data);
         return data;
     }
 
-    async setZonesStatus(remoteType: RemoteType, projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
+    async setZonesStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
-        const page: PageData = await this.readJSON(remoteType, filePath('json'));
+        const page: PageData = await this.readJSON(storageType, filePath('json'));
         let newPage: PageData;
         for (let index = 0; index < page.png.diff.zones.length; index++) {
-            newPage = await this.setZoneStatus(remoteType, projectId, timestamp, id, index, status);
+            newPage = await this.setZoneStatus(storageType, projectId, timestamp, id, index, status);
         }
         return newPage;
     }
 
-    async startCrawler(remoteType: RemoteType, projectId: string, push?: (payload: any) => void): Promise<string> {
+    async startCrawler(storageType: StorageType, projectId: string, push?: (payload: any) => void): Promise<string> {
         const pagesFolder = Math.floor(Date.now() / 1000).toString();
-        this.crawl(remoteType, projectId, pagesFolder, 30, push);
+        this.crawl(storageType, projectId, pagesFolder, 30, push);
 
         return pagesFolder;
     }

@@ -6,10 +6,10 @@ import {
 } from '../pages/pageStyle';
 
 import { getThumbnail } from '../server/service';
-import { RemoteType } from '../server/typing';
+import { StorageType } from '../server/typing';
 
 export interface Props {
-    remoteType: RemoteType;
+    storageType: StorageType;
     projectId: string;
     folder: string;
     id: string;
@@ -19,7 +19,7 @@ export interface Props {
 };
 
 export const DiffImage = ({
-    remoteType,
+    storageType,
     projectId,
     folder,
     id,
@@ -29,7 +29,7 @@ export const DiffImage = ({
 }: Props & React.PropsWithChildren<any>) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(remoteType, projectId, folder, id, width));
+        setThumb(await getThumbnail(storageType, projectId, folder, id, width));
         onImg();
     }
     useEffect(() => { load(); }, []);

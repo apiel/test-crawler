@@ -9,53 +9,53 @@ exports.LOCAL = true;
 const gitHubRemote = new GitHubRemote_1.GitHubRemote();
 const localRemote = new LocalRemote_1.LocalRemote();
 class CrawlerProviderBase {
-    getRemote(remoteType) {
-        if (remoteType === typing_1.RemoteType.Local) {
+    getRemote(storageType) {
+        if (storageType === typing_1.StorageType.Local) {
             return localRemote;
         }
-        else if (remoteType === typing_1.RemoteType.GitHub) {
+        else if (storageType === typing_1.StorageType.GitHub) {
             return gitHubRemote;
         }
-        throw new Error(`Unknown remote type ${remoteType}.`);
+        throw new Error(`Unknown remote type ${storageType}.`);
     }
     join(projectId, ...path) {
         return path_1.join(config_1.PROJECT_FOLDER, projectId, ...path);
     }
-    readdir(remoteType, path) {
-        const remote = this.getRemote(remoteType);
+    readdir(storageType, path) {
+        const remote = this.getRemote(storageType);
         return remote.readdir(path);
     }
-    read(remoteType, path) {
-        const remote = this.getRemote(remoteType);
+    read(storageType, path) {
+        const remote = this.getRemote(storageType);
         return remote.read(path);
     }
-    blob(remoteType, path) {
-        const remote = this.getRemote(remoteType);
+    blob(storageType, path) {
+        const remote = this.getRemote(storageType);
         return remote.blob(path);
     }
-    readJSON(remoteType, path) {
-        const remote = this.getRemote(remoteType);
+    readJSON(storageType, path) {
+        const remote = this.getRemote(storageType);
         return remote.readJSON(path);
     }
-    saveFile(remoteType, file, content) {
-        const remote = this.getRemote(remoteType);
+    saveFile(storageType, file, content) {
+        const remote = this.getRemote(storageType);
         return remote.saveFile(file, content);
     }
-    saveJSON(remoteType, file, content) {
-        const remote = this.getRemote(remoteType);
+    saveJSON(storageType, file, content) {
+        const remote = this.getRemote(storageType);
         return remote.saveJSON(file, content);
     }
-    remove(remoteType, file) {
-        const remote = this.getRemote(remoteType);
+    remove(storageType, file) {
+        const remote = this.getRemote(storageType);
         return remote.remove(file);
     }
-    copy(remoteType, src, dst) {
-        const remote = this.getRemote(remoteType);
+    copy(storageType, src, dst) {
+        const remote = this.getRemote(storageType);
         return remote.copy(src, dst);
     }
-    crawl(remoteType, projectId, pagesFolder, consumeTimeout, push) {
+    crawl(storageType, projectId, pagesFolder, consumeTimeout, push) {
         const crawlTarget = { projectId, pagesFolder };
-        const remote = this.getRemote(remoteType);
+        const remote = this.getRemote(storageType);
         return remote.crawl(crawlTarget, consumeTimeout, push);
     }
 }

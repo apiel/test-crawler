@@ -4,7 +4,7 @@ import Typography from 'antd/lib/typography';
 import Form from 'antd/lib/form';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';
-import { Code as CodeType, RemoteType } from '../server/typing';
+import { Code as CodeType, StorageType } from '../server/typing';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
@@ -29,10 +29,10 @@ const setSource = (
     })
 }
 
-type Props = RouteComponentProps<{ id: string, projectId: string, remoteType: RemoteType }>;
+type Props = RouteComponentProps<{ id: string, projectId: string, storageType: StorageType }>;
 
-export const Code = ({ match: { params: { id, projectId, remoteType } }, location }: Props) => {
-    const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(remoteType, projectId, id));
+export const Code = ({ match: { params: { id, projectId, storageType } }, location }: Props) => {
+    const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(storageType, projectId, id));
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
@@ -46,14 +46,14 @@ export const Code = ({ match: { params: { id, projectId, remoteType } }, locatio
                 code ? (
                     <Form>
                         <CodeInfo />
-                        <ProjectName projectId={projectId} remoteType={remoteType} />
+                        <ProjectName projectId={projectId} storageType={storageType} />
                         <CodeForm
                             projectId={projectId}
                             id={id}
                             code={code}
                             setSource={setSource(code, setCode)}
                             location={location}
-                            remoteType={remoteType}
+                            storageType={storageType}
                         />
                         <AceEditor
                             mode="javascript"

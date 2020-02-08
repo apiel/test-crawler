@@ -7,14 +7,14 @@ import { Pages } from '../pages/Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { useAsync } from '../hook/useAsync';
-import { Crawler, RemoteType } from '../server/typing';
+import { Crawler, StorageType } from '../server/typing';
 import { getCrawler } from '../server/service';
 
 export const CrawlerResults = ({
-    match: { params: { timestamp, projectId, remoteType } },
-}: RouteComponentProps<{ timestamp: string, projectId: string, remoteType: RemoteType }>) => {
+    match: { params: { timestamp, projectId, storageType } },
+}: RouteComponentProps<{ timestamp: string, projectId: string, storageType: StorageType }>) => {
     const { result: crawler, error, setResult: setCrawler } = useAsync<Crawler>(
-        () => getCrawler(remoteType, projectId, timestamp)
+        () => getCrawler(storageType, projectId, timestamp)
     );
     React.useEffect(() => {
         const id = subscrib(setCrawler);
@@ -29,10 +29,10 @@ export const CrawlerResults = ({
             <CrawlerInfo
                 crawler={crawler}
                 projectId={projectId}
-                remoteType={remoteType}
+                storageType={storageType}
                 setCrawler={setCrawler}
             />
-            <Pages remoteType={remoteType} timestamp={timestamp} lastUpdate={lastUpdate!} projectId={projectId} />
+            <Pages storageType={storageType} timestamp={timestamp} lastUpdate={lastUpdate!} projectId={projectId} />
         </>
     ) : <Spin />;
 }

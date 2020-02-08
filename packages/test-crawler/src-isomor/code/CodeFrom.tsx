@@ -7,7 +7,7 @@ import message from 'antd/lib/message';
 import Dropdown from 'antd/lib/dropdown';
 import Typography from 'antd/lib/typography';
 import Form, { FormComponentProps } from 'antd/lib/form';
-import { Code, RemoteType } from '../server/typing';
+import { Code, StorageType } from '../server/typing';
 
 import { setCode } from '../server/service';
 import { codeSnippet } from './CodeSnippet';
@@ -27,7 +27,7 @@ const onPlay = () => {
 }
 
 const save = async (
-    remoteType: RemoteType,
+    storageType: StorageType,
     projectId: string,
     id: string,
     source: string,
@@ -35,7 +35,7 @@ const save = async (
 ) => {
     try {
         const hide = message.loading('Saving in progress..', 0);
-        await setCode(remoteType, projectId, {
+        await setCode(storageType, projectId, {
             id,
             source,
             ...info,
@@ -51,7 +51,7 @@ const save = async (
 }
 
 const handleSubmit = (
-    remoteType: RemoteType,
+    storageType: StorageType,
     projectId: string,
     id: string,
     source: string,
@@ -60,13 +60,13 @@ const handleSubmit = (
     event.preventDefault();
     validateFields((err: any, info: FormInput) => {
         if (!err) {
-            save(remoteType, projectId, id, source, info);
+            save(storageType, projectId, id, source, info);
         }
     });
 }
 
 type Props = FormComponentProps & {
-    remoteType: RemoteType;
+    storageType: StorageType;
     projectId: string;
     id: string;
     code: Code;
@@ -75,7 +75,7 @@ type Props = FormComponentProps & {
 };
 
 const CodeFormComponent = ({
-    remoteType,
+    storageType,
     projectId,
     setSource,
     id,
@@ -84,7 +84,7 @@ const CodeFormComponent = ({
     location: { state },
 }: Props) => {
     return (
-        <Form onSubmit={handleSubmit(remoteType, projectId, id, code.source, validateFields)}>
+        <Form onSubmit={handleSubmit(storageType, projectId, id, code.source, validateFields)}>
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('name', {
                     initialValue: code.name || '',

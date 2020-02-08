@@ -5,7 +5,7 @@ import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
-import { PageData, Crawler, RemoteType } from '../../typing';
+import { PageData, Crawler, StorageType } from '../../typing';
 import { FilePath } from '../utils';
 import { CrawlerProvider } from '../index';
 import { join } from 'path';
@@ -84,7 +84,7 @@ export async function prepare(projectId: string, id: string, distFolder: string,
         }
     } else if (crawler.autopin) {
         const crawlerProvider = new CrawlerProvider();
-        crawlerProvider.copyToPins(RemoteType.Local, projectId, crawler.timestamp, id);
+        crawlerProvider.copyToPins(StorageType.Local, projectId, crawler.timestamp, id);
         // we might want to put a flag to the page saying that it was automatically pin
     }
     return {

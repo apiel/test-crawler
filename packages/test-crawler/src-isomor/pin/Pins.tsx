@@ -7,7 +7,7 @@ import {
     masonryStyle,
     masonryOptions,
 } from '../pages/pageStyle';
-import { PageData, RemoteType } from '../server/typing';
+import { PageData, StorageType } from '../server/typing';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { PinPage } from './PinPage';
 import { Search } from '../search/Search';
@@ -20,10 +20,10 @@ import { getPins } from '../server/service';
 const { Title } = Typography;
 
 export const Pins = ({
-    match: { params: { projectId, remoteType } },
-}: RouteComponentProps<{ projectId: string, remoteType: RemoteType }>) => {
+    match: { params: { projectId, storageType } },
+}: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
     const { result, error, setResult: setPins } = useAsync<PageData[]>(
-        () => getPins(remoteType, projectId)
+        () => getPins(storageType, projectId)
     );
     if (error) {
         return <ErrorHandler description={error.toString()} />;
@@ -32,7 +32,7 @@ export const Pins = ({
     return (
         <>
             <Title level={3}>Pins</Title>
-            <ProjectName projectId={projectId} remoteType={remoteType} />
+            <ProjectName projectId={projectId} storageType={storageType} />
             <Search response={result}>
                 {(pins) => pins ? (
                     <Masonry
@@ -50,7 +50,7 @@ export const Pins = ({
                                 png={png}
                                 viewport={viewport}
                                 onImg={onMasonryImg}
-                                remoteType={remoteType}
+                                storageType={storageType}
                             />
                         ))}
                     </Masonry>

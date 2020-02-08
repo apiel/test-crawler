@@ -40,7 +40,7 @@ export interface CrawlerInput {
     autopin: boolean;
 }
 
-export enum RemoteType {
+export enum StorageType {
     Local = 'local',
     GitHub = 'github',
 }

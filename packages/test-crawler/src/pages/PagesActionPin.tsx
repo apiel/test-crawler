@@ -3,12 +3,13 @@ import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { pin } from '../server/service';
+import { StorageType } from '../server/typing';
 
 
-const onPin = ({ remoteType, projectId, timestamp, id }: Props) => async () => {
+const onPin = ({ storageType, projectId, timestamp, id }: Props) => async () => {
     try {
         const hide = message.loading('Pin in progress..', 0);
-        await pin(remoteType, projectId, timestamp.toString(), id);
+        await pin(storageType, projectId, timestamp.toString(), id);
         hide();
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {
@@ -23,7 +24,7 @@ interface Props {
     timestamp: string,
     id: string,
     projectId: string,
-    remoteType: string,
+    storageType: StorageType,
 }
 
 const PagesActionPin = (props: Props) =>

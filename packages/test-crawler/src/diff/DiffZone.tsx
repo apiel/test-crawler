@@ -3,7 +3,7 @@ import Popover from 'antd/lib/popover';
 
 import { DiffImageButtons } from './DiffImageButtons';
 import { getThumbnail } from '../server/service';
-import { Zone, PageData, RemoteType } from '../server/typing';
+import { Zone, PageData, StorageType } from '../server/typing';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {
@@ -41,7 +41,7 @@ const zoneStyle = (
 }
 
 interface Props {
-    remoteType: RemoteType;
+    storageType: StorageType;
     folder: string;
     id: string;
     zone: Zone;
@@ -54,10 +54,10 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
-export const DiffZone = ({ remoteType, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
+export const DiffZone = ({ storageType, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(remoteType, projectId, 'base', id, width));
+        setThumb(await getThumbnail(storageType, projectId, 'base', id, width));
     }
     useEffect(() => { load(); }, []);
     const [hover, setHover] = useState(false);
@@ -65,7 +65,7 @@ export const DiffZone = ({ remoteType, setPages, projectId, folder, id, index, o
     return (
         <Popover key={`${id}-${index}`} content={(
             <DiffImageButtons
-                remoteType={remoteType}
+                storageType={storageType}
                 index={index}
                 timestamp={folder}
                 id={id}

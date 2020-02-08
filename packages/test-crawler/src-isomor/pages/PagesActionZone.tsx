@@ -3,13 +3,13 @@ import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { setZonesStatus } from '../server/service';
-import { PageData } from '../server/typing';
+import { PageData, StorageType } from '../server/typing';
 
 const onClick = (
-    { timestamp, id, status, projectId, setPages, remoteType }: Props,
+    { timestamp, id, status, projectId, setPages, storageType }: Props,
 ) => async () => {
     try {
-        const pages = await setZonesStatus(remoteType, projectId, timestamp.toString(), id, status);
+        const pages = await setZonesStatus(storageType, projectId, timestamp.toString(), id, status);
         setPages(pages);
         message.success(`All zone are set to "${status}".`, 2);
     } catch (error) {
@@ -21,7 +21,7 @@ const onClick = (
 }
 
 interface Props {
-    remoteType: string;
+    storageType: StorageType;
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
     projectId: string;
     timestamp: string;

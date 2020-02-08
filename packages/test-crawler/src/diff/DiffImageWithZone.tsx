@@ -15,7 +15,7 @@ interface Props {
 };
 
 export const DiffImageWithZone = ({
-    remoteType,
+    storageType,
     projectId,
     folder,
     id,
@@ -26,10 +26,10 @@ export const DiffImageWithZone = ({
     marginLeft,
     ...props
 }: Props & DiffImageProps) =>
-    <DiffImage remoteType={remoteType} projectId={projectId} folder={folder} id={id} width={width} {...props}>
+    <DiffImage storageType={storageType} projectId={projectId} folder={folder} id={id} width={width} {...props}>
         {zones && zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
             <DiffZone
-                remoteType={remoteType}
+                storageType={storageType}
                 projectId={projectId}
                 folder={folder}
                 id={id}

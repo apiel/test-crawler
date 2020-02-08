@@ -9,27 +9,27 @@ import {
     iconTheme,
 } from '../pages/pageStyle';
 import { DiffImage } from '../diff/DiffImage';
-import { PngDiffData, Viewport, PageData, RemoteType } from '../server/typing';
+import { PngDiffData, Viewport, PageData, StorageType } from '../server/typing';
 import { Link } from 'react-router-dom';
 import { getCodeRoute } from '../routes';
 import { getViewportName } from '../viewport';
 import { removePin } from '../server/service';
 
 const handleDelete = (
-    remoteType: RemoteType,
+    storageType: StorageType,
     projectId: string,
     id: string,
     setPins: React.Dispatch<React.SetStateAction<PageData[]>>,
 ) => async () => {
     const hide = message.loading('Delete in progress..', 0);
-    const pins = await removePin(remoteType, projectId, id);
+    const pins = await removePin(storageType, projectId, id);
     setPins(pins);
     hide();
 }
 
 interface Props {
     projectId: string;
-    remoteType: RemoteType,
+    storageType: StorageType,
     id: string;
     url: string;
     setPins: React.Dispatch<React.SetStateAction<PageData[]>>;
@@ -41,21 +41,21 @@ interface Props {
     };
 }
 
-export const PinPage = ({ remoteType, projectId, id, url, viewport, onImg, png, setPins }: Props) => (
+export const PinPage = ({ storageType, projectId, id, url, viewport, onImg, png, setPins }: Props) => (
     <Card
         style={cardStyle}
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} />}
         actions={[
             <Popconfirm
                 title="Are you sure delete this pin?"
-                onConfirm={handleDelete(remoteType, projectId, id, setPins)}
+                onConfirm={handleDelete(storageType, projectId, id, setPins)}
                 okText="Yes"
                 cancelText="No"
             >
                 <Icon type="delete" title={`Delete pin`} />
             </Popconfirm>,
             (<Link to={{
-                pathname: getCodeRoute(remoteType, projectId, id),
+                pathname: getCodeRoute(storageType, projectId, id),
                 state: { pattern: url }
             }}>
                 <Icon type="code" title={`Insert code while crawling`} />

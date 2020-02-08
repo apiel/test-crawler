@@ -21,7 +21,7 @@ import {
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler, CrawlerInput, CrawlTarget, RemoteType } from '../../typing';
+import { Crawler, CrawlerInput, CrawlTarget, StorageType } from '../../typing';
 import { isArray, promisify } from 'util';
 import { CrawlerProvider } from '../CrawlerProvider';
 import rimraf = require('rimraf');
@@ -138,7 +138,7 @@ async function injectCodes(
     crawler: Crawler,
 ) {
     const crawlerProvider = new CrawlerProvider();
-    const list = await crawlerProvider.getCodeList(RemoteType.Local, projectId, true);
+    const list = await crawlerProvider.getCodeList(StorageType.Local, projectId, true);
     // console.log('injectCodes list', list);
     // console.log('Object.values', Object.values(list));
     const toInject = Object.values(list).filter(({ pattern }) => {
@@ -300,7 +300,7 @@ async function cleanHistory() {
 
 async function startCrawler({ projectId, pagesFolder }: CrawlTarget) {
     const crawlerProvider = new CrawlerProvider();
-    const { crawlerInput } = await crawlerProvider.loadProject(RemoteType.Local, projectId);
+    const { crawlerInput } = await crawlerProvider.loadProject(StorageType.Local, projectId);
 
     const id = md5(`${pagesFolder}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
 

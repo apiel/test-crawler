@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from 'antd/lib/typography';
 import Progress from 'antd/lib/progress';
 import Icon from 'antd/lib/icon';
-import { Crawler, RemoteType } from '../server/typing';
+import { Crawler, StorageType } from '../server/typing';
 import { duration } from 'moment';
 import 'moment-duration-format';
 
@@ -26,7 +26,7 @@ interface Props {
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>;
     crawler: Crawler;
     projectId: string;
-    remoteType: RemoteType;
+    storageType: StorageType;
 }
 
 // need to flatten props and use react memo
@@ -45,7 +45,7 @@ export const CrawlerInfo = ({
         viewport,
     },
     projectId,
-    remoteType,
+    storageType,
     setCrawler,
 }: Props) => {
     const total = urlsCount + inQueue;
@@ -55,8 +55,8 @@ export const CrawlerInfo = ({
         <>
             <Title level={3}>{timestampToString(timestamp)}</Title>
             {(diffZoneCount > 0 || errorCount > 0)
-                && <p><SwitchStatus remoteType={remoteType} setCrawler={setCrawler} projectId={projectId} status={status} timestamp={timestamp} /></p>}
-            <ProjectName projectId={projectId} remoteType={remoteType} />
+                && <p><SwitchStatus storageType={storageType} setCrawler={setCrawler} projectId={projectId} status={status} timestamp={timestamp} /></p>}
+            <ProjectName projectId={projectId} storageType={storageType} />
             <p><b>URL:</b> {url}</p>
             <p><b>Screen:</b> {screen}</p>
             <p>

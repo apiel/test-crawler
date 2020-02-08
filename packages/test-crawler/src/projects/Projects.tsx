@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
-import { RemoteType } from '../server/typing';
+import { StorageType } from '../server/typing';
 import { getNewProjectRoute } from '../routes';
 import { ProjectsPerRemote } from './ProjectsPerRemote';
 
@@ -10,11 +10,11 @@ export const Projects = () => {
     return (
         <>
             <Typography.Title level={3}>Projects</Typography.Title>
-            {Object.keys(RemoteType).map((key) => (
+            {Object.keys(StorageType).map((key) => (
                 <div key={key}>
                     <ProjectsPerRemote
                         title={key}
-                        remoteType={RemoteType[key as keyof typeof RemoteType]}
+                        storageType={StorageType[key as keyof typeof StorageType]}
                     />
                     <br />
                 </div>

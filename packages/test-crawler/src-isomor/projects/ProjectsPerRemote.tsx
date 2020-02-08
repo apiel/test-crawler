@@ -3,18 +3,18 @@ import List from 'antd/lib/list';
 import Icon from 'antd/lib/icon';
 import { Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
-import { RemoteType } from '../server/typing';
+import { StorageType } from '../server/typing';
 import { getProjectRoute } from '../routes';
 import { useProjects } from './useProjects';
 import Spin from 'antd/lib/spin';
 
 interface Props {
     title: string;
-    remoteType: RemoteType;
+    storageType: StorageType;
 }
 
-export const ProjectsPerRemote = ({ title, remoteType }: Props) => {
-    const { projects } = useProjects(remoteType);
+export const ProjectsPerRemote = ({ title, storageType }: Props) => {
+    const { projects } = useProjects(storageType);
     return (
         <>
             <Typography.Title level={4}>{title}</Typography.Title>
@@ -25,14 +25,14 @@ export const ProjectsPerRemote = ({ title, remoteType }: Props) => {
                 renderItem={({ id, name, crawlerInput: { url } }) => (
                     <List.Item
                         actions={[
-                            <Link to={getProjectRoute(remoteType, id)}>
+                            <Link to={getProjectRoute(storageType, id)}>
                                 Open
                                     </Link>,
                         ]}
                     >
                         <List.Item.Meta
-                            title={<Link to={getProjectRoute(remoteType, id)}>
-                                {name} <Icon type={remoteType} />
+                            title={<Link to={getProjectRoute(storageType, id)}>
+                                {name} <Icon type={storageType} />
                             </Link>}
                             description={url}
                         />
