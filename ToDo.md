@@ -10,6 +10,13 @@
     - or group all the diff result in a seprate file
     -> so we can update only this, then we could eventually use CI to populate those changes in each files
 
+make test crawler purely client side for github
+https://developer.github.com/v3/#authentication
+https://developer.github.com/v3/guides/basics-of-authentication/
+
+we might use token for simple solution but it would have some security issue since token would be stored in browser
+the second auth options would be to create create an app, more complicated to setup for the user but more safe.
+
 
 
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)
