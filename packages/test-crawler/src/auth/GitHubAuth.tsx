@@ -21,7 +21,7 @@ const handleSubmit = (validateFields: any) => (event: React.FormEvent<any>) => {
 const GitHubAuthForm = ({ form: { getFieldDecorator, validateFields }}: FormComponentProps) => {
     return (
         <>
-            <Typography.Title level={3}>GitHub</Typography.Title>
+            <Typography.Title level={4}>GitHub</Typography.Title>
             <Info>
                 <Typography.Paragraph>
                     In order to use <a href="https://developer.github.com/v3/" target="_blank" rel="noopener noreferrer">GitHub API</a>, you need to provide some information.

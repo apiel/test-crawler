@@ -15,12 +15,16 @@ interface Props {
 }
 
 export const ProjectsPerRemote = ({ title, storageType }: Props) => {
-    const { projects, error } = useProjects(storageType);
-    useError(error);
+    const { projects, loading, error } = useProjects(storageType);
+    const ErrorComponent = useError(error);
+    console.log('ErrorComponent', ErrorComponent);
+    if (ErrorComponent) {
+        return <ErrorComponent />;
+    }
     return (
         <>
             <Typography.Title level={4}>{title}</Typography.Title>
-            {!projects ? <Spin /> : <List
+            {loading ? <Spin /> : <List
                 itemLayout="horizontal"
                 bordered
                 dataSource={projects}
