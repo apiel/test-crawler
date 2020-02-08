@@ -13,7 +13,6 @@ import {
     Project,
     Code,
     CodeInfoList,
-    Projects,
     RemoteType,
 } from './typing';
 
@@ -28,8 +27,8 @@ export function loadProject(remoteType: RemoteType, projectId: string): Promise<
     return crawlerProvider.loadProject(remoteType, projectId);
 }
 
-export function loadProjects(): Promise<Projects> {
-    return crawlerProvider.loadProjects();
+export function loadProjects(remoteType: RemoteType): Promise<Project[]> {
+    return crawlerProvider.loadProjects(remoteType);
 }
 
 export function saveProject(remoteType: RemoteType, crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {

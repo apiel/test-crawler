@@ -25,7 +25,6 @@ const md5 = require("md5");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
-const typing_1 = require("../typing");
 const crawl_1 = require("./crawl");
 const CrawlerProviderBase_1 = require("./CrawlerProviderBase");
 class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
@@ -37,14 +36,10 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
     loadProject(remoteType, projectId) {
         return this.readJSON(remoteType, this.join(projectId, `project.json`));
     }
-    loadProjects() {
+    loadProjects(remoteType) {
         return __awaiter(this, void 0, void 0, function* () {
-            const localProjects = yield this.readdir(typing_1.RemoteType.Local, config_1.PROJECT_FOLDER);
-            const githubProjects = yield this.readdir(typing_1.RemoteType.GitHub, config_1.PROJECT_FOLDER);
-            return {
-                [typing_1.RemoteType.Local]: yield Promise.all(localProjects.map(projectId => this.loadProject(typing_1.RemoteType.Local, projectId))),
-                [typing_1.RemoteType.GitHub]: yield Promise.all(githubProjects.map(projectId => this.loadProject(typing_1.RemoteType.GitHub, projectId))),
-            };
+            const projects = yield this.readdir(remoteType, config_1.PROJECT_FOLDER);
+            return Promise.all(projects.map(projectId => this.loadProject(remoteType, projectId)));
         });
     }
     saveProject(remoteType, crawlerInput, name, projectId) {

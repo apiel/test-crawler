@@ -40,22 +40,6 @@ export interface CrawlerInput {
     autopin: boolean;
 }
 
-// // to remove?
-// export enum RemoteType {
-//     GitHub,
-// }
-
-// to remove?
-export interface RemoteGitHub {
-    type: RemoteType.GitHub;
-    user: string;
-    repo: string;
-    token: string;
-    // gitBranch
-    // gitFolder
-}
-
-
 export enum RemoteType {
     Local = 'local',
     GitHub = 'github',
@@ -65,10 +49,7 @@ export interface Project {
     id: string;
     name: string;
     crawlerInput: CrawlerInput;
-    remote?: RemoteGitHub; // to remove?
 }
-
-export type Projects = {[key in RemoteType]?: Project[]};
 
 export interface Crawler extends CrawlerInput {
     id: string;

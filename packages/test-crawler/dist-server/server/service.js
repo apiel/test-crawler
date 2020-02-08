@@ -21,8 +21,8 @@ function loadProject(remoteType, projectId) {
     return crawlerProvider.loadProject(remoteType, projectId);
 }
 exports.loadProject = loadProject;
-function loadProjects() {
-    return crawlerProvider.loadProjects();
+function loadProjects(remoteType) {
+    return crawlerProvider.loadProjects(remoteType);
 }
 exports.loadProjects = loadProjects;
 function saveProject(remoteType, crawlerInput, name, projectId) {

@@ -5,7 +5,7 @@ import { groupOverlappingZone } from 'pixdiff-zone';
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, Projects, RemoteType } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, RemoteType } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerProviderBase } from './CrawlerProviderBase';
 
@@ -20,18 +20,12 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return this.readJSON(remoteType, this.join(projectId, `project.json`));
     }
 
-    async loadProjects(): Promise<Projects> {
+    async loadProjects(remoteType: RemoteType): Promise<Project[]> {
         // we should use accumulator
-        const localProjects = await this.readdir(RemoteType.Local, PROJECT_FOLDER);
-        const githubProjects = await this.readdir(RemoteType.GitHub, PROJECT_FOLDER);
-        return {
-            [RemoteType.Local]: await Promise.all(
-                localProjects.map(projectId => this.loadProject(RemoteType.Local, projectId)),
-            ),
-            [RemoteType.GitHub]: await Promise.all(
-                githubProjects.map(projectId => this.loadProject(RemoteType.GitHub, projectId)),
-            ),
-        }
+        const projects = await this.readdir(remoteType, PROJECT_FOLDER);
+        return Promise.all(
+            projects.map(projectId => this.loadProject(remoteType, projectId)),
+        );
     }
 
     async saveProject(remoteType: RemoteType, crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
