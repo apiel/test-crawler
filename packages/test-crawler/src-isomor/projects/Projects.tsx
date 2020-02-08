@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
-import { StorageType } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 import { getNewProjectRoute } from '../routes';
 import { ProjectsPerRemote } from './ProjectsPerRemote';
 

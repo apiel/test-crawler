@@ -7,8 +7,9 @@ import { Pages } from '../pages/Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { useAsync } from '../hook/useAsync';
-import { Crawler, StorageType } from '../server/typing';
+import { Crawler } from '../server/typing';
 import { getCrawler } from '../server/service';
+import { StorageType } from '../server/storage.typing';
 
 export const CrawlerResults = ({
     match: { params: { timestamp, projectId, storageType } },

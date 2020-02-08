@@ -4,7 +4,7 @@ import Typography from 'antd/lib/typography';
 import Form from 'antd/lib/form';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';
-import { Code as CodeType, StorageType } from '../server/typing';
+import { Code as CodeType } from '../server/typing';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
@@ -16,6 +16,7 @@ import { CodeForm } from './CodeFrom';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { ProjectName } from '../projects/ProjectName';
 import { useAsync } from '../hook/useAsync';
+import { StorageType } from '../server/storage.typing';
 
 const { Title } = Typography;
 

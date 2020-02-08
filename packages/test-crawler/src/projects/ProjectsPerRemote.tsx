@@ -3,7 +3,7 @@ import List from 'antd/lib/list';
 import Icon from 'antd/lib/icon';
 import { Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
-import { StorageType } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 import { getProjectRoute } from '../routes';
 import { useProjects } from './useProjects';
 import Spin from 'antd/lib/spin';

@@ -7,7 +7,7 @@ import {
     masonryStyle,
     masonryOptions,
 } from '../pages/pageStyle';
-import { PageData, StorageType } from '../server/typing';
+import { PageData } from '../server/typing';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { PinPage } from './PinPage';
 import { Search } from '../search/Search';
@@ -16,6 +16,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { ProjectName } from '../projects/ProjectName';
 import { useAsync } from '../hook/useAsync';
 import { getPins } from '../server/service';
+import { StorageType } from '../server/storage.typing';
 
 const { Title } = Typography;
 

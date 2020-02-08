@@ -4,7 +4,8 @@ import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 
 import { setZoneStatus } from '../server/service';
-import { PageData, StorageType } from '../server/typing';
+import { PageData } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 const buttonStyle = {
     marginLeft: 5,

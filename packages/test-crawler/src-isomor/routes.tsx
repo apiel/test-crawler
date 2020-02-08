@@ -1,4 +1,4 @@
-import { StorageType } from './server/typing';
+import { StorageType } from './server/storage.typing';
 
 export const getHomeRoute = () => '/';
 export const getNewProjectRoute = () => '/new';

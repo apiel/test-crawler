@@ -5,9 +5,10 @@ import { groupOverlappingZone } from 'pixdiff-zone';
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StorageType } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerProviderBase } from './CrawlerProviderBase';
+import { StorageType } from '../storage.typing';
 
 export class CrawlerProvider extends CrawlerProviderBase {
     getSettings() {

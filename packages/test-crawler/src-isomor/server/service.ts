@@ -13,8 +13,8 @@ import {
     Project,
     Code,
     CodeInfoList,
-    StorageType,
 } from './typing';
+import { StorageType } from './storage.typing';
 
 const crawlerProvider = new CrawlerProvider();
 

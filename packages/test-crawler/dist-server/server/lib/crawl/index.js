@@ -18,12 +18,12 @@ const config_1 = require("../config");
 const utils_1 = require("../utils");
 const index_1 = require("../index");
 const diff_1 = require("../diff");
-const typing_1 = require("../../typing");
 const util_1 = require("util");
 const CrawlerProvider_1 = require("../CrawlerProvider");
 const rimraf = require("rimraf");
 const axios_1 = require("axios");
 const md5 = require("md5");
+const storage_typing_1 = require("../../storage.typing");
 let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
@@ -103,7 +103,7 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
 function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new CrawlerProvider_1.CrawlerProvider();
-        const list = yield crawlerProvider.getCodeList(typing_1.StorageType.Local, projectId, true);
+        const list = yield crawlerProvider.getCodeList(storage_typing_1.StorageType.Local, projectId, true);
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });
@@ -259,7 +259,7 @@ function cleanHistory() {
 function startCrawler({ projectId, pagesFolder }) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new CrawlerProvider_1.CrawlerProvider();
-        const { crawlerInput } = yield crawlerProvider.loadProject(typing_1.StorageType.Local, projectId);
+        const { crawlerInput } = yield crawlerProvider.loadProject(storage_typing_1.StorageType.Local, projectId);
         const id = md5(`${pagesFolder}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
         const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp: pagesFolder, id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
         const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, pagesFolder);

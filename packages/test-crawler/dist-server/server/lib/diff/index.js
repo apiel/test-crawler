@@ -15,9 +15,9 @@ const config_1 = require("../config");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");
-const typing_1 = require("../../typing");
 const index_1 = require("../index");
 const path_1 = require("path");
+const storage_typing_1 = require("../../storage.typing");
 function parsePng(data, filePath, basePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = filePath('png');
@@ -82,7 +82,7 @@ function prepare(projectId, id, distFolder, crawler) {
         }
         else if (crawler.autopin) {
             const crawlerProvider = new index_1.CrawlerProvider();
-            crawlerProvider.copyToPins(typing_1.StorageType.Local, projectId, crawler.timestamp, id);
+            crawlerProvider.copyToPins(storage_typing_1.StorageType.Local, projectId, crawler.timestamp, id);
         }
         return {
             diffZoneCount,

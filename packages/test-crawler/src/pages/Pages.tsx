@@ -9,7 +9,7 @@ import {
     cardStyle,
     cardImgMargin,
 } from './pageStyle';
-import { PageData, StorageType } from '../server/typing';
+import { PageData } from '../server/typing';
 import { getPages } from '../server/service';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { Search } from '../search/Search';
@@ -19,6 +19,7 @@ import { availableFilters } from '../search/search';
 import { setMasonry, onMasonryImg } from '../common/refreshMasonry';
 import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 import { useAsync } from '../hook/useAsync';
+import { StorageType } from '../server/storage.typing';
 
 interface Props {
     storageType: StorageType;

@@ -21,12 +21,13 @@ import {
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler, CrawlerInput, CrawlTarget, StorageType } from '../../typing';
+import { Crawler, CrawlerInput, CrawlTarget } from '../../typing';
 import { isArray, promisify } from 'util';
 import { CrawlerProvider } from '../CrawlerProvider';
 import rimraf = require('rimraf');
 import Axios from 'axios';
 import md5 = require('md5');
+import { StorageType } from '../../storage.typing';
 
 interface ResultQueue {
     result?: {

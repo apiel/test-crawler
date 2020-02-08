@@ -3,7 +3,8 @@ import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { setZonesStatus } from '../server/service';
-import { PageData, StorageType } from '../server/typing';
+import { PageData } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 const onClick = (
     { timestamp, id, status, projectId, setPages, storageType }: Props,

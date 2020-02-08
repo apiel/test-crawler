@@ -4,7 +4,7 @@ import Breadcrumb from 'antd/lib/breadcrumb';
 import { getHomeRoute, getProjectRoute, getResultsRoute } from '../routes';
 import { useProject } from '../projects/useProject';
 import { timestampToString } from '../utils';
-import { StorageType } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 export const CrawlerResultsBreadcrumb = ({
     match: { params: { projectId, timestamp, storageType } },

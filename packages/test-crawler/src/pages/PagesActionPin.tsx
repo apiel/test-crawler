@@ -3,7 +3,7 @@ import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { pin } from '../server/service';
-import { StorageType } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 
 const onPin = ({ storageType, projectId, timestamp, id }: Props) => async () => {

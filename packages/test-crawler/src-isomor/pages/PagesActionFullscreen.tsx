@@ -1,9 +1,10 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
 import Modal from 'antd/lib/modal';
-import { PngDiffData, PageData, StorageType } from '../server/typing';
+import { PngDiffData, PageData } from '../server/typing';
 import { Page } from './Page';
 import { DiffImageWithZone } from '../diff/DiffImageWithZone';
+import { StorageType } from '../server/storage.typing';
 
 const onClick = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => () => {
     setVisible(true);

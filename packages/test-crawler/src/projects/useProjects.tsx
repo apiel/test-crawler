@@ -1,7 +1,8 @@
 import notification from 'antd/lib/notification';
-import { Project, StorageType } from '../server/typing';
+import { Project } from '../server/typing';
 import { loadProjects } from '../server/service';
 import { useAsync } from '../hook/useAsync';
+import { StorageType } from '../server/storage.typing';
 
 export const useProjects = (storageType: StorageType) => {
     const { result: projects, error, loading } =

@@ -9,11 +9,12 @@ import {
     iconTheme,
 } from '../pages/pageStyle';
 import { DiffImage } from '../diff/DiffImage';
-import { PngDiffData, Viewport, PageData, StorageType } from '../server/typing';
+import { PngDiffData, Viewport, PageData } from '../server/typing';
 import { Link } from 'react-router-dom';
 import { getCodeRoute } from '../routes';
 import { getViewportName } from '../viewport';
 import { removePin } from '../server/service';
+import { StorageType } from '../server/storage.typing';
 
 const handleDelete = (
     storageType: StorageType,

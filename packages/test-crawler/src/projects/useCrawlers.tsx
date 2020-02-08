@@ -1,7 +1,8 @@
 import notification from 'antd/lib/notification';
 import { getCrawlers } from '../server/service';
 import { useAsync } from '../hook/useAsync';
-import { Crawler, StorageType } from '../server/typing';
+import { Crawler } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 export const useCrawlers = (storageType: StorageType, projectId: string) => {
     const { result: crawlers, setResult: setCrawlers, error, loading } = useAsync<Crawler[]>(async () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from 'antd/lib/typography';
 import Progress from 'antd/lib/progress';
 import Icon from 'antd/lib/icon';
-import { Crawler, StorageType } from '../server/typing';
+import { Crawler } from '../server/typing';
 import { duration } from 'moment';
 import 'moment-duration-format';
 
@@ -10,6 +10,7 @@ import { timestampToString } from '../utils';
 import { SwitchStatus } from './SwitchStatus';
 import { getViewportName } from '../viewport';
 import { ProjectName } from '../projects/ProjectName';
+import { StorageType } from '../server/storage.typing';
 
 const { Title } = Typography;
 

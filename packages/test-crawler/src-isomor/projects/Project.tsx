@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
-import { Project as ProjectType, StorageType } from '../server/typing';
+import { Project as ProjectType } from '../server/typing';
 import { saveProject, startCrawler } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
@@ -16,6 +16,7 @@ import { useCrawlers } from './useCrawlers';
 import List from 'antd/lib/list';
 import { timestampToString } from '../utils';
 import { Codes } from '../code/Codes';
+import { StorageType } from '../server/storage.typing';
 
 const onStart = (
     history: History<any>,

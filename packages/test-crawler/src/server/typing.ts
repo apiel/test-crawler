@@ -34,10 +34,6 @@ export interface CrawlerInput {
   limit?: number;
   autopin: boolean;
 }
-export enum StorageType {
-  Local = 'local',
-  GitHub = 'github',
-}
 export interface Project {
   id: string;
   name: string;

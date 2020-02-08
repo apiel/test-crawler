@@ -1,9 +1,10 @@
 import React from 'react';
-import { PngDiffData, PageData, StorageType } from '../server/typing';
+import { PngDiffData, PageData } from '../server/typing';
 
 import { PagesActionZone } from './PagesActionZone';
 import PagesActionPin from './PagesActionPin';
 import { PagesActionFullscreen } from './PagesActionFullscreen';
+import { StorageType } from '../server/storage.typing';
 
 interface Props {
     storageType: StorageType;

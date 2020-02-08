@@ -5,10 +5,11 @@ import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
-import { PageData, Crawler, StorageType } from '../../typing';
+import { PageData, Crawler } from '../../typing';
 import { FilePath } from '../utils';
 import { CrawlerProvider } from '../index';
 import { join } from 'path';
+import { StorageType } from '../../storage.typing';
 
 async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
     const file = filePath('png');

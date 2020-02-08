@@ -6,7 +6,7 @@ import {
 } from '../pages/pageStyle';
 
 import { getThumbnail } from '../server/service';
-import { StorageType } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 export interface Props {
     storageType: StorageType;

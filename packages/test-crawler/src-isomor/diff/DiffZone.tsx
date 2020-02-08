@@ -3,7 +3,8 @@ import Popover from 'antd/lib/popover';
 
 import { DiffImageButtons } from './DiffImageButtons';
 import { getThumbnail } from '../server/service';
-import { Zone, PageData, StorageType } from '../server/typing';
+import { Zone, PageData } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {

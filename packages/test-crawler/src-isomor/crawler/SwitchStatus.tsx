@@ -3,7 +3,8 @@ import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { setStatus } from '../server/service';
-import { Crawler, StorageType } from '../server/typing';
+import { Crawler } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 const onChange = (
     storageType: StorageType,

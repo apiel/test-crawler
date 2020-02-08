@@ -7,13 +7,14 @@ import message from 'antd/lib/message';
 import Dropdown from 'antd/lib/dropdown';
 import Typography from 'antd/lib/typography';
 import Form, { FormComponentProps } from 'antd/lib/form';
-import { Code, StorageType } from '../server/typing';
+import { Code } from '../server/typing';
 
 import { setCode } from '../server/service';
 import { codeSnippet } from './CodeSnippet';
 import { buttonBarStyle, buttonStyle, inputStyle } from './codeStyle';
 import { Info } from '../common/Info';
 import { Location } from 'history';
+import { StorageType } from '../server/storage.typing';
 
 const { Paragraph } = Typography;
 

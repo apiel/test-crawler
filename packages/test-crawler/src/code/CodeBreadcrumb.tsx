@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import Breadcrumb from 'antd/lib/breadcrumb';
 import { getHomeRoute, getProjectRoute, getCodeRoute } from '../routes';
 import { useProject } from '../projects/useProject';
-import { StorageType } from '../server/typing';
+import { StorageType } from '../server/storage.typing';
 
 export const CodeBreadcrumb = ({
     match: { params: { projectId, id, storageType } },
