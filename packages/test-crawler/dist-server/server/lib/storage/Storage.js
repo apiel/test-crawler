@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Remote {
+class Storage {
 }
-exports.Remote = Remote;
+exports.Storage = Storage;

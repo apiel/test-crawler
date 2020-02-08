@@ -27,6 +27,50 @@ const storage_typing_1 = require("../../storage.typing");
 let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
+function getFolders(projectId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const projectFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
+        yield fs_extra_1.mkdirp(projectFolder);
+        const folders = yield fs_extra_1.readdir(projectFolder);
+        folders.sort();
+        return folders;
+    });
+}
+exports.getFolders = getFolders;
+function addToQueue(url, viewport, distFolder, limit = 0) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log('addToQueue', url, viewport, distFolder);
+        const id = md5(`${url}-${JSON.stringify(viewport)}`);
+        const histFile = utils_1.getFilePath(id, distFolder)('json');
+        const queueFile = utils_1.getFilePath(id, getQueueFolder(distFolder))('json');
+        if (!(yield fs_extra_1.pathExists(queueFile)) && !(yield fs_extra_1.pathExists(histFile))) {
+            if (!limit || (yield updateSiblingCount(url, distFolder)) < limit) {
+                yield fs_extra_1.outputJson(queueFile, { url, id }, { spaces: 4 });
+            }
+            return true;
+        }
+        return false;
+    });
+}
+exports.addToQueue = addToQueue;
+function updateSiblingCount(url, distFolder) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const urlPaths = url.split('/').filter(s => s);
+        urlPaths.pop();
+        const id = md5(urlPaths.join('/'));
+        const file = path_1.join(distFolder, 'sibling', id);
+        let count = 0;
+        if (yield fs_extra_1.pathExists(file)) {
+            count = parseInt((yield fs_extra_1.readFile(file)).toString(), 10) + 1;
+        }
+        yield fs_extra_1.outputFile(file, count);
+        return count;
+    });
+}
+function getQueueFolder(distFolder) {
+    return path_1.join(distFolder, 'queue');
+}
+exports.getQueueFolder = getQueueFolder;
 function getLinks(page, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         const { url: baseUrl, method } = crawler;
@@ -129,7 +173,7 @@ function addUrls(urls, viewport, distFolder, limit) {
     return __awaiter(this, void 0, void 0, function* () {
         let count = 0;
         for (const url of urls) {
-            if (yield utils_1.addToQueue(url, viewport, distFolder, limit)) {
+            if (yield addToQueue(url, viewport, distFolder, limit)) {
                 count++;
             }
         }
@@ -142,7 +186,7 @@ function addUrls(urls, viewport, distFolder, limit) {
 function pickFromQueue(projectId, pagesFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, pagesFolder);
-        const queueFolder = utils_1.getQueueFolder(distFolder);
+        const queueFolder = getQueueFolder(distFolder);
         if (yield fs_extra_1.pathExists(queueFolder)) {
             const [file] = yield fs_extra_1.readdir(queueFolder);
             if (file) {
@@ -218,7 +262,7 @@ function consumeResults(consumeTimeout, push) {
             if (isError) {
                 crawler.errorCount++;
             }
-            const queueFolder = utils_1.getQueueFolder(folder);
+            const queueFolder = getQueueFolder(folder);
             const filesInQueue = (yield fs_extra_1.pathExists(queueFolder)) ? yield fs_extra_1.readdir(queueFolder) : [];
             crawler.inQueue = filesInQueue.length;
             crawler.urlsCount = (yield fs_extra_1.readdir(folder)).filter(f => path_1.extname(f) === '.json' && f !== '_.json').length;
@@ -276,12 +320,12 @@ function startUrlsCrawling(crawlerInput, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data } = yield axios_1.default.get(crawlerInput.url);
         const urls = data.split(`\n`).filter((url) => url.trim());
-        yield Promise.all(urls.map((url) => utils_1.addToQueue(url, crawlerInput.viewport, distFolder)));
+        yield Promise.all(urls.map((url) => addToQueue(url, crawlerInput.viewport, distFolder)));
     });
 }
 function startSpiderBotCrawling({ url, viewport, limit }, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
-        const addedToqueue = yield utils_1.addToQueue(url, viewport, distFolder, limit);
+        const addedToqueue = yield addToQueue(url, viewport, distFolder, limit);
         if (!addedToqueue) {
             throw (new Error('Something went wrong while adding job to queue'));
         }

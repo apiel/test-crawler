@@ -1,6 +1,6 @@
 import { launch, Page, Viewport } from 'puppeteer';
 import { error, info, warn } from 'logol';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson, outputJSON } from 'fs-extra';
+import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson, outputJSON, readFile, outputFile } from 'fs-extra';
 import { join, extname } from 'path';
 import * as minimatch from 'minimatch';
 
@@ -16,8 +16,6 @@ import {
 } from '../config';
 import {
     getFilePath,
-    addToQueue,
-    getQueueFolder,
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
@@ -40,6 +38,48 @@ interface ResultQueue {
 let totalDiff = 0;
 let consumerRunning = 0;
 const resultsQueue: ResultQueue[] = [];
+
+
+export async function getFolders(projectId: string) {
+    const projectFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
+    await mkdirp(projectFolder);
+    const folders = await readdir(projectFolder);
+    folders.sort();
+
+    return folders;
+}
+
+export async function addToQueue(url: string, viewport: Viewport, distFolder: string, limit: number = 0): Promise<boolean> {
+    console.log('addToQueue', url, viewport, distFolder);
+    const id = md5(`${url}-${JSON.stringify(viewport)}`);
+    const histFile = getFilePath(id, distFolder)('json');
+    const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
+
+    if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
+        if (!limit || (await updateSiblingCount(url, distFolder)) < limit) {
+            await outputJson(queueFile, { url, id }, { spaces: 4 });
+        }
+        return true;
+    }
+    return false;
+}
+
+async function updateSiblingCount(url: string, distFolder: string) {
+    const urlPaths = url.split('/').filter(s => s);
+    urlPaths.pop();
+    const id = md5(urlPaths.join('/'));
+    const file = join(distFolder, 'sibling', id);
+    let count = 0;
+    if (await pathExists(file)) {
+        count = parseInt((await readFile(file)).toString(), 10) + 1;
+    }
+    await outputFile(file, count);
+    return count;
+}
+
+export function getQueueFolder(distFolder: string) {
+    return join(distFolder, 'queue');
+}
 
 async function getLinks(page: Page, crawler: Crawler): Promise<string[]> {
     const { url: baseUrl, method } = crawler;

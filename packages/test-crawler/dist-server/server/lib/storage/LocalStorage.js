@@ -9,12 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Remote_1 = require("./Remote");
+const Storage_1 = require("./Storage");
 const fs_extra_1 = require("fs-extra");
 const crawl_1 = require("../crawl");
 const path_1 = require("path");
 const config_1 = require("../config");
-class LocalStorage extends Remote_1.Remote {
+class LocalStorage extends Storage_1.Storage {
     constructor() {
         super();
     }

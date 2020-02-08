@@ -33,7 +33,7 @@ const save = async (
     { name, viewport, ...input }: (CrawlerInput & { name: string, viewport: string }),
 ) => {
     try {
-        await saveProject({ ...input, viewport: JSON.parse(viewport) }, name, undefined);
+        await saveProject('ToDo' as any, { ...input, viewport: JSON.parse(viewport) }, name, undefined);
         history.push(getHomeRoute());
     } catch (error) {
         notification['error']({

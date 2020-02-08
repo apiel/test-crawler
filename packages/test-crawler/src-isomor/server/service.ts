@@ -1,5 +1,3 @@
-// import * as sharp from 'sharp';
-
 import { WsContext } from 'isomor-server';
 
 import {
@@ -69,6 +67,9 @@ export function getCodes(storageType: StorageType, projectId: string): Promise<C
 
 export async function getThumbnail(storageType: StorageType, projectId: string, folder: string, id: string, width: number = 300): Promise<string> {
     const image = await crawlerProvider.image(storageType, projectId, folder, id);
+    if (!image) {
+        throw new Error('Cannot load image.');
+    }
     // const sharpImg = width ? sharp(image).resize(width) : sharp(image);
     // return `data:image/png;base64, ${(await image.toBuffer()).toString('base64')}`;
     return `data:image/png;base64, ${(image).toString('base64')}`;

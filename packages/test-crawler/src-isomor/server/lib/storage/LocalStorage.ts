@@ -1,4 +1,4 @@
-import { Remote } from './Remote';
+import { Storage } from './Storage';
 import {
     readJSON,
     readFile,
@@ -15,7 +15,7 @@ import { crawl } from '../crawl';
 import { join } from 'path';
 import { ROOT_FOLDER } from '../config';
 
-export class LocalStorage extends Remote {
+export class LocalStorage extends Storage {
     constructor() {
         super();
     }

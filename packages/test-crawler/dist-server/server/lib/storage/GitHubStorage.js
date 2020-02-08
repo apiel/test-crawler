@@ -9,13 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Remote_1 = require("./Remote");
+const Storage_1 = require("./Storage");
 const path_1 = require("path");
 const axios_1 = require("axios");
 const config_1 = require("../config");
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
-class GitHubStorage extends Remote_1.Remote {
+class GitHubStorage extends Storage_1.Storage {
     constructor() {
         super();
         if (!config_1.config.remote.github) {

@@ -64,6 +64,9 @@ exports.getCodes = getCodes;
 function getThumbnail(storageType, projectId, folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const image = yield crawlerProvider.image(storageType, projectId, folder, id);
+        if (!image) {
+            throw new Error('Cannot load image.');
+        }
         return `data:image/png;base64, ${(image).toString('base64')}`;
     });
 }

@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "noImplicitThis": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
