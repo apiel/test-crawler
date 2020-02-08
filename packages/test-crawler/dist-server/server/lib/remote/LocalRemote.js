@@ -15,9 +15,8 @@ const crawl_1 = require("../crawl");
 const path_1 = require("path");
 const config_1 = require("../config");
 class LocalRemote extends Remote_1.Remote {
-    constructor(projectId) {
+    constructor() {
         super();
-        this.projectId = projectId;
     }
     readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {

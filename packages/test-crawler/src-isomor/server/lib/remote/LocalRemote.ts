@@ -16,7 +16,7 @@ import { join } from 'path';
 import { ROOT_FOLDER } from '../config';
 
 export class LocalRemote extends Remote {
-    constructor(private projectId: string) {
+    constructor() {
         super();
     }
 

@@ -1,8 +1,8 @@
 import { Remote } from './Remote';
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { RemoteGitHub, CrawlTarget } from '../../typing';
-import { PROJECT_FOLDER } from '../config';
+import { CrawlTarget } from '../../typing';
+import { config, GitHubConfig } from '../config';
 
 // https://developer.github.com/v3/repos/contents/#create-or-update-a-file
 // https://api.github.com/repos/apiel/test-crawler-remote-folder/commits
@@ -10,11 +10,16 @@ import { PROJECT_FOLDER } from '../config';
 // https://api.github.com/repos/apiel/test-crawler-remote-folder/contents/yo.txt
 
 const BASE_URL = 'https://api.github.com';
-const COMMIT = 'test-crawler';
+const COMMIT_PREFIX = '[test-crawler]';
 
 export class GitHubRemote extends Remote {
-    constructor(private config: RemoteGitHub) {
+    private config: GitHubConfig;
+    constructor() {
         super();
+        if (!config.remote.github) {
+            throw new Error('cannot use GitHub if no config provided');
+        }
+        this.config = config.remote.github;
     }
 
     async readdir(path: string) {
@@ -34,7 +39,7 @@ export class GitHubRemote extends Remote {
     async remove(file: string) {
         const { data: { sha } } = await this.getContents(file);
         const data = JSON.stringify({
-            message: `[${COMMIT}] save json`,
+            message: `${COMMIT_PREFIX} save json`,
             sha,
         });
         await this.call({
@@ -47,7 +52,7 @@ export class GitHubRemote extends Remote {
     async saveFile(file: string, content: string) {
         const { data: { sha } } = await this.getContents(file);
         const data = JSON.stringify({
-            message: `[${COMMIT}] save json`,
+            message: `${COMMIT_PREFIX} save json`,
             content: Buffer.from(content).toString('base64'),
             sha,
         });

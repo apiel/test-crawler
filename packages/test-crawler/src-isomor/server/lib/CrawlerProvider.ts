@@ -24,9 +24,9 @@ export class CrawlerProvider extends CrawlerProviderBase {
     }
 
     async loadProjects(): Promise<Project[]> {
-        const projects = await this.readdir('', PROJECT_FOLDER, LOCAL); // to get list of the root folder
+        const localProjects = await this.readdir('', PROJECT_FOLDER, LOCAL); // to get list of the root folder
         return Promise.all(
-            projects.map(projectId => this.loadProject(projectId)),
+            localProjects.map(projectId => this.loadProject(projectId)),
         );
     }
 

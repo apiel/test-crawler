@@ -15,6 +15,8 @@ const GitHubRemote_1 = require("./remote/GitHubRemote");
 const config_1 = require("./config");
 const path_1 = require("path");
 exports.LOCAL = true;
+const gitHubRemote = new GitHubRemote_1.GitHubRemote();
+const localRemote = new LocalRemote_1.LocalRemote();
 class CrawlerProviderBase {
     getRemote(projectId, forceLocal) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -22,11 +24,11 @@ class CrawlerProviderBase {
                 const { remote } = yield this.loadProject(projectId);
                 if (remote) {
                     if (remote.type === typing_1.RemoteType.GitHub) {
-                        return new GitHubRemote_1.GitHubRemote(remote);
+                        return gitHubRemote;
                     }
                 }
             }
-            return new LocalRemote_1.LocalRemote(projectId);
+            return localRemote;
         });
     }
     join(projectId, ...path) {

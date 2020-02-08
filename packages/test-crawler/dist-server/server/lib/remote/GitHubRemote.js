@@ -11,12 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Remote_1 = require("./Remote");
 const axios_1 = require("axios");
+const config_1 = require("../config");
 const BASE_URL = 'https://api.github.com';
-const COMMIT = 'test-crawler';
+const COMMIT_PREFIX = '[test-crawler]';
 class GitHubRemote extends Remote_1.Remote {
-    constructor(config) {
+    constructor() {
         super();
-        this.config = config;
+        if (!config_1.config.remote.github) {
+            throw new Error('cannot use GitHub if no config provided');
+        }
+        this.config = config_1.config.remote.github;
     }
     readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39,7 +43,7 @@ class GitHubRemote extends Remote_1.Remote {
         return __awaiter(this, void 0, void 0, function* () {
             const { data: { sha } } = yield this.getContents(file);
             const data = JSON.stringify({
-                message: `[${COMMIT}] save json`,
+                message: `${COMMIT_PREFIX} save json`,
                 sha,
             });
             yield this.call({
@@ -53,7 +57,7 @@ class GitHubRemote extends Remote_1.Remote {
         return __awaiter(this, void 0, void 0, function* () {
             const { data: { sha } } = yield this.getContents(file);
             const data = JSON.stringify({
-                message: `[${COMMIT}] save json`,
+                message: `${COMMIT_PREFIX} save json`,
                 content: Buffer.from(content).toString('base64'),
                 sha,
             });

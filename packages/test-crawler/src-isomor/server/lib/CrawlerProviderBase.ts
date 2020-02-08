@@ -6,6 +6,9 @@ import { join } from 'path';
 
 export const LOCAL = true;
 
+const gitHubRemote = new GitHubRemote();
+const localRemote = new LocalRemote();
+
 export abstract class CrawlerProviderBase {
     abstract loadProject(projectId: string): Promise<Project>;
 
@@ -14,11 +17,11 @@ export abstract class CrawlerProviderBase {
             const { remote } = await this.loadProject(projectId);
             if (remote) {
                 if (remote.type === RemoteType.GitHub) {
-                    return new GitHubRemote(remote);
+                    return gitHubRemote;
                 }
             }
         }
-        return new LocalRemote(projectId); // we should watch out cause it might be possible to set a none existing rmeote
+        return localRemote; // we should watch out cause it might be possible to set a none existing rmeote
     }
 
     protected join(projectId: string, ...path: string[]) {
