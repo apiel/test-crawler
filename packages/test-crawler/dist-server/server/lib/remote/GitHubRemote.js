@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Remote_1 = require("./Remote");
 const axios_1 = require("axios");
 const BASE_URL = 'https://api.github.com';
-const FOLDER = 'test-crawler';
 const COMMIT = 'test-crawler';
 class GitHubRemote extends Remote_1.Remote {
     constructor(config) {
@@ -93,10 +92,7 @@ class GitHubRemote extends Remote_1.Remote {
         });
     }
     get contentsUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents/${FOLDER}`;
-    }
-    get repoUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/${FOLDER}`;
+        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents`;
     }
 }
 exports.GitHubRemote = GitHubRemote;

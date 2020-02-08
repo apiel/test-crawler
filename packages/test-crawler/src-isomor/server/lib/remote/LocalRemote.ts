@@ -10,10 +10,10 @@ import {
     remove,
     outputFile,
 } from 'fs-extra';
-import { join } from 'path';
-import { PROJECT_FOLDER } from '../config';
 import { CrawlTarget } from '../../typing';
 import { crawl } from '../crawl';
+import { join } from 'path';
+import { ROOT_FOLDER } from '../config';
 
 export class LocalRemote extends Remote {
     constructor(private projectId: string) {
@@ -21,52 +21,48 @@ export class LocalRemote extends Remote {
     }
 
     async readdir(path: string) {
-        const fullpath = this.getPath(path);
-        if (await pathExists(fullpath)) {
-            await mkdirp(fullpath);
-            return readdir(fullpath);
+        if (await pathExists(this.root(path))) {
+            await mkdirp(this.root(path));
+            return readdir(this.root(path));
         }
         return [] as string[];
     }
 
     async read(path: string) {
-        const fullpath = this.getPath(path);
-        if (await pathExists(fullpath)) {
-            return readFile(fullpath);
+        if (await pathExists(this.root(path))) {
+            return readFile(this.root(path));
         }
     }
 
     async readJSON(path: string) {
-        const fullpath = this.getPath(path);
-        if (await pathExists(fullpath)) {
-            return readJSON(fullpath);
+        if (await pathExists(this.root(path))) {
+            return readJSON(this.root(path));
         }
     }
 
     saveJSON(file: string, data: any) {
-        return outputJSON(this.getPath(file), data, { spaces: 4 });
+        return outputJSON(this.root(file), data, { spaces: 4 });
     }
 
     saveFile(file: string, data: string) {
-        return outputFile(this.getPath(file), data);
+        return outputFile(this.root(file), data);
     }
 
     async copy(src: string, dst: string) {
-        const srcFile = this.getPath(src);
-        if (await pathExists(srcFile)) {
-            return copy(srcFile, this.getPath(dst), { overwrite: true });
+        if (await pathExists(this.root(src))) {
+            return copy(this.root(src), this.root(dst), { overwrite: true });
         }
     }
 
     remove(file: string) {
-        return remove(this.getPath(file));
+        return remove(this.root(file));
     }
 
     crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
         return crawl(crawlTarget, consumeTimeout, push);
     }
 
-    protected getPath(path: string) {
-        return join(PROJECT_FOLDER, this.projectId, path);
+    root(...path: string[]) {
+        return join(ROOT_FOLDER, ...path);
     }
 }

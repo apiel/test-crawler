@@ -1,7 +1,7 @@
 import { join } from 'path';
 
-// Need to implement env variable
-export const PROJECT_FOLDER = process.env.PROJECT_FOLDER || join(__dirname, '../../../pages');
+export const ROOT_FOLDER = process.env.ROOT_FOLDER || join(__dirname, '../../..');
+export const PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';
 export const CRAWL_FOLDER = 'crawl';
 export const PIN_FOLDER = 'pin';
 export const CODE_FOLDER = 'code';

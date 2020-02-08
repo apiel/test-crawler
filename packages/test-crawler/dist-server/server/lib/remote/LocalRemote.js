@@ -11,9 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Remote_1 = require("./Remote");
 const fs_extra_1 = require("fs-extra");
+const crawl_1 = require("../crawl");
 const path_1 = require("path");
 const config_1 = require("../config");
-const crawl_1 = require("../crawl");
 class LocalRemote extends Remote_1.Remote {
     constructor(projectId) {
         super();
@@ -21,52 +21,48 @@ class LocalRemote extends Remote_1.Remote {
     }
     readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fullpath = this.getPath(path);
-            if (yield fs_extra_1.pathExists(fullpath)) {
-                yield fs_extra_1.mkdirp(fullpath);
-                return fs_extra_1.readdir(fullpath);
+            if (yield fs_extra_1.pathExists(this.root(path))) {
+                yield fs_extra_1.mkdirp(this.root(path));
+                return fs_extra_1.readdir(this.root(path));
             }
             return [];
         });
     }
     read(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fullpath = this.getPath(path);
-            if (yield fs_extra_1.pathExists(fullpath)) {
-                return fs_extra_1.readFile(fullpath);
+            if (yield fs_extra_1.pathExists(this.root(path))) {
+                return fs_extra_1.readFile(this.root(path));
             }
         });
     }
     readJSON(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            const fullpath = this.getPath(path);
-            if (yield fs_extra_1.pathExists(fullpath)) {
-                return fs_extra_1.readJSON(fullpath);
+            if (yield fs_extra_1.pathExists(this.root(path))) {
+                return fs_extra_1.readJSON(this.root(path));
             }
         });
     }
     saveJSON(file, data) {
-        return fs_extra_1.outputJSON(this.getPath(file), data, { spaces: 4 });
+        return fs_extra_1.outputJSON(this.root(file), data, { spaces: 4 });
     }
     saveFile(file, data) {
-        return fs_extra_1.outputFile(this.getPath(file), data);
+        return fs_extra_1.outputFile(this.root(file), data);
     }
     copy(src, dst) {
         return __awaiter(this, void 0, void 0, function* () {
-            const srcFile = this.getPath(src);
-            if (yield fs_extra_1.pathExists(srcFile)) {
-                return fs_extra_1.copy(srcFile, this.getPath(dst), { overwrite: true });
+            if (yield fs_extra_1.pathExists(this.root(src))) {
+                return fs_extra_1.copy(this.root(src), this.root(dst), { overwrite: true });
             }
         });
     }
     remove(file) {
-        return fs_extra_1.remove(this.getPath(file));
+        return fs_extra_1.remove(this.root(file));
     }
     crawl(crawlTarget, consumeTimeout, push) {
         return crawl_1.crawl(crawlTarget, consumeTimeout, push);
     }
-    getPath(path) {
-        return path_1.join(config_1.PROJECT_FOLDER, this.projectId, path);
+    root(...path) {
+        return path_1.join(config_1.ROOT_FOLDER, ...path);
     }
 }
 exports.LocalRemote = LocalRemote;

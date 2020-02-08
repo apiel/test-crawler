@@ -12,6 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typing_1 = require("../typing");
 const LocalRemote_1 = require("./remote/LocalRemote");
 const GitHubRemote_1 = require("./remote/GitHubRemote");
+const config_1 = require("./config");
+const path_1 = require("path");
 exports.LOCAL = true;
 class CrawlerProviderBase {
     getRemote(projectId, forceLocal) {
@@ -26,6 +28,9 @@ class CrawlerProviderBase {
             }
             return new LocalRemote_1.LocalRemote(projectId);
         });
+    }
+    join(projectId, ...path) {
+        return path_1.join(config_1.PROJECT_FOLDER, projectId, ...path);
     }
     readdir(projectId, path, forceLocal = false) {
         return __awaiter(this, void 0, void 0, function* () {

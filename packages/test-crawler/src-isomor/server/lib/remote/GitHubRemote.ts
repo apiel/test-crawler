@@ -2,6 +2,7 @@ import { Remote } from './Remote';
 
 import axios, { AxiosRequestConfig } from 'axios';
 import { RemoteGitHub, CrawlTarget } from '../../typing';
+import { PROJECT_FOLDER } from '../config';
 
 // https://developer.github.com/v3/repos/contents/#create-or-update-a-file
 // https://api.github.com/repos/apiel/test-crawler-remote-folder/commits
@@ -9,7 +10,6 @@ import { RemoteGitHub, CrawlTarget } from '../../typing';
 // https://api.github.com/repos/apiel/test-crawler-remote-folder/contents/yo.txt
 
 const BASE_URL = 'https://api.github.com';
-const FOLDER = 'test-crawler';
 const COMMIT = 'test-crawler';
 
 export class GitHubRemote extends Remote {
@@ -87,10 +87,10 @@ export class GitHubRemote extends Remote {
     }
 
     protected get contentsUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents/${FOLDER}`;
+        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/contents`;
     }
 
-    protected get repoUrl() {
-        return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/${FOLDER}`;
-    }
+    // protected get repoUrl() {
+    //     return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/${PROJECT_FOLDER}`;
+    // }
 }

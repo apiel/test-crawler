@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
-exports.PROJECT_FOLDER = process.env.PROJECT_FOLDER || path_1.join(__dirname, '../../../pages');
+exports.ROOT_FOLDER = process.env.ROOT_FOLDER || path_1.join(__dirname, '../../..');
+exports.PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';
 exports.CRAWL_FOLDER = 'crawl';
 exports.PIN_FOLDER = 'pin';
 exports.CODE_FOLDER = 'code';

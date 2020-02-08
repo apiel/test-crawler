@@ -1,6 +1,8 @@
-import { Project, RemoteType, CrawlTarget } from '../typing';
+import { Project, RemoteType } from '../typing';
 import { LocalRemote } from './remote/LocalRemote';
 import { GitHubRemote } from './remote/GitHubRemote';
+import { PROJECT_FOLDER } from './config';
+import { join } from 'path';
 
 export const LOCAL = true;
 
@@ -17,6 +19,10 @@ export abstract class CrawlerProviderBase {
             }
         }
         return new LocalRemote(projectId); // we should watch out cause it might be possible to set a none existing rmeote
+    }
+
+    protected join(projectId: string, ...path: string[]) {
+        return join(PROJECT_FOLDER, projectId, ...path);
     }
 
     protected async readdir(projectId: string, path: string, forceLocal = false) {
