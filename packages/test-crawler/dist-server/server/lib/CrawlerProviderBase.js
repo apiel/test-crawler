@@ -1,20 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const typing_1 = require("../typing");
-const LocalRemote_1 = require("./remote/LocalRemote");
-const GitHubRemote_1 = require("./remote/GitHubRemote");
+const LocalStorage_1 = require("./storage/LocalStorage");
+const GitHubStorage_1 = require("./storage/GitHubStorage");
 const config_1 = require("./config");
 const path_1 = require("path");
 exports.LOCAL = true;
-const gitHubRemote = new GitHubRemote_1.GitHubRemote();
-const localRemote = new LocalRemote_1.LocalRemote();
+const gitHubStorage = new GitHubStorage_1.GitHubStorage();
+const localStorage = new LocalStorage_1.LocalStorage();
 class CrawlerProviderBase {
     getRemote(storageType) {
         if (storageType === typing_1.StorageType.Local) {
-            return localRemote;
+            return localStorage;
         }
         else if (storageType === typing_1.StorageType.GitHub) {
-            return gitHubRemote;
+            return gitHubStorage;
         }
         throw new Error(`Unknown remote type ${storageType}.`);
     }

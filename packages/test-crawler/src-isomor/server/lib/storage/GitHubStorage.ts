@@ -13,7 +13,7 @@ import { config, GitHubConfig } from '../config';
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
 
-export class GitHubRemote extends Remote {
+export class GitHubStorage extends Remote {
     private config: GitHubConfig;
     constructor() {
         super();

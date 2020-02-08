@@ -15,7 +15,7 @@ import { crawl } from '../crawl';
 import { join } from 'path';
 import { ROOT_FOLDER } from '../config';
 
-export class LocalRemote extends Remote {
+export class LocalStorage extends Remote {
     constructor() {
         super();
     }

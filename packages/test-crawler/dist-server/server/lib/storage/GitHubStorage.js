@@ -15,7 +15,7 @@ const axios_1 = require("axios");
 const config_1 = require("../config");
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
-class GitHubRemote extends Remote_1.Remote {
+class GitHubStorage extends Remote_1.Remote {
     constructor() {
         super();
         if (!config_1.config.remote.github) {
@@ -122,4 +122,4 @@ class GitHubRemote extends Remote_1.Remote {
         return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/git/blobs`;
     }
 }
-exports.GitHubRemote = GitHubRemote;
+exports.GitHubStorage = GitHubStorage;

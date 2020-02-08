@@ -1,20 +1,20 @@
 import { StorageType } from '../typing';
-import { LocalRemote } from './remote/LocalRemote';
-import { GitHubRemote } from './remote/GitHubRemote';
+import { LocalStorage } from './storage/LocalStorage';
+import { GitHubStorage } from './storage/GitHubStorage';
 import { PROJECT_FOLDER } from './config';
 import { join } from 'path';
 
 export const LOCAL = true;
 
-const gitHubRemote = new GitHubRemote();
-const localRemote = new LocalRemote();
+const gitHubStorage = new GitHubStorage();
+const localStorage = new LocalStorage();
 
 export abstract class CrawlerProviderBase {
     protected getRemote(storageType: StorageType) {
         if (storageType === StorageType.Local) {
-            return localRemote;
+            return localStorage;
         } else if (storageType === StorageType.GitHub) {
-            return gitHubRemote;
+            return gitHubStorage;
         }
         throw new Error(`Unknown remote type ${storageType}.`)
     }

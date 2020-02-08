@@ -14,7 +14,7 @@ const fs_extra_1 = require("fs-extra");
 const crawl_1 = require("../crawl");
 const path_1 = require("path");
 const config_1 = require("../config");
-class LocalRemote extends Remote_1.Remote {
+class LocalStorage extends Remote_1.Remote {
     constructor() {
         super();
     }
@@ -67,4 +67,4 @@ class LocalRemote extends Remote_1.Remote {
         return path_1.join(config_1.ROOT_FOLDER, ...path);
     }
 }
-exports.LocalRemote = LocalRemote;
+exports.LocalStorage = LocalStorage;
