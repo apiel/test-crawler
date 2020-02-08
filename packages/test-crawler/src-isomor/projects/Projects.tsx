@@ -10,9 +10,12 @@ export const Projects = () => {
     return (
         <>
             <Typography.Title level={3}>Projects</Typography.Title>
-            {Object.values(RemoteType).map((remoteType: RemoteType) => (
-                <div key={remoteType}>
-                    <ProjectsPerRemote remoteType={remoteType} />
+            {Object.keys(RemoteType).map((key) => (
+                <div key={key}>
+                    <ProjectsPerRemote
+                        title={key}
+                        remoteType={RemoteType[key as keyof typeof RemoteType]}
+                    />
                     <br />
                 </div>
             ))}

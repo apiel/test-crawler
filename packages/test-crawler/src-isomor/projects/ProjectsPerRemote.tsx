@@ -9,14 +9,15 @@ import { useProjects } from './useProjects';
 import Spin from 'antd/lib/spin';
 
 interface Props {
+    title: string;
     remoteType: RemoteType;
 }
 
-export const ProjectsPerRemote = ({ remoteType }: Props) => {
+export const ProjectsPerRemote = ({ title, remoteType }: Props) => {
     const { projects } = useProjects(remoteType);
     return (
         <>
-            <Typography.Title level={4}>{remoteType}</Typography.Title>
+            <Typography.Title level={4}>{title}</Typography.Title>
             {!projects ? <Spin /> : <List
                 itemLayout="horizontal"
                 bordered
