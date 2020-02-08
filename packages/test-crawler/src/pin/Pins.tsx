@@ -7,7 +7,7 @@ import {
     masonryStyle,
     masonryOptions,
 } from '../pages/pageStyle';
-import { PageData } from '../server/typing';
+import { PageData, RemoteType } from '../server/typing';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { PinPage } from './PinPage';
 import { Search } from '../search/Search';
@@ -21,7 +21,7 @@ const { Title } = Typography;
 
 export const Pins = ({
     match: { params: { projectId, remoteType } },
-}: RouteComponentProps<{ projectId: string, remoteType: string }>) => {
+}: RouteComponentProps<{ projectId: string, remoteType: RemoteType }>) => {
     const { result, error, setResult: setPins } = useAsync<PageData[]>(
         () => getPins(remoteType, projectId)
     );

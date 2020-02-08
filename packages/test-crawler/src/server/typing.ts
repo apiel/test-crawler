@@ -33,11 +33,11 @@ export interface CrawlerInput {
   method: string;
   limit?: number;
   autopin: boolean;
-} // to remove?
-
-export enum RemoteType {
-  GitHub,
-} // to remove?
+} // // to remove?
+// export enum RemoteType {
+//     GitHub,
+// }
+// to remove?
 
 export interface RemoteGitHub {
   type: RemoteType.GitHub;
@@ -46,6 +46,10 @@ export interface RemoteGitHub {
   token: string; // gitBranch
   // gitFolder
 
+}
+export enum RemoteType {
+  Local = 'local',
+  GitHub = 'github',
 }
 export interface Project {
   id: string;

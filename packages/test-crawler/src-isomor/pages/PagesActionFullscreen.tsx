@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
 import Modal from 'antd/lib/modal';
-import { PngDiffData, PageData } from '../server/typing';
+import { PngDiffData, PageData, RemoteType } from '../server/typing';
 import { Page } from './Page';
 import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 
@@ -14,7 +14,7 @@ const onCancel = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => 
 }
 
 interface Props {
-    remoteType: string;
+    remoteType: RemoteType;
     projectId: string;
     timestamp: string;
     id: string;

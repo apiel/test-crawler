@@ -3,7 +3,7 @@ import Popover from 'antd/lib/popover';
 
 import { DiffImageButtons } from './DiffImageButtons';
 import { getThumbnail } from '../server/service';
-import { Zone, PageData } from '../server/typing';
+import { Zone, PageData, RemoteType } from '../server/typing';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {
@@ -41,7 +41,7 @@ const zoneStyle = (
 }
 
 interface Props {
-    remoteType: string;
+    remoteType: RemoteType;
     folder: string;
     id: string;
     zone: Zone;

@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
-import { Project as ProjectType } from '../server/typing';
+import { Project as ProjectType, RemoteType } from '../server/typing';
 import { saveProject, startCrawler } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
@@ -20,7 +20,7 @@ import { Codes } from '../code/Codes';
 const onStart = (
     history: History<any>,
     projectId: string,
-    remoteType: string,
+    remoteType: RemoteType,
 ) => async () => {
     try {
         const timestamp = await startCrawler(remoteType, projectId);
@@ -34,10 +34,11 @@ const onStart = (
 }
 
 const onAutoPinChange = (
+    remoteType: RemoteType,
     { name, id, crawlerInput }: ProjectType,
     setProject: React.Dispatch<React.SetStateAction<ProjectType>>,
 ) => async ({ target: { checked } }: CheckboxChangeEvent) => {
-    const project = await saveProject({ ...crawlerInput, autopin: checked }, name, id);
+    const project = await saveProject(remoteType, { ...crawlerInput, autopin: checked }, name, id);
     setProject(project);
 }
 
@@ -57,8 +58,8 @@ const getCrawlerStatusIcon = (diffZoneCount: number, errorCount: number, status:
 export const Project = ({
     match: { params: { projectId, remoteType } },
     history,
-}: RouteComponentProps<{ projectId: string, remoteType: string }>) => {
-    const { project, setProject } = useProject(projectId);
+}: RouteComponentProps<{ projectId: string, remoteType: RemoteType }>) => {
+    const { project, setProject } = useProject(remoteType, projectId);
     const { crawlers, loading } = useCrawlers(remoteType, projectId);
     return (
         <>
@@ -80,7 +81,7 @@ export const Project = ({
                 <p>
                     <Checkbox
                         checked={project.crawlerInput.autopin}
-                        onChange={onAutoPinChange(project, setProject)}
+                        onChange={onAutoPinChange(remoteType, project, setProject)}
                     >
                         Automatically pin new page founds.
                     </Checkbox>

@@ -18,6 +18,11 @@ we might use token for simple solution but it would have some security issue sin
 the second auth options would be to create create an app, more complicated to setup for the user but more safe.
 
 should we call remoteType -> storageType
+-> if 1 of the loadProject fail it should still work for the others
+
+**!important!** need to optimize the way we load project, use router state for it, instead to always load it
+
+
 
 
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)

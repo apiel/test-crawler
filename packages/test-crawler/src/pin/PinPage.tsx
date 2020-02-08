@@ -9,14 +9,14 @@ import {
     iconTheme,
 } from '../pages/pageStyle';
 import { DiffImage } from '../diff/DiffImage';
-import { PngDiffData, Viewport, PageData } from '../server/typing';
+import { PngDiffData, Viewport, PageData, RemoteType } from '../server/typing';
 import { Link } from 'react-router-dom';
 import { getCodeRoute } from '../routes';
 import { getViewportName } from '../viewport';
 import { removePin } from '../server/service';
 
 const handleDelete = (
-    remoteType: string,
+    remoteType: RemoteType,
     projectId: string,
     id: string,
     setPins: React.Dispatch<React.SetStateAction<PageData[]>>,
@@ -29,7 +29,7 @@ const handleDelete = (
 
 interface Props {
     projectId: string;
-    remoteType: string,
+    remoteType: RemoteType,
     id: string;
     url: string;
     setPins: React.Dispatch<React.SetStateAction<PageData[]>>;

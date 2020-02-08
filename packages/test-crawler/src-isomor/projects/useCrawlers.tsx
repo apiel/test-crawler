@@ -1,9 +1,9 @@
 import notification from 'antd/lib/notification';
 import { getCrawlers } from '../server/service';
 import { useAsync } from '../hook/useAsync';
-import { Crawler } from '../server/typing';
+import { Crawler, RemoteType } from '../server/typing';
 
-export const useCrawlers = (remoteType: string, projectId: string) => {
+export const useCrawlers = (remoteType: RemoteType, projectId: string) => {
     const { result: crawlers, setResult: setCrawlers, error, loading } = useAsync<Crawler[]>(async () => {
         const list = await getCrawlers(remoteType, projectId);
         return list.sort(({ timestamp: a }: any, { timestamp: b }: any) => parseInt(b, 10) - parseInt(a, 10));

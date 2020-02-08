@@ -4,7 +4,7 @@ import Typography from 'antd/lib/typography';
 import Form from 'antd/lib/form';
 import AceEditor from 'react-ace';
 import { RouteComponentProps } from 'react-router';
-import { Code as CodeType } from '../server/typing';
+import { Code as CodeType, RemoteType } from '../server/typing';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
@@ -29,7 +29,7 @@ const setSource = (
     })
 }
 
-type Props = RouteComponentProps<{ id: string, projectId: string, remoteType: string }>;
+type Props = RouteComponentProps<{ id: string, projectId: string, remoteType: RemoteType }>;
 
 export const Code = ({ match: { params: { id, projectId, remoteType } }, location }: Props) => {
     const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(remoteType, projectId, id));

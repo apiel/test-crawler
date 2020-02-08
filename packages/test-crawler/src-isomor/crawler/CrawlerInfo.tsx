@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from 'antd/lib/typography';
 import Progress from 'antd/lib/progress';
 import Icon from 'antd/lib/icon';
-import { Crawler } from '../server/typing';
+import { Crawler, RemoteType } from '../server/typing';
 import { duration } from 'moment';
 import 'moment-duration-format';
 
@@ -26,7 +26,7 @@ interface Props {
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>;
     crawler: Crawler;
     projectId: string;
-    remoteType: string;
+    remoteType: RemoteType;
 }
 
 // need to flatten props and use react memo

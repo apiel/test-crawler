@@ -6,9 +6,10 @@ import {
 } from '../pages/pageStyle';
 
 import { getThumbnail } from '../server/service';
+import { RemoteType } from '../server/typing';
 
 export interface Props {
-    remoteType: string;
+    remoteType: RemoteType;
     projectId: string;
     folder: string;
     id: string;

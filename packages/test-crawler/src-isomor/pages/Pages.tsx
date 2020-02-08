@@ -10,7 +10,7 @@ import {
     cardStyle,
     cardImgMargin,
 } from './pageStyle';
-import { PageData } from '../server/typing';
+import { PageData, RemoteType } from '../server/typing';
 import { getPages } from '../server/service';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { Search } from '../search/Search';
@@ -22,7 +22,7 @@ import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 import { useAsync } from '../hook/useAsync';
 
 interface Props {
-    remoteType: string;
+    remoteType: RemoteType;
     projectId: string;
     timestamp: string;
     lastUpdate: number;

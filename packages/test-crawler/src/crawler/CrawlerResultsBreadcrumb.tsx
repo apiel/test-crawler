@@ -4,11 +4,12 @@ import Breadcrumb from 'antd/lib/breadcrumb';
 import { getHomeRoute, getProjectRoute, getResultsRoute } from '../routes';
 import { useProject } from '../projects/useProject';
 import { timestampToString } from '../utils';
+import { RemoteType } from '../server/typing';
 
 export const CrawlerResultsBreadcrumb = ({
     match: { params: { projectId, timestamp, remoteType } },
-}: RouteComponentProps<{ projectId: string, timestamp: string, remoteType: string }>) => {
-    const { project } = useProject(projectId);
+}: RouteComponentProps<{ projectId: string, timestamp: string, remoteType: RemoteType }>) => {
+    const { project } = useProject(remoteType, projectId);
     return (
         <>
             <Breadcrumb.Item><Link to={getHomeRoute()}>Projects</Link></Breadcrumb.Item>

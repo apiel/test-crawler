@@ -7,7 +7,7 @@ import message from 'antd/lib/message';
 import Dropdown from 'antd/lib/dropdown';
 import Typography from 'antd/lib/typography';
 import Form, { FormComponentProps } from 'antd/lib/form';
-import { Code } from '../server/typing';
+import { Code, RemoteType } from '../server/typing';
 
 import { setCode } from '../server/service';
 import { codeSnippet } from './CodeSnippet';
@@ -27,7 +27,7 @@ const onPlay = () => {
 }
 
 const save = async (
-    remoteType: string,
+    remoteType: RemoteType,
     projectId: string,
     id: string,
     source: string,
@@ -51,7 +51,7 @@ const save = async (
 }
 
 const handleSubmit = (
-    remoteType: string,
+    remoteType: RemoteType,
     projectId: string,
     id: string,
     source: string,
@@ -66,7 +66,7 @@ const handleSubmit = (
 }
 
 type Props = FormComponentProps & {
-    remoteType: string;
+    remoteType: RemoteType;
     projectId: string;
     id: string;
     code: Code;

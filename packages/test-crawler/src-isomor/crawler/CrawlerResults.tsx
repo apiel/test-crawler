@@ -7,12 +7,12 @@ import { Pages } from '../pages/Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { useAsync } from '../hook/useAsync';
-import { Crawler } from '../server/typing';
+import { Crawler, RemoteType } from '../server/typing';
 import { getCrawler } from '../server/service';
 
 export const CrawlerResults = ({
     match: { params: { timestamp, projectId, remoteType } },
-}: RouteComponentProps<{ timestamp: string, projectId: string, remoteType: string }>) => {
+}: RouteComponentProps<{ timestamp: string, projectId: string, remoteType: RemoteType }>) => {
     const { result: crawler, error, setResult: setCrawler } = useAsync<Crawler>(
         () => getCrawler(remoteType, projectId, timestamp)
     );

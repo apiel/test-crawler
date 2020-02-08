@@ -1,12 +1,12 @@
 import React from 'react';
-import { PngDiffData, PageData } from '../server/typing';
+import { PngDiffData, PageData, RemoteType } from '../server/typing';
 
 import { PagesActionZone } from './PagesActionZone';
 import PagesActionPin from './PagesActionPin';
 import { PagesActionFullscreen } from './PagesActionFullscreen';
 
 interface Props {
-    remoteType: string;
+    remoteType: RemoteType;
     projectId: string;
     timestamp: string;
     id: string;

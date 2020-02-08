@@ -3,10 +3,10 @@ import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { setStatus } from '../server/service';
-import { Crawler } from '../server/typing';
+import { Crawler, RemoteType } from '../server/typing';
 
 const onChange = (
-    remoteType: string,
+    remoteType: RemoteType,
     projectId: string,
     timestamp: string,
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>,
@@ -25,7 +25,7 @@ const onChange = (
 }
 
 interface Props {
-    remoteType: string;
+    remoteType: RemoteType;
     projectId: string;
     timestamp: string;
     status: string;

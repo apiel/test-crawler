@@ -7,29 +7,15 @@ import Typography from 'antd/lib/typography';
 import { loadProjects } from '../server/service';
 import { Projects as ProjectsType, Project } from '../server/typing';
 import { getNewProjectRoute, getProjectRoute } from '../routes';
-
-const load = async (
-    setProjects: React.Dispatch<React.SetStateAction<ProjectsType>>,
-) => {
-    try {
-        const list = await loadProjects();
-        setProjects(list);
-    } catch (error) {
-        notification['warning']({
-            message: 'Something went wrong while loading projects.',
-            description: error.toString(),
-        });
-    }
-}
+import { useProjects } from './useProjects';
+import Spin from 'antd/lib/spin';
 
 export const Projects = () => {
-    const [projects, setProjects] = React.useState<ProjectsType>({});
-
-    React.useEffect(() => { load(setProjects); }, []);
+    const { projects } = useProjects();
     return (
         <>
             <Typography.Title level={3}>Projects</Typography.Title>
-            {Object.keys(projects).map(remoteType => (
+            {!projects ? <Spin /> : Object.keys(projects).map(remoteType => (
                 <>
                     <Typography.Title level={4}>{remoteType}</Typography.Title>
                     <List
@@ -51,9 +37,9 @@ export const Projects = () => {
                             </List.Item>
                         )}
                     />
+                    <br />
                 </>
             ))}
-            <br />
             <Link to={getNewProjectRoute()}>
                 <Button icon="plus" size="small">New</Button>
             </Link>

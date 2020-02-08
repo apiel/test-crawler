@@ -1,7 +1,17 @@
+import { RemoteType } from './server/typing';
+
 export const getHomeRoute = () => '/';
 export const getNewProjectRoute = () => '/new';
 export const getSettingsRoute = () => '/settings';
-export const getPinsRoute = (remoteType: string, projectId: string) => `/pins/${remoteType}/${projectId}`;
-export const getCodeRoute = (remoteType: string, projectId: string, id: string) => `/code/${remoteType}/${projectId}/${id}`;
-export const getResultsRoute = (remoteType: string, projectId: string, timestamp: string) => `/results/${remoteType}/${projectId}/${timestamp}`;
-export const getProjectRoute = (remoteType: string, projectId: string) => `/project/${remoteType}/${projectId}`;
+export function getPinsRoute<T = RemoteType>(remoteType: T, projectId: string) {
+    return `/pins/${remoteType}/${projectId}`;
+}
+export function getCodeRoute<T = RemoteType>(remoteType: T, projectId: string, id: string) {
+    return `/code/${remoteType}/${projectId}/${id}`;
+}
+export function getResultsRoute<T = RemoteType>(remoteType: T, projectId: string, timestamp: string) {
+    return `/results/${remoteType}/${projectId}/${timestamp}`;
+}
+export function getProjectRoute<T = RemoteType>(remoteType: T, projectId: string) {
+    return `/project/${remoteType}/${projectId}`;;
+}

@@ -1,4 +1,4 @@
-import { Project, RemoteType } from '../typing';
+import { RemoteType } from '../typing';
 import { LocalRemote } from './remote/LocalRemote';
 import { GitHubRemote } from './remote/GitHubRemote';
 import { PROJECT_FOLDER } from './config';
@@ -10,68 +10,63 @@ const gitHubRemote = new GitHubRemote();
 const localRemote = new LocalRemote();
 
 export abstract class CrawlerProviderBase {
-    abstract loadProject(projectId: string): Promise<Project>;
-
-    protected async getRemote(projectId: string, forceLocal: boolean) {
-        if (!forceLocal) {
-            const { remote } = await this.loadProject(projectId);
-            if (remote) {
-                if (remote.type === RemoteType.GitHub) {
-                    return gitHubRemote;
-                }
-            }
+    protected getRemote(remoteType: RemoteType) {
+        if (remoteType === RemoteType.Local) {
+            return localRemote;
+        } else if (remoteType === RemoteType.GitHub) {
+            return gitHubRemote;
         }
-        return localRemote; // we should watch out cause it might be possible to set a none existing rmeote
+        throw new Error(`Unknown remote type ${remoteType}.`)
     }
 
     protected join(projectId: string, ...path: string[]) {
         return join(PROJECT_FOLDER, projectId, ...path);
     }
 
-    protected async readdir(projectId: string, path: string, forceLocal = false) {
-        const remote = await this.getRemote(projectId, forceLocal);
+    protected readdir(remoteType: RemoteType, path: string) {
+        const remote = this.getRemote(remoteType);
         return remote.readdir(path);
     }
 
-    protected async read(projectId: string, path: string, forceLocal = false) {
-        const remote = await this.getRemote(projectId, forceLocal);
+    protected async read(remoteType: RemoteType, path: string) {
+        const remote = this.getRemote(remoteType);
         return remote.read(path);
     }
 
-    protected async readJSON(projectId: string, path: string, forceLocal = false) {
-        const remote = await this.getRemote(projectId, forceLocal);
+    protected async readJSON(remoteType: RemoteType, path: string) {
+        const remote = this.getRemote(remoteType);
         return remote.readJSON(path);
     }
 
-    protected async saveFile(projectId: string, file: string, content: string, forceLocal = false) {
-        const remote = await this.getRemote(projectId, forceLocal);
+    protected async saveFile(remoteType: RemoteType, file: string, content: string) {
+        const remote = this.getRemote(remoteType);
         return remote.saveFile(file, content);
     }
 
-    protected async saveJSON(projectId: string, file: string, content: any, forceLocal = false) {
-        const remote = await this.getRemote(projectId, forceLocal);
+    protected async saveJSON(remoteType: RemoteType, file: string, content: any) {
+        const remote = this.getRemote(remoteType);
         return remote.saveJSON(file, content);
     }
 
-    protected async remove(projectId: string, file: string, forceLocal = false) {
-        const remote = await this.getRemote(projectId, forceLocal);
+    protected async remove(remoteType: RemoteType, file: string) {
+        const remote = this.getRemote(remoteType);
         return remote.remove(file);
     }
 
-    protected async copy(projectId: string, src: string, dst: string, forceLocal = false) {
-        const remote = await this.getRemote(projectId, forceLocal);
+    protected async copy(remoteType: RemoteType, src: string, dst: string) {
+        const remote = this.getRemote(remoteType);
         return remote.copy(src, dst);
     }
 
     protected async crawl(
+        remoteType: RemoteType,
         projectId: string,
         pagesFolder: string,
         consumeTimeout?: number,
         push?: (payload: any) => void,
-        forceLocal = false,
     ) {
         const crawlTarget = { projectId, pagesFolder };
-        const remote = await this.getRemote(projectId, forceLocal);
+        const remote = this.getRemote(remoteType);
         return remote.crawl(crawlTarget, consumeTimeout, push);
     }
 }

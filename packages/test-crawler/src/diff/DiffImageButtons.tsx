@@ -4,7 +4,7 @@ import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 
 import { setZoneStatus } from '../server/service';
-import { PageData } from '../server/typing';
+import { PageData, RemoteType } from '../server/typing';
 
 const buttonStyle = {
     marginLeft: 5,
@@ -16,7 +16,7 @@ interface Props {
     timestamp: string;
     id: string;
     projectId: string;
-    remoteType: string;
+    remoteType: RemoteType;
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
