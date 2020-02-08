@@ -1,9 +1,9 @@
 import React from 'react';
 import List from 'antd/lib/list';
-import Button from 'antd/lib/button';
+import Icon from 'antd/lib/icon';
 import { Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
-import { Project, RemoteType } from '../server/typing';
+import { RemoteType } from '../server/typing';
 import { getProjectRoute } from '../routes';
 import { useProjects } from './useProjects';
 import Spin from 'antd/lib/spin';
@@ -31,7 +31,9 @@ export const ProjectsPerRemote = ({ title, remoteType }: Props) => {
                         ]}
                     >
                         <List.Item.Meta
-                            title={<Link to={getProjectRoute(remoteType, id)}>{name}</Link>}
+                            title={<Link to={getProjectRoute(remoteType, id)}>
+                                {name} <Icon type={remoteType} />
+                            </Link>}
                             description={url}
                         />
                     </List.Item>
