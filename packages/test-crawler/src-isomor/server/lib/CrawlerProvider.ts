@@ -3,15 +3,13 @@ import {
 } from 'fs-extra';
 import { join, extname } from 'path';
 import * as md5 from 'md5';
-import axios from 'axios';
 import { groupOverlappingZone } from 'pixdiff-zone';
 
-import { CRAWL_FOLDER, PIN_FOLDER, PROJECT_FOLDER, CODE_FOLDER } from './config';
-import { addToQueue, getFilePath } from './utils';
+import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER } from './config';
+import { getFilePath } from './utils';
 
 import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList } from '../typing';
 import { crawl } from './crawl';
-import { CrawlerMethod } from '.';
 import { CrawlerProviderBase, LOCAL } from './CrawlerProviderBase';
 
 export class CrawlerProvider extends CrawlerProviderBase {
