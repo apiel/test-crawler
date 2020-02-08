@@ -28,6 +28,7 @@ const handleDelete = (
 
 interface Props {
     projectId: string;
+    remoteType: string,
     id: string;
     url: string;
     setPins: React.Dispatch<React.SetStateAction<PageData[]>>;
@@ -39,7 +40,7 @@ interface Props {
     };
 }
 
-export const PinPage = ({ projectId, id, url, viewport, onImg, png, setPins }: Props) => (
+export const PinPage = ({ remoteType, projectId, id, url, viewport, onImg, png, setPins }: Props) => (
     <Card
         style={cardStyle}
         cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} />}
@@ -53,7 +54,7 @@ export const PinPage = ({ projectId, id, url, viewport, onImg, png, setPins }: P
                 <Icon type="delete" title={`Delete pin`} />
             </Popconfirm>,
             (<Link to={{
-                pathname: getCodeRoute(projectId, id),
+                pathname: getCodeRoute(remoteType, projectId, id),
                 state: { pattern: url }
             }}>
                 <Icon type="code" title={`Insert code while crawling`} />

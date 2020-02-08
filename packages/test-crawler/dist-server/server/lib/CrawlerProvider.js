@@ -40,7 +40,9 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
     loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
             const localProjects = yield this.readdir('', config_1.PROJECT_FOLDER, CrawlerProviderBase_1.LOCAL);
-            return Promise.all(localProjects.map(projectId => this.loadProject(projectId)));
+            return {
+                local: yield Promise.all(localProjects.map(projectId => this.loadProject(projectId))),
+            };
         });
     }
     saveProject(crawlerInput, name, projectId) {

@@ -20,8 +20,8 @@ import { getPins } from '../server/service';
 const { Title } = Typography;
 
 export const Pins = ({
-    match: { params: { projectId } },
-}: RouteComponentProps<{ projectId: string }>) => {
+    match: { params: { projectId, remoteType } },
+}: RouteComponentProps<{ projectId: string, remoteType: string }>) => {
     const { result, error, setResult: setPins } = useAsync<PageData[]>(
         () => getPins(projectId)
     );
@@ -32,7 +32,7 @@ export const Pins = ({
     return (
         <>
             <Title level={3}>Pins</Title>
-            <ProjectName projectId={projectId} />
+            <ProjectName projectId={projectId} remoteType={remoteType} />
             <Search response={result}>
                 {(pins) => pins ? (
                     <Masonry
@@ -50,6 +50,7 @@ export const Pins = ({
                                 png={png}
                                 viewport={viewport}
                                 onImg={onMasonryImg}
+                                remoteType={remoteType}
                             />
                         ))}
                     </Masonry>

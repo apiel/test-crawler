@@ -15,9 +15,10 @@ import { useAsync } from '../hook/useAsync';
 const { Title, Text } = Typography;
 
 interface Props {
+    remoteType: string;
     projectId: string;
 }
-export const Codes = ({ projectId }: Props) => {
+export const Codes = ({ projectId, remoteType }: Props) => {
     const { error, result } = useAsync<CodeInfoList>(() => getCodes(projectId));
     if (error) {
         return <ErrorHandler description={error.toString()} />;
@@ -34,14 +35,14 @@ export const Codes = ({ projectId }: Props) => {
                         renderItem={({ id, name, pattern }) => (
                             <List.Item
                                 actions={[
-                                    <Link to={getCodeRoute(projectId, id)}>
+                                    <Link to={getCodeRoute(remoteType, projectId, id)}>
                                         Edit
                                     </Link>,
                                 ]}
                             >
                                 <List.Item.Meta
                                     title={
-                                        <Link to={getCodeRoute(projectId, id)}>
+                                        <Link to={getCodeRoute(remoteType, projectId, id)}>
                                             {name} <Text code>{pattern}</Text>
                                         </Link>
                                     }
@@ -52,7 +53,7 @@ export const Codes = ({ projectId }: Props) => {
                     : <Spin />
             }
             <br />
-            <Link to={getCodeRoute(projectId, Math.floor(Date.now() / 1000).toString())}>
+            <Link to={getCodeRoute(remoteType, projectId, Math.floor(Date.now() / 1000).toString())}>
                 <Button icon="plus" size="small">New code</Button>
             </Link>
         </>

@@ -20,10 +20,11 @@ import { Codes } from '../code/Codes';
 const onStart = (
     history: History<any>,
     projectId: string,
+    remoteType: string,
 ) => async () => {
     try {
         const timestamp = await startCrawler(projectId);
-        history.push(getResultsRoute(projectId, timestamp));
+        history.push(getResultsRoute(remoteType, projectId, timestamp));
     } catch (error) {
         notification['error']({
             message: 'Something went wrong!',
@@ -54,9 +55,9 @@ const getCrawlerStatusIcon = (diffZoneCount: number, errorCount: number, status:
 }
 
 export const Project = ({
-    match: { params: { projectId } },
+    match: { params: { projectId, remoteType } },
     history,
-}: RouteComponentProps<{ projectId: string }>) => {
+}: RouteComponentProps<{ projectId: string, remoteType: string }>) => {
     const { project, setProject } = useProject(projectId);
     const { crawlers, loading } = useCrawlers(projectId);
     return (
@@ -71,7 +72,8 @@ export const Project = ({
                     {project.crawlerInput.method === 'urls'
                         ? <> <Icon type="ordered-list" /> URLs list</>
                         : <> <Icon type="radar-chart" /> Spider bot
-                            {!!project.crawlerInput.limit && <span style={{ color: '#999', fontSize: 12 }}> (Limit: {project.crawlerInput.limit})</span>}
+                            {!!project.crawlerInput.limit &&
+                                <span style={{ color: '#999', fontSize: 12 }}> (Limit: {project.crawlerInput.limit})</span>}
                         </>
                     }
                 </p>
@@ -87,11 +89,11 @@ export const Project = ({
                     <Button
                         icon="caret-right"
                         size="small"
-                        onClick={onStart(history, projectId)}
+                        onClick={onStart(history, projectId, remoteType)}
                     >
                         Run
                     </Button> &nbsp;
-                    <Link to={getPinsRoute(projectId)}>
+                    <Link to={getPinsRoute(remoteType, projectId)}>
                         <Button
                             icon="pushpin"
                             size="small"
@@ -108,14 +110,14 @@ export const Project = ({
                     renderItem={({ timestamp, diffZoneCount, errorCount, status, inQueue }) => (
                         <List.Item
                             actions={[
-                                <Link to={getResultsRoute(projectId, timestamp)}>
+                                <Link to={getResultsRoute(remoteType, projectId, timestamp)}>
                                     Open
                                 </Link>,
                             ]}
                         >
                             <List.Item.Meta
                                 title={
-                                    <Link to={getResultsRoute(projectId, timestamp)}>
+                                    <Link to={getResultsRoute(remoteType, projectId, timestamp)}>
                                         {timestampToString(timestamp)}
                                     </Link>}
                                 description={<>
@@ -128,7 +130,7 @@ export const Project = ({
                 />
             </>}
             <br />
-            <Codes projectId={projectId} />
+            <Codes projectId={projectId} remoteType={remoteType} />
         </>
     );
 }

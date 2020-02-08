@@ -11,8 +11,8 @@ import { Crawler } from '../server/typing';
 import { getCrawler } from '../server/service';
 
 export const CrawlerResults = ({
-    match: { params: { timestamp, projectId } },
-}: RouteComponentProps<{ timestamp: string, projectId: string }>) => {
+    match: { params: { timestamp, projectId, remoteType } },
+}: RouteComponentProps<{ timestamp: string, projectId: string, remoteType: string }>) => {
     const { result: crawler, error, setResult: setCrawler } = useAsync<Crawler>(
         () => getCrawler(projectId, timestamp)
     );
@@ -26,7 +26,12 @@ export const CrawlerResults = ({
     const lastUpdate = crawler?.lastUpdate;
     return crawler ? (
         <>
-            <CrawlerInfo crawler={crawler} projectId={projectId} setCrawler={setCrawler} />
+            <CrawlerInfo
+                crawler={crawler}
+                projectId={projectId}
+                remoteType={remoteType}
+                setCrawler={setCrawler}
+            />
             <Pages timestamp={timestamp} lastUpdate={lastUpdate!} projectId={projectId} />
         </>
     ) : <Spin />;

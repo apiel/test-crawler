@@ -69,19 +69,19 @@ const App = () => (
                 </Menu>
             </Header>
             <Breadcrumb style={{ margin: '10px 0 0 10px' }}>
-                <Route path={getProjectRoute(':projectId')} exact component={ProjectBreadcrumb} />
-                <Route path={getResultsRoute(':projectId', ':timestamp')} exact component={CrawlerResultsBreadcrumb} />
-                <Route path={getPinsRoute(':projectId')} exact component={PinsBreadcrumb} />
-                <Route path={getCodeRoute(':projectId', ':id')} exact component={CodeBreadcrumb} />
+                <Route path={getProjectRoute(':remoteType', ':projectId')} exact component={ProjectBreadcrumb} />
+                <Route path={getResultsRoute(':remoteType', ':projectId', ':timestamp')} exact component={CrawlerResultsBreadcrumb} />
+                <Route path={getPinsRoute(':remoteType', ':projectId')} exact component={PinsBreadcrumb} />
+                <Route path={getCodeRoute(':remoteType', ':projectId', ':id')} exact component={CodeBreadcrumb} />
             </Breadcrumb>
             <Content style={contentStyle}>
                 <Route path={getHomeRoute()} exact component={Projects} />
                 <Route path={getNewProjectRoute()} exact component={NewProject} />
-                <Route path={getPinsRoute(':projectId')} exact component={Pins} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
-                <Route path={getCodeRoute(':projectId', ':id')} exact component={Code} />
-                <Route path={getResultsRoute(':projectId', ':timestamp')} component={CrawlerResults} />
-                <Route path={getProjectRoute(':projectId')} exact component={Project} />
+                <Route path={getPinsRoute(':remoteType', ':projectId')} exact component={Pins} />
+                <Route path={getCodeRoute(':remoteType', ':projectId', ':id')} exact component={Code} />
+                <Route path={getResultsRoute(':remoteType', ':projectId', ':timestamp')} component={CrawlerResults} />
+                <Route path={getProjectRoute(':remoteType', ':projectId')} exact component={Project} />
             </Content>
         </Layout>
     </Router>

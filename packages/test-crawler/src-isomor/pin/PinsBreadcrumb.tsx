@@ -5,14 +5,14 @@ import { getHomeRoute, getProjectRoute, getPinsRoute } from '../routes';
 import { useProject } from '../projects/useProject';
 
 export const PinsBreadcrumb = ({
-    match: { params: { projectId } },
-}: RouteComponentProps<{ projectId: string }>) => {
+    match: { params: { projectId, remoteType } },
+}: RouteComponentProps<{ projectId: string, remoteType: string }>) => {
     const { project } = useProject(projectId);
     return (
         <>
             <Breadcrumb.Item><Link to={getHomeRoute()}>Projects</Link></Breadcrumb.Item>
-            <Breadcrumb.Item><Link to={getProjectRoute(projectId)}>{project?.name}</Link></Breadcrumb.Item>
-            <Breadcrumb.Item><Link to={getPinsRoute(projectId)}>Pins</Link></Breadcrumb.Item>
+            <Breadcrumb.Item><Link to={getProjectRoute(remoteType, projectId)}>{project?.name}</Link></Breadcrumb.Item>
+            <Breadcrumb.Item><Link to={getPinsRoute(remoteType, projectId)}>Pins</Link></Breadcrumb.Item>
         </>
     );
 }

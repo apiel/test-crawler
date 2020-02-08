@@ -5,14 +5,14 @@ import { getHomeRoute, getProjectRoute, getCodeRoute } from '../routes';
 import { useProject } from '../projects/useProject';
 
 export const CodeBreadcrumb = ({
-    match: { params: { projectId, id } },
-}: RouteComponentProps<{ projectId: string, id: string }>) => {
+    match: { params: { projectId, id, remoteType } },
+}: RouteComponentProps<{ projectId: string, id: string, remoteType: string }>) => {
     const { project } = useProject(projectId);
     return (
         <>
             <Breadcrumb.Item><Link to={getHomeRoute()}>Projects</Link></Breadcrumb.Item>
-            <Breadcrumb.Item><Link to={getProjectRoute(projectId)}>{project?.name}</Link></Breadcrumb.Item>
-            <Breadcrumb.Item><Link to={getCodeRoute(projectId, id)}>Code</Link></Breadcrumb.Item>
+            <Breadcrumb.Item><Link to={getProjectRoute(remoteType, projectId)}>{project?.name}</Link></Breadcrumb.Item>
+            <Breadcrumb.Item><Link to={getCodeRoute(remoteType, projectId, id)}>Code</Link></Breadcrumb.Item>
         </>
     );
 }

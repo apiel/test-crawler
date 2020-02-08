@@ -13,6 +13,7 @@ import {
     Project,
     Code,
     CodeInfoList,
+    Projects,
 } from './typing';
 
 const crawlerProvider = new CrawlerProvider();
@@ -26,7 +27,7 @@ export function loadProject(projectId: string): Promise<Project> {
     return crawlerProvider.loadProject(projectId);
 }
 
-export function loadProjects(): Promise<Project[]> {
+export function loadProjects(): Promise<Projects> {
     return crawlerProvider.loadProjects();
 }
 

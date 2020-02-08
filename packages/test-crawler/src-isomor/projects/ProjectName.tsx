@@ -5,15 +5,17 @@ import { useProject } from './useProject';
 
 interface Props {
     projectId: string;
+    remoteType: string;
 }
 
 export const ProjectName = ({
-    projectId
+    projectId,
+    remoteType,
 }: Props) => {
     const { project } = useProject(projectId);
     return !project ? null : (
         <p>
-            <b>Project:</b> <Link to={getProjectRoute(project.id)}>
+            <b>Project:</b> <Link to={getProjectRoute(remoteType, project.id)}>
                 {project.name}
             </Link>
         </p>

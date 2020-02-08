@@ -29,9 +29,9 @@ const setSource = (
     })
 }
 
-type Props = RouteComponentProps<{ id: string, projectId: string }>;
+type Props = RouteComponentProps<{ id: string, projectId: string, remoteType: string }>;
 
-export const Code = ({ match: { params: { id, projectId } }, location }: Props) => {
+export const Code = ({ match: { params: { id, projectId, remoteType } }, location }: Props) => {
     const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(projectId, id));
     if (error) {
         return <ErrorHandler description={error.toString()} />;
@@ -46,7 +46,7 @@ export const Code = ({ match: { params: { id, projectId } }, location }: Props) 
                 code ? (
                     <Form>
                         <CodeInfo />
-                        <ProjectName projectId={projectId} />
+                        <ProjectName projectId={projectId} remoteType={remoteType} />
                         <CodeForm
                             projectId={projectId}
                             id={id}

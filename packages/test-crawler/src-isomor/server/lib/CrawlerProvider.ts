@@ -8,7 +8,7 @@ import { groupOverlappingZone } from 'pixdiff-zone';
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER, ROOT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, Projects } from '../typing';
 import { crawl } from './crawl';
 import { CrawlerProviderBase, LOCAL } from './CrawlerProviderBase';
 
@@ -23,11 +23,13 @@ export class CrawlerProvider extends CrawlerProviderBase {
         return this.readJSON(projectId, this.join(projectId, `project.json`), LOCAL);
     }
 
-    async loadProjects(): Promise<Project[]> {
+    async loadProjects(): Promise<Projects> {
         const localProjects = await this.readdir('', PROJECT_FOLDER, LOCAL); // to get list of the root folder
-        return Promise.all(
-            localProjects.map(projectId => this.loadProject(projectId)),
-        );
+        return {
+            local: await Promise.all(
+                localProjects.map(projectId => this.loadProject(projectId)),
+            ),
+        }
     }
 
     async saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {

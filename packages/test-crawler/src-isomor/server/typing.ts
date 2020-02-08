@@ -62,6 +62,8 @@ export interface Project {
     remote?: RemoteGitHub; // to remove?
 }
 
+export type Projects = {[key: string]: Project[]};
+
 export interface Crawler extends CrawlerInput {
     id: string;
     timestamp: string;
