@@ -22,14 +22,15 @@ import { DiffImageWithZone } from '../diff/DiffImageWithZone';
 import { useAsync } from '../hook/useAsync';
 
 interface Props {
+    remoteType: string;
     projectId: string;
     timestamp: string;
     lastUpdate: number;
 }
 
-export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
+export const Pages = ({ projectId, timestamp, lastUpdate, remoteType }: Props) => {
     const { result: pages, error, setResult: setPages } = useAsync<PageData[]>(
-        () => getPages(projectId, timestamp),
+        () => getPages(remoteType, projectId, timestamp),
         [lastUpdate],
     );
     if (error) {
@@ -50,6 +51,7 @@ export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
                                 key={id}
                                 style={cardStyle}
                                 cover={png && <DiffImageWithZone
+                                    remoteType={remoteType}
                                     projectId={projectId}
                                     folder={timestamp}
                                     id={id}
@@ -59,7 +61,7 @@ export const Pages = ({ projectId, timestamp, lastUpdate }: Props) => {
                                     setPages={setPages}
                                     marginLeft={cardImgMargin}
                                 />}
-                                actions={PagesActions({ setPages, projectId, id, timestamp, png, url, pageError })}
+                                actions={PagesActions({ remoteType, setPages, projectId, id, timestamp, png, url, pageError })}
                             >
                                 <Page url={url} pageError={pageError} png={png} />
                             </Card>

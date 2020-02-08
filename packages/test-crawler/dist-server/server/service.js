@@ -29,72 +29,72 @@ function saveProject(crawlerInput, name, projectId) {
     return crawlerProvider.saveProject(crawlerInput, name, projectId);
 }
 exports.saveProject = saveProject;
-function getCrawler(projectId, timestamp) {
+function getCrawler(remoteType, projectId, timestamp) {
     return crawlerProvider.getCrawler(projectId, timestamp);
 }
 exports.getCrawler = getCrawler;
-function getCrawlers(projectId) {
+function getCrawlers(remoteType, projectId) {
     return crawlerProvider.getAllCrawlers(projectId);
 }
 exports.getCrawlers = getCrawlers;
-function getPages(projectId, timestamp) {
+function getPages(remoteType, projectId, timestamp) {
     return crawlerProvider.getPages(projectId, timestamp);
 }
 exports.getPages = getPages;
-function getPins(projectId) {
+function getPins(remoteType, projectId) {
     return crawlerProvider.getPins(projectId);
 }
 exports.getPins = getPins;
-function getPin(projectId, id) {
+function getPin(remoteType, projectId, id) {
     return crawlerProvider.getPin(projectId, id);
 }
 exports.getPin = getPin;
-function setCode(projectId, code) {
+function setCode(remoteType, projectId, code) {
     return crawlerProvider.saveCode(projectId, code);
 }
 exports.setCode = setCode;
-function getCode(projectId, id) {
+function getCode(remoteType, projectId, id) {
     return crawlerProvider.loadCode(projectId, id);
 }
 exports.getCode = getCode;
-function getCodes(projectId) {
+function getCodes(remoteType, projectId) {
     return crawlerProvider.getCodeList(projectId);
 }
 exports.getCodes = getCodes;
-function getThumbnail(projectId, folder, id, width = 300) {
+function getThumbnail(remoteType, projectId, folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const image = yield crawlerProvider.image(projectId, folder, id);
         return `data:image/png;base64, ${(image).toString('base64')}`;
     });
 }
 exports.getThumbnail = getThumbnail;
-function removePin(projectId, id) {
+function removePin(remoteType, projectId, id) {
     return crawlerProvider.removeFromPins(projectId, id);
 }
 exports.removePin = removePin;
-function pin(projectId, timestamp, id) {
+function pin(remoteType, projectId, timestamp, id) {
     return crawlerProvider.copyToPins(projectId, timestamp, id);
 }
 exports.pin = pin;
-function setZoneStatus(projectId, timestamp, id, index, status) {
+function setZoneStatus(remoteType, projectId, timestamp, id, index, status) {
     return __awaiter(this, void 0, void 0, function* () {
         yield crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
-        return getPages(projectId, timestamp);
+        return getPages(remoteType, projectId, timestamp);
     });
 }
 exports.setZoneStatus = setZoneStatus;
-function setZonesStatus(projectId, timestamp, id, status) {
+function setZonesStatus(remoteType, projectId, timestamp, id, status) {
     return __awaiter(this, void 0, void 0, function* () {
         yield crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
-        return getPages(projectId, timestamp);
+        return getPages(remoteType, projectId, timestamp);
     });
 }
 exports.setZonesStatus = setZonesStatus;
-function setStatus(projectId, timestamp, status) {
+function setStatus(remoteType, projectId, timestamp, status) {
     return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 exports.setStatus = setStatus;
-function startCrawler(projectId) {
+function startCrawler(remoteType, projectId) {
     const { push } = this;
     return crawlerProvider.startCrawler(projectId, push);
 }

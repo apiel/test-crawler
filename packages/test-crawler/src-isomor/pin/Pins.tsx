@@ -23,7 +23,7 @@ export const Pins = ({
     match: { params: { projectId, remoteType } },
 }: RouteComponentProps<{ projectId: string, remoteType: string }>) => {
     const { result, error, setResult: setPins } = useAsync<PageData[]>(
-        () => getPins(projectId)
+        () => getPins(remoteType, projectId)
     );
     if (error) {
         return <ErrorHandler description={error.toString()} />;

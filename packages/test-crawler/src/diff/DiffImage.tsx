@@ -8,6 +8,7 @@ import {
 import { getThumbnail } from '../server/service';
 
 export interface Props {
+    remoteType: string;
     projectId: string;
     folder: string;
     id: string;
@@ -17,6 +18,7 @@ export interface Props {
 };
 
 export const DiffImage = ({
+    remoteType,
     projectId,
     folder,
     id,
@@ -26,7 +28,7 @@ export const DiffImage = ({
 }: Props & React.PropsWithChildren<any>) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(projectId, folder, id, width));
+        setThumb(await getThumbnail(remoteType, projectId, folder, id, width));
         onImg();
     }
     useEffect(() => { load(); }, []);

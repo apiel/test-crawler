@@ -55,7 +55,7 @@ export const CrawlerInfo = ({
         <>
             <Title level={3}>{timestampToString(timestamp)}</Title>
             {(diffZoneCount > 0 || errorCount > 0)
-                && <p><SwitchStatus setCrawler={setCrawler} projectId={projectId} status={status} timestamp={timestamp} /></p>}
+                && <p><SwitchStatus remoteType={remoteType} setCrawler={setCrawler} projectId={projectId} status={status} timestamp={timestamp} /></p>}
             <ProjectName projectId={projectId} remoteType={remoteType} />
             <p><b>URL:</b> {url}</p>
             <p><b>Screen:</b> {screen}</p>

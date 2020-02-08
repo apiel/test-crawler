@@ -16,12 +16,13 @@ import { getViewportName } from '../viewport';
 import { removePin } from '../server/service';
 
 const handleDelete = (
+    remoteType: string,
     projectId: string,
     id: string,
     setPins: React.Dispatch<React.SetStateAction<PageData[]>>,
 ) => async () => {
     const hide = message.loading('Delete in progress..', 0);
-    const pins = await removePin(projectId, id);
+    const pins = await removePin(remoteType, projectId, id);
     setPins(pins);
     hide();
 }
@@ -47,7 +48,7 @@ export const PinPage = ({ remoteType, projectId, id, url, viewport, onImg, png, 
         actions={[
             <Popconfirm
                 title="Are you sure delete this pin?"
-                onConfirm={handleDelete(projectId, id, setPins)}
+                onConfirm={handleDelete(remoteType, projectId, id, setPins)}
                 okText="Yes"
                 cancelText="No"
             >

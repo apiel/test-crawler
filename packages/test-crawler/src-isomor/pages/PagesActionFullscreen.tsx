@@ -14,6 +14,7 @@ const onCancel = (setVisible: React.Dispatch<React.SetStateAction<boolean>>) => 
 }
 
 interface Props {
+    remoteType: string;
     projectId: string;
     timestamp: string;
     id: string;
@@ -26,7 +27,7 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
-export const PagesActionFullscreen = ({ setPages, projectId, timestamp, id, png, url, pageError }: Props) => {
+export const PagesActionFullscreen = ({ remoteType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => {
     const [visible, setVisible] = React.useState<boolean>(false);
     return (
         <>
@@ -39,6 +40,7 @@ export const PagesActionFullscreen = ({ setPages, projectId, timestamp, id, png,
             >
                 <div style={{ position: "relative" }}>
                     <DiffImageWithZone
+                        remoteType={remoteType}
                         setPages={setPages}
                         projectId={projectId}
                         folder={timestamp}

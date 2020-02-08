@@ -23,7 +23,7 @@ const onStart = (
     remoteType: string,
 ) => async () => {
     try {
-        const timestamp = await startCrawler(projectId);
+        const timestamp = await startCrawler(remoteType, projectId);
         history.push(getResultsRoute(remoteType, projectId, timestamp));
     } catch (error) {
         notification['error']({
@@ -59,7 +59,7 @@ export const Project = ({
     history,
 }: RouteComponentProps<{ projectId: string, remoteType: string }>) => {
     const { project, setProject } = useProject(projectId);
-    const { crawlers, loading } = useCrawlers(projectId);
+    const { crawlers, loading } = useCrawlers(remoteType, projectId);
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>

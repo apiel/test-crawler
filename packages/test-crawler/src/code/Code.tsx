@@ -32,7 +32,7 @@ const setSource = (
 type Props = RouteComponentProps<{ id: string, projectId: string, remoteType: string }>;
 
 export const Code = ({ match: { params: { id, projectId, remoteType } }, location }: Props) => {
-    const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(projectId, id));
+    const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(remoteType, projectId, id));
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
@@ -53,6 +53,7 @@ export const Code = ({ match: { params: { id, projectId, remoteType } }, locatio
                             code={code}
                             setSource={setSource(code, setCode)}
                             location={location}
+                            remoteType={remoteType}
                         />
                         <AceEditor
                             mode="javascript"

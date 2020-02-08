@@ -6,13 +6,14 @@ import { setStatus } from '../server/service';
 import { Crawler } from '../server/typing';
 
 const onChange = (
+    remoteType: string,
     projectId: string,
     timestamp: string,
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>,
 ) => async (value: boolean) => {
     try {
         const status = value ? 'done' : 'review';
-        const crawler = await setStatus(projectId, timestamp, status);
+        const crawler = await setStatus(remoteType, projectId, timestamp, status);
         setCrawler(crawler);
         message.success(`Status set to "${status}".`, 2);
     } catch (error) {
@@ -24,16 +25,17 @@ const onChange = (
 }
 
 interface Props {
+    remoteType: string;
     projectId: string;
     timestamp: string;
     status: string;
     setCrawler: React.Dispatch<React.SetStateAction<Crawler>>;
 }
-export const SwitchStatus = ({ timestamp, status, projectId, setCrawler }: Props) => {
+export const SwitchStatus = ({ remoteType, timestamp, status, projectId, setCrawler }: Props) => {
     return <Switch
         checkedChildren="done"
         unCheckedChildren="review"
         checked={status === 'done'}
-        onChange={onChange(projectId, timestamp, setCrawler)}
+        onChange={onChange(remoteType, projectId, timestamp, setCrawler)}
     />;
 }

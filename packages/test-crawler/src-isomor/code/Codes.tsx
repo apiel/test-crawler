@@ -19,7 +19,7 @@ interface Props {
     projectId: string;
 }
 export const Codes = ({ projectId, remoteType }: Props) => {
-    const { error, result } = useAsync<CodeInfoList>(() => getCodes(projectId));
+    const { error, result } = useAsync<CodeInfoList>(() => getCodes(remoteType, projectId));
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }

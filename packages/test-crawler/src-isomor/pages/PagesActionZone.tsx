@@ -6,10 +6,10 @@ import { setZonesStatus } from '../server/service';
 import { PageData } from '../server/typing';
 
 const onClick = (
-    { timestamp, id, status, projectId, setPages }: Props,
+    { timestamp, id, status, projectId, setPages, remoteType }: Props,
 ) => async () => {
     try {
-        const pages = await setZonesStatus(projectId, timestamp.toString(), id, status);
+        const pages = await setZonesStatus(remoteType, projectId, timestamp.toString(), id, status);
         setPages(pages);
         message.success(`All zone are set to "${status}".`, 2);
     } catch (error) {
@@ -21,6 +21,7 @@ const onClick = (
 }
 
 interface Props {
+    remoteType: string;
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
     projectId: string;
     timestamp: string;

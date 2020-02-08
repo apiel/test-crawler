@@ -17,6 +17,7 @@ https://developer.github.com/v3/guides/basics-of-authentication/
 we might use token for simple solution but it would have some security issue since token would be stored in browser
 the second auth options would be to create create an app, more complicated to setup for the user but more safe.
 
+should we call remoteType -> storageType
 
 
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)

@@ -16,15 +16,16 @@ interface Props {
     timestamp: string;
     id: string;
     projectId: string;
+    remoteType: string;
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
 const onSetStatus = (
     status: string,
-    { timestamp, id, index, projectId, setPages }: Props,
+    { timestamp, id, index, projectId, setPages, remoteType }: Props,
 ) => async () => {
     try {
-        const pages = await setZoneStatus(projectId, timestamp, id, index, status);
+        const pages = await setZoneStatus(remoteType, projectId, timestamp, id, index, status);
         setPages(pages);
         message.success('Page pinned as reference for comparison.', 2);
     } catch (error) {

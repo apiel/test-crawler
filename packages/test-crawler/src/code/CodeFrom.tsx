@@ -27,6 +27,7 @@ const onPlay = () => {
 }
 
 const save = async (
+    remoteType: string,
     projectId: string,
     id: string,
     source: string,
@@ -34,7 +35,7 @@ const save = async (
 ) => {
     try {
         const hide = message.loading('Saving in progress..', 0);
-        await setCode(projectId, {
+        await setCode(remoteType, projectId, {
             id,
             source,
             ...info,
@@ -50,6 +51,7 @@ const save = async (
 }
 
 const handleSubmit = (
+    remoteType: string,
     projectId: string,
     id: string,
     source: string,
@@ -58,12 +60,13 @@ const handleSubmit = (
     event.preventDefault();
     validateFields((err: any, info: FormInput) => {
         if (!err) {
-            save(projectId, id, source, info);
+            save(remoteType, projectId, id, source, info);
         }
     });
 }
 
 type Props = FormComponentProps & {
+    remoteType: string;
     projectId: string;
     id: string;
     code: Code;
@@ -72,6 +75,7 @@ type Props = FormComponentProps & {
 };
 
 const CodeFormComponent = ({
+    remoteType,
     projectId,
     setSource,
     id,
@@ -80,7 +84,7 @@ const CodeFormComponent = ({
     location: { state },
 }: Props) => {
     return (
-        <Form onSubmit={handleSubmit(projectId, id, code.source, validateFields)}>
+        <Form onSubmit={handleSubmit(remoteType, projectId, id, code.source, validateFields)}>
             <Form.Item style={inputStyle}>
                 {getFieldDecorator('name', {
                     initialValue: code.name || '',

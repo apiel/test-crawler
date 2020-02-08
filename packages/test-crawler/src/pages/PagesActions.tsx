@@ -6,6 +6,7 @@ import PagesActionPin from './PagesActionPin';
 import { PagesActionFullscreen } from './PagesActionFullscreen';
 
 interface Props {
+    remoteType: string;
     projectId: string;
     timestamp: string;
     id: string;
@@ -18,10 +19,10 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
-export const PagesActions = ({ setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
-    ...[png && <PagesActionFullscreen setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
-    <PagesActionZone type="check" setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
-    <PagesActionZone type="warning" setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
-    <PagesActionPin projectId={projectId} timestamp={timestamp} id={id} />,
+export const PagesActions = ({ remoteType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
+    ...[png && <PagesActionFullscreen remoteType={remoteType} setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
+    <PagesActionZone remoteType={remoteType} type="check" setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
+    <PagesActionZone remoteType={remoteType} type="warning" setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
+    <PagesActionPin remoteType={remoteType} projectId={projectId} timestamp={timestamp} id={id} />,
     // <Icon type="ellipsis" title="more" />,
 ];

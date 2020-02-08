@@ -41,6 +41,7 @@ const zoneStyle = (
 }
 
 interface Props {
+    remoteType: string;
     folder: string;
     id: string;
     zone: Zone;
@@ -53,17 +54,24 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
-export const DiffZone = ({ setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
+export const DiffZone = ({ remoteType, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(projectId, 'base', id, width));
+        setThumb(await getThumbnail(remoteType, projectId, 'base', id, width));
     }
     useEffect(() => { load(); }, []);
     const [hover, setHover] = useState(false);
     const ratio = originalWidth / width;
     return (
         <Popover key={`${id}-${index}`} content={(
-            <DiffImageButtons index={index} timestamp={folder} id={id} projectId={projectId} setPages={setPages} />
+            <DiffImageButtons
+                remoteType={remoteType}
+                index={index}
+                timestamp={folder}
+                id={id}
+                projectId={projectId}
+                setPages={setPages}
+            />
         )} trigger="click">
             <div
                 style={zoneStyle(zone, ratio, width, marginLeft, thumb, hover, status) as any}
