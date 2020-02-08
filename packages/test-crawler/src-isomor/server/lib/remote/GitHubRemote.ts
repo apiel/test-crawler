@@ -1,7 +1,6 @@
 import { Remote } from './Remote';
 
 import axios, { AxiosRequestConfig } from 'axios';
-import { join } from 'path';
 import { RemoteGitHub, CrawlTarget } from '../../typing';
 
 // https://developer.github.com/v3/repos/contents/#create-or-update-a-file
