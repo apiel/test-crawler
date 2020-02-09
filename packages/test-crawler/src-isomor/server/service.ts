@@ -1,5 +1,3 @@
-import { WsContext } from 'isomor-server';
-
 import {
     CrawlerProvider,
 } from './lib';
@@ -98,11 +96,9 @@ export function setStatus(storageType: StorageType, projectId: string, timestamp
 }
 
 export function startCrawler(storageType: StorageType, projectId: string): Promise<string> {
-    const { push }: WsContext = this;
-    return crawlerProvider.startCrawler(storageType, projectId, push);
+    return crawlerProvider.startCrawler(storageType, projectId, this?.push);
 }
 
 export function startCrawlers(/*storageType: StorageType*/): Promise<void> {
-    const { push }: WsContext = this;
-    return crawlerProvider.startCrawlers(push);
+    return crawlerProvider.startCrawlers(this?.push);
 }
