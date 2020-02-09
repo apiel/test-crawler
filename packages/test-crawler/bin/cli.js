@@ -16,14 +16,16 @@ const path_1 = require("path");
 const lib_1 = require("../dist-server/server/lib");
 const crawl_1 = require("../dist-server/server/lib/crawl");
 const configs = require("../dist-server/server/lib/config");
+const storage_typing_1 = require("../dist-server/server/storage.typing");
 const lockFile = path_1.join(__dirname, '../../test-crawler.lock');
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
+        logol_1.info('Test-crawler');
         const [, , option, value] = process.argv;
         if (option && value) {
             if (option === '--project') {
                 const crawlerProvider = new lib_1.CrawlerProvider();
-                const result = yield crawlerProvider.startCrawler(value);
+                const result = yield crawlerProvider.startCrawler(storage_typing_1.StorageType.Local, value);
                 logol_1.info('Start project', result);
                 return;
             }
