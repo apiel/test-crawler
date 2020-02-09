@@ -15,7 +15,7 @@
     "cli-dev": "ts-node --project tsconfig-cli.json cli/cli.ts",
     "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && chmod +x bin/cli.js",
     "test-crawler": "test-crawler",
-    "prepublishOnly": "cp ../../README.md . && yarn isomor:build && yarn serv:build && chmod +x test-crawler.js",
+    "prepublishOnly": "cp ../../README.md . && yarn cli-build && yarn isomor:build && yarn serv:build && chmod +x test-crawler.js",
     "isomor:build": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true isomor-transpiler",
     "isomor:build:dev": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true ISOMOR_WATCH=true isomor-transpiler",
     "isomor:server": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true node ../isomor-server/dist/bin/server.js",
