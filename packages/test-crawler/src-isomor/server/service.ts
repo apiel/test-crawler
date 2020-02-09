@@ -19,6 +19,14 @@ export async function getSettings() {
     return crawlerProvider.getSettings();
 }
 
+export function getRepo(storageType: StorageType) {
+    return crawlerProvider.repo(storageType);
+}
+
+export function loadRepos(storageType: StorageType) {
+    return crawlerProvider.repos(storageType);
+}
+
 export function loadProject(storageType: StorageType, projectId: string): Promise<Project> {
     return crawlerProvider.loadProject(storageType, projectId);
 }

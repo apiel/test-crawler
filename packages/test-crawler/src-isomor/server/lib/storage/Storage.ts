@@ -2,6 +2,8 @@ import { CrawlTarget } from '../../typing';
 
 export abstract class Storage {
     abstract blob(path: string): Promise<Buffer | undefined>;
+    abstract repos(): Promise<string[] | undefined>;
+    abstract repo(): Promise<string | undefined>;
     abstract read(path: string): Promise<Buffer>;
     abstract readJSON(path: string): Promise<any>;
     abstract readdir(path: string): Promise<string[]>;

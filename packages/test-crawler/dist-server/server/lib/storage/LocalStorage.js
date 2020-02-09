@@ -66,5 +66,15 @@ class LocalStorage extends Storage_1.Storage {
     root(...path) {
         return path_1.join(config_1.ROOT_FOLDER, ...path);
     }
+    repos() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return undefined;
+        });
+    }
+    repo() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return undefined;
+        });
+    }
 }
 exports.LocalStorage = LocalStorage;

@@ -4,6 +4,16 @@ import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 import { StorageType } from '../storage.typing';
 
 export abstract class CrawlerProviderBase extends CrawlerProviderStorage {
+    repos(storageType: StorageType) {
+        const remote = this.getStorage(storageType);
+        return remote.repos();
+    }
+
+    repo(storageType: StorageType) {
+        const remote = this.getStorage(storageType);
+        return remote.repo();
+    }
+
     protected join(projectId: string, ...path: string[]) {
         return join(PROJECT_FOLDER, projectId, ...path);
     }

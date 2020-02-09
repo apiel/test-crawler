@@ -17,6 +17,14 @@ function getSettings() {
     });
 }
 exports.getSettings = getSettings;
+function getRepo(storageType) {
+    return crawlerProvider.repo(storageType);
+}
+exports.getRepo = getRepo;
+function loadRepos(storageType) {
+    return crawlerProvider.repos(storageType);
+}
+exports.loadRepos = loadRepos;
 function loadProject(storageType, projectId) {
     return crawlerProvider.loadProject(storageType, projectId);
 }

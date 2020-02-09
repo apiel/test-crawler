@@ -150,6 +150,17 @@ export class GitHubStorage extends Storage {
         }
     }
 
+    async repos() {
+        const { data } = await this.call({
+            url: `${BASE_URL}/users/${this.config?.user}/repos`,
+        });
+        return data.map(({ name }) => name) as string[];
+    }
+
+    async repo() {
+        return this.config?.repo;
+    }
+
     protected call(config: AxiosRequestConfig) {
         if (!this.config) {
             throw new Error(ERR.missingGitHubConfig);

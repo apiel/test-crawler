@@ -8,6 +8,7 @@ import { getProjectRoute } from '../routes';
 import { useProjects } from './useProjects';
 import Spin from 'antd/lib/spin';
 import { useError } from '../hook/useError';
+import { ProjectRepos } from './ProjectRepos';
 
 interface Props {
     title: string;
@@ -23,7 +24,9 @@ export const ProjectsPerRemote = ({ title, storageType }: Props) => {
     }
     return (
         <>
-            <Typography.Title level={4}>{title}</Typography.Title>
+            <Typography.Title level={4}>
+                {title} <ProjectRepos storageType={storageType} />
+            </Typography.Title>
             {loading ? <Spin /> : <List
                 itemLayout="horizontal"
                 bordered

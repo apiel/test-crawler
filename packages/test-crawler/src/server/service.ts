@@ -2,6 +2,12 @@ import { isomorRemote } from "isomor";
 export function getSettings(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getSettings", args);
 }
+export function getRepo(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getRepo", args);
+}
+export function loadRepos(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "loadRepos", args);
+}
 export function loadProject(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "loadProject", args);
 }

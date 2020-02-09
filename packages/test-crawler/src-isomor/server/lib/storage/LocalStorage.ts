@@ -69,4 +69,12 @@ export class LocalStorage extends Storage {
     root(...path: string[]) {
         return join(ROOT_FOLDER, ...path);
     }
+
+    async repos() {
+        return undefined;
+    }
+
+    async repo() {
+        return undefined;
+    }
 }

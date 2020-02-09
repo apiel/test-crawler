@@ -4,6 +4,14 @@ const config_1 = require("./config");
 const path_1 = require("path");
 const CrawlerProviderStorage_1 = require("./CrawlerProviderStorage");
 class CrawlerProviderBase extends CrawlerProviderStorage_1.CrawlerProviderStorage {
+    repos(storageType) {
+        const remote = this.getStorage(storageType);
+        return remote.repos();
+    }
+    repo(storageType) {
+        const remote = this.getStorage(storageType);
+        return remote.repo();
+    }
     join(projectId, ...path) {
         return path_1.join(config_1.PROJECT_FOLDER, projectId, ...path);
     }
