@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>test-crawler</title>
+  <meta http-equiv="X-UA-Compatible" something="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description"
+    something="test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison">
+  <meta name="viewport"
+    something="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-light bg-light navbar-expand-sm">
+    <div class="container" style="max-width: 800px;">
+      <span class="navbar-brand mb-0 h1">Test-crawler</span>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/apiel/test-crawler" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 499.36" focusable="false"
+                style="width: 1rem; height: 1rem;">
+                <title>GitHub</title>
+                <path
+                  d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z"
+                  fill="currentColor" fill-rule="evenodd" />
+              </svg></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <br />
+  <div class="container" style="max-width: 800px;">
+    <div id="content"><p>test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. Right now, it is mainly focus on visual regression testing but it will most likely support html comparison in the future.</p>
+<h2>Getting started</h2>
+<blockquote>
+<p><strong>Note:</strong> you need to use at least node v11</p>
+</blockquote>
+<pre><code class="language-bash">yarn global add test-crawler
+test-crawler
+</code></pre>
+<p>Open url <a href="http://127.0.0.1:3005/">http://127.0.0.1:3005/</a> and create a new project:</p>
+<p><img src="https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-new.png?raw=true" alt="screenshot-start" /></p>
+<p>There is two way to crawl pages:</p>
+<ul>
+<li><p><strong>Spider bot</strong> crawling method will get all the links inside the page of the given URL
+and crawl the children. It will then continue do the same with the children till no new
+link is found. Be careful if you have big website, this is most likely not the right
+solution for you.</p></li>
+<li><p><strong>URLs list</strong> crawling method will crawl a specific sets of URLs. In the URL input field
+you must provide an endpoint containing a list of URLs (a simple text format, with one URL
+per line). The crawler will crawl each of those URL only and will not try to find links in
+the page.</p></li>
+</ul>
+<p>URLs list example:</p>
+<pre><code>http://127.0.0.1:3005/
+http://127.0.0.1:3005/page1
+http://127.0.0.1:3005/category/page33
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> to don’t get false visual differences, you must run your test always on the same environment. Diffrent OS, different graphic card, … might trigger visual differences in the snapshot, even if there was no changes. Prefer to always run your tests on the same machine.</p>
+</blockquote>
+<h2>Pins</h2>
+<p>Pins are the references screenshot to make the comparison with. While crawling, the crawler is comparing page to pin. To create a pin go in the result page of your crawling result, each screenshot has some action buttons:</p>
+<p><img src="https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-action-btn.png?raw=true" alt="screenshot-action-buttons" /></p>
+<p>click on the button on the right with little pin icon.</p>
+<p>You can then visualize all your pins:</p>
+<p><img src="https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-pins.png?raw=true" alt="screenshot-pins" /></p>
+<h2>Crawling result</h2>
+<p><img src="https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-diff.png?raw=true" alt="screenshot-diff" /></p>
+<p>On the result page, you will see many screenshot with eventually some differences found. A difference is represented by a yellow rectangle. By clicking on the rectangle, popup 3 buttons giving you the possibility to report this difference (rectangle will became red) or validate this difference (rectangle will became green). You can as well validate this difference &quot;for ever&quot;, then this area of the pages will always reconize this zone as valid place for changes.</p>
+<blockquote>
+<p><strong>Note:</strong> comparing page that are growing is very difficult (different height). For the moment this result to weird behaviors when comparing 2 screenshots of different size. To avoid this, use the code injection to remove the dynamic part of the page. Hopefully in the future, we will find better algarithm to reconize such changes.</p>
+</blockquote>
+<h2>Inject code</h2>
+<p><img src="https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-code-new.png?raw=true" alt="screenshot-code" /></p>
+<p>Inject some code in the crawler while parsing the page. This code will be executed just after the page finish loaded, before to make the screenshot and before extracting the links.</p>
+<p>This can be useful to remove some dynamic part from a page, for example some comments on a blog pages or some reviews on prodcut page. You could also inject code to simulate user behavior, like clicking or editing an input fields.</p>
+<p>Test-crawler is using <a href="https://www.npmjs.com/package/puppeteer">Puppeteer</a> to crawl the page and make the screenshot. By injecting the code, you can use all the functionnalities from Puppeteer.</p>
+<p>In the editor, you need to export a function that will get as params the page currently opened by Puppeteer.</p>
+<pre><code class="language-js">module.exports = async function run(page) {
+// your code
+}
+</code></pre>
+<p>You can then use this <code>page</code> variable to manipulate the page. Following is an example that will insert “Test-crawler is awesome!” on the top of the page:</p>
+<pre><code class="language-js">module.exports = async function run(page) {
+    await page.evaluate(() =&gt; {
+        const div = document.createElement(&quot;div&quot;);
+        div.innerHTML = &quot;Test-crawler is awesome!&quot;;
+        document.body.insertBefore(div, document.body.firstChild);
+    });
+}
+</code></pre>
+<p>You can as well make some assertion. Any failed assertion will be displayed in the result page.</p>
+<p><img src="https://github.com/apiel/test-crawler/blob/master/screenshots/screenshot-assertion.png?raw=true" alt="screenshot-assertion" /></p>
+<pre><code class="language-js">const expect = require('expect');
+
+module.exports = async function run(page) {
+  await expect(page.title()).resolves.toMatch('React App');
+  expect('a').toBe('b'); // fail
+}
+</code></pre>
+<p>By default <code>expect</code> library from <a href="https://jestjs.io/docs/en/expect.html">jest</a> is installed but you can use any library of your choice.</p>
+<h2>Storybook</h2>
+<p>You can use code injection to crawl storybooks. Say test-crawler to crawl your storybook url <a href="http://127.0.0.1:6006/">http://127.0.0.1:6006/</a> and then inject some code to extract the urls of the stories and transform them to there iframe version. The code should be something like that:</p>
+<pre><code class="language-js">module.exports = async function run(page) {
+    await page.evaluate(() =&gt; {
+        hrefs = Array.from(document.links).map(
+            link =&gt; link.href.replace('/?', '/iframe.html?')
+        );
+
+        document.body.innerHTML = hrefs.map(
+            href =&gt; `&lt;a href=&quot;${href}&quot;&gt;${href}&lt;/a&gt;`
+        ).join('&lt;br /&gt;');
+    });
+}
+</code></pre>
+<p>You can find this code by clicking the button <code>Code snippet</code> of the code editor.</p>
+<blockquote>
+<p><strong>Note:</strong> feel free to make some pull request to propose some new code snippet.</p>
+</blockquote>
+<h2>Cli</h2>
+<p>You can run test directly from the cli. This can be useful for continuous integration test.</p>
+<pre><code class="language-bash"># test-crawler-cli --project the_id_of_the_project
+test-crawler-cli --project f0258b6685684c113bad94d91b8fa02a
+</code></pre>
+<h2>Continuous integration Travis</h2>
+<p>As mentioned before, to don’t get false visual differences, you must run your test always on the same environment. Travis CI is a hosted, distributed continuous integration service, that would allow you
+to run your visual regression test, with the same environment between each build. It is also easy
+to integrate with your git repository like GitHub.</p>
+<p>The workflow would be the following:</p>
+<ul>
+<li>changes are pushed to repository</li>
+<li>Travis detect new commit and trigger a build</li>
+<li>app is launched on the container</li>
+<li>Travis run test-crawler-cli to check for difference</li>
+<li>if difference, build fail and Travis push diff to the repository</li>
+<li>pull diff locally and run test-crawler to see the diff</li>
+</ul>
+<p><code>.travis.yml</code> example:</p>
+<pre><code class="language-yml">language: node_js
+
+node_js:
+  - 'node'
+
+branches:
+  only:
+  - master
+
+install:
+  - git config --global user.email &quot;build@travis-ci.com&quot;
+  - git config --global user.name &quot;Travis CI&quot;
+  # we should be able to take this from env var
+  - GH_REPO=&quot;github.com/your_user_name/the_repo.git&quot;
+
+script:
+  - yarn
+  - yarn start &gt; /dev/null &amp;
+  - sleep 15 # wait that the server run
+  - yarn test:crawler:cli
+
+# only push change if found diff
+after_failure:
+  - git checkout ${TRAVIS_BRANCH}
+  - git add -A .
+  - git commit -m &quot;travis commit, test-crawler [ci skip]&quot; # [ci skip] to don't trigger another build
+  - git status
+  - git pull
+  - git push &quot;https://${GITHUB_TOKEN}@${GH_REPO}&quot; ${TRAVIS_BRANCH} &gt; /dev/null 2&gt;&amp;1 # should always escape output, for security issue, else token could be visible
+</code></pre>
+<p>To set GITHUB_TOKEN environment variable look at <a href="https://docs.travis-ci.com/user/deployment/pages/">https://docs.travis-ci.com/user/deployment/pages/</a></p>
+<p>in <code>package.json</code> add the following scripts:</p>
+<pre><code class="language-json">  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;...&quot;,
+    &quot;test:crawler&quot;: &quot;PROJECT_FOLDER=./test-crawler test-crawler&quot;,
+    &quot;test:crawler:cli&quot;: &quot;PROCESS_TIMEOUT=10 PROJECT_FOLDER=./test-crawler test-crawler-cli --project here_is_the_project_id&quot;
+  }
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> For <code>test-crawler-cli</code> and project, see previous section.</p>
+</blockquote>
+<h2>Contribution</h2>
+<p>If you are interested to work on this project, you are really welcome.
+There is many way to bring help, testing, documentation, bug fixes, new features…</p>
+<p>For the one who to dive in the code, you need to know about TypeScript, React and eventually Puppeteer but <strong>the most important thing to be aware is that test-crawler is base on <a href="https://www.npmjs.com/package/isomor">isomor</a></strong>. It might be useful to undertsand the concept of this tool before to touch the code.</p>
+<p>Since you was reading the doc, you now know that the code should be modified in &quot;src-isomor&quot;.</p>
+<p>To start the project in dev mode:</p>
+<pre><code class="language-shell">git clone https://github.com/apiel/test-crawler.git
+cd test-crawler
+npx lerna bootstrap
+cd packages/test-crawler
+yarn dev
+</code></pre>
+<p><code>yarn dev</code> will start 3 processes using <a href="https://www.npmjs.com/package/run-screen">run-screen</a>. The first process is the isomor-transpiler, the second is the backend server and the third is react server. To switch between process, press 1, 2 or 3.</p>
+<p>If you have any question, feel free to contact me at <a href="mailto:alexandre.piel@gmail.com">alexandre.piel@gmail.com</a></p>
+</div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

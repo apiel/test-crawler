@@ -6,7 +6,7 @@
   "author": "Alexandre Piel <alexandre.piel@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "doc": "docsify serve ."
+    "doc": "npx remarkable README.md > templates/readme.html && node templates/doc.js"
   },
   "dependencies": {
     "lerna": "^3.13.1"
