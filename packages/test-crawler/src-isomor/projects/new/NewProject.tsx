@@ -118,7 +118,8 @@ const NewProject = ({ history, form: { getFieldDecorator, validateFields, getFie
                         <b>URLs list</b> crawling method will crawl a specific sets of URLs. In the URL input field
                         you must provide an endpoint containing a list of URLs (a simple text format, with one URL
                         per line). The crawler will crawl each of those URL only and will not try to find links in
-                        the page.
+                        the page. To use a static list of URLs, you can use a tool 
+                        like <a href="https://pastebin.com" target="_blank" rel="noopener noreferrer">https://pastebin.com</a>.
                     </Typography.Paragraph>
                 </Info>
             </Form.Item>
