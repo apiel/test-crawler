@@ -19,6 +19,10 @@ export async function getSettings() {
     return crawlerProvider.getSettings();
 }
 
+export function getInfo(storageType: StorageType) {
+    return crawlerProvider.info(storageType);
+}
+
 export function getRepo(storageType: StorageType) {
     return crawlerProvider.repo(storageType);
 }

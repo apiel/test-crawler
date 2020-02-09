@@ -14,6 +14,11 @@ export abstract class CrawlerProviderBase extends CrawlerProviderStorage {
         return remote.repo();
     }
 
+    info(storageType: StorageType) {
+        const remote = this.getStorage(storageType);
+        return remote.info();
+    }
+
     protected join(projectId: string, ...path: string[]) {
         return join(PROJECT_FOLDER, projectId, ...path);
     }

@@ -12,6 +12,10 @@ class CrawlerProviderBase extends CrawlerProviderStorage_1.CrawlerProviderStorag
         const remote = this.getStorage(storageType);
         return remote.repo();
     }
+    info(storageType) {
+        const remote = this.getStorage(storageType);
+        return remote.info();
+    }
     join(projectId, ...path) {
         return path_1.join(config_1.PROJECT_FOLDER, projectId, ...path);
     }

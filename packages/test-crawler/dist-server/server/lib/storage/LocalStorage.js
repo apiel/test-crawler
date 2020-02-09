@@ -76,5 +76,10 @@ class LocalStorage extends Storage_1.Storage {
             return undefined;
         });
     }
+    info() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return undefined;
+        });
+    }
 }
 exports.LocalStorage = LocalStorage;

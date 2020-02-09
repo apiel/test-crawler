@@ -154,11 +154,20 @@ export class GitHubStorage extends Storage {
         const { data } = await this.call({
             url: `${BASE_URL}/users/${this.config?.user}/repos`,
         });
-        return data.map(({ name }) => name) as string[];
+        return data.map(({ name }: any) => name) as string[];
     }
 
     async repo() {
         return this.config?.repo;
+    }
+
+    async info() {
+        const { data: { rate: { limit, remaining }} } = await this.call({
+            url: `${BASE_URL}/rate_limit`,
+        });
+        return `For GitHub API requests, you can make up to 5000 requests per hour.
+        Every pages of the test-crawler UI is using multiples request at once. Your
+        current rate limit is: ${remaining} of ${limit}`;
     }
 
     protected call(config: AxiosRequestConfig) {
