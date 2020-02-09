@@ -5,6 +5,7 @@
     "test-crawler": "./test-crawler.js",
     "test-crawler-cli": "bin/cli.js"
   },
+  "homepage": "https://apiel.github.io/test-crawler/live",
   "repository": {
     "type": "git",
     "url": "https://github.com/apiel/test-crawler"
