@@ -9,6 +9,34 @@ import { ERR } from '../../error';
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
 
+const CI_Workflow = `
+name: Test-crawler CI
+
+on: [repository_dispatch]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v1
+    - name: Run test-crawler \${{ github.event.client_payload.projectId }}
+      run: |
+        ROOT_FOLDER=\`pwd\` npx -p test-crawler test-crawler-cli --project \${{ github.event.client_payload.projectId }}
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "Test-crawler"
+        git add .
+        git status
+        git commit -m "[test-crawler] CI save" || echo "No changes to commit"
+        git pull
+        git push "https://\${{ secrets.GITHUB_TOKEN }}@github.com/\${{ github.repository }}"
+`;
+
 export class GitHubStorage extends Storage {
     private config: GitHubConfig | undefined;
     constructor() {
@@ -61,17 +89,34 @@ export class GitHubStorage extends Storage {
     }
 
     async saveFile(file: string, content: string) {
-        const { data: { sha } } = await this.getContents(file);
-        const data = JSON.stringify({
-            message: `${COMMIT_PREFIX} save json`,
-            content: Buffer.from(content).toString('base64'),
-            sha,
-        });
-        await this.call({
-            method: 'PUT',
-            url: `${this.contentsUrl}/${file}`,
-            data,
-        });
+        try {
+            const sha = await this.getSha(file);
+            const data = JSON.stringify({
+                message: `${COMMIT_PREFIX} save file`,
+                content: Buffer.from(content).toString('base64'),
+                ...(sha && { sha }),
+            });
+            const { data: res } = await this.call({
+                method: 'PUT',
+                url: `${this.contentsUrl}/${file}`,
+                data,
+            });
+            console.log('result save file', res);
+        } catch (error) {
+            console.error('something went wrong in save file', error.toString());
+        }
+
+    }
+
+    protected async getSha(file: string) {
+        try {
+            const { data } = await this.getContents(file);
+            if (data?.sha) {
+                return data.sha;
+            }
+        } catch (error) {
+            console.error('something went wrong while getting sha', error.toString());
+        }
     }
 
     async saveJSON(file: string, content: any) {
@@ -86,7 +131,19 @@ export class GitHubStorage extends Storage {
     }
 
     async crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
-        throw new Error('To be implemented');
+        if (crawlTarget?.projectId) { // run only if projectId provided (but we could think to do it also id)
+            await this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
+            await this.call({
+                method: 'POST',
+                url: `${this.ciDispatchUrl}`,
+                data: {
+                    event_type: "test-crawler", // just to name the event, it has no impact on the action
+                    client_payload: {
+                        projectId: crawlTarget.projectId,
+                    }
+                },
+            });
+        }
     }
 
     protected call(config: AxiosRequestConfig) {
@@ -113,7 +170,7 @@ export class GitHubStorage extends Storage {
         return `${BASE_URL}/repos/${this.config?.user}/${this.config?.repo}/git/blobs`;
     }
 
-    // protected get repoUrl() {
-    //     return `${BASE_URL}/repos/${this.config.user}/${this.config.repo}/${PROJECT_FOLDER}`;
-    // }
+    protected get ciDispatchUrl() {
+        return `${BASE_URL}/repos/${this.config?.user}/${this.config?.repo}/dispatches`;
+    }
 }
