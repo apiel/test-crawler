@@ -4,8 +4,6 @@
 
 test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. Right now, it is mainly focus on visual regression testing but it will most likely support html comparison in the future.
 
-![screenshot-pages](https://github.com/apiel/test-crawler/blob/master/screenshots/test-crawler.gif?raw=true)
-
 ## Getting started
 
 > **Note:** you need to use at least node v11
