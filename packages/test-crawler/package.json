@@ -33,7 +33,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "github:build:static": "rm -rf src && cp -r src-isomor src && rm src/server/lib/CrawlerProviderStorage.ts && mv src/server/lib/CrawlerProviderGitHubStorage.ts src/server/lib/CrawlerProviderStorage.ts && rm src/server/storage.typing.ts && mv src/server/storageGitHub.typing.ts src/server/storage.typing.ts && rm -rf src/server/lib/crawl  && rm -rf src/server/lib/diff && rm src/server/lib/storage/LocalStorage.ts"
+    "github:build:static": "rm -rf src && cp -r src-isomor src && rm src/server/lib/CrawlerProviderStorage.ts && mv src/server/lib/CrawlerProviderGitHubStorage.ts src/server/lib/CrawlerProviderStorage.ts && rm src/server/storage.typing.ts && mv src/server/storageGitHub.typing.ts src/server/storage.typing.ts && rm -rf src/server/lib/crawl  && rm -rf src/server/lib/diff && rm src/server/lib/storage/LocalStorage.ts",
+    "github:pub": "yarn github:build:static && cp -r build/* ../../docs/live && yarn build"
   },
   "eslintConfig": {
     "extends": "react-app"
