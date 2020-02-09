@@ -77,10 +77,10 @@ const App = () => (
             </Breadcrumb>
             <Content style={contentStyle}>
                 <Route path={getHomeRoute()} exact component={Projects} />
-                <Route path={getNewProjectRoute()} exact component={NewProject} />
                 <Route path={getSettingsRoute()} exact component={Settings} />
                 <Route path={getAuthGitHubRoute()} exact component={GitHubAuth} />
 
+                <Route path={getNewProjectRoute(':storageType')} exact component={NewProject} />
                 <Route path={getPinsRoute(':storageType', ':projectId')} exact component={Pins} />
                 <Route path={getCodeRoute(':storageType', ':projectId', ':id')} exact component={Code} />
                 <Route path={getResultsRoute(':storageType', ':projectId', ':timestamp')} component={CrawlerResults} />

@@ -1,9 +1,12 @@
 import { StorageType } from './server/storage.typing';
 
 export const getHomeRoute = () => '/';
-export const getNewProjectRoute = () => '/new';
 export const getSettingsRoute = () => '/settings';
 export const getAuthGitHubRoute = () => '/auth/github';
+
+export function getNewProjectRoute<T = StorageType>(storageType: T) {
+    return `/new/${storageType}`;
+}
 export function getPinsRoute<T = StorageType>(storageType: T, projectId: string) {
     return `/pins/${storageType}/${projectId}`;
 }

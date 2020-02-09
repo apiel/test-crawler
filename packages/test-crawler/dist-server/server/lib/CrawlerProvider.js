@@ -47,7 +47,7 @@ class CrawlerProvider extends CrawlerProviderBase_1.CrawlerProviderBase {
                 projectId = md5(name);
             }
             const project = { id: projectId, name, crawlerInput };
-            yield this.saveJSON(storageType, 'project.json', project);
+            yield this.saveJSON(storageType, this.join(projectId, 'project.json'), project);
             return project;
         });
     }

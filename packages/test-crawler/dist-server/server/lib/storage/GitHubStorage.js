@@ -50,8 +50,16 @@ class GitHubStorage extends Storage_1.Storage {
     }
     readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data } = yield this.getContents(path);
-            return data.map(({ name }) => name);
+            try {
+                const { data } = yield this.getContents(path);
+                return data.map(({ name }) => name);
+            }
+            catch (error) {
+                if (error.response.status === 404) {
+                    return [];
+                }
+                throw error;
+            }
         });
     }
     blob(path) {
@@ -100,19 +108,13 @@ class GitHubStorage extends Storage_1.Storage {
     }
     saveFile(file, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const sha = yield this.getSha(file);
-                const data = JSON.stringify(Object.assign({ message: `${COMMIT_PREFIX} save file`, content: Buffer.from(content).toString('base64') }, (sha && { sha })));
-                const { data: res } = yield this.call({
-                    method: 'PUT',
-                    url: `${this.contentsUrl}/${file}`,
-                    data,
-                });
-                console.log('result save file', res);
-            }
-            catch (error) {
-                console.error('something went wrong in save file', error.toString());
-            }
+            const sha = yield this.getSha(file);
+            const data = JSON.stringify(Object.assign({ message: `${COMMIT_PREFIX} save file`, content: Buffer.from(content).toString('base64') }, (sha && { sha })));
+            yield this.call({
+                method: 'PUT',
+                url: `${this.contentsUrl}/${file}`,
+                data,
+            });
         });
     }
     getSha(file) {
@@ -125,7 +127,9 @@ class GitHubStorage extends Storage_1.Storage {
                 }
             }
             catch (error) {
-                console.error('something went wrong while getting sha', error.toString());
+                if (error.response.status !== 404) {
+                    throw error;
+                }
             }
         });
     }

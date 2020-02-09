@@ -9,6 +9,7 @@ import { ERR } from '../../error';
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
 
+// need to keep yml config in here to be able to compile it in static mode
 const CI_Workflow = `
 name: Test-crawler CI
 
@@ -45,8 +46,15 @@ export class GitHubStorage extends Storage {
     }
 
     async readdir(path: string) {
-        const { data } = await this.getContents(path);
-        return data.map(({ name }: any) => name) as string[]; // type is also available so we could filter for type === 'file'
+        try {
+            const { data } = await this.getContents(path);
+            return data.map(({ name }: any) => name) as string[]; // type is also available so we could filter for type === 'file'   
+        } catch (error) {
+            if (error.response.status === 404) {
+                return [] as string[];
+            }
+            throw error;
+        }
     }
 
     async blob(path: string) {
@@ -89,23 +97,17 @@ export class GitHubStorage extends Storage {
     }
 
     async saveFile(file: string, content: string) {
-        try {
-            const sha = await this.getSha(file);
-            const data = JSON.stringify({
-                message: `${COMMIT_PREFIX} save file`,
-                content: Buffer.from(content).toString('base64'),
-                ...(sha && { sha }),
-            });
-            const { data: res } = await this.call({
-                method: 'PUT',
-                url: `${this.contentsUrl}/${file}`,
-                data,
-            });
-            console.log('result save file', res);
-        } catch (error) {
-            console.error('something went wrong in save file', error.toString());
-        }
-
+        const sha = await this.getSha(file);
+        const data = JSON.stringify({
+            message: `${COMMIT_PREFIX} save file`,
+            content: Buffer.from(content).toString('base64'),
+            ...(sha && { sha }),
+        });
+        await this.call({
+            method: 'PUT',
+            url: `${this.contentsUrl}/${file}`,
+            data,
+        });
     }
 
     protected async getSha(file: string) {
@@ -115,7 +117,9 @@ export class GitHubStorage extends Storage {
                 return data.sha;
             }
         } catch (error) {
-            console.error('something went wrong while getting sha', error.toString());
+            if (error.response.status !== 404) {
+                throw error;
+            }
         }
     }
 

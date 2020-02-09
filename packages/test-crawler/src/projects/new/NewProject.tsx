@@ -18,6 +18,7 @@ import { Info } from '../../common/Info';
 import { Viewport } from './Viewport';
 import { getDefaultViewport } from '../../viewport';
 import { History } from 'history';
+import { StorageType } from '../../server/storage.typing';
 
 const inlineStyle = {
     marginRight: 10,
@@ -29,11 +30,12 @@ const radioGroupdStyle = {
 }
 
 const save = async (
+    storageType: StorageType,
     history: History<any>,
     { name, viewport, ...input }: (CrawlerInput & { name: string, viewport: string }),
 ) => {
     try {
-        await saveProject('ToDo' as any, { ...input, viewport: JSON.parse(viewport) }, name, undefined);
+        await saveProject(storageType, { ...input, viewport: JSON.parse(viewport) }, name, undefined);
         history.push(getHomeRoute());
     } catch (error) {
         notification['error']({
@@ -43,19 +45,23 @@ const save = async (
     }
 }
 
-const handleSubmit = (history: History<any>, validateFields: any) => (event: React.FormEvent<any>) => {
+const handleSubmit = (storageType: StorageType, history: History<any>, validateFields: any) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     validateFields((err: any, values: any) => {
         if (!err) {
-            save(history, values);
+            save(storageType, history, values);
         }
     });
 }
 
-type Props = FormComponentProps & RouteComponentProps;
-const NewProject = ({ history, form: { getFieldDecorator, validateFields, getFieldValue } }: Props) => {
+type Props = FormComponentProps & RouteComponentProps<{ storageType: StorageType }>;
+const NewProject = ({
+    history,
+    match: { params: { storageType } },
+    form: { getFieldDecorator, validateFields, getFieldValue },
+}: Props) => {
     return (
-        <Form onSubmit={handleSubmit(history, validateFields)}>
+        <Form onSubmit={handleSubmit(storageType, history, validateFields)}>
             <Form.Item>
                 {getFieldDecorator('name', {
                     rules: [{ required: true, message: 'Please give a name to the project.' }],
@@ -118,7 +124,7 @@ const NewProject = ({ history, form: { getFieldDecorator, validateFields, getFie
                         <b>URLs list</b> crawling method will crawl a specific sets of URLs. In the URL input field
                         you must provide an endpoint containing a list of URLs (a simple text format, with one URL
                         per line). The crawler will crawl each of those URL only and will not try to find links in
-                        the page. To use a static list of URLs, you can use a tool 
+                        the page. To use a static list of URLs, you can use a tool
                         like <a href="https://pastebin.com" target="_blank" rel="noopener noreferrer">https://pastebin.com</a>.
                     </Typography.Paragraph>
                 </Info>

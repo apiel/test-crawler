@@ -33,7 +33,7 @@ export class CrawlerProvider extends CrawlerProviderBase {
             projectId = (md5 as any)(name) as string;
         }
         const project = { id: projectId, name, crawlerInput };
-        await this.saveJSON(storageType, 'project.json', project);
+        await this.saveJSON(storageType, this.join(projectId, 'project.json'), project);
         return project;
     }
 

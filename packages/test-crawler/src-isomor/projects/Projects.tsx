@@ -17,11 +17,13 @@ export const Projects = () => {
                         storageType={StorageType[key as keyof typeof StorageType]}
                     />
                     <br />
+                    <Link to={getNewProjectRoute(StorageType[key as keyof typeof StorageType])}>
+                        <Button icon="plus" size="small">New</Button>
+                    </Link>
+                    <br />
+                    <br />
                 </div>
             ))}
-            <Link to={getNewProjectRoute()}>
-                <Button icon="plus" size="small">New</Button>
-            </Link>
         </>
     );
 }
