@@ -17,7 +17,7 @@ interface Props {
 export const ProjectsPerRemote = ({ title, storageType }: Props) => {
     const { projects, loading, error } = useProjects(storageType);
     const ErrorComponent = useError(error);
-    console.log('ErrorComponent', ErrorComponent);
+    // console.log('ErrorComponent', ErrorComponent);
     if (ErrorComponent) {
         return <ErrorComponent />;
     }

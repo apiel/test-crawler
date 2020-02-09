@@ -44,7 +44,7 @@ const contentStyle = {
 };
 
 const App = () => (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
         <Layout style={layoutStyle}>
             <Header>
                 <Link to={getHomeRoute()}>

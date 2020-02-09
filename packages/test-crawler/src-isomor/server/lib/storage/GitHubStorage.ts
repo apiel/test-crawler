@@ -50,7 +50,7 @@ export class GitHubStorage extends Storage {
             const { data } = await this.getContents(path);
             return data.map(({ name }: any) => name) as string[]; // type is also available so we could filter for type === 'file'   
         } catch (error) {
-            if (error.response.status === 404) {
+            if (error?.response?.status === 404) {
                 return [] as string[];
             }
             throw error;
@@ -117,7 +117,7 @@ export class GitHubStorage extends Storage {
                 return data.sha;
             }
         } catch (error) {
-            if (error.response.status !== 404) {
+            if (error?.response?.status !== 404) {
                 throw error;
             }
         }
