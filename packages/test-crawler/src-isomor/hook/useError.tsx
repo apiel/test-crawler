@@ -10,8 +10,8 @@ export const useError = (error: any) => {
     } else {
         notification['warning']({
             message: `Something went wrong.`,
-            description: error.toString(),
         });
+        console.error('Something went wrong', error);
     }
 }
 
