@@ -1,12 +1,11 @@
 - **we could track the number of query per page and see if there is some changes...**
 
-- use github to save project folder (or git in general)
-    + could be for all projects
-    + or per project
+- use CI to build doc and live example
+- select repo, in the list of projects
 
-- move html in json maybe using base64
-- move image in json using base64
-- group all the result in a single file?
+- ? move html in json maybe using base64
+- ? move image in json using base64
+- ? group all the result in a single file?
     - or group all the diff result in a seprate file
     -> so we can update only this, then we could eventually use CI to populate those changes in each files
 
@@ -19,7 +18,6 @@ https://developer.github.com/apps/building-github-apps/authenticating-with-githu
 we might use token for simple solution but it would have some security issue since token would be stored in browser
 the second auth options would be to create create an app, more complicated to setup for the user but more safe.
 
-should we call remoteType -> storageType
 -> if 1 of the loadProject fail it should still work for the others
 
 **!important!** need to optimize the way we load project, use router state for it, instead to always load it
