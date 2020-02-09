@@ -12,16 +12,17 @@ const lockFile = join(__dirname, '../../test-crawler.lock');
 
 async function start() {
     info('Test-crawler');
+    info('Config', configs);
     const [, , option, value] = process.argv;
     if (option && value) {
         if (option === '--project') {
+            info('Start project', value);
             const crawlerProvider = new CrawlerProvider();
             const result = await crawlerProvider.startCrawler(StorageType.Local, value);
-            info('Start project', result);
+            info('timestamp', result);
             return;
         }
     }
-    info('Config', configs);
     crawl(undefined, 30);
 }
 
