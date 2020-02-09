@@ -2,8 +2,11 @@
 
 - use CI to build doc and live example
 - select repo, in the list of projects
-- display limit of req left
-- show actions process in result
+- show actions process in result from github process ci
+- update doc:
+    + you can run CI on every push
+    + you can schedule CI
+
 
 - ? move html in json maybe using base64
 - ? move image in json using base64
