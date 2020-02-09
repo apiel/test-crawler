@@ -49,13 +49,14 @@ class GitHubStorage extends Storage_1.Storage {
         this.config = config_1.config.remote.github;
     }
     readdir(path) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { data } = yield this.getContents(path);
                 return data.map(({ name }) => name);
             }
             catch (error) {
-                if (error.response.status === 404) {
+                if (((_b = (_a = error) === null || _a === void 0 ? void 0 : _a.response) === null || _b === void 0 ? void 0 : _b.status) === 404) {
                     return [];
                 }
                 throw error;
@@ -118,7 +119,7 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     getSha(file) {
-        var _a;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { data } = yield this.getContents(file);
@@ -127,7 +128,7 @@ class GitHubStorage extends Storage_1.Storage {
                 }
             }
             catch (error) {
-                if (error.response.status !== 404) {
+                if (((_c = (_b = error) === null || _b === void 0 ? void 0 : _b.response) === null || _c === void 0 ? void 0 : _c.status) !== 404) {
                     throw error;
                 }
             }

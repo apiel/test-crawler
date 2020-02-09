@@ -252,7 +252,9 @@ async function pickFromQueue(projectId: string, pagesFolder: string): Promise<To
 async function pickFromQueues(): Promise<ToCrawl> {
     const projectFolders = await readdir(PROJECT_FOLDER);
     for (const projectId of projectFolders) {
-        const pagesFolders = await readdir(join(PROJECT_FOLDER, projectId, CRAWL_FOLDER));
+        const crawlFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
+        await mkdirp(crawlFolder);
+        const pagesFolders = await readdir(crawlFolder);
         for (const pagesFolder of pagesFolders) {
             const toCrawl = await pickFromQueue(projectId, pagesFolder);
             if (toCrawl) {
@@ -331,10 +333,13 @@ async function prepareFolders() {
 async function cleanHistory() {
     const projects = await readdir(PROJECT_FOLDER);
     for (const project of projects) {
-        const results = await readdir(join(PROJECT_FOLDER, project, CRAWL_FOLDER));
-        const cleanUp = results.slice(0, -(MAX_HISTORY - 1));
-        for (const toRemove of cleanUp) {
-            await promisify(rimraf)(join(PROJECT_FOLDER, project, CRAWL_FOLDER, toRemove));
+        const crawlFolder = join(PROJECT_FOLDER, project, CRAWL_FOLDER);
+        if (await pathExists(crawlFolder)) {
+            const results = await readdir(crawlFolder);
+            const cleanUp = results.slice(0, -(MAX_HISTORY - 1));
+            for (const toRemove of cleanUp) {
+                await promisify(rimraf)(join(crawlFolder, toRemove));
+            }
         }
     }
 }

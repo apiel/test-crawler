@@ -209,7 +209,9 @@ function pickFromQueues() {
     return __awaiter(this, void 0, void 0, function* () {
         const projectFolders = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
         for (const projectId of projectFolders) {
-            const pagesFolders = yield fs_extra_1.readdir(path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER));
+            const crawlFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
+            yield fs_extra_1.mkdirp(crawlFolder);
+            const pagesFolders = yield fs_extra_1.readdir(crawlFolder);
             for (const pagesFolder of pagesFolders) {
                 const toCrawl = yield pickFromQueue(projectId, pagesFolder);
                 if (toCrawl) {
@@ -292,10 +294,13 @@ function cleanHistory() {
     return __awaiter(this, void 0, void 0, function* () {
         const projects = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
         for (const project of projects) {
-            const results = yield fs_extra_1.readdir(path_1.join(config_1.PROJECT_FOLDER, project, config_1.CRAWL_FOLDER));
-            const cleanUp = results.slice(0, -(config_1.MAX_HISTORY - 1));
-            for (const toRemove of cleanUp) {
-                yield util_1.promisify(rimraf)(path_1.join(config_1.PROJECT_FOLDER, project, config_1.CRAWL_FOLDER, toRemove));
+            const crawlFolder = path_1.join(config_1.PROJECT_FOLDER, project, config_1.CRAWL_FOLDER);
+            if (yield fs_extra_1.pathExists(crawlFolder)) {
+                const results = yield fs_extra_1.readdir(crawlFolder);
+                const cleanUp = results.slice(0, -(config_1.MAX_HISTORY - 1));
+                for (const toRemove of cleanUp) {
+                    yield util_1.promisify(rimraf)(path_1.join(crawlFolder, toRemove));
+                }
             }
         }
     });

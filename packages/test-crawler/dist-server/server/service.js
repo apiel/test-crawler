@@ -98,12 +98,12 @@ function setStatus(storageType, projectId, timestamp, status) {
 }
 exports.setStatus = setStatus;
 function startCrawler(storageType, projectId) {
-    const { push } = this;
-    return crawlerProvider.startCrawler(storageType, projectId, push);
+    var _a;
+    return crawlerProvider.startCrawler(storageType, projectId, (_a = this) === null || _a === void 0 ? void 0 : _a.push);
 }
 exports.startCrawler = startCrawler;
 function startCrawlers() {
-    const { push } = this;
-    return crawlerProvider.startCrawlers(push);
+    var _a;
+    return crawlerProvider.startCrawlers((_a = this) === null || _a === void 0 ? void 0 : _a.push);
 }
 exports.startCrawlers = startCrawlers;
