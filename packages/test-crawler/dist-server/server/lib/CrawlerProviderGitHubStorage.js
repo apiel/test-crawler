@@ -12,10 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const GitHubStorage_1 = require("./storage/GitHubStorage");
 const gitHubStorage = new GitHubStorage_1.GitHubStorage();
 class CrawlerProviderStorage {
-    constructor(storageType) {
+    constructor(storageType, ctx) {
+        this.ctx = ctx;
         this.storage = gitHubStorage;
     }
-    startCrawlers(push) {
+    startCrawlers() {
         return __awaiter(this, void 0, void 0, function* () { });
     }
 }

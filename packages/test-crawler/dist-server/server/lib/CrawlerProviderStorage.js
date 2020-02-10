@@ -16,7 +16,8 @@ const crawl_1 = require("./crawl");
 const gitHubStorage = new GitHubStorage_1.GitHubStorage();
 const localStorage = new LocalStorage_1.LocalStorage();
 class CrawlerProviderStorage {
-    constructor(storageType) {
+    constructor(storageType, ctx) {
+        this.ctx = ctx;
         if (storageType === storage_typing_1.StorageType.Local) {
             this.storage = localStorage;
         }
@@ -27,9 +28,10 @@ class CrawlerProviderStorage {
             throw new Error(`Unknown storage type ${storageType}.`);
         }
     }
-    startCrawlers(push) {
+    startCrawlers() {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            crawl_1.crawl(undefined, 30, push);
+            crawl_1.crawl(undefined, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
         });
     }
 }

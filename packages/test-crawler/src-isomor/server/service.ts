@@ -129,10 +129,10 @@ export function setStatus(storageType: StorageType, projectId: string, timestamp
 
 export function startCrawler(storageType: StorageType, projectId: string): Promise<string> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.startCrawler(projectId, this?.push);
+    return crawlerProvider.startCrawler(projectId);
 }
 
 export function startCrawlers(storageType: StorageType): Promise<void> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.startCrawlers(this?.push);
+    return crawlerProvider.startCrawlers();
 }

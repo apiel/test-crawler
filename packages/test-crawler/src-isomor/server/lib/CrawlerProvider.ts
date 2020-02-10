@@ -11,8 +11,8 @@ import { StorageType } from '../storage.typing';
 import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 
 export class CrawlerProvider extends CrawlerProviderStorage {
-    constructor(storageType: StorageType, ctx?: undefined | WsContext | Context ) {
-        super(storageType);
+    constructor(storageType: StorageType, public ctx?: undefined | WsContext | Context) {
+        super(storageType, ctx);
     }
 
     repos() {
@@ -210,11 +210,11 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return newPage!;
     }
 
-    async startCrawler(projectId: string, push?: (payload: any) => void): Promise<string> {
+    async startCrawler(projectId: string): Promise<string> {
         const pagesFolder = Math.floor(Date.now() / 1000).toString();
 
         const crawlTarget = { projectId, pagesFolder };
-        await this.storage.crawl(crawlTarget, 30, push);
+        await this.storage.crawl(crawlTarget, 30, (this.ctx as any)?.push);
 
         return pagesFolder;
     }

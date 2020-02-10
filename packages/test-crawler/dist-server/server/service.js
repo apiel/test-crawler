@@ -131,14 +131,12 @@ function setStatus(storageType, projectId, timestamp, status) {
 }
 exports.setStatus = setStatus;
 function startCrawler(storageType, projectId) {
-    var _a;
     const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-    return crawlerProvider.startCrawler(projectId, (_a = this) === null || _a === void 0 ? void 0 : _a.push);
+    return crawlerProvider.startCrawler(projectId);
 }
 exports.startCrawler = startCrawler;
 function startCrawlers(storageType) {
-    var _a;
     const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-    return crawlerProvider.startCrawlers((_a = this) === null || _a === void 0 ? void 0 : _a.push);
+    return crawlerProvider.startCrawlers();
 }
 exports.startCrawlers = startCrawlers;

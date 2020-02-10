@@ -28,7 +28,8 @@ const utils_1 = require("./utils");
 const CrawlerProviderStorage_1 = require("./CrawlerProviderStorage");
 class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     constructor(storageType, ctx) {
-        super(storageType);
+        super(storageType, ctx);
+        this.ctx = ctx;
     }
     repos() {
         return this.storage.repos();
@@ -208,11 +209,12 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             return newPage;
         });
     }
-    startCrawler(projectId, push) {
+    startCrawler(projectId) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const pagesFolder = Math.floor(Date.now() / 1000).toString();
             const crawlTarget = { projectId, pagesFolder };
-            yield this.storage.crawl(crawlTarget, 30, push);
+            yield this.storage.crawl(crawlTarget, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
             return pagesFolder;
         });
     }
