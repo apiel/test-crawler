@@ -132,7 +132,7 @@ export function startCrawler(storageType: StorageType, projectId: string): Promi
     return crawlerProvider.startCrawler(projectId);
 }
 
-export function startCrawlers(storageType: StorageType): Promise<void> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
+export function startCrawlers(/* storageType: StorageType */): Promise<void> {
+    const crawlerProvider = new CrawlerProvider(undefined, this);
     return crawlerProvider.startCrawlers();
 }

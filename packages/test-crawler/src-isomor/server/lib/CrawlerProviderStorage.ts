@@ -16,9 +16,9 @@ export function getCookie(key: string, ctx?: undefined | WsContext | Context) {
 export abstract class CrawlerProviderStorage extends CrawlerProviderStorageBase {
     storage: GitHubStorage | LocalStorage;
 
-    constructor(storageType: StorageType, public ctx?: undefined | WsContext | Context) {
+    constructor(storageType?: StorageType, public ctx?: undefined | WsContext | Context) {
         super();
-        if (storageType === StorageType.Local) {
+        if (storageType === StorageType.Local || storageType === undefined) {
             this.storage = new LocalStorage(ctx);
         } else if (storageType === StorageType.GitHub) {
             this.storage = new GitHubStorage(ctx);

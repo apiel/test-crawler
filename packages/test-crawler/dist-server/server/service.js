@@ -135,8 +135,8 @@ function startCrawler(storageType, projectId) {
     return crawlerProvider.startCrawler(projectId);
 }
 exports.startCrawler = startCrawler;
-function startCrawlers(storageType) {
-    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+function startCrawlers() {
+    const crawlerProvider = new lib_1.CrawlerProvider(undefined, this);
     return crawlerProvider.startCrawlers();
 }
 exports.startCrawlers = startCrawlers;

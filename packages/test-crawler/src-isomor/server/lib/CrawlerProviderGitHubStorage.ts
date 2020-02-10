@@ -13,7 +13,7 @@ export function getCookie(key: string, ctx?: undefined | WsContext | Context) {
 }
 
 export abstract class CrawlerProviderStorage extends CrawlerProviderStorageBase {
-    constructor(storageType: StorageType, public ctx: undefined | WsContext | Context) {
+    constructor(storageType?: StorageType, public ctx?: undefined | WsContext | Context) {
         super();
     }
 

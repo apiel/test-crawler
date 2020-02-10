@@ -11,7 +11,7 @@ import { StorageType } from '../storage.typing';
 import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 
 export class CrawlerProvider extends CrawlerProviderStorage {
-    constructor(storageType: StorageType, public ctx?: undefined | WsContext | Context) {
+    constructor(storageType?: StorageType, public ctx?: undefined | WsContext | Context) {
         super(storageType, ctx);
     }
 

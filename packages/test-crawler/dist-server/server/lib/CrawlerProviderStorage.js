@@ -25,7 +25,7 @@ class CrawlerProviderStorage extends CrawlerProviderStorageBase_1.CrawlerProvide
     constructor(storageType, ctx) {
         super();
         this.ctx = ctx;
-        if (storageType === storage_typing_1.StorageType.Local) {
+        if (storageType === storage_typing_1.StorageType.Local || storageType === undefined) {
             this.storage = new LocalStorage_1.LocalStorage(ctx);
         }
         else if (storageType === storage_typing_1.StorageType.GitHub) {
