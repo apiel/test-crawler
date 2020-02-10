@@ -99,6 +99,9 @@ export class GitHubStorage extends Storage {
     }
 
     async saveFile(file: string, content: string) {
+        if (!this.repo) {
+            throw new Error('GitHub repository required.');
+        }
         const sha = await this.getSha(file);
         const data = JSON.stringify({
             message: `${COMMIT_PREFIX} save file`,
@@ -154,25 +157,13 @@ export class GitHubStorage extends Storage {
 
     async repos() {
         const { data } = await this.call({
-            url: `${BASE_URL}/users/${this.config?.user}/repos`,
+            url: `${BASE_URL}/users/${this.config?.user}/repos?sort=updated&per_page=1000`,
         });
         return data.map(({ name }: any) => name) as string[];
     }
 
-    async repo() {
-        let repo = getCookie('githubRepo', this.ctx) || this.config?.repo;
-        if (!repo) {
-            const { data } = await this.call({
-                url: `${BASE_URL}/users/${this.config?.user}/repos`,
-            });
-            if (data.length) {
-                data.sort((a: any, b: any) =>
-                    Number(new Date(b.updated_at)) - Number(new Date(a.updated_at))
-                );
-                repo = data.name;
-            }
-        }
-        return repo;
+    async getRepo() {
+        return this.repo;
     }
 
     async info() {
@@ -201,14 +192,18 @@ export class GitHubStorage extends Storage {
     }
 
     protected get contentsUrl() {
-        return `${BASE_URL}/repos/${this.config?.user}/${this.config?.repo}/contents`;
+        return `${BASE_URL}/repos/${this.config?.user}/${this.repo}/contents`;
     }
 
     protected get blobUrl() {
-        return `${BASE_URL}/repos/${this.config?.user}/${this.config?.repo}/git/blobs`;
+        return `${BASE_URL}/repos/${this.config?.user}/${this.repo}/git/blobs`;
     }
 
     protected get ciDispatchUrl() {
-        return `${BASE_URL}/repos/${this.config?.user}/${this.config?.repo}/dispatches`;
+        return `${BASE_URL}/repos/${this.config?.user}/${this.repo}/dispatches`;
+    }
+
+    protected get repo() {
+        return getCookie('githubRepo', this.ctx) || this.config?.defaultRepo;
     }
 }

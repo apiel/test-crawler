@@ -76,7 +76,7 @@ export class LocalStorage extends Storage {
         return undefined;
     }
 
-    async repo() {
+    async getRepo() {
         return undefined;
     }
 

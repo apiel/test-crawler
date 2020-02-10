@@ -35,7 +35,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         return this.storage.repos();
     }
     repo() {
-        return this.storage.repo();
+        return this.storage.getRepo();
     }
     info() {
         return this.storage.info();

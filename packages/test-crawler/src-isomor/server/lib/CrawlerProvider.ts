@@ -20,7 +20,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
     }
 
     repo() {
-        return this.storage.repo();
+        return this.storage.getRepo();
     }
 
     info() {

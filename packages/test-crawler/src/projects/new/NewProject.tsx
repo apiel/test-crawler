@@ -19,6 +19,7 @@ import { Viewport } from './Viewport';
 import { getDefaultViewport } from '../../viewport';
 import { History } from 'history';
 import { StorageType } from '../../server/storage.typing';
+import { ProjectRepos } from '../ProjectRepos';
 
 const inlineStyle = {
     marginRight: 10,
@@ -60,6 +61,7 @@ const NewProject = ({
     match: { params: { storageType } },
     form: { getFieldDecorator, validateFields, getFieldValue },
 }: Props) => {
+    const Repos = ProjectRepos({storageType});
     return (
         <Form onSubmit={handleSubmit(storageType, history, validateFields)}>
             <Form.Item>
@@ -135,6 +137,9 @@ const NewProject = ({
                 })(
                     <Checkbox>Automatically pin new page founds.</Checkbox>
                 )}
+            </Form.Item>
+            <Form.Item>
+                <ProjectRepos storageType={storageType} />
             </Form.Item>
             <Form.Item>
                 <Form.Item style={inlineStyle}>

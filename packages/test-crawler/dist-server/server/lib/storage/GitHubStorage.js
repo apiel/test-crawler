@@ -111,6 +111,9 @@ class GitHubStorage extends Storage_1.Storage {
     }
     saveFile(file, content) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!this.repo) {
+                throw new Error('GitHub repository required.');
+            }
             const sha = yield this.getSha(file);
             const data = JSON.stringify(Object.assign({ message: `${COMMIT_PREFIX} save file`, content: Buffer.from(content).toString('base64') }, (sha && { sha })));
             yield this.call({
@@ -171,25 +174,14 @@ class GitHubStorage extends Storage_1.Storage {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = yield this.call({
-                url: `${BASE_URL}/users/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/repos`,
+                url: `${BASE_URL}/users/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/repos?sort=updated&per_page=1000`,
             });
             return data.map(({ name }) => name);
         });
     }
-    repo() {
-        var _a, _b;
+    getRepo() {
         return __awaiter(this, void 0, void 0, function* () {
-            let repo = CrawlerProviderStorage_1.getCookie('githubRepo', this.ctx) || ((_a = this.config) === null || _a === void 0 ? void 0 : _a.repo);
-            if (!repo) {
-                const { data } = yield this.call({
-                    url: `${BASE_URL}/users/${(_b = this.config) === null || _b === void 0 ? void 0 : _b.user}/repos`,
-                });
-                if (data.length) {
-                    data.sort((a, b) => Number(new Date(b.updated_at)) - Number(new Date(a.updated_at)));
-                    repo = data.name;
-                }
-            }
-            return repo;
+            return this.repo;
         });
     }
     info() {
@@ -215,16 +207,20 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     get contentsUrl() {
-        var _a, _b;
-        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${(_b = this.config) === null || _b === void 0 ? void 0 : _b.repo}/contents`;
+        var _a;
+        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/contents`;
     }
     get blobUrl() {
-        var _a, _b;
-        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${(_b = this.config) === null || _b === void 0 ? void 0 : _b.repo}/git/blobs`;
+        var _a;
+        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/git/blobs`;
     }
     get ciDispatchUrl() {
-        var _a, _b;
-        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${(_b = this.config) === null || _b === void 0 ? void 0 : _b.repo}/dispatches`;
+        var _a;
+        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/dispatches`;
+    }
+    get repo() {
+        var _a;
+        return CrawlerProviderStorage_1.getCookie('githubRepo', this.ctx) || ((_a = this.config) === null || _a === void 0 ? void 0 : _a.defaultRepo);
     }
 }
 exports.GitHubStorage = GitHubStorage;

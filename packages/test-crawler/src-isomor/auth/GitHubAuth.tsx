@@ -47,13 +47,6 @@ const GitHubAuthForm = ({ form: { getFieldDecorator, validateFields }}: FormComp
                     )}
                 </Form.Item>
                 <Form.Item>
-                    {getFieldDecorator('repo', {
-                        rules: [{ required: true, message: 'Please provide the repository.' }],
-                    })(
-                        <Input addonBefore="Repository" placeholder="Repository name" />
-                    )}
-                </Form.Item>
-                <Form.Item>
                     <Button
                         type="primary"
                         icon="github"

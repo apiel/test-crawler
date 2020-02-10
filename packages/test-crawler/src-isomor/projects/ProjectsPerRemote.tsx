@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const ProjectsPerRemote = ({ title, storageType }: Props) => {
-    const { projects, loading, error } = useProjects(storageType);
+    const { projects, loading, error, call } = useProjects(storageType);
     const ErrorComponent = useError(error);
     // console.log('ErrorComponent', ErrorComponent);
     if (ErrorComponent) {
@@ -26,7 +26,7 @@ export const ProjectsPerRemote = ({ title, storageType }: Props) => {
     return (
         <>
             <Typography.Title level={4}>
-                {title} <ProjectRepos storageType={storageType} />
+                {title} <ProjectRepos storageType={storageType} loadProjects={call} />
             </Typography.Title>
             <ProjectsInfo storageType={storageType} />
             {loading ? <Spin /> : <List

@@ -48,5 +48,5 @@ export interface Config {
 export interface GitHubConfig {
     user: string;
     token: string;
-    repo: string; // for the moment only single repo suported but we might want to make it on any repo
+    defaultRepo: string; // for the moment only single repo suported but we might want to make it on any repo
 }

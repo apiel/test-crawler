@@ -5,7 +5,7 @@ import { useAsync } from '../hook/useAsync';
 import { StorageType } from '../server/storage.typing';
 
 export const useProjects = (storageType: StorageType) => {
-    const { result: projects, error, loading } =
+    const { result: projects, error, loading, call } =
         useAsync<Project[]>(() => loadProjects(storageType));
     if (error) {
         // notification['warning']({
@@ -13,5 +13,5 @@ export const useProjects = (storageType: StorageType) => {
         //     description: error.toString(),
         // });
     }
-    return { projects, loading, error };
+    return { projects, loading, error, call };
 }
