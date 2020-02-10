@@ -2,6 +2,11 @@
 // import { Viewport } from 'puppeteer';
 // export { Viewport, Zone };
 
+export interface StartCrawler {
+    timestamp: string;
+    redirect?: string;
+}
+
 export interface Zone {
     xMin: number;
     yMin: number;

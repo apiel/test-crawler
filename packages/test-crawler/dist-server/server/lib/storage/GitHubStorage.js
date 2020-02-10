@@ -168,6 +168,7 @@ class GitHubStorage extends Storage_1.Storage {
                     },
                 });
             }
+            return this.redirectUrl;
         });
     }
     repos() {
@@ -217,6 +218,10 @@ class GitHubStorage extends Storage_1.Storage {
     get ciDispatchUrl() {
         var _a;
         return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/dispatches`;
+    }
+    get redirectUrl() {
+        var _a;
+        return `https://github.com/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/actions`;
     }
     get repo() {
         var _a;

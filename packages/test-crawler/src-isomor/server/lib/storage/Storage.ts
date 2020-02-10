@@ -12,5 +12,5 @@ export abstract class Storage {
     abstract saveFile(file: string, data: string): Promise<void>;
     abstract copy(src: string, dst: string): Promise<void>;
     abstract remove(file: string): Promise<void>;
-    abstract crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void): Promise<void>;
+    abstract crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void): Promise<undefined | string>;
 }

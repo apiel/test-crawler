@@ -64,8 +64,9 @@ export class LocalStorage extends Storage {
         return remove(this.root(file));
     }
 
-    crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
-        return crawl(crawlTarget, consumeTimeout, push);
+    async crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
+        await crawl(crawlTarget, consumeTimeout, push);
+        return undefined;
     }
 
     root(...path: string[]) {

@@ -62,7 +62,10 @@ class LocalStorage extends Storage_1.Storage {
         return fs_extra_1.remove(this.root(file));
     }
     crawl(crawlTarget, consumeTimeout, push) {
-        return crawl_1.crawl(crawlTarget, consumeTimeout, push);
+        return __awaiter(this, void 0, void 0, function* () {
+            yield crawl_1.crawl(crawlTarget, consumeTimeout, push);
+            return undefined;
+        });
     }
     root(...path) {
         return path_1.join(config_1.ROOT_FOLDER, ...path);

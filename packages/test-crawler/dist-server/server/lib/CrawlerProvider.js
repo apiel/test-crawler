@@ -214,8 +214,11 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         return __awaiter(this, void 0, void 0, function* () {
             const pagesFolder = Math.floor(Date.now() / 1000).toString();
             const crawlTarget = { projectId, pagesFolder };
-            yield this.storage.crawl(crawlTarget, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
-            return pagesFolder;
+            const redirect = yield this.storage.crawl(crawlTarget, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
+            return {
+                timestamp: pagesFolder,
+                redirect,
+            };
         });
     }
     join(projectId, ...path) {

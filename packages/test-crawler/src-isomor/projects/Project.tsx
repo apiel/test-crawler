@@ -24,7 +24,7 @@ const onStart = (
     storageType: StorageType,
 ) => async () => {
     try {
-        const timestamp = await startCrawler(storageType, projectId);
+        const { timestamp, redirect } = await startCrawler(storageType, projectId);
         history.push(getResultsRoute(storageType, projectId, timestamp));
     } catch (error) {
         notification['error']({

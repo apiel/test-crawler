@@ -153,6 +153,7 @@ export class GitHubStorage extends Storage {
                 },
             });
         }
+        return this.redirectUrl;
     }
 
     async repos() {
@@ -201,6 +202,10 @@ export class GitHubStorage extends Storage {
 
     protected get ciDispatchUrl() {
         return `${BASE_URL}/repos/${this.config?.user}/${this.repo}/dispatches`;
+    }
+
+    protected get redirectUrl() {
+        return `https://github.com/${this.config?.user}/${this.repo}/actions`;
     }
 
     protected get repo() {
