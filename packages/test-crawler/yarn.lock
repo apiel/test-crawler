@@ -2863,9 +2863,9 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@25.1.1":
-  version "25.1.1"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.1.1.tgz#dcf65a8ee315b91ad39c0d358ae0ddc5602ab0e9"
+"@types/jest@25.1.2":
+  version "25.1.2"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.1.2.tgz#1c4c8770c27906c7d8def5d2033df9dbd39f60da"
   dependencies:
     jest-diff "^25.1.0"
     pretty-format "^25.1.0"
@@ -3576,9 +3576,9 @@ antd@*:
     shallowequal "^1.1.0"
     warning "~4.0.2"
 
-antd@^3.26.8:
-  version "3.26.8"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-3.26.8.tgz#e40982c5cdb6c5c2c5f037ead27889b5f71e4ea3"
+antd@^3.26.9:
+  version "3.26.9"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-3.26.9.tgz#233c9d090c44146997984966d3b3657c9426bac1"
   dependencies:
     "@ant-design/create-react-context" "^0.2.4"
     "@ant-design/icons" "~2.1.1"
@@ -8441,9 +8441,9 @@ isomor-json-schema-generator@^2.0.1:
     json-stable-stringify "^1.0.1"
     typescript "~3.5.1"
 
-isomor-server@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-2.1.0.tgz#06af5d4f154b6962c76b5f73288978c3dd8459a6"
+isomor-server@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-2.1.1.tgz#7ce2b8232b29a8502dd51293345b711c19a767fb"
   dependencies:
     "@types/fs-extra" "^8.0.1"
     "@types/morgan" "^1.7.37"
@@ -8453,7 +8453,7 @@ isomor-server@^2.1.0:
     cookie-parser "^1.4.4"
     express "^4.17.1"
     fs-extra "^8.1.0"
-    isomor "^2.1.0"
+    isomor "^2.1.1"
     isomor-core "^2.1.0"
     logol "^0.0.3"
     morgan "^1.9.1"
@@ -8462,9 +8462,9 @@ isomor-server@^2.1.0:
     typescript "^3.7.5"
     ws "^7.2.1"
 
-isomor-transpiler@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-2.1.0.tgz#738541f292bb7deb219fea611b5033f210268d61"
+isomor-transpiler@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-2.1.1.tgz#2447fa82a53ea0102a2b6467cd09c1eba335f2c9"
   dependencies:
     "@babel/generator" "^7.8.4"
     "@babel/parser" "^7.8.4"
@@ -8474,7 +8474,7 @@ isomor-transpiler@^2.1.0:
     chokidar "^3.3.1"
     debug "^4.1.1"
     fs-extra "^8.1.0"
-    isomor "^2.1.0"
+    isomor "^2.1.1"
     isomor-core "^2.1.0"
     isomor-json-schema-generator "^2.0.1"
     logol "^0.0.3"
@@ -8483,15 +8483,15 @@ isomor-transpiler@^2.1.0:
     ts-node "^8.6.2"
     typescript "^3.7.5"
 
-isomor@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/isomor/-/isomor-2.1.0.tgz#802a2ec203c203dfeb58bc84802d27b819cf0dcb"
+isomor@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-2.1.1.tgz#660133aa08e88ff994d3e1aa76b54bc80a36ab69"
   dependencies:
     axios "^0.19.2"
     chalk "^3.0.0"
     inquirer "^7.0.4"
-    isomor-server "^2.1.0"
-    isomor-transpiler "^2.1.0"
+    isomor-server "^2.1.1"
+    isomor-transpiler "^2.1.1"
     typescript "^3.7.5"
 
 isomorphic-fetch@^2.1.1:
@@ -13402,9 +13402,9 @@ rimraf@^2.7.1:
   dependencies:
     glob "^7.1.3"
 
-rimraf@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.1.tgz#48d3d4cb46c80d388ab26cd61b1b466ae9ae225a"
+rimraf@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
   dependencies:
     glob "^7.1.3"
 

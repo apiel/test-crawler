@@ -9,20 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Cookies = require('universal-cookie');
 const LocalStorage_1 = require("./storage/LocalStorage");
 const GitHubStorage_1 = require("./storage/GitHubStorage");
 const storage_typing_1 = require("../storage.typing");
 const crawl_1 = require("./crawl");
-const gitHubStorage = new GitHubStorage_1.GitHubStorage();
-const localStorage = new LocalStorage_1.LocalStorage();
-class CrawlerProviderStorage {
+const CrawlerProviderStorageBase_1 = require("./CrawlerProviderStorageBase");
+function getCookie(key, ctx) {
+    var _a, _b;
+    const cookies = new Cookies((_b = (_a = ctx) === null || _a === void 0 ? void 0 : _a.req) === null || _b === void 0 ? void 0 : _b.headers.cookie);
+    return cookies.get(key);
+}
+exports.getCookie = getCookie;
+class CrawlerProviderStorage extends CrawlerProviderStorageBase_1.CrawlerProviderStorageBase {
     constructor(storageType, ctx) {
+        super();
         this.ctx = ctx;
         if (storageType === storage_typing_1.StorageType.Local) {
-            this.storage = localStorage;
+            this.storage = new LocalStorage_1.LocalStorage(ctx);
         }
         else if (storageType === storage_typing_1.StorageType.GitHub) {
-            this.storage = gitHubStorage;
+            this.storage = new GitHubStorage_1.GitHubStorage(ctx);
         }
         else {
             throw new Error(`Unknown storage type ${storageType}.`);

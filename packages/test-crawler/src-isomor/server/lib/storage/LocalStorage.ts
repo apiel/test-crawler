@@ -1,3 +1,5 @@
+import { WsContext, Context } from 'isomor-server';
+
 import { Storage } from './Storage';
 import {
     readJSON,
@@ -16,7 +18,7 @@ import { join } from 'path';
 import { ROOT_FOLDER } from '../config';
 
 export class LocalStorage extends Storage {
-    constructor() {
+    constructor(protected ctx?: undefined | WsContext | Context) {
         super();
     }
 

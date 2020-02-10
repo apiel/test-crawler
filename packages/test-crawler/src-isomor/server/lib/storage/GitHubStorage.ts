@@ -1,10 +1,12 @@
 import { Storage } from './Storage';
 
 import { basename, dirname } from 'path';
+import { WsContext, Context } from 'isomor-server';
 import axios, { AxiosRequestConfig } from 'axios';
 import { CrawlTarget } from '../../typing';
 import { config, GitHubConfig } from '../config';
 import { ERR } from '../../error';
+import { getCookie } from '../CrawlerProviderStorage';
 
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
@@ -40,7 +42,7 @@ jobs:
 
 export class GitHubStorage extends Storage {
     private config: GitHubConfig | undefined;
-    constructor() {
+    constructor(protected ctx?: undefined | WsContext | Context) {
         super();
         this.config = config.remote.github;
     }
@@ -158,11 +160,23 @@ export class GitHubStorage extends Storage {
     }
 
     async repo() {
-        return this.config?.repo;
+        let repo = getCookie('githubRepo', this.ctx) || this.config?.repo;
+        if (!repo) {
+            const { data } = await this.call({
+                url: `${BASE_URL}/users/${this.config?.user}/repos`,
+            });
+            if (data.length) {
+                data.sort((a: any, b: any) =>
+                    Number(new Date(b.updated_at)) - Number(new Date(a.updated_at))
+                );
+                repo = data.name;
+            }
+        }
+        return repo;
     }
 
     async info() {
-        const { data: { rate: { limit, remaining }} } = await this.call({
+        const { data: { rate: { limit, remaining } } } = await this.call({
             url: `${BASE_URL}/rate_limit`,
         });
         return `For GitHub API requests, you can make up to 5000 requests per hour.

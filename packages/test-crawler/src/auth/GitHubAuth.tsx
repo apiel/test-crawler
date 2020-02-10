@@ -11,7 +11,6 @@ const handleSubmit = (validateFields: any) => (event: React.FormEvent<any>) => {
     validateFields((err: any, values: any) => {
         if (!err) {
             // save
-            console.log('should save form', values);
             const cookies = new Cookies();
             cookies.set('github', values, { path: '/' });
         }

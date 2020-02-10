@@ -15,8 +15,9 @@ const crawl_1 = require("../crawl");
 const path_1 = require("path");
 const config_1 = require("../config");
 class LocalStorage extends Storage_1.Storage {
-    constructor() {
+    constructor(ctx) {
         super();
+        this.ctx = ctx;
     }
     readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {

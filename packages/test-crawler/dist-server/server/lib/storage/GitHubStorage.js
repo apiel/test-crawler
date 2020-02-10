@@ -14,6 +14,7 @@ const path_1 = require("path");
 const axios_1 = require("axios");
 const config_1 = require("../config");
 const error_1 = require("../../error");
+const CrawlerProviderStorage_1 = require("../CrawlerProviderStorage");
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
 const CI_Workflow = `
@@ -44,8 +45,9 @@ jobs:
         git push "https://\${{ secrets.GITHUB_TOKEN }}@github.com/\${{ github.repository }}"
 `;
 class GitHubStorage extends Storage_1.Storage {
-    constructor() {
+    constructor(ctx) {
         super();
+        this.ctx = ctx;
         this.config = config_1.config.remote.github;
     }
     readdir(path) {
@@ -175,9 +177,19 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     repo() {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            return (_a = this.config) === null || _a === void 0 ? void 0 : _a.repo;
+            let repo = CrawlerProviderStorage_1.getCookie('githubRepo', this.ctx) || ((_a = this.config) === null || _a === void 0 ? void 0 : _a.repo);
+            if (!repo) {
+                const { data } = yield this.call({
+                    url: `${BASE_URL}/users/${(_b = this.config) === null || _b === void 0 ? void 0 : _b.user}/repos`,
+                });
+                if (data.length) {
+                    data.sort((a, b) => Number(new Date(b.updated_at)) - Number(new Date(a.updated_at)));
+                    repo = data.name;
+                }
+            }
+            return repo;
         });
     }
     info() {

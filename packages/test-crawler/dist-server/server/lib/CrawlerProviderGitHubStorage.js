@@ -9,10 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const universal_cookie_1 = require("universal-cookie");
 const GitHubStorage_1 = require("./storage/GitHubStorage");
+const CrawlerProviderStorageBase_1 = require("./CrawlerProviderStorageBase");
 const gitHubStorage = new GitHubStorage_1.GitHubStorage();
-class CrawlerProviderStorage {
+function getCookie(key, ctx) {
+    const cookies = new universal_cookie_1.default();
+    return cookies.get(key);
+}
+exports.getCookie = getCookie;
+class CrawlerProviderStorage extends CrawlerProviderStorageBase_1.CrawlerProviderStorageBase {
     constructor(storageType, ctx) {
+        super();
         this.ctx = ctx;
         this.storage = gitHubStorage;
     }

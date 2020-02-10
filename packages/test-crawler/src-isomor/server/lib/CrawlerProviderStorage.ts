@@ -1,20 +1,27 @@
+import { WsContext, Context } from 'isomor-server';
+// import Cookies from 'universal-cookie';
+const Cookies = require('universal-cookie');
+
 import { LocalStorage } from './storage/LocalStorage';
 import { GitHubStorage } from './storage/GitHubStorage';
 import { StorageType } from '../storage.typing';
 import { crawl } from './crawl';
-import { WsContext, Context } from 'isomor-server';
+import { CrawlerProviderStorageBase } from './CrawlerProviderStorageBase';
 
-const gitHubStorage = new GitHubStorage();
-const localStorage = new LocalStorage();
+export function getCookie(key: string, ctx?: undefined | WsContext | Context) {
+    const cookies = new Cookies(ctx?.req?.headers.cookie);
+    return cookies.get(key);
+}
 
-export abstract class CrawlerProviderStorage {
+export abstract class CrawlerProviderStorage extends CrawlerProviderStorageBase {
     storage: GitHubStorage | LocalStorage;
 
-    constructor(storageType: StorageType, public ctx?: undefined | WsContext | Context ) {
+    constructor(storageType: StorageType, public ctx?: undefined | WsContext | Context) {
+        super();
         if (storageType === StorageType.Local) {
-            this.storage = localStorage;
+            this.storage = new LocalStorage(ctx);
         } else if (storageType === StorageType.GitHub) {
-            this.storage = gitHubStorage;
+            this.storage = new GitHubStorage(ctx);
         } else {
             throw new Error(`Unknown storage type ${storageType}.`)
         }
