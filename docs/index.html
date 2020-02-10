@@ -48,10 +48,11 @@
   </nav>
   <br />
   <div class="container" style="max-width: 800px;">
-    <div id="content"><p>test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. Right now, it is mainly focus on visual regression testing but it will most likely support html comparison in the future.</p>
+    <div id="content"><p><strong><a href="https://apiel.github.io/test-crawler/live/">► Try it directly on GitHub</a></strong></p>
+<p>test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. Right now, it is mainly focus on visual regression testing but it will most likely support html comparison in the future.</p>
 <h2>Getting started</h2>
 <blockquote>
-<p><strong>Note:</strong> you need to use at least node v11</p>
+<p>🛈 <strong>Note:</strong> you need to use at least node v11</p>
 </blockquote>
 <pre><code class="language-bash">yarn global add test-crawler
 test-crawler
@@ -75,7 +76,7 @@ http://127.0.0.1:3005/page1
 http://127.0.0.1:3005/category/page33
 </code></pre>
 <blockquote>
-<p><strong>Note:</strong> to don’t get false visual differences, you must run your test always on the same environment. Diffrent OS, different graphic card, … might trigger visual differences in the snapshot, even if there was no changes. Prefer to always run your tests on the same machine.</p>
+<p>🛈 <strong>Note:</strong> to don’t get false visual differences, you must run your test always on the same environment. Diffrent OS, different graphic card, … might trigger visual differences in the snapshot, even if there was no changes. Prefer to always run your tests on the same machine.</p>
 </blockquote>
 <h2>Pins</h2>
 <p>Pins are the references screenshot to make the comparison with. While crawling, the crawler is comparing page to pin. To create a pin go in the result page of your crawling result, each screenshot has some action buttons:</p>
@@ -134,72 +135,48 @@ module.exports = async function run(page) {
 </code></pre>
 <p>You can find this code by clicking the button <code>Code snippet</code> of the code editor.</p>
 <blockquote>
-<p><strong>Note:</strong> feel free to make some pull request to propose some new code snippet.</p>
+<p>🛈 <strong>Note:</strong> feel free to make some pull request to propose some new code snippet.</p>
 </blockquote>
 <h2>Cli</h2>
 <p>You can run test directly from the cli. This can be useful for continuous integration test.</p>
 <pre><code class="language-bash"># test-crawler-cli --project the_id_of_the_project
 test-crawler-cli --project f0258b6685684c113bad94d91b8fa02a
 </code></pre>
-<h2>Continuous integration Travis</h2>
-<p>As mentioned before, to don’t get false visual differences, you must run your test always on the same environment. Travis CI is a hosted, distributed continuous integration service, that would allow you
-to run your visual regression test, with the same environment between each build. It is also easy
-to integrate with your git repository like GitHub.</p>
-<p>The workflow would be the following:</p>
-<ul>
-<li>changes are pushed to repository</li>
-<li>Travis detect new commit and trigger a build</li>
-<li>app is launched on the container</li>
-<li>Travis run test-crawler-cli to check for difference</li>
-<li>if difference, build fail and Travis push diff to the repository</li>
-<li>pull diff locally and run test-crawler to see the diff</li>
-</ul>
-<p><code>.travis.yml</code> example:</p>
-<pre><code class="language-yml">language: node_js
+<h2>Continuous integration</h2>
+<p>As mentioned before, to don’t get false visual differences, you must run your test always on the same environment. The best way to solve this is to include test-crawler in your continue integration, with
+some tools like Travis or GitHub actions. Test-crawler is already supporting out of the box Github
+actions. In order to run test-crawler in the CI container, you must use <code>test-crawler-cli</code>.</p>
+<p>Example of GitHub action:</p>
+<pre><code class="language-yml">name: Test-crawler CI
 
-node_js:
-  - 'node'
+on: [push]
 
-branches:
-  only:
-  - master
+jobs:
+  build:
 
-install:
-  - git config --global user.email &quot;build@travis-ci.com&quot;
-  - git config --global user.name &quot;Travis CI&quot;
-  # we should be able to take this from env var
-  - GH_REPO=&quot;github.com/your_user_name/the_repo.git&quot;
+    runs-on: ubuntu-latest
 
-script:
-  - yarn
-  - yarn start &gt; /dev/null &amp;
-  - sleep 15 # wait that the server run
-  - yarn test:crawler:cli
-
-# only push change if found diff
-after_failure:
-  - git checkout ${TRAVIS_BRANCH}
-  - git add -A .
-  - git commit -m &quot;travis commit, test-crawler [ci skip]&quot; # [ci skip] to don't trigger another build
-  - git status
-  - git pull
-  - git push &quot;https://${GITHUB_TOKEN}@${GH_REPO}&quot; ${TRAVIS_BRANCH} &gt; /dev/null 2&gt;&amp;1 # should always escape output, for security issue, else token could be visible
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v1
+    - name: Run test-crawler
+      run: |
+        ROOT_FOLDER=`pwd` npx -p test-crawler test-crawler-cli --project ${{ github.event.client_payload.projectId }}
+    - name: Commit changes
+      run: |
+        git config --local user.email &quot;action@github.com&quot;
+        git config --local user.name &quot;Test-crawler&quot;
+        git add .
+        git status
+        git commit -m &quot;[test-crawler] CI save&quot; || echo &quot;No changes to commit&quot;
+        git pull
+        git push &quot;https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}&quot;
 </code></pre>
-<p>To set GITHUB_TOKEN environment variable look at <a href="https://docs.travis-ci.com/user/deployment/pages/">https://docs.travis-ci.com/user/deployment/pages/</a></p>
-<p>in <code>package.json</code> add the following scripts:</p>
-<pre><code class="language-json">  &quot;scripts&quot;: {
-    &quot;start&quot;: &quot;...&quot;,
-    &quot;test:crawler&quot;: &quot;PROJECT_FOLDER=./test-crawler test-crawler&quot;,
-    &quot;test:crawler:cli&quot;: &quot;PROCESS_TIMEOUT=10 PROJECT_FOLDER=./test-crawler test-crawler-cli --project here_is_the_project_id&quot;
-  }
-</code></pre>
-<blockquote>
-<p><strong>Note:</strong> For <code>test-crawler-cli</code> and project, see previous section.</p>
-</blockquote>
 <h2>Contribution</h2>
 <p>If you are interested to work on this project, you are really welcome.
 There is many way to bring help, testing, documentation, bug fixes, new features…</p>
-<p>For the one who to dive in the code, you need to know about TypeScript, React and eventually Puppeteer but <strong>the most important thing to be aware is that test-crawler is base on <a href="https://www.npmjs.com/package/isomor">isomor</a></strong>. It might be useful to undertsand the concept of this tool before to touch the code.</p>
+<p>For the one who want to dive in the code, you need to know about TypeScript, React and eventually Puppeteer but <strong>the most important thing to be aware is that test-crawler is base on <a href="https://www.npmjs.com/package/isomor">isomor</a></strong>. It might be useful to undertsand the concept of this tool before to touch the code.</p>
 <p>Since you was reading the doc, you now know that the code should be modified in &quot;src-isomor&quot;.</p>
 <p>To start the project in dev mode:</p>
 <pre><code class="language-shell">git clone https://github.com/apiel/test-crawler.git
