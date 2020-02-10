@@ -178,8 +178,8 @@ async function injectCodes(
     distFolder: string,
     crawler: Crawler,
 ) {
-    const crawlerProvider = new CrawlerProvider();
-    const list = await crawlerProvider.getCodeList(StorageType.Local, projectId, true);
+    const crawlerProvider = new CrawlerProvider(StorageType.Local);
+    const list = await crawlerProvider.getCodeList(projectId, true);
     // console.log('injectCodes list', list);
     // console.log('Object.values', Object.values(list));
     const toInject = Object.values(list).filter(({ pattern }) => {
@@ -345,8 +345,8 @@ async function cleanHistory() {
 }
 
 async function startCrawler({ projectId, pagesFolder }: CrawlTarget) {
-    const crawlerProvider = new CrawlerProvider();
-    const { crawlerInput } = await crawlerProvider.loadProject(StorageType.Local, projectId);
+    const crawlerProvider = new CrawlerProvider(StorageType.Local);
+    const { crawlerInput } = await crawlerProvider.loadProject(projectId);
 
     const id = md5(`${pagesFolder}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
 

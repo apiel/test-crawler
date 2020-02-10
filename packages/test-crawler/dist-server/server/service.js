@@ -10,72 +10,88 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const lib_1 = require("./lib");
-const crawlerProvider = new lib_1.CrawlerProvider();
 function getSettings() {
     return __awaiter(this, void 0, void 0, function* () {
-        return crawlerProvider.getSettings();
+        return {
+            dir: __dirname,
+        };
     });
 }
 exports.getSettings = getSettings;
 function getInfo(storageType) {
-    return crawlerProvider.info(storageType);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.info();
 }
 exports.getInfo = getInfo;
 function getRepo(storageType) {
-    return crawlerProvider.repo(storageType);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.repo();
 }
 exports.getRepo = getRepo;
 function loadRepos(storageType) {
-    return crawlerProvider.repos(storageType);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.repos();
 }
 exports.loadRepos = loadRepos;
 function loadProject(storageType, projectId) {
-    return crawlerProvider.loadProject(storageType, projectId);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.loadProject(projectId);
 }
 exports.loadProject = loadProject;
 function loadProjects(storageType) {
-    return crawlerProvider.loadProjects(storageType);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.loadProjects();
 }
 exports.loadProjects = loadProjects;
 function saveProject(storageType, crawlerInput, name, projectId) {
-    return crawlerProvider.saveProject(storageType, crawlerInput, name, projectId);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.saveProject(crawlerInput, name, projectId);
 }
 exports.saveProject = saveProject;
 function getCrawler(storageType, projectId, timestamp) {
-    return crawlerProvider.getCrawler(storageType, projectId, timestamp);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.getCrawler(projectId, timestamp);
 }
 exports.getCrawler = getCrawler;
 function getCrawlers(storageType, projectId) {
-    return crawlerProvider.getAllCrawlers(storageType, projectId);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.getAllCrawlers(projectId);
 }
 exports.getCrawlers = getCrawlers;
 function getPages(storageType, projectId, timestamp) {
-    return crawlerProvider.getPages(storageType, projectId, timestamp);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.getPages(projectId, timestamp);
 }
 exports.getPages = getPages;
 function getPins(storageType, projectId) {
-    return crawlerProvider.getPins(storageType, projectId);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.getPins(projectId);
 }
 exports.getPins = getPins;
 function getPin(storageType, projectId, id) {
-    return crawlerProvider.getPin(storageType, projectId, id);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.getPin(projectId, id);
 }
 exports.getPin = getPin;
 function setCode(storageType, projectId, code) {
-    return crawlerProvider.saveCode(storageType, projectId, code);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.saveCode(projectId, code);
 }
 exports.setCode = setCode;
 function getCode(storageType, projectId, id) {
-    return crawlerProvider.loadCode(storageType, projectId, id);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.loadCode(projectId, id);
 }
 exports.getCode = getCode;
 function getCodes(storageType, projectId) {
-    return crawlerProvider.getCodeList(storageType, projectId);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.getCodeList(projectId);
 }
 exports.getCodes = getCodes;
 function getThumbnail(storageType, projectId, folder, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
-        const image = yield crawlerProvider.image(storageType, projectId, folder, id);
+        const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+        const image = yield crawlerProvider.image(projectId, folder, id);
         if (!image) {
             throw new Error('Cannot load image.');
         }
@@ -84,38 +100,45 @@ function getThumbnail(storageType, projectId, folder, id, width = 300) {
 }
 exports.getThumbnail = getThumbnail;
 function removePin(storageType, projectId, id) {
-    return crawlerProvider.removeFromPins(storageType, projectId, id);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.removeFromPins(projectId, id);
 }
 exports.removePin = removePin;
 function pin(storageType, projectId, timestamp, id) {
-    return crawlerProvider.copyToPins(storageType, projectId, timestamp, id);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.copyToPins(projectId, timestamp, id);
 }
 exports.pin = pin;
 function setZoneStatus(storageType, projectId, timestamp, id, index, status) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield crawlerProvider.setZoneStatus(storageType, projectId, timestamp, id, index, status);
+        const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+        yield crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
         return getPages(storageType, projectId, timestamp);
     });
 }
 exports.setZoneStatus = setZoneStatus;
 function setZonesStatus(storageType, projectId, timestamp, id, status) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield crawlerProvider.setZonesStatus(storageType, projectId, timestamp, id, status);
+        const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+        yield crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
         return getPages(storageType, projectId, timestamp);
     });
 }
 exports.setZonesStatus = setZonesStatus;
 function setStatus(storageType, projectId, timestamp, status) {
-    return crawlerProvider.setCrawlerStatus(storageType, projectId, timestamp, status);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 exports.setStatus = setStatus;
 function startCrawler(storageType, projectId) {
     var _a;
-    return crawlerProvider.startCrawler(storageType, projectId, (_a = this) === null || _a === void 0 ? void 0 : _a.push);
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.startCrawler(projectId, (_a = this) === null || _a === void 0 ? void 0 : _a.push);
 }
 exports.startCrawler = startCrawler;
-function startCrawlers() {
+function startCrawlers(storageType) {
     var _a;
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
     return crawlerProvider.startCrawlers((_a = this) === null || _a === void 0 ? void 0 : _a.push);
 }
 exports.startCrawlers = startCrawlers;

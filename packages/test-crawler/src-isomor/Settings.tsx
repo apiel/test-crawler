@@ -4,6 +4,7 @@ import Spin from 'antd/lib/spin';
 
 import { getSettings, startCrawlers } from './server/service';
 import Button from 'antd/lib/button';
+import { StorageType } from './server/storage.typing';
 
 const { Title } = Typography;
 
@@ -30,7 +31,9 @@ export const Settings = () => {
                 <Button
                     icon="caret-right"
                     size="small"
-                    onClick={startCrawlers}
+                    onClick={() => {
+                        startCrawlers(StorageType.Local);
+                    }}
                 >
                     Start crawlers
                 </Button>

@@ -146,8 +146,8 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
 }
 function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        const crawlerProvider = new CrawlerProvider_1.CrawlerProvider();
-        const list = yield crawlerProvider.getCodeList(storage_typing_1.StorageType.Local, projectId, true);
+        const crawlerProvider = new CrawlerProvider_1.CrawlerProvider(storage_typing_1.StorageType.Local);
+        const list = yield crawlerProvider.getCodeList(projectId, true);
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });
@@ -307,8 +307,8 @@ function cleanHistory() {
 }
 function startCrawler({ projectId, pagesFolder }) {
     return __awaiter(this, void 0, void 0, function* () {
-        const crawlerProvider = new CrawlerProvider_1.CrawlerProvider();
-        const { crawlerInput } = yield crawlerProvider.loadProject(storage_typing_1.StorageType.Local, projectId);
+        const crawlerProvider = new CrawlerProvider_1.CrawlerProvider(storage_typing_1.StorageType.Local);
+        const { crawlerInput } = yield crawlerProvider.loadProject(projectId);
         const id = md5(`${pagesFolder}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
         const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp: pagesFolder, id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
         const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, pagesFolder);

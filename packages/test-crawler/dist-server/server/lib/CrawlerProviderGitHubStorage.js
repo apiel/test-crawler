@@ -10,17 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const GitHubStorage_1 = require("./storage/GitHubStorage");
-const storage_typing_1 = require("../storage.typing");
 const gitHubStorage = new GitHubStorage_1.GitHubStorage();
 class CrawlerProviderStorage {
+    constructor(storageType) {
+        this.storage = gitHubStorage;
+    }
     startCrawlers(push) {
         return __awaiter(this, void 0, void 0, function* () { });
-    }
-    getStorage(storageType) {
-        if (storageType === storage_typing_1.StorageType.GitHub) {
-            return gitHubStorage;
-        }
-        throw new Error(`Unknown storage type ${storageType}.`);
     }
 }
 exports.CrawlerProviderStorage = CrawlerProviderStorage;

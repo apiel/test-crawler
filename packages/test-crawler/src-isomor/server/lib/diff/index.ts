@@ -84,8 +84,8 @@ export async function prepare(projectId: string, id: string, distFolder: string,
             info('DIFF', 'new png');
         }
     } else if (crawler.autopin) {
-        const crawlerProvider = new CrawlerProvider();
-        crawlerProvider.copyToPins(StorageType.Local, projectId, crawler.timestamp, id);
+        const crawlerProvider = new CrawlerProvider(StorageType.Local);
+        crawlerProvider.copyToPins(projectId, crawler.timestamp, id);
         // we might want to put a flag to the page saying that it was automatically pin
     }
     return {

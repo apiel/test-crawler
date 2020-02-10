@@ -81,8 +81,8 @@ function prepare(projectId, id, distFolder, crawler) {
             }
         }
         else if (crawler.autopin) {
-            const crawlerProvider = new index_1.CrawlerProvider();
-            crawlerProvider.copyToPins(storage_typing_1.StorageType.Local, projectId, crawler.timestamp, id);
+            const crawlerProvider = new index_1.CrawlerProvider(storage_typing_1.StorageType.Local);
+            crawlerProvider.copyToPins(projectId, crawler.timestamp, id);
         }
         return {
             diffZoneCount,

@@ -5,6 +5,5 @@ import { isomorRemote } from "isomor";
  * e.g. for GitHub pages
  */
 export enum StorageType {
-  Local = 'local',
   GitHub = 'github',
 }
