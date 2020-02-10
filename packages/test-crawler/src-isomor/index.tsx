@@ -4,6 +4,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { hotjar } from 'react-hotjar';
+
+// use hotjar only on github
+if (window.location.host === 'apiel.github.io') {
+    hotjar.initialize(1680523, 6);
+}
 
 ReactDOM.render((<AsyncCacheProvider><App /></AsyncCacheProvider>), document.getElementById('root'));
 

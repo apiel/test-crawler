@@ -21,7 +21,7 @@ export const ProjectRepos = ({ storageType }: Props) => {
             style={{ width: 200 }}
             placeholder="repository"
         >
-            {repos.map(repo => (<Select.Option value={repo}>{repo}</Select.Option>))}
+            {repos.map(repo => (<Select.Option key={repo} value={repo}>{repo}</Select.Option>))}
         </Select>
     );
 }

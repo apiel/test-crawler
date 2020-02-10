@@ -12728,6 +12728,10 @@ react-helmet-async@^1.0.2:
     react-fast-compare "2.0.4"
     shallowequal "1.1.0"
 
+react-hotjar@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-2.2.0.tgz#c520b3ab8dc7f0c9ba468a8232ac326924a07331"
+
 react-hotkeys@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-2.0.0.tgz#a7719c7340cbba888b0e9184f806a9ec0ac2c53f"
