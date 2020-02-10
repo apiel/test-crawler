@@ -26,9 +26,9 @@ function start() {
         if (option && value) {
             if (option === '--project') {
                 logol_1.info('Start project', value);
-                const crawlerProvider = new lib_1.CrawlerProvider();
-                const result = yield crawlerProvider.startCrawler(storage_typing_1.StorageType.Local, value);
-                logol_1.info('timestamp', result);
+                const crawlerProvider = new lib_1.CrawlerProvider(storage_typing_1.StorageType.Local);
+                const result = yield crawlerProvider.startCrawler(value);
+                logol_1.info('result', result);
                 return;
             }
         }

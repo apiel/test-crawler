@@ -17,9 +17,9 @@ async function start() {
     if (option && value) {
         if (option === '--project') {
             info('Start project', value);
-            const crawlerProvider = new CrawlerProvider();
-            const result = await crawlerProvider.startCrawler(StorageType.Local, value);
-            info('timestamp', result);
+            const crawlerProvider = new CrawlerProvider(StorageType.Local);
+            const result = await crawlerProvider.startCrawler(value);
+            info('result', result);
             return;
         }
     }
