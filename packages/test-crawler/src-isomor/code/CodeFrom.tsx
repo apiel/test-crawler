@@ -35,7 +35,7 @@ const save = async (
     info: FormInput,
 ) => {
     try {
-        const hide = message.loading('Saving in progress..', 0);
+        const hide = message.loading('Saving in progress...', 0);
         await setCode(storageType, projectId, {
             id,
             source,

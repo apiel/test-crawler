@@ -17,15 +17,24 @@ import List from 'antd/lib/list';
 import { timestampToString } from '../utils';
 import { Codes } from '../code/Codes';
 import { StorageType } from '../server/storage.typing';
+import { Redirect } from './Redirect';
+import message from 'antd/lib/message';
 
 const onStart = (
     history: History<any>,
     projectId: string,
     storageType: StorageType,
+    setRedirectUrl: React.Dispatch<React.SetStateAction<string | undefined>>,
 ) => async () => {
     try {
+        const hide = message.loading('Starting crawlers', 0);
         const { timestamp, redirect } = await startCrawler(storageType, projectId);
-        history.push(getResultsRoute(storageType, projectId, timestamp));
+        if (redirect) {
+            setRedirectUrl(redirect);
+        } else {
+            history.push(getResultsRoute(storageType, projectId, timestamp));
+        }
+        hide();
     } catch (error) {
         notification['error']({
             message: 'Something went wrong!',
@@ -60,6 +69,7 @@ export const Project = ({
     match: { params: { projectId, storageType } },
     history,
 }: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
+    const [redirectUrl, setRedirectUrl] = React.useState<string>();
     const { project, setProject } = useProject(storageType, projectId);
     const { crawlers, loading } = useCrawlers(storageType, projectId);
     return (
@@ -87,11 +97,12 @@ export const Project = ({
                         Automatically pin new page founds.
                     </Checkbox>
                 </p>
+                <Redirect url={redirectUrl} setUrl={setRedirectUrl} />
                 <p>
                     <Button
                         icon="caret-right"
                         size="small"
-                        onClick={onStart(history, projectId, storageType)}
+                        onClick={onStart(history, projectId, storageType, setRedirectUrl)}
                     >
                         Run
                     </Button> &nbsp;
