@@ -3,31 +3,9 @@
 - antd breadcrumb https://ant.design/components/breadcrumb-cn/#components-breadcrumb-demo-router
 
 - need notifcation
-- select repo, in the list of projects
-- show actions process in result from github process ci
 - update doc:
     + you can run CI on every push
     + you can schedule CI
-
-
-- ? move html in json maybe using base64
-- ? move image in json using base64
-- ? group all the result in a single file?
-    - or group all the diff result in a seprate file
-    -> so we can update only this, then we could eventually use CI to populate those changes in each files
-
-make test crawler purely client side for github
-https://developer.github.com/v3/#authentication
-https://developer.github.com/v3/guides/basics-of-authentication/
-https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/
-https://developer.github.com/apps/building-github-apps/authenticating-with-github-apps/
-
-we might use token for simple solution but it would have some security issue since token would be stored in browser
-the second auth options would be to create create an app, more complicated to setup for the user but more safe.
-
--> if 1 of the loadProject fail it should still work for the others
-
-**!important!** need to optimize the way we load project, use router state for it, instead to always load it
 
 
 
@@ -39,6 +17,7 @@ the second auth options would be to create create an app, more complicated to se
 
 
 
+- html comparison -> prettify code and then compare. Do we really want that?
 
 
 - track user behavior, save it in history and reproduce scenarios... (e2e?)
