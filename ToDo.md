@@ -8,6 +8,17 @@
     + you can schedule CI
 
 
+>>>>>> https://github.community/t5/GitHub-Actions/Getting-the-run-id-of-a-run-in-Github-Actions/td-p/36567
+- https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/runs
+- https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/runs/37713512/jobs
+- https://github.community/t5/GitHub-Actions/Getting-the-run-id-of-a-run-in-Github-Actions/td-p/36567/page/3
+- https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/runs?event=repository_dispatch
+>>> https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/workflows/test-crawler.yml/runs?event=repository_dispatch
+
+on:
+  repository_dispatch:
+    types: [test-crawler]
+
 
 
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)

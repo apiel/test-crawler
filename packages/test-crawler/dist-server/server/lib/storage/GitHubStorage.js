@@ -17,10 +17,13 @@ const error_1 = require("../../error");
 const CrawlerProviderStorage_1 = require("../CrawlerProviderStorage");
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
+const EVENT_TYPE = 'test-crawler';
 const CI_Workflow = `
 name: Test-crawler CI
 
-on: [repository_dispatch]
+on:
+  repository_dispatch:
+    types: [${EVENT_TYPE}]
 
 jobs:
   build:
@@ -32,8 +35,7 @@ jobs:
     - name: Setup node
       uses: actions/setup-node@v1
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
-      run: |
-        ROOT_FOLDER=\`pwd\` npx -p test-crawler test-crawler-cli --project \${{ github.event.client_payload.projectId }}
+      run: apiel/test-crawler/github/actions/test-crawler-run@master
     - name: Commit changes
       run: |
         git config --local user.email "action@github.com"
@@ -161,7 +163,7 @@ class GitHubStorage extends Storage_1.Storage {
                     method: 'POST',
                     url: `${this.ciDispatchUrl}`,
                     data: {
-                        event_type: "test-crawler",
+                        event_type: EVENT_TYPE,
                         client_payload: {
                             projectId: crawlTarget.projectId,
                         }
