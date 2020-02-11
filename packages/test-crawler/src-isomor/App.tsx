@@ -2,7 +2,12 @@ import React from 'react';
 import Layout from 'antd/lib/layout';
 import Typography from 'antd/lib/typography';
 import Breadcrumb from 'antd/lib/breadcrumb';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {
+    // BrowserRouter,
+    Route,
+    Link,
+    HashRouter,
+} from 'react-router-dom';
 
 import './App.css';
 import NewProject from './projects/new/NewProject';
@@ -44,7 +49,8 @@ const contentStyle = {
 };
 
 const App = () => (
-    <Router basename={process.env.PUBLIC_URL}>
+    // <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter basename={process.env.PUBLIC_URL}>
         <Layout style={layoutStyle}>
             <Header>
                 <Link to={getHomeRoute()}>
@@ -87,7 +93,8 @@ const App = () => (
                 <Route path={getProjectRoute(':storageType', ':projectId')} exact component={Project} />
             </Content>
         </Layout>
-    </Router>
+    </HashRouter>
+    // </BrowserRouter>
 );
 
 export default App;
