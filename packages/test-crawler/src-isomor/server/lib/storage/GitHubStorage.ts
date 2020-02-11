@@ -30,7 +30,7 @@ jobs:
     - name: Setup node
       uses: actions/setup-node@v1
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
-      uses: apiel/test-crawler/actions/test-crawler-run@master
+      uses: apiel/test-crawler/actions/run@master
     - name: Commit changes
       run: |
         git config --local user.email "action@github.com"
