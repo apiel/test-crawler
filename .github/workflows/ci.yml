@@ -1,0 +1,32 @@
+name: CI cron
+
+on:
+  schedule:
+    - cron:  '0 4 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v1
+    - name: Generate doc
+      run: yarn doc
+    - name: Generate live site for Github pages
+      run: yarn github:pub
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "CI cron"
+        git add .
+        git status
+        git commit -m "[CI cron] CI save" || echo "No changes to commit"
+        git pull
+        git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+    - name: Check if dependency work
+      run: |
+        cd packages/test-crawler
+        yarn

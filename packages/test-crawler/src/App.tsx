@@ -50,7 +50,9 @@ const contentStyle = {
 
 const App = () => (
     // <BrowserRouter basename={process.env.PUBLIC_URL}>
-    <HashRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter
+        // basename={process.env.PUBLIC_URL}
+    >
         <Layout style={layoutStyle}>
             <Header>
                 <Link to={getHomeRoute()}>
