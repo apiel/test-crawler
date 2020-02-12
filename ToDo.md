@@ -1,13 +1,3 @@
-- update doc:
-    + github vs local storage
-    + you can run CI on every push
-    + you can schedule CI
-    + notification
-    + config file
-
-- need to make a big cleanup in crawler code
-
-
 >>>>>> https://github.community/t5/GitHub-Actions/Getting-the-run-id-of-a-run-in-Github-Actions/td-p/36567
 - https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/runs
 - https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/runs/37713512/jobs
@@ -16,14 +6,22 @@
 >>> https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/workflows/test-crawler.yml/runs?event=repository_dispatch
 
 
+- update doc:
+    + github vs local storage
+    + you can run CI on every push
+    + you can schedule CI
+    + notification
+    + config file
+>> instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
+
+- need to make a big cleanup in crawler code
+
 - support gitlab
 
 - make snapshot on other browser:
     - https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode
     - https://dev.to/mizchi/run-crossbrowser-e2e-testing-on-github-actions-671
     - look at selenium
-
-- instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
 
 - publish action there https://github.com/sdras/awesome-actions
 
