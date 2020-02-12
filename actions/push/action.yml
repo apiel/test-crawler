@@ -1,0 +1,11 @@
+name: 'Test-crawler-push'
+inputs:
+  token:
+    description: 'Private access token'
+    default: ${{ secrets.GITHUB_TOKEN }}
+  repo:
+    description: 'Repository'
+    default: ${{ github.repository }}
+runs:
+  using: 'node12'
+  main: 'index.js'

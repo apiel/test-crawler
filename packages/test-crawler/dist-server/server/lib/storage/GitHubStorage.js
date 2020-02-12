@@ -26,7 +26,7 @@ on:
     types: [${EVENT_TYPE}]
 
 jobs:
-  build:
+  test-crawler:
 
     runs-on: ubuntu-latest
 
@@ -34,15 +34,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
       uses: apiel/test-crawler/actions/run@master
-    - name: Commit changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "Test-crawler"
-        git add .
-        git status
-        git commit -m "[test-crawler] CI save" || echo "No changes to commit"
-        git pull
-        git push "https://\${{ secrets.GITHUB_TOKEN }}@github.com/\${{ github.repository }}"
+    - name: Push changes
+      uses: apiel/test-crawler/actions/push@master
 `;
 class GitHubStorage extends Storage_1.Storage {
     constructor(ctx) {
