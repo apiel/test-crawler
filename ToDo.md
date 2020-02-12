@@ -17,10 +17,8 @@
 - https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/runs?event=repository_dispatch
 >>> https://api.github.com/repos/apiel/test-crawler-remote-folder/actions/workflows/test-crawler.yml/runs?event=repository_dispatch
 
-on:
-  repository_dispatch:
-    types: [test-crawler]
 
+- support gitlab
 
 - make snapshot on other browser:
     - https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode
