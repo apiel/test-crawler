@@ -5,6 +5,9 @@ export function getSettings(...args: any) {
 export function getInfo(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getInfo", args);
 }
+export function getJobs(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getJobs", args);
+}
 export function getRepo(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getRepo", args);
 }

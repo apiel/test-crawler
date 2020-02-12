@@ -12,7 +12,7 @@ import {
     remove,
     outputFile,
 } from 'fs-extra';
-import { CrawlTarget } from '../../typing';
+import { CrawlTarget, Job } from '../../typing';
 import { crawl } from '../crawl';
 import { join } from 'path';
 import { ROOT_FOLDER } from '../config';
@@ -83,5 +83,9 @@ export class LocalStorage extends Storage {
 
     async info() {
         return undefined;
+    }
+
+    async jobs() {
+        return [] as Job[];
     }
 }

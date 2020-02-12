@@ -148,3 +148,14 @@ export interface Timing {
     loadEventStart: number;
     loadEventEnd: number;
 }
+
+export interface Job {
+    id: string;
+    url: string;
+    status: string;
+    startAt: number;
+    lastUpdate: number;
+    stepsCount?: number;
+    stepsDone?: number;
+    currentStep?: string;
+}

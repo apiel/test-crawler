@@ -190,6 +190,45 @@ class GitHubStorage extends Storage_1.Storage {
         current rate limit is: ${remaining} of ${limit}`;
         });
     }
+    jobs(projectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data: { workflow_runs } } = yield this.call({
+                url: this.runsUrl,
+            });
+            const progressIds = workflow_runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
+            const jobs = progressIds.map((id) => __awaiter(this, void 0, void 0, function* () {
+                var _a, _b;
+                const { data: { jobs } } = yield this.call({
+                    url: `${BASE_URL}/repos/${this.user}/${this.repo}/actions/runs/${id}/jobs`,
+                });
+                const [job] = jobs;
+                const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !== undefined;
+                if (isProjectJob) {
+                    const step = job.steps.find(({ status }) => status === 'in_progress');
+                    return {
+                        id,
+                        url: job.html_url,
+                        status: job.status,
+                        startAt: Math.round(new Date(job.started_at).getTime() / 1000),
+                        stepsCount: job.steps.length,
+                        stepsDone: job.steps.filter(({ status }) => status === 'completed').length,
+                        currentStep: ((_a = step) === null || _a === void 0 ? void 0 : _a.name) || 'unknown',
+                        lastUpdate: Math.round(new Date(((_b = step) === null || _b === void 0 ? void 0 : _b.started_at) || job.started_at).getTime() / 1000),
+                    };
+                }
+            }));
+            const inProgress = (yield Promise.all(jobs)).filter(job => job);
+            const queues = workflow_runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
+                .map(({ id, html_url, status, created_at, updated_at }) => ({
+                id,
+                url: html_url,
+                status,
+                startAt: Math.round(new Date(created_at).getTime() / 1000),
+                lastUpdate: Math.round(new Date(updated_at).getTime() / 1000),
+            }));
+            return [...queues, ...inProgress];
+        });
+    }
     call(config) {
         var _a;
         if (!this.token || !this.user) {
@@ -210,6 +249,9 @@ class GitHubStorage extends Storage_1.Storage {
     }
     get ciDispatchUrl() {
         return `${BASE_URL}/repos/${this.user}/${this.repo}/dispatches`;
+    }
+    get runsUrl() {
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/actions/workflows/test-crawler.yml/runs?event=repository_dispatch`;
     }
     get redirectUrl() {
         return `https://github.com/${this.user}/${this.repo}/actions`;

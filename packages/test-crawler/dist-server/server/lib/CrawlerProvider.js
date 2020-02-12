@@ -41,6 +41,9 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     info() {
         return this.storage.info();
     }
+    jobs(projectId) {
+        return this.storage.jobs(projectId);
+    }
     loadProject(projectId) {
         return this.storage.readJSON(this.join(projectId, `project.json`));
     }
@@ -125,8 +128,12 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             if (!Object.values(typing_1.BeforeAfterType).includes(type)) {
                 throw new Error(`Unknown code type ${type}.`);
             }
-            const buf = yield this.storage.read(this.join(projectId, `${type}`));
-            return ((_a = buf) === null || _a === void 0 ? void 0 : _a.toString()) || '';
+            try {
+                const buf = yield this.storage.read(this.join(projectId, `${type}`));
+                return ((_a = buf) === null || _a === void 0 ? void 0 : _a.toString()) || '';
+            }
+            catch (err) { }
+            return '';
         });
     }
     saveCode(projectId, code) {

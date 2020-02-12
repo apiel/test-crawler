@@ -27,6 +27,10 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return this.storage.info();
     }
 
+    jobs(projectId: string) {
+        return this.storage.jobs(projectId);
+    }
+
     loadProject(projectId: string): Promise<Project> {
         return this.storage.readJSON(this.join(projectId, `project.json`));
     }
@@ -120,8 +124,11 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         if (!Object.values(BeforeAfterType).includes(type)) {
             throw new Error(`Unknown code type ${type}.`);
         }
-        const buf = await this.storage.read(this.join(projectId, `${type}`));
-        return buf?.toString() || '';
+        try {
+            const buf = await this.storage.read(this.join(projectId, `${type}`));
+            return buf?.toString() || '';   
+        } catch (err) {}
+        return '';
     }
 
     async saveCode(projectId: string, code: Code): Promise<void> {

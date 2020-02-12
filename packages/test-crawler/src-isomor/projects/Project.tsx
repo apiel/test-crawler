@@ -19,6 +19,7 @@ import { Codes } from '../code/Codes';
 import { StorageType } from '../server/storage.typing';
 import { Redirect } from './Redirect';
 import message from 'antd/lib/message';
+import { ProjectJobs } from './ProjectJobs';
 
 const onStart = (
     history: History<any>,
@@ -115,6 +116,7 @@ export const Project = ({
                         </Button>
                     </Link>
                 </p>
+                <ProjectJobs storageType={storageType} projectId={projectId} />
                 <List
                     itemLayout="horizontal"
                     bordered

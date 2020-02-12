@@ -26,6 +26,11 @@ export function getInfo(storageType: StorageType) {
     return crawlerProvider.info();
 }
 
+export function getJobs(storageType: StorageType, projectId: string) {
+    const crawlerProvider = new CrawlerProvider(storageType, this);
+    return crawlerProvider.jobs(projectId);
+}
+
 export function getRepo(storageType: StorageType) {
     const crawlerProvider = new CrawlerProvider(storageType, this);
     return crawlerProvider.repo();

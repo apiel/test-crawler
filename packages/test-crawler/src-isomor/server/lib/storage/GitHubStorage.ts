@@ -3,7 +3,7 @@ import { Storage } from './Storage';
 import { basename, dirname } from 'path';
 import { WsContext, Context } from 'isomor-server';
 import axios, { AxiosRequestConfig } from 'axios';
-import { CrawlTarget } from '../../typing';
+import { CrawlTarget, Job } from '../../typing';
 import { config, GitHubConfig } from '../config';
 import { ERR } from '../../error';
 import { getCookie } from '../CrawlerProviderStorage';
@@ -171,6 +171,44 @@ export class GitHubStorage extends Storage {
         current rate limit is: ${remaining} of ${limit}`;
     }
 
+    async jobs(projectId: string) {
+        const { data: { workflow_runs } } = await this.call({
+            url: this.runsUrl,
+        });
+        const progressIds = workflow_runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
+        const jobs = progressIds.map(async (id: string) => {
+            const { data: { jobs } } = await this.call({
+                url: `${BASE_URL}/repos/${this.user}/${this.repo}/actions/runs/${id}/jobs`,
+            });
+            const [job] = jobs;
+            const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !== undefined;
+            if (isProjectJob) {
+                const step = job.steps.find(({ status }) => status === 'in_progress');
+                return {
+                    id,
+                    url: job.html_url,
+                    status: job.status,
+                    startAt: Math.round(new Date(job.started_at).getTime() / 1000),
+                    stepsCount: job.steps.length,
+                    stepsDone: job.steps.filter(({ status }) => status === 'completed').length,
+                    currentStep: step?.name || 'unknown',
+                    lastUpdate: Math.round(new Date(step?.started_at || job.started_at).getTime() / 1000),
+                } as Job;
+            }
+        }) as Promise<Job | undefined>[];
+        const inProgress = (await Promise.all(jobs)).filter(job => job);
+
+        const queues = workflow_runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
+            .map(({ id, html_url, status, created_at, updated_at }) => ({
+                id,
+                url: html_url,
+                status,
+                startAt: Math.round(new Date(created_at).getTime() / 1000),
+                lastUpdate: Math.round(new Date(updated_at).getTime() / 1000),
+            })) as Job[];
+        return [...queues, ...inProgress];
+    }
+
     protected call(config: AxiosRequestConfig) {
         if (!this.token || !this.user) {
             throw new Error(ERR.missingGitHubConfig);
@@ -197,6 +235,10 @@ export class GitHubStorage extends Storage {
 
     protected get ciDispatchUrl() {
         return `${BASE_URL}/repos/${this.user}/${this.repo}/dispatches`;
+    }
+
+    protected get runsUrl() {
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/actions/workflows/test-crawler.yml/runs?event=repository_dispatch`;
     }
 
     protected get redirectUrl() {
