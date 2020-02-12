@@ -1,4 +1,6 @@
 
+- when job is finish refresh project
+
 - update doc:
     + github vs local storage
     + you can run CI on every push
