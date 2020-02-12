@@ -2,8 +2,8 @@ import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
-import { Project as ProjectType } from '../server/typing';
-import { saveProject, startCrawler } from '../server/service';
+import { Project as ProjectType, Job } from '../server/typing';
+import { saveProject, startCrawler, getJobs } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
 import Icon from 'antd/lib/icon';
@@ -17,21 +17,28 @@ import List from 'antd/lib/list';
 import { timestampToString } from '../utils';
 import { Codes } from '../code/Codes';
 import { StorageType } from '../server/storage.typing';
-import { Redirect } from './Redirect';
 import message from 'antd/lib/message';
 import { ProjectJobs } from './ProjectJobs';
+import { useAsync } from '../hook/useAsync';
 
 const onStart = (
     history: History<any>,
     projectId: string,
     storageType: StorageType,
-    setRedirectUrl: React.Dispatch<React.SetStateAction<string | undefined>>,
+    loadJobs: () => Promise<void>,
 ) => async () => {
     try {
         const hide = message.loading('Starting crawlers', 0);
         const { timestamp, redirect } = await startCrawler(storageType, projectId);
         if (redirect) {
-            setRedirectUrl(redirect);
+            setTimeout(loadJobs, 2000);
+            notification.open({
+                message: 'Test-crawler started',
+                description: 'Test-crawler is running the crawlers on a remote container. To see live progress click open:',
+                btn: (<a href={redirect} target="_blank" rel="noopener noreferrer">
+                    Open
+                </a>),
+            });
         } else {
             history.push(getResultsRoute(storageType, projectId, timestamp));
         }
@@ -70,9 +77,9 @@ export const Project = ({
     match: { params: { projectId, storageType } },
     history,
 }: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
-    const [redirectUrl, setRedirectUrl] = React.useState<string>();
     const { project, setProject } = useProject(storageType, projectId);
     const { crawlers, loading } = useCrawlers(storageType, projectId);
+    const { result: jobs, call: loadJobs } = useAsync<Job[]>(() => getJobs(storageType, projectId));
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>
@@ -98,12 +105,11 @@ export const Project = ({
                         Automatically pin new page founds.
                     </Checkbox>
                 </p>
-                <Redirect url={redirectUrl} setUrl={setRedirectUrl} />
                 <p>
                     <Button
                         icon="caret-right"
                         size="small"
-                        onClick={onStart(history, projectId, storageType, setRedirectUrl)}
+                        onClick={onStart(history, projectId, storageType, loadJobs)}
                     >
                         Run
                     </Button> &nbsp;
@@ -116,7 +122,7 @@ export const Project = ({
                         </Button>
                     </Link>
                 </p>
-                <ProjectJobs storageType={storageType} projectId={projectId} />
+                <ProjectJobs jobs={jobs} loadJobs={loadJobs} />
                 <List
                     itemLayout="horizontal"
                     bordered
