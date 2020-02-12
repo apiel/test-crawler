@@ -1,5 +1,3 @@
-- login with cookies, reload page and config (also on local use)
-
 - need exit/init script because of local storage
 - need notifcation (maybe not necessary with action and exit script, still need to document)
 - update doc:
