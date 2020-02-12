@@ -195,7 +195,24 @@ class GitHubStorage extends Storage_1.Storage {
             const { data: { workflow_runs } } = yield this.call({
                 url: this.runsUrl,
             });
-            const progressIds = workflow_runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
+            const inProgress = yield this.getInProgressJobs(projectId, workflow_runs);
+            const queued = this.getQueuedJobs(workflow_runs);
+            return [...queued, ...inProgress];
+        });
+    }
+    getQueuedJobs(runs) {
+        return runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
+            .map(({ id, html_url, status, created_at, updated_at }) => ({
+            id,
+            url: html_url,
+            status,
+            startAt: Math.round(new Date(created_at).getTime() / 1000),
+            lastUpdate: Math.round(new Date(updated_at).getTime() / 1000),
+        }));
+    }
+    getInProgressJobs(projectId, runs) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const progressIds = runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
             const jobs = progressIds.map((id) => __awaiter(this, void 0, void 0, function* () {
                 var _a, _b;
                 const { data: { jobs } } = yield this.call({
@@ -217,16 +234,7 @@ class GitHubStorage extends Storage_1.Storage {
                     };
                 }
             }));
-            const inProgress = (yield Promise.all(jobs)).filter(job => job);
-            const queues = workflow_runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
-                .map(({ id, html_url, status, created_at, updated_at }) => ({
-                id,
-                url: html_url,
-                status,
-                startAt: Math.round(new Date(created_at).getTime() / 1000),
-                lastUpdate: Math.round(new Date(updated_at).getTime() / 1000),
-            }));
-            return [...queues, ...inProgress];
+            return (yield Promise.all(jobs)).filter(job => job);
         });
     }
     call(config) {

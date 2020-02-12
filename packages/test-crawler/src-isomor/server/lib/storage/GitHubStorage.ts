@@ -35,6 +35,27 @@ jobs:
         token: \${{ secrets.GITHUB_TOKEN }}
 `;
 
+interface GitHubWorkflow {
+    status: string;
+    id: string;
+    html_url: string;
+    created_at: string;
+    updated_at: string;
+}
+
+interface GitHubJob {
+    status: string;
+    html_url: string;
+    started_at: string;
+    steps: GitHubStep[];
+}
+
+interface GitHubStep {
+    status: string;
+    name: string;
+    started_at: string;
+}
+
 export class GitHubStorage extends Storage {
     private config: GitHubConfig | undefined;
     constructor(protected ctx?: undefined | WsContext | Context) {
@@ -175,12 +196,30 @@ export class GitHubStorage extends Storage {
         const { data: { workflow_runs } } = await this.call({
             url: this.runsUrl,
         });
-        const progressIds = workflow_runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
+        const inProgress = await this.getInProgressJobs(projectId, workflow_runs);
+        const queued = this.getQueuedJobs(workflow_runs);
+
+        return [...queued, ...inProgress];
+    }
+
+    protected getQueuedJobs(runs: GitHubWorkflow[]) {
+        return runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
+            .map(({ id, html_url, status, created_at, updated_at }) => ({
+                id,
+                url: html_url,
+                status,
+                startAt: Math.round(new Date(created_at).getTime() / 1000),
+                lastUpdate: Math.round(new Date(updated_at).getTime() / 1000),
+            })) as Job[];
+    }
+
+    protected async getInProgressJobs(projectId: string, runs: GitHubWorkflow[]) {
+        const progressIds = runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
         const jobs = progressIds.map(async (id: string) => {
             const { data: { jobs } } = await this.call({
                 url: `${BASE_URL}/repos/${this.user}/${this.repo}/actions/runs/${id}/jobs`,
             });
-            const [job] = jobs;
+            const [job]: [GitHubJob] = jobs;
             const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !== undefined;
             if (isProjectJob) {
                 const step = job.steps.find(({ status }) => status === 'in_progress');
@@ -196,17 +235,7 @@ export class GitHubStorage extends Storage {
                 } as Job;
             }
         }) as Promise<Job | undefined>[];
-        const inProgress = (await Promise.all(jobs)).filter(job => job);
-
-        const queues = workflow_runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
-            .map(({ id, html_url, status, created_at, updated_at }) => ({
-                id,
-                url: html_url,
-                status,
-                startAt: Math.round(new Date(created_at).getTime() / 1000),
-                lastUpdate: Math.round(new Date(updated_at).getTime() / 1000),
-            })) as Job[];
-        return [...queues, ...inProgress];
+        return (await Promise.all(jobs)).filter(job => job) as Job[];
     }
 
     protected call(config: AxiosRequestConfig) {
