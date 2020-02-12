@@ -13,6 +13,7 @@ const handleSubmit = (validateFields: any) => (event: React.FormEvent<any>) => {
             // save
             const cookies = new Cookies();
             cookies.set('github', values, { path: '/' });
+            window?.location?.reload();
         }
     });
 }

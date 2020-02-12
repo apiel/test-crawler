@@ -21,17 +21,7 @@ function getConfig(): Config {
         config = require(configFile);
     }
     catch (e) {
-        try {
-            const cookies = new Cookies();
-            config = {
-                remote: {
-                    github: cookies.get('github'),
-                }
-            };
-        }
-        catch (e) {
-            config = {};
-        }
+        config = {};
     }
     return {
         remote: {},

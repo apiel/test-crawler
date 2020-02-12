@@ -192,10 +192,10 @@ class GitHubStorage extends Storage_1.Storage {
     }
     call(config) {
         var _a;
-        if (!this.config) {
+        if (!this.token || !this.user) {
             throw new Error(error_1.ERR.missingGitHubConfig);
         }
-        return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { 'Authorization': `token ${this.config.token}` }) }));
+        return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { 'Authorization': `token ${this.token}` }) }));
     }
     getContents(path) {
         return this.call({
@@ -203,20 +203,24 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     get contentsUrl() {
-        var _a;
-        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/contents`;
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/contents`;
     }
     get blobUrl() {
-        var _a;
-        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/git/blobs`;
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/git/blobs`;
     }
     get ciDispatchUrl() {
-        var _a;
-        return `${BASE_URL}/repos/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/dispatches`;
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/dispatches`;
     }
     get redirectUrl() {
-        var _a;
-        return `https://github.com/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/${this.repo}/actions`;
+        return `https://github.com/${this.user}/${this.repo}/actions`;
+    }
+    get user() {
+        var _a, _b;
+        return ((_a = CrawlerProviderStorage_1.getCookie('github', this.ctx)) === null || _a === void 0 ? void 0 : _a.user) || ((_b = this.config) === null || _b === void 0 ? void 0 : _b.user);
+    }
+    get token() {
+        var _a, _b;
+        return ((_a = CrawlerProviderStorage_1.getCookie('github', this.ctx)) === null || _a === void 0 ? void 0 : _a.token) || ((_b = this.config) === null || _b === void 0 ? void 0 : _b.user);
     }
     get repo() {
         var _a;

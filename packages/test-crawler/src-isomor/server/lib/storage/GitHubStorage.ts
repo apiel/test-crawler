@@ -172,12 +172,12 @@ export class GitHubStorage extends Storage {
     }
 
     protected call(config: AxiosRequestConfig) {
-        if (!this.config) {
+        if (!this.token || !this.user) {
             throw new Error(ERR.missingGitHubConfig);
         }
         return axios({
             ...config,
-            headers: { ...config?.headers, 'Authorization': `token ${this.config.token}` },
+            headers: { ...config?.headers, 'Authorization': `token ${this.token}` },
         });
     }
 
@@ -188,19 +188,27 @@ export class GitHubStorage extends Storage {
     }
 
     protected get contentsUrl() {
-        return `${BASE_URL}/repos/${this.config?.user}/${this.repo}/contents`;
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/contents`;
     }
 
     protected get blobUrl() {
-        return `${BASE_URL}/repos/${this.config?.user}/${this.repo}/git/blobs`;
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/git/blobs`;
     }
 
     protected get ciDispatchUrl() {
-        return `${BASE_URL}/repos/${this.config?.user}/${this.repo}/dispatches`;
+        return `${BASE_URL}/repos/${this.user}/${this.repo}/dispatches`;
     }
 
     protected get redirectUrl() {
-        return `https://github.com/${this.config?.user}/${this.repo}/actions`;
+        return `https://github.com/${this.user}/${this.repo}/actions`;
+    }
+
+    protected get user() {
+        return getCookie('github', this.ctx)?.user || this.config?.user;
+    }
+
+    protected get token() {
+        return getCookie('github', this.ctx)?.token || this.config?.user;
     }
 
     protected get repo() {
