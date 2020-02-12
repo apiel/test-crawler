@@ -153,7 +153,7 @@ function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
         });
         logol_1.info(toInject.length, 'code(s) to inject for', url);
         for (const codeInfo of toInject) {
-            const sourcePath = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${codeInfo.id}.js`);
+            const sourcePath = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${codeInfo.id}.js`);
             links = yield injectCode(sourcePath, page, id, url, links, distFolder, crawler);
         }
         return links;
@@ -346,7 +346,6 @@ function beforeAll(crawlTarget) {
                 projectIdForExit = crawlTarget.projectId;
                 const jsFile = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
-                    console.log('pppp', jsFile);
                     const fn = require(jsFile);
                     yield fn();
                 }
@@ -364,7 +363,6 @@ function afterAll() {
             try {
                 const jsFile = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
-                    console.log('pppp', jsFile);
                     const fn = require(jsFile);
                     fn(totalDiff, totalError);
                 }
