@@ -32,7 +32,10 @@ const onStart = (
         const { timestamp, redirect } = await startCrawler(storageType, projectId);
         if (redirect) {
             setTimeout(loadJobs, 2000);
+            setTimeout(loadJobs, 5000);
+            setTimeout(loadJobs, 10000);
             notification.open({
+                duration: 10,
                 message: 'Test-crawler started',
                 description: 'Test-crawler is running the crawlers on a remote container. To see live progress click open:',
                 btn: (<a href={redirect} target="_blank" rel="noopener noreferrer">
