@@ -10,6 +10,7 @@ import {
     Code,
     CodeInfoList,
     StartCrawler,
+    BeforeAfterType,
 } from './typing';
 import { StorageType } from './storage.typing';
 
@@ -73,6 +74,16 @@ export function getPins(storageType: StorageType, projectId: string): Promise<Pa
 export function getPin(storageType: StorageType, projectId: string, id: string): Promise<PageData> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
     return crawlerProvider.getPin(projectId, id);
+}
+
+export function saveBeforeAfterCode(storageType: StorageType, projectId: string, type: BeforeAfterType, code: string): Promise<void> {
+    const crawlerProvider = new CrawlerProvider(storageType, this);
+    return crawlerProvider.saveBeforeAfterCode(projectId, type, code);
+}
+
+export function getBeforeAfterCode(storageType: StorageType, projectId: string, type: BeforeAfterType): Promise<string> {
+    const crawlerProvider = new CrawlerProvider(storageType, this);
+    return crawlerProvider.getBeforeAfterCode(projectId, type);
 }
 
 export function setCode(storageType: StorageType, projectId: string, code: Code): Promise<void> {

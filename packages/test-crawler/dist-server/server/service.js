@@ -73,6 +73,16 @@ function getPin(storageType, projectId, id) {
     return crawlerProvider.getPin(projectId, id);
 }
 exports.getPin = getPin;
+function saveBeforeAfterCode(storageType, projectId, type, code) {
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.saveBeforeAfterCode(projectId, type, code);
+}
+exports.saveBeforeAfterCode = saveBeforeAfterCode;
+function getBeforeAfterCode(storageType, projectId, type) {
+    const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+    return crawlerProvider.getBeforeAfterCode(projectId, type);
+}
+exports.getBeforeAfterCode = getBeforeAfterCode;
 function setCode(storageType, projectId, code) {
     const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
     return crawlerProvider.saveCode(projectId, code);

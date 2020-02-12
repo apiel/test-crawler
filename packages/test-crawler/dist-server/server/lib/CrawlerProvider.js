@@ -25,6 +25,7 @@ const md5 = require("md5");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const config_1 = require("./config");
 const utils_1 = require("./utils");
+const typing_1 = require("../typing");
 const CrawlerProviderStorage_1 = require("./CrawlerProviderStorage");
 class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     constructor(storageType, ctx) {
@@ -107,6 +108,26 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             ? this.join(projectId, config_1.PIN_FOLDER)
             : this.join(projectId, config_1.CRAWL_FOLDER, folder);
         return this.storage.blob(utils_1.getFilePath(id, target)('png'));
+    }
+    saveBeforeAfterCode(projectId, type, code) {
+        if (!Object.values(typing_1.BeforeAfterType).includes(type)) {
+            throw new Error(`Unknown code type ${type}.`);
+        }
+        const file = this.join(projectId, `${type}.js`);
+        if (!code.length) {
+            return this.storage.remove(file);
+        }
+        return this.storage.saveFile(file, code);
+    }
+    getBeforeAfterCode(projectId, type) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!Object.values(typing_1.BeforeAfterType).includes(type)) {
+                throw new Error(`Unknown code type ${type}.`);
+            }
+            const buf = yield this.storage.read(this.join(projectId, `${type}`));
+            return ((_a = buf) === null || _a === void 0 ? void 0 : _a.toString()) || '';
+        });
     }
     saveCode(projectId, code) {
         return __awaiter(this, void 0, void 0, function* () {

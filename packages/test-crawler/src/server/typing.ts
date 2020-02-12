@@ -31,6 +31,10 @@ export interface CodeInfo {
 export interface Code extends CodeInfo {
   source: string;
 }
+export enum BeforeAfterType {
+  Before = 'before',
+  After = 'after',
+}
 export interface CrawlerInput {
   url: string;
   viewport: Viewport;

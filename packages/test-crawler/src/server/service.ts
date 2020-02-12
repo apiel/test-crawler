@@ -35,6 +35,12 @@ export function getPins(...args: any) {
 export function getPin(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getPin", args);
 }
+export function saveBeforeAfterCode(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "saveBeforeAfterCode", args);
+}
+export function getBeforeAfterCode(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getBeforeAfterCode", args);
+}
 export function setCode(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setCode", args);
 }

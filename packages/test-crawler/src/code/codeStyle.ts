@@ -3,8 +3,7 @@ import { cardStyle } from "../pages/pageStyle";
 export const aceEditorStyle = {
     border: '1px solid #EEE',
     marginBottom: 15,
-    marginRight: 15,
-    float: 'left' as 'left',
+    width: 'auto',
 }
 
 export const cardRightStyle = {

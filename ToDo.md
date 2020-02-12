@@ -1,11 +1,11 @@
-- need exit/init script because of local storage
-- need notifcation (maybe not necessary with action and exit script, still need to document)
 - update doc:
     + github vs local storage
     + you can run CI on every push
     + you can schedule CI
     + notification
     + config file
+
+- need to make a big cleanup in crawler code
 
 
 >>>>>> https://github.community/t5/GitHub-Actions/Getting-the-run-id-of-a-run-in-Github-Actions/td-p/36567

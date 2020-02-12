@@ -6,7 +6,7 @@ import { WsContext, Context } from 'isomor-server';
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType } from '../typing';
 import { StorageType } from '../storage.typing';
 import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 
@@ -103,6 +103,25 @@ export class CrawlerProvider extends CrawlerProviderStorage {
             ? this.join(projectId, PIN_FOLDER)
             : this.join(projectId, CRAWL_FOLDER, folder);
         return this.storage.blob(getFilePath(id, target)('png'));
+    }
+
+    saveBeforeAfterCode(projectId: string, type: BeforeAfterType, code: string): Promise<void> {
+        if (!Object.values(BeforeAfterType).includes(type)) {
+            throw new Error(`Unknown code type ${type}.`);
+        }
+        const file = this.join(projectId, `${type}.js`);
+        if (!code.length) {
+            return this.storage.remove(file);
+        }
+        return this.storage.saveFile(file, code);
+    }
+
+    async getBeforeAfterCode(projectId: string, type: BeforeAfterType): Promise<string> {
+        if (!Object.values(BeforeAfterType).includes(type)) {
+            throw new Error(`Unknown code type ${type}.`);
+        }
+        const buf = await this.storage.read(this.join(projectId, `${type}`));
+        return buf?.toString() || '';
     }
 
     async saveCode(projectId: string, code: Code): Promise<void> {

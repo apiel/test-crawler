@@ -13,6 +13,7 @@ import {
     CODE_FOLDER,
     PROJECT_FOLDER,
     MAX_HISTORY,
+    ROOT_FOLDER,
 } from '../config';
 import {
     getFilePath,
@@ -36,6 +37,7 @@ interface ResultQueue {
 }
 
 let totalDiff = 0;
+let totalError = 0;
 let consumerRunning = 0;
 const resultsQueue: ResultQueue[] = [];
 
@@ -50,7 +52,7 @@ export async function getFolders(projectId: string) {
 }
 
 export async function addToQueue(url: string, viewport: Viewport, distFolder: string, limit: number = 0): Promise<boolean> {
-    console.log('addToQueue', url, viewport, distFolder);
+    // console.log('addToQueue', url, viewport, distFolder);
     const id = md5(`${url}-${JSON.stringify(viewport)}`);
     const histFile = getFilePath(id, distFolder)('json');
     const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
@@ -187,7 +189,7 @@ async function injectCodes(
     }) as any;
     info(toInject.length, 'code(s) to inject for', url);
     for (const codeInfo of toInject) {
-        const sourcePath = join(PROJECT_FOLDER, projectId, CODE_FOLDER, `${codeInfo.id}.js`);
+        const sourcePath = join(ROOT_FOLDER, PROJECT_FOLDER, projectId, CODE_FOLDER, `${codeInfo.id}.js`);
         links = await injectCode(sourcePath, page, id, url, links, distFolder, crawler);
     }
     return links;
@@ -304,6 +306,7 @@ async function consumeResults(consumeTimeout: number, push?: (payload: any) => v
         }
         if (isError) {
             crawler.errorCount++;
+            totalError++;
         }
 
         const queueFolder = getQueueFolder(folder);
@@ -320,6 +323,7 @@ async function consumeResults(consumeTimeout: number, push?: (payload: any) => v
         setTimeout(() => consumeResults(consumeTimeout, push), 1000);
     } else {
         info('consumeResults timeout');
+        afterAll();
     }
 }
 
@@ -387,12 +391,44 @@ async function startSpiderBotCrawling({ url, viewport, limit }: CrawlerInput, di
     }
 }
 
+let projectIdForExit: string;
+async function beforeAll(crawlTarget?: CrawlTarget) {
+    if (crawlTarget) {
+        try {
+            projectIdForExit = crawlTarget.projectId;
+            const jsFile = join(ROOT_FOLDER, PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
+            if (await pathExists(jsFile)) {
+                const fn = require(jsFile);
+                await fn();
+            }
+        } catch (err) {
+            error('Something went wrong in beforeAll script', err);
+        }
+    }
+}
+
+async function afterAll() {
+    info('Done', { totalDiff, totalError });
+    if (projectIdForExit) {
+        try {
+            const jsFile = join(ROOT_FOLDER, PROJECT_FOLDER, projectIdForExit, 'after.js');
+            if (await pathExists(jsFile)) {
+                const fn = require(jsFile);
+                fn(totalDiff, totalError);
+            }
+        } catch (err) {
+            error('Something went wrong in afterAll script', err);
+        }
+    }
+}
+
 export async function crawl(
     crawlTarget?: CrawlTarget,
     consumeTimeout = CONSUME_TIMEOUT,
     push?: (payload: any) => void,
 ) {
     await prepareFolders();
+    await beforeAll(crawlTarget);
     crawlTarget && startCrawler(crawlTarget);
     consumeQueuesRetry = 0;
     consumeResultRetry = 0;

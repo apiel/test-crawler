@@ -25,6 +25,7 @@ const axios_1 = require("axios");
 const md5 = require("md5");
 const storage_typing_1 = require("../../storage.typing");
 let totalDiff = 0;
+let totalError = 0;
 let consumerRunning = 0;
 const resultsQueue = [];
 function getFolders(projectId) {
@@ -39,7 +40,6 @@ function getFolders(projectId) {
 exports.getFolders = getFolders;
 function addToQueue(url, viewport, distFolder, limit = 0) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('addToQueue', url, viewport, distFolder);
         const id = md5(`${url}-${JSON.stringify(viewport)}`);
         const histFile = utils_1.getFilePath(id, distFolder)('json');
         const queueFile = utils_1.getFilePath(id, getQueueFolder(distFolder))('json');
@@ -263,6 +263,7 @@ function consumeResults(consumeTimeout, push) {
             }
             if (isError) {
                 crawler.errorCount++;
+                totalError++;
             }
             const queueFolder = getQueueFolder(folder);
             const filesInQueue = (yield fs_extra_1.pathExists(queueFolder)) ? yield fs_extra_1.readdir(queueFolder) : [];
@@ -279,6 +280,7 @@ function consumeResults(consumeTimeout, push) {
         }
         else {
             logol_1.info('consumeResults timeout');
+            afterAll();
         }
     });
 }
@@ -336,9 +338,47 @@ function startSpiderBotCrawling({ url, viewport, limit }, distFolder) {
         }
     });
 }
+let projectIdForExit;
+function beforeAll(crawlTarget) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (crawlTarget) {
+            try {
+                projectIdForExit = crawlTarget.projectId;
+                const jsFile = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
+                if (yield fs_extra_1.pathExists(jsFile)) {
+                    console.log('pppp', jsFile);
+                    const fn = require(jsFile);
+                    yield fn();
+                }
+            }
+            catch (err) {
+                logol_1.error('Something went wrong in beforeAll script', err);
+            }
+        }
+    });
+}
+function afterAll() {
+    return __awaiter(this, void 0, void 0, function* () {
+        logol_1.info('Done', { totalDiff, totalError });
+        if (projectIdForExit) {
+            try {
+                const jsFile = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
+                if (yield fs_extra_1.pathExists(jsFile)) {
+                    console.log('pppp', jsFile);
+                    const fn = require(jsFile);
+                    fn(totalDiff, totalError);
+                }
+            }
+            catch (err) {
+                logol_1.error('Something went wrong in afterAll script', err);
+            }
+        }
+    });
+}
 function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
+        yield beforeAll(crawlTarget);
         crawlTarget && startCrawler(crawlTarget);
         consumeQueuesRetry = 0;
         consumeResultRetry = 0;
