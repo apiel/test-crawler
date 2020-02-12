@@ -27,8 +27,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup node
-      uses: actions/setup-node@v1
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
       uses: apiel/test-crawler/actions/run@master
     - name: Commit changes

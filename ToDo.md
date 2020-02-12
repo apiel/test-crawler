@@ -1,9 +1,7 @@
-- **we could track the number of query per page and see if there is some changes...**
+- **login with cookies, reload page and config (also on local use)**
 
-- antd breadcrumb https://ant.design/components/breadcrumb-cn/#components-breadcrumb-demo-router
-
-- login cookie fix
-- need notifcation
+- need exit/init script because of local storage
+- need notifcation (maybe not necessary with action and exit script, still need to document)
 - update doc:
     + you can run CI on every push
     + you can schedule CI
@@ -20,6 +18,22 @@ on:
   repository_dispatch:
     types: [test-crawler]
 
+
+- make snapshot on other browser:
+    - https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode
+    - https://dev.to/mizchi/run-crossbrowser-e2e-testing-on-github-actions-671
+    - look at selenium
+
+- instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
+
+- publish action there https://github.com/sdras/awesome-actions
+
+
+- **we could track the number of query per page and see if there is some changes...**
+
+
+
+- antd breadcrumb https://ant.design/components/breadcrumb-cn/#components-breadcrumb-demo-router
 
 
 - if crawl failed, in some case we could move back the url to crawl in the queue (or maybe too dangerous?)
