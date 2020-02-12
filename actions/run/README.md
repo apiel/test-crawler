@@ -12,8 +12,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run test-crawler
       uses: apiel/test-crawler/actions/run@master
-        with:
-          projectId: your_project_id
+      with:
+        projectId: your_project_id
     - name: Commit changes
       uses: apiel/test-crawler/actions/push@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 ```

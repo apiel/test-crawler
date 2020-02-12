@@ -16,4 +16,6 @@ jobs:
           projectId: your_project_id
     - name: Commit changes
       uses: apiel/test-crawler/actions/push@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 ```

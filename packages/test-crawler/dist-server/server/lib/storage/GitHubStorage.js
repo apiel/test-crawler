@@ -36,8 +36,8 @@ jobs:
       uses: apiel/test-crawler/actions/run@master
     - name: Push changes
       uses: apiel/test-crawler/actions/push@master
-        with:
-            token: \${{ secrets.GITHUB_TOKEN }}
+      with:
+        token: \${{ secrets.GITHUB_TOKEN }}
 `;
 class GitHubStorage extends Storage_1.Storage {
     constructor(ctx) {
