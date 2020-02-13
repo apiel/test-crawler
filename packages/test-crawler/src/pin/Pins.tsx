@@ -17,12 +17,14 @@ import { ProjectName } from '../projects/ProjectName';
 import { useAsync } from '../hook/useAsync';
 import { getPins } from '../server/service';
 import { StorageType } from '../server/storage.typing';
+import { useThisDoc } from '../doc/useDoc';
 
 const { Title } = Typography;
 
 export const Pins = ({
     match: { params: { projectId, storageType } },
 }: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
+    useThisDoc();
     const { result, error, setResult: setPins } = useAsync<PageData[]>(
         () => getPins(storageType, projectId)
     );

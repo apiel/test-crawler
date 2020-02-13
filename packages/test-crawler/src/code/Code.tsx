@@ -17,6 +17,7 @@ import { ErrorHandler } from '../common/ErrorHandler';
 import { ProjectName } from '../projects/ProjectName';
 import { useAsync } from '../hook/useAsync';
 import { StorageType } from '../server/storage.typing';
+import { useThisDoc } from '../doc/useDoc';
 
 const { Title } = Typography;
 
@@ -33,6 +34,7 @@ const setSource = (
 type Props = RouteComponentProps<{ id: string, projectId: string, storageType: StorageType }>;
 
 export const Code = ({ match: { params: { id, projectId, storageType } }, location }: Props) => {
+    useThisDoc();
     const { error, result: code, setResult: setCode } = useAsync<CodeType>(() => getCode(storageType, projectId, id));
     if (error) {
         return <ErrorHandler description={error.toString()} />;

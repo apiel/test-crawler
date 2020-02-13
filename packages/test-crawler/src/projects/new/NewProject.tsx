@@ -20,6 +20,7 @@ import { getDefaultViewport } from '../../viewport';
 import { History } from 'history';
 import { StorageType } from '../../server/storage.typing';
 import { ProjectRepos } from '../ProjectRepos';
+import { useThisDoc } from '../../doc/useDoc';
 
 const inlineStyle = {
     marginRight: 10,
@@ -61,7 +62,7 @@ const NewProject = ({
     match: { params: { storageType } },
     form: { getFieldDecorator, validateFields, getFieldValue },
 }: Props) => {
-    const Repos = ProjectRepos({storageType});
+    useThisDoc();
     return (
         <Form onSubmit={handleSubmit(storageType, history, validateFields)}>
             <Form.Item>

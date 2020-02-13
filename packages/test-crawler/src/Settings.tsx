@@ -4,6 +4,7 @@ import Spin from 'antd/lib/spin';
 
 import { getSettings, startCrawlers } from './server/service';
 import Button from 'antd/lib/button';
+import { useThisDoc } from './doc/useDoc';
 
 const { Title } = Typography;
 
@@ -17,6 +18,7 @@ export const Settings = () => {
     const [settings, setSettings] = React.useState();
 
     React.useEffect(() => { load(setSettings); }, []);
+    useThisDoc();
 
     return (
         <>

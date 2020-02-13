@@ -20,6 +20,7 @@ import { StorageType } from '../server/storage.typing';
 import message from 'antd/lib/message';
 import { ProjectJobs } from './ProjectJobs';
 import { useAsync } from '../hook/useAsync';
+import { useThisDoc } from '../doc/useDoc';
 
 const onStart = (
     history: History<any>,
@@ -79,6 +80,7 @@ export const Project = ({
     match: { params: { projectId, storageType } },
     history,
 }: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
+    useThisDoc();
     const { project, setProject } = useProject(storageType, projectId);
     const { crawlers, loading, loadCrawlers } = useCrawlers(storageType, projectId);
     const { result: jobs, call: loadJobs } = useAsync<Job[]>(() => getJobs(storageType, projectId));

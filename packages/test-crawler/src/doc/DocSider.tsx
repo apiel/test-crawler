@@ -16,6 +16,7 @@ export const DocSider = ({ children }: React.PropsWithChildren<any>) => {
                 width="40%"
                 style={{
                     padding: 15,
+                    textAlign: 'justify',
                 }}
             >
                 <Affix offsetTop={10} style={{ marginBottom: 10 }}>

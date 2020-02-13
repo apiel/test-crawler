@@ -15,7 +15,7 @@ import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
 import {
     getHomeRoute, getResultsRoute, getPinsRoute, getProjectRoute,
-    getCodeRoute, getSettingsRoute, getNewProjectRoute, getAuthGitHubRoute
+    getCodeRoute, getSettingsRoute, getNewProjectRoute
 } from './routes';
 import { Pins } from './pin/Pins';
 import { Code } from './code/Code';
@@ -27,11 +27,10 @@ import { ProjectBreadcrumb } from './projects/ProjectBreadcrumb';
 import { CrawlerResultsBreadcrumb } from './crawler/CrawlerResultsBreadcrumb';
 import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
 import { CodeBreadcrumb } from './code/CodeBreadcrumb';
-import { GitHubAuth } from './auth/GitHubAuth';
 import { DocSider } from './doc/DocSider';
 import { useDoc } from './doc/useDoc';
 
-const { Content, Header, Sider } = Layout;
+const { Content, Header } = Layout;
 const { Title } = Typography;
 
 const layoutStyle = {
@@ -79,10 +78,11 @@ const App = () => {
                             <Menu.Item
                                 key="doc"
                                 title="Docs"
-                                style={{ float: 'right', padding: 0 }}
+                                // style={{ float: 'right', padding: 0 }}
                                 onClick={toggle}
                             >
                                 <Icon type="question-circle" />
+                                <span className="nav-text">Documentation</span>
                             </Menu.Item>
                             <Menu.Item key="settings" title="settings" style={{ float: 'right', padding: 0 }} >
                                 <Link to={getSettingsRoute()}>
@@ -100,7 +100,6 @@ const App = () => {
                     <Content style={contentStyle}>
                         <Route path={getHomeRoute()} exact component={Projects} />
                         <Route path={getSettingsRoute()} exact component={Settings} />
-                        <Route path={getAuthGitHubRoute()} exact component={GitHubAuth} />
 
                         <Route path={getNewProjectRoute(':storageType')} exact component={NewProject} />
                         <Route path={getPinsRoute(':storageType', ':projectId')} exact component={Pins} />

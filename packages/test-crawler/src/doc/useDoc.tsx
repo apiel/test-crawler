@@ -30,3 +30,10 @@ export function DocProvider({ children }: React.PropsWithChildren<any>) {
 }
 
 export const useDoc = () => React.useContext(DocContext);
+
+export const useThisDoc = (content?: ReactNode) => {
+    const { setContent } = useDoc();
+    React.useEffect(() => {
+        setContent(content);
+    }, []);
+}
