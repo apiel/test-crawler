@@ -22,10 +22,6 @@ interface Props {
     projectId: string;
 }
 export const Codes = ({ projectId, storageType }: Props) => {
-    const { error, result } = useAsync<CodeInfoList>(() => getCodes(storageType, projectId));
-    if (error) {
-        return <ErrorHandler description={error.toString()} />;
-    }
     return (
         <>
             <Title level={3}>Codes</Title>

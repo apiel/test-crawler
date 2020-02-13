@@ -117,7 +117,10 @@ export const Project = ({
                     >
                         Run
                     </Button> &nbsp;
-                    <Link to={getPinsRoute(storageType, projectId)}>
+                    <Link to={{
+                        pathname: getPinsRoute(storageType, projectId),
+                        state: { project }
+                    }}>
                         <Button
                             icon="pushpin"
                             size="small"
@@ -135,14 +138,20 @@ export const Project = ({
                     renderItem={({ timestamp, diffZoneCount, errorCount, status, inQueue }) => (
                         <List.Item
                             actions={[
-                                <Link to={getResultsRoute(storageType, projectId, timestamp)}>
+                                <Link to={{
+                                    pathname: getResultsRoute(storageType, projectId, timestamp),
+                                    state: { project }
+                                }}>
                                     Open
                                 </Link>,
                             ]}
                         >
                             <List.Item.Meta
                                 title={
-                                    <Link to={getResultsRoute(storageType, projectId, timestamp)}>
+                                    <Link to={{
+                                        pathname: getResultsRoute(storageType, projectId, timestamp),
+                                        state: { project }
+                                    }}>
                                         {timestampToString(timestamp)}
                                     </Link>}
                                 description={<>

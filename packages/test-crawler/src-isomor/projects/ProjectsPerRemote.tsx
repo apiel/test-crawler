@@ -33,22 +33,35 @@ export const ProjectsPerRemote = ({ title, storageType }: Props) => {
                 itemLayout="horizontal"
                 bordered
                 dataSource={projects}
-                renderItem={({ id, name, crawlerInput: { url } }) => (
-                    <List.Item
-                        actions={[
-                            <Link to={getProjectRoute(storageType, id)}>
-                                Open
-                                    </Link>,
-                        ]}
-                    >
-                        <List.Item.Meta
-                            title={<Link to={getProjectRoute(storageType, id)}>
-                                {name} <Icon type={storageType} />
-                            </Link>}
-                            description={url}
-                        />
-                    </List.Item>
-                )}
+                renderItem={(project) => {
+                    const { id, name, crawlerInput: { url } } = project;
+                    return (
+                        <List.Item
+                            actions={[
+                                <Link
+                                    to={{
+                                        pathname: getProjectRoute(storageType, id),
+                                        state: { project },
+                                    }}
+                                >
+                                    Open
+                            </Link>,
+                            ]}
+                        >
+                            <List.Item.Meta
+                                title={<Link
+                                    to={{
+                                        pathname: getProjectRoute(storageType, id),
+                                        state: { project },
+                                    }}
+                                >
+                                    {name} <Icon type={storageType} />
+                                </Link>}
+                                description={url}
+                            />
+                        </List.Item>
+                    )
+                }}
             />}
         </>
     );
