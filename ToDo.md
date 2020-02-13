@@ -1,6 +1,4 @@
 
-- when job is finish refresh project
-
 - update doc:
     + github vs local storage
     + you can run CI on every push
@@ -8,6 +6,10 @@
     + notification
     + config file
 >> instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
+
+- use react router state to pass data to child component, use hook to load this data
+
+- improve naming with all those crawlers, job, run, project...
 
 - need to make a big cleanup in crawler code
 
@@ -23,6 +25,8 @@
 
 - **we could track the number of query per page and see if there is some changes...**
 
+
+- run test-crawler in docker?
 
 
 - antd breadcrumb https://ant.design/components/breadcrumb-cn/#components-breadcrumb-demo-router

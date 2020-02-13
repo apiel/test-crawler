@@ -8,14 +8,20 @@ import { timestampToString } from '../utils';
 interface Props {
     jobs: Job[];
     loadJobs: () => Promise<void>;
+    loadCrawlers: () => Promise<void>;
 }
 
-export const ProjectJobs = ({ jobs, loadJobs }: Props) => {
+export const ProjectJobs = ({ jobs, loadJobs, loadCrawlers }: Props) => {
+    const [jobInProgress, setJobInProgress] = React.useState(false);
     React.useEffect(() => {
         let timer: NodeJS.Timeout;
         if (jobs?.length) {
+            !jobInProgress && setJobInProgress(true);
             timer = setInterval(loadJobs, 30000); // 30 sec
-        } // else we could see if we can refresh project
+        } else if (jobInProgress) {
+            setJobInProgress(false);
+            loadCrawlers();
+        }
         return () => clearInterval(timer);
     }, [jobs]);
     return jobs?.length ? (

@@ -31,7 +31,6 @@ const onStart = (
         const hide = message.loading('Starting crawlers', 0);
         const { timestamp, redirect } = await startCrawler(storageType, projectId);
         if (redirect) {
-            setTimeout(loadJobs, 2000);
             setTimeout(loadJobs, 5000);
             setTimeout(loadJobs, 10000);
             notification.open({
@@ -81,7 +80,7 @@ export const Project = ({
     history,
 }: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
     const { project, setProject } = useProject(storageType, projectId);
-    const { crawlers, loading } = useCrawlers(storageType, projectId);
+    const { crawlers, loading, loadCrawlers } = useCrawlers(storageType, projectId);
     const { result: jobs, call: loadJobs } = useAsync<Job[]>(() => getJobs(storageType, projectId));
     return (
         <>
@@ -125,7 +124,7 @@ export const Project = ({
                         </Button>
                     </Link>
                 </p>
-                <ProjectJobs jobs={jobs} loadJobs={loadJobs} />
+                <ProjectJobs jobs={jobs} loadJobs={loadJobs} loadCrawlers={loadCrawlers} />
                 <List
                     itemLayout="horizontal"
                     bordered
