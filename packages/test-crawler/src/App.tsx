@@ -28,8 +28,10 @@ import { CrawlerResultsBreadcrumb } from './crawler/CrawlerResultsBreadcrumb';
 import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
 import { CodeBreadcrumb } from './code/CodeBreadcrumb';
 import { GitHubAuth } from './auth/GitHubAuth';
+import { DocSider } from './doc/DocSider';
+import { useDoc } from './doc/useDoc';
 
-const { Content, Header } = Layout;
+const { Content, Header, Sider } = Layout;
 const { Title } = Typography;
 
 const layoutStyle = {
@@ -48,55 +50,69 @@ const contentStyle = {
     minHeight: 280,
 };
 
-const App = () => (
-    // <BrowserRouter basename={process.env.PUBLIC_URL}>
-    <HashRouter
+const App = () => {
+    const { toggle } = useDoc();
+    return (
+        // <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <HashRouter
         // basename={process.env.PUBLIC_URL}
-    >
-        <Layout style={layoutStyle}>
-            <Header>
-                <Link to={getHomeRoute()}>
-                    <Title level={3} style={titleStyle}>
-                        Test-crawler
+        >
+            <DocSider>
+                <Layout style={layoutStyle}>
+                    <Header>
+                        <Link to={getHomeRoute()}>
+                            <Title level={3} style={titleStyle}>
+                                Test-crawler
                     </Title>
-                </Link>
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    style={{ lineHeight: '64px' }}
-                >
-                    <Menu.Item key="projects">
-                        <Icon type="folder" />
-                        <span className="nav-text">Projects</span>
-                        <Link to={getHomeRoute()} />
-                    </Menu.Item>
-                    <Menu.Item key="settings" style={{ float: 'right' }} >
-                        <Link to={getSettingsRoute()}>
-                            <Icon type="setting" />
                         </Link>
-                    </Menu.Item>
-                </Menu>
-            </Header>
-            <Breadcrumb style={{ margin: '10px 0 0 10px' }}>
-                <Route path={getProjectRoute(':storageType', ':projectId')} exact component={ProjectBreadcrumb} />
-                <Route path={getResultsRoute(':storageType', ':projectId', ':timestamp')} exact component={CrawlerResultsBreadcrumb} />
-                <Route path={getPinsRoute(':storageType', ':projectId')} exact component={PinsBreadcrumb} />
-                <Route path={getCodeRoute(':storageType', ':projectId', ':id')} exact component={CodeBreadcrumb} />
-            </Breadcrumb>
-            <Content style={contentStyle}>
-                <Route path={getHomeRoute()} exact component={Projects} />
-                <Route path={getSettingsRoute()} exact component={Settings} />
-                <Route path={getAuthGitHubRoute()} exact component={GitHubAuth} />
+                        <Menu
+                            theme="dark"
+                            mode="horizontal"
+                            selectable={false}
+                            style={{ paddingTop: 10 }}
+                        >
+                            <Menu.Item key="projects">
+                                <Icon type="folder" />
+                                <span className="nav-text">Projects</span>
+                                <Link to={getHomeRoute()} />
+                            </Menu.Item>
+                            <Menu.Item
+                                key="doc"
+                                title="Docs"
+                                style={{ float: 'right', padding: 0 }}
+                                onClick={toggle}
+                            >
+                                <Icon type="question-circle" />
+                            </Menu.Item>
+                            <Menu.Item key="settings" title="settings" style={{ float: 'right', padding: 0 }} >
+                                <Link to={getSettingsRoute()}>
+                                    <Icon type="setting" />
+                                </Link>
+                            </Menu.Item>
+                        </Menu>
+                    </Header>
+                    <Breadcrumb style={{ margin: '10px 0 0 10px' }}>
+                        <Route path={getProjectRoute(':storageType', ':projectId')} exact component={ProjectBreadcrumb} />
+                        <Route path={getResultsRoute(':storageType', ':projectId', ':timestamp')} exact component={CrawlerResultsBreadcrumb} />
+                        <Route path={getPinsRoute(':storageType', ':projectId')} exact component={PinsBreadcrumb} />
+                        <Route path={getCodeRoute(':storageType', ':projectId', ':id')} exact component={CodeBreadcrumb} />
+                    </Breadcrumb>
+                    <Content style={contentStyle}>
+                        <Route path={getHomeRoute()} exact component={Projects} />
+                        <Route path={getSettingsRoute()} exact component={Settings} />
+                        <Route path={getAuthGitHubRoute()} exact component={GitHubAuth} />
 
-                <Route path={getNewProjectRoute(':storageType')} exact component={NewProject} />
-                <Route path={getPinsRoute(':storageType', ':projectId')} exact component={Pins} />
-                <Route path={getCodeRoute(':storageType', ':projectId', ':id')} exact component={Code} />
-                <Route path={getResultsRoute(':storageType', ':projectId', ':timestamp')} component={CrawlerResults} />
-                <Route path={getProjectRoute(':storageType', ':projectId')} exact component={Project} />
-            </Content>
-        </Layout>
-    </HashRouter>
-    // </BrowserRouter>
-);
+                        <Route path={getNewProjectRoute(':storageType')} exact component={NewProject} />
+                        <Route path={getPinsRoute(':storageType', ':projectId')} exact component={Pins} />
+                        <Route path={getCodeRoute(':storageType', ':projectId', ':id')} exact component={Code} />
+                        <Route path={getResultsRoute(':storageType', ':projectId', ':timestamp')} component={CrawlerResults} />
+                        <Route path={getProjectRoute(':storageType', ':projectId')} exact component={Project} />
+                    </Content>
+                </Layout>
+            </DocSider>
+        </HashRouter>
+        // </BrowserRouter>
+    );
+}
 
 export default App;
