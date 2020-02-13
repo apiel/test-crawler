@@ -62,7 +62,7 @@ const NewProject = ({
     match: { params: { storageType } },
     form: { getFieldDecorator, validateFields, getFieldValue },
 }: Props) => {
-    useThisDoc();
+    useThisDoc(Doc);
     return (
         <Form onSubmit={handleSubmit(storageType, history, validateFields)}>
             <Form.Item>
@@ -159,3 +159,41 @@ const NewProject = ({
 
 const NewForm = Form.create({ name: 'start_crawler' })(NewProject);
 export default NewForm;
+
+const Doc = () => (
+    <>
+        <p>
+            First of all, you need to give a name to your project. Then, you need to
+            provide the URL depending of the crawling method you will be using. If
+            you are using the <b>Spider bot</b> method, you should give the URL of
+            the website you want to crawl. If you are using the <b>URLs list</b> method,
+            you should give the URL of the endpoint containing the list of URLs.
+        </p>
+        <p>
+            Next to the URL input, you can select the viewport (screen size). If you want
+            to test multiple viewports, you will have to create one project per viewport.
+        </p>
+        <p>
+            Finally, you can specify if you want to automatically pin the new pages founds.
+            Pins are the references screenshot to make the comparison with.
+            While crawling, the crawler is comparing page to pin.
+            If you are not sure, the auto-pin can be activate/deactivate afterwards.
+        </p>
+        <Typography.Title level={4}>Spider bot</Typography.Title>
+        <p>
+            <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
+            and crawl the children. It will then continue do the same with the children till no new
+            link is found. Be careful if you have big website, this is most likely not the right
+            solution for you.
+        </p>
+        <Typography.Title level={4}>URLs list</Typography.Title>
+        <p>
+            <b>URLs list</b> crawling method will crawl a specific sets of URLs. In the URL input field
+            you must provide an endpoint containing a list of URLs (a simple text format, with one URL
+            per line). The crawler will crawl each of those URL only and will not try to find links in
+            the page. To use a static list of URLs, you can use a tool
+            like <a href="https://pastebin.com" target="_blank" rel="noopener noreferrer">https://pastebin.com</a>.
+        </p>
+    </>
+);
+

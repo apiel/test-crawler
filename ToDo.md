@@ -13,6 +13,10 @@
 
 - need to make a big cleanup in crawler code
 
+- make project name editable with https://ant.design/components/typography/#components-typography-demo-interactive
+
+- give the possibility to keep a note on a crawler result page?
+
 - support gitlab
 
 - make snapshot on other browser:
