@@ -7,7 +7,8 @@
     + config file
 >> instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
 
-- use react router state to pass data to child component, use hook to load this data
+- ~~use react router state to pass data to child component, use hook to load this data~~
+-> should have been done with react async cache: need to double check that everything is working
 
 - improve naming with all those crawlers, job, run, project...
 
