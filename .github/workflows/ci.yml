@@ -16,7 +16,9 @@ jobs:
     - name: Generate doc
       run: yarn doc
     - name: Generate live site for Github pages
-      run: yarn github:pub
+      run: |
+        cd packages/test-crawler
+        yarn github:pub
     - name: Commit changes
       run: |
         git config --local user.email "action@github.com"
