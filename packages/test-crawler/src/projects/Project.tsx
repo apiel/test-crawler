@@ -57,7 +57,7 @@ const onStart = (
 const onAutoPinChange = (
     storageType: StorageType,
     { name, id, crawlerInput }: ProjectType,
-    setProject: React.Dispatch<React.SetStateAction<ProjectType>>,
+    setProject: (response: ProjectType) => Promise<void>,
 ) => async ({ target: { checked } }: CheckboxChangeEvent) => {
     const project = await saveProject(storageType, { ...crawlerInput, autopin: checked }, name, id);
     setProject(project);
@@ -117,10 +117,7 @@ export const Project = ({
                     >
                         Run
                     </Button> &nbsp;
-                    <Link to={{
-                        pathname: getPinsRoute(storageType, projectId),
-                        state: { project }
-                    }}>
+                    <Link to={getPinsRoute(storageType, projectId)}>
                         <Button
                             icon="pushpin"
                             size="small"
@@ -138,20 +135,14 @@ export const Project = ({
                     renderItem={({ timestamp, diffZoneCount, errorCount, status, inQueue }) => (
                         <List.Item
                             actions={[
-                                <Link to={{
-                                    pathname: getResultsRoute(storageType, projectId, timestamp),
-                                    state: { project }
-                                }}>
+                                <Link to={getResultsRoute(storageType, projectId, timestamp)}>
                                     Open
                                 </Link>,
                             ]}
                         >
                             <List.Item.Meta
                                 title={
-                                    <Link to={{
-                                        pathname: getResultsRoute(storageType, projectId, timestamp),
-                                        state: { project }
-                                    }}>
+                                    <Link to={getResultsRoute(storageType, projectId, timestamp)}>
                                         {timestampToString(timestamp)}
                                     </Link>}
                                 description={<>
