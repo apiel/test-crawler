@@ -1,3 +1,7 @@
+- right now the CI job is always overwritten, should not be the case?
+- beforeAll script should be call in CI ?
+  but this would work only for CI
+  or we should make a special one for CI
 
 - update doc:
     + github vs local storage

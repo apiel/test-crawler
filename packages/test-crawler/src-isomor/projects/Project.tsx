@@ -80,7 +80,7 @@ export const Project = ({
     match: { params: { projectId, storageType } },
     history,
 }: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
-    useThisDoc();
+    useThisDoc(Doc);
     const { project, setProject } = useProject(storageType, projectId);
     const { crawlers, loading, loadCrawlers } = useCrawlers(storageType, projectId);
     const { result: jobs, call: loadJobs } = useAsync<Job[]>(() => getJobs(storageType, projectId));
@@ -159,3 +159,67 @@ export const Project = ({
         </>
     );
 }
+
+const Doc = () => (
+    <>
+        <p>
+            This page give you an overview of a selected project. From there you can see all the
+            crawlers that has been started and their results. To run a crawler click
+            on <Button icon="caret-right" size="small">Run</Button>
+        </p>
+        <p>
+            After clicking on the run button, you will be either redirected to the result page or
+            a job will appear above the list of crawler, this will depends of the crawling storage
+            you will use.
+        </p>
+        <Typography.Title level={4}>Codes</Typography.Title>
+        <p>
+            Under the list of crawlers, is a codes section. This will let you write your own code
+            to interact with the crawler when the job is running. There is different phases where
+            you can interact with the crawler: before, during and after crawling.
+        </p>
+        <p><b>Before all</b></p>
+        <p>
+            This script will run when the test-crawler is starting, to give you the possibility
+            to setup a working environment. This can be useful if you need to start a server to
+            run your test against it.
+        </p>
+        <p><b>For each page</b></p>
+        <p>
+            This give you the possibility to inject some code in the crawler while parsing the page.
+            This code will be executed just after the page finish loaded, before to make the
+            screenshot and before extracting the links. This can be really useful to manipulate the
+            page before making the screenshot. For example, if you have dynamic element in your
+            page, you can simply remove it. You could open some hidden element from an accordion.
+            Run some e2e assertion with Jest. There is so much possibility with this feature...
+        </p>
+        <p><b>After all</b></p>
+        <p>
+            This script will run when the test-crawler finish. This can be useful to send the
+            result to an API or in an email. In the following example, we will show you how
+            to send result in slack:
+        </p>
+        <pre>
+            <code>
+            {`
+// Need to install @slack/web-api where the crawler is running.
+// with local storage just do yarn add @slack/web-api
+// with remote storage like GitHub you will need to customize the CI job
+const { WebClient } = require('@slack/web-api');
+
+const token = 'api_slack_token';
+// Given some known conversation ID (representing a public channel, private channel, DM or group DM)
+const conversationId = '...';
+
+module.exports = async function run(totalDiffCount, totalErrorCount) {
+    const web = new WebClient(token);
+    const result = await web.chat.postMessage({
+        text: \`Hi, crawler finish his job. We found \${totalDiffCount} diff(s) and \${totalErrorCount} error(s).\`,
+        channel: conversationId,
+    });
+}
+            `}
+            </code>
+        </pre>
+    </>
+);

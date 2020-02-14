@@ -84,10 +84,10 @@ const App = () => {
                                 <Icon type="question-circle" />
                                 <span className="nav-text">Documentation</span>
                             </Menu.Item>
-                            <Menu.Item key="settings" title="settings" style={{ float: 'right', padding: 0 }} >
-                                <Link to={getSettingsRoute()}>
-                                    <Icon type="setting" />
-                                </Link>
+                            <Menu.Item key="settings" title="settings">
+                                <Icon type="setting" />
+                                <span className="nav-text">Settings</span>
+                                <Link to={getSettingsRoute()} />
                             </Menu.Item>
                         </Menu>
                     </Header>
