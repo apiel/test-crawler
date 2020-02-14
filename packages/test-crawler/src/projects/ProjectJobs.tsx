@@ -23,7 +23,7 @@ export const ProjectJobs = ({ jobs, loadJobs, loadCrawlers }: Props) => {
             loadCrawlers();
         }
         return () => clearInterval(timer);
-    }, [jobs]);
+    }, [jobs, loadCrawlers, setJobInProgress, jobInProgress]);
     return jobs?.length ? (
         <List
             itemLayout="horizontal"

@@ -6,15 +6,19 @@ import { loadProject } from '../server/service';
 import { StorageType } from '../server/storage.typing';
 
 export const useProject = (storageType: StorageType, projectId: string) => {
-    const { call, response: project, update: setProject, error, cache } = useAsyncCacheWatch(
-        () => loadProject(storageType, projectId),
-    );
+    const {
+        call,
+        response: project,
+        update: setProject,
+        error,
+        cache,
+    } = useAsyncCacheWatch(loadProject, storageType, projectId);
 
     React.useEffect(() => {
         if (!cache()) {
             call();
         }
-    });
+    }, [storageType, projectId, cache, call]);
     if (error) {
         notification['warning']({
             message: 'Something went wrong while loading project.',

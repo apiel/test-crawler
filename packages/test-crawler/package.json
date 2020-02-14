@@ -66,7 +66,7 @@
     "query-string": "^6.11.0",
     "react": "^16.12.0",
     "react-ace": "^8.0.0",
-    "react-async-cache": "^1.0.0-alpha.1",
+    "react-async-cache": "^1.1.0",
     "react-dom": "^16.12.0",
     "react-hotjar": "^2.2.0",
     "react-masonry-component": "^6.2.1",

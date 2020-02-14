@@ -1,21 +1,12 @@
 import React from 'react';
-import Spin from 'antd/lib/spin';
-import List from 'antd/lib/list';
-import Button from 'antd/lib/button';
 import Typography from 'antd/lib/typography';
-import { CodeInfoList, BeforeAfterType } from '../server/typing';
+import { BeforeAfterType } from '../server/typing';
 
-import { getCodes } from '../server/service';
-import { CodeInfo } from './CodeInfo';
-import { ErrorHandler } from '../common/ErrorHandler';
-import { Link } from 'react-router-dom';
-import { getCodeRoute } from '../routes';
-import { useAsync } from '../hook/useAsync';
 import { StorageType } from '../server/storage.typing';
 import { ForEachPage } from './ForEachPage';
 import { BeforeAfter } from './BeforeAfter';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 interface Props {
     storageType: StorageType;

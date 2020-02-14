@@ -5307,9 +5307,9 @@ copy-to-clipboard@^3.2.0:
   dependencies:
     toggle-selection "^1.0.6"
 
-core-async-cache@^1.0.0-alpha.1:
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-1.0.0-alpha.1.tgz#f91e30d24e41d8d93c5362357cbe17b4d0549b48"
+core-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/core-async-cache/-/core-async-cache-1.1.0.tgz#d7cb9cbdb71d766975689cde0805249a0e1d8b34"
   dependencies:
     md5 "^2.2.1"
     typescript "^3.4.1"
@@ -12593,11 +12593,11 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
-react-async-cache@^1.0.0-alpha.1:
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/react-async-cache/-/react-async-cache-1.0.0-alpha.1.tgz#7355b8431e0e8d019c4e2e6274425e25b93aa2a7"
+react-async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-async-cache/-/react-async-cache-1.1.0.tgz#34724458de6328ddb383f09a946d8b6aafa2e3a9"
   dependencies:
-    core-async-cache "^1.0.0-alpha.1"
+    core-async-cache "^1.1.0"
     md5 "^2.2.1"
     typescript "^3.4.1"
 
