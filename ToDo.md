@@ -7,16 +7,8 @@
     + config file
 >> instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
 
-- ~~use react router state to pass data to child component, use hook to load this data~~
--> should have been done with react async cache: need to double check that everything is working
-
 - improve naming with all those crawlers, job, run, project...
-
 - need to make a big cleanup in crawler code
-
-- make project name editable with https://ant.design/components/typography/#components-typography-demo-interactive
-
-- give the possibility to keep a note on a crawler result page?
 
 - support gitlab
 
@@ -27,6 +19,9 @@
 
 - publish action there https://github.com/sdras/awesome-actions
 
+- make project name editable with https://ant.design/components/typography/#components-typography-demo-interactive
+- delete project? for github use CI for that
+- give the possibility to keep a note on a crawler result page?
 
 - **we could track the number of query per page and see if there is some changes...**
 
