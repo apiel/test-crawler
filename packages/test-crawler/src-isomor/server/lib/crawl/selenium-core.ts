@@ -23,6 +23,7 @@ export async function startSeleniumCore(
     distFolder: string,
 ) {
     try {
+        info(`browser open "${url}"`);
         await driver.get(url);
 
         const html = await driver.getPageSource();

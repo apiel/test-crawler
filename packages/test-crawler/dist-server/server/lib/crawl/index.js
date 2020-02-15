@@ -57,12 +57,13 @@ function getFolders(projectId) {
 exports.getFolders = getFolders;
 function addToQueue(url, viewport, distFolder, limit = 0) {
     return __awaiter(this, void 0, void 0, function* () {
-        const id = md5(`${url}-${JSON.stringify(viewport)}`);
+        const cleanUrl = url.replace(/(\n\r|\r\n|\n|\r)/gm, '');
+        const id = md5(`${cleanUrl}-${JSON.stringify(viewport)}`);
         const histFile = utils_1.getFilePath(id, distFolder)('json');
         const queueFile = utils_1.getFilePath(id, getQueueFolder(distFolder))('json');
         if (!(yield fs_extra_1.pathExists(queueFile)) && !(yield fs_extra_1.pathExists(histFile))) {
-            if (!limit || (yield updateSiblingCount(url, distFolder)) < limit) {
-                yield fs_extra_1.outputJson(queueFile, { url, id }, { spaces: 4 });
+            if (!limit || (yield updateSiblingCount(cleanUrl, distFolder)) < limit) {
+                yield fs_extra_1.outputJson(queueFile, { url: cleanUrl, id }, { spaces: 4 });
             }
             return true;
         }
@@ -345,7 +346,7 @@ function startCrawler({ projectId, pagesFolder }) {
 function startUrlsCrawling(crawlerInput, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data } = yield axios_1.default.get(crawlerInput.url);
-        const urls = data.split(`\n`).filter((url) => url.trim().replace(/(\r\n|\n|\r)/gm, ''));
+        const urls = data.split(`\n`).filter((url) => url.trim());
         yield Promise.all(urls.map((url) => addToQueue(url, crawlerInput.viewport, distFolder)));
     });
 }

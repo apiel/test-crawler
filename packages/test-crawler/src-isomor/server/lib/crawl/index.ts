@@ -57,14 +57,15 @@ export async function getFolders(projectId: string) {
 }
 
 export async function addToQueue(url: string, viewport: Viewport, distFolder: string, limit: number = 0): Promise<boolean> {
-    // console.log('addToQueue', url, viewport, distFolder);
-    const id = md5(`${url}-${JSON.stringify(viewport)}`);
+    const cleanUrl = url.replace(/(\n\r|\r\n|\n|\r)/gm, '');
+    // console.log('addToQueue', cleanUrl, viewport, distFolder);
+    const id = md5(`${cleanUrl}-${JSON.stringify(viewport)}`);
     const histFile = getFilePath(id, distFolder)('json');
     const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
 
     if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
-        if (!limit || (await updateSiblingCount(url, distFolder)) < limit) {
-            await outputJson(queueFile, { url, id }, { spaces: 4 });
+        if (!limit || (await updateSiblingCount(cleanUrl, distFolder)) < limit) {
+            await outputJson(queueFile, { url: cleanUrl, id }, { spaces: 4 });
         }
         return true;
     }
@@ -385,7 +386,7 @@ async function startCrawler({ projectId, pagesFolder }: CrawlTarget) {
 
 async function startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
     const { data } = await Axios.get(crawlerInput.url);
-    const urls = data.split(`\n`).filter((url: string) => url.trim().replace(/(\r\n|\n|\r)/gm, ''));
+    const urls = data.split(`\n`).filter((url: string) => url.trim());
     await Promise.all(urls.map((url: string) =>
         addToQueue(url, crawlerInput.viewport, distFolder)));
 }

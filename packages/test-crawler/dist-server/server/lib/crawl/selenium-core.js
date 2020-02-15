@@ -15,6 +15,7 @@ const _1 = require(".");
 function startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            logol_1.info(`browser open "${url}"`);
             yield driver.get(url);
             const html = yield driver.getPageSource();
             yield fs_extra_1.writeFile(filePath('html'), html);
