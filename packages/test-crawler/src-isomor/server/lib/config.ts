@@ -1,5 +1,4 @@
 import { join } from 'path';
-import Cookies from 'universal-cookie';
 
 export const ROOT_FOLDER = process.env.ROOT_FOLDER || join(__dirname, '../../..');
 export const PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';

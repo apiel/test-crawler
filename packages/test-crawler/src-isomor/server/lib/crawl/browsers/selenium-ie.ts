@@ -1,9 +1,11 @@
 import { Builder } from 'selenium-webdriver';
 // import * as ie from 'selenium-webdriver/ie';
+import { join } from 'path';
 
 import { FilePath } from '../../utils';
 import { Crawler } from '../../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
+import { ROOT_FOLDER } from '../../config';
 
 interface Viewport {
     width: number;
@@ -19,6 +21,9 @@ export async function startSeleniumIE(
     url: string,
     distFolder: string,
 ) {
+    const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.IEDriver.3.150.0/driver/');
+    process.env.PATH = `${process.env.PATH};${driverPath};`;
+
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
         .forBrowser('ie')
