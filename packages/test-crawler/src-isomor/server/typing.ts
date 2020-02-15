@@ -85,7 +85,6 @@ export interface PageData {
     performance?: Performance;
     metrics?: PageMetrics;
     viewport?: Viewport;
-    baseUrl?: string;
 
     png?: {
         width: number;

@@ -27,6 +27,7 @@ import rimraf = require('rimraf');
 import Axios from 'axios';
 import md5 = require('md5');
 import { StorageType } from '../../storage.typing';
+import { startPuppeteer } from './puppeteer';
 
 interface ResultQueue {
     result?: {
@@ -83,74 +84,31 @@ export function getQueueFolder(distFolder: string) {
     return join(distFolder, 'queue');
 }
 
-async function getLinks(page: Page, crawler: Crawler): Promise<string[]> {
-    const { url: baseUrl, method } = crawler;
-    if (method === CrawlerMethod.URLs) {
-        return [];
-    }
-    const hrefs = await page.$$eval('a', as => as.map(a => (a as any).href));
-    // console.log('baseUrl', baseUrl, hrefs.filter(href => href.indexOf(baseUrl) === 0));
-    return hrefs.filter(href => href.indexOf(baseUrl) === 0);
-}
-
 async function loadPage(projectId: string, id: string, url: string, distFolder: string, retry: number = 0) {
     consumerRunning++;
-    let links: string[];
     const filePath = getFilePath(id, distFolder);
 
     const crawler: Crawler = await readJSON(join(distFolder, '_.json'));
     const { viewport, url: baseUrl, method, limit } = crawler;
 
-    const browser = await launch({
-        // headless: false,
-    });
-    const page = await browser.newPage();
-    await page.setUserAgent(USER_AGENT); // this should be configurable from crawler file _.json
-    await page.setViewport(viewport);
-
     try {
-        await page.goto(url, {
-            waitUntil: 'networkidle2',
-            timeout: TIMEOUT,
-        });
-        const html = await page.content();
-        await writeFile(filePath('html'), html);
-
-        const metrics = await page.metrics();
-        const performance = JSON.parse(await page.evaluate(
-            () => JSON.stringify(window.performance),
-        ));
-
-        let codeErr: string;
-        try {
-            const injectLinks = await getLinks(page, crawler);
-            links = await injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
-            // console.log('links', links);
-        } catch (err) {
-            codeErr = err.toString();
-            error('Something went wrong while injecting the code', id, url, err);
-        }
-
-        await page.screenshot({ path: filePath('png'), fullPage: true });
-
-        const png = { width: viewport.width };
+        const { links, ...output } = await startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
         await outputJson(
             filePath('json'),
-            { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr },
+            output,
             { spaces: 4 },
         );
 
-
-        if (method !== CrawlerMethod.URLs) {
-            const urls = isArray(links) ? links : await getLinks(page, crawler);
-            await addUrls(urls, viewport, distFolder, limit);
+        if (method !== CrawlerMethod.URLs && isArray(links)) {
+            const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0)
+            await addUrls(siteUrls, viewport, distFolder, limit);
         }
 
         const result = await prepare(projectId, id, distFolder, crawler);
         resultsQueue.push({
             result,
             folder: distFolder,
-            isError: !!codeErr,
+            isError: !!output.error,
         });
     } catch (err) {
         error(`Load page error (attempt ${retry + 1})`, err.toString());
@@ -166,12 +124,10 @@ async function loadPage(projectId: string, id: string, url: string, distFolder: 
         }
         consumerRunning--;
     }
-    await browser.close();
-    info('browser closed', url);
     consumerRunning--;
 }
 
-async function injectCodes(
+export async function injectCodes(
     page: Page,
     projectId: string,
     id: string,
@@ -207,7 +163,8 @@ async function injectCode(
     if (await pathExists(jsFile)) {
         info('Inject code', url, links);
         const fn = require(jsFile);
-        return await fn(page, url, links, id, crawler, distFolder);
+        const newLinks = await fn(page, url, links, id, crawler, distFolder);
+        return newLinks || links;
     }
     return links;
 }

@@ -9,6 +9,7 @@
     + you can schedule CI
     + notification
     + config file
+    + code and links
 >> instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
 
 - improve naming with all those crawlers, job, run, project...
@@ -26,6 +27,7 @@
 - make project name editable with https://ant.design/components/typography/#components-typography-demo-interactive
 - delete project? for github use CI for that
 - give the possibility to keep a note on a crawler result page?
+- make USER_AGENT configurable?
 
 - **we could track the number of query per page and see if there is some changes...**
 

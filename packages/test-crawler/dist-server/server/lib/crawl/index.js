@@ -8,8 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const puppeteer_1 = require("puppeteer");
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
@@ -24,6 +34,7 @@ const rimraf = require("rimraf");
 const axios_1 = require("axios");
 const md5 = require("md5");
 const storage_typing_1 = require("../../storage.typing");
+const puppeteer_1 = require("./puppeteer");
 let totalDiff = 0;
 let totalError = 0;
 let consumerRunning = 0;
@@ -71,57 +82,24 @@ function getQueueFolder(distFolder) {
     return path_1.join(distFolder, 'queue');
 }
 exports.getQueueFolder = getQueueFolder;
-function getLinks(page, crawler) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const { url: baseUrl, method } = crawler;
-        if (method === index_1.CrawlerMethod.URLs) {
-            return [];
-        }
-        const hrefs = yield page.$$eval('a', as => as.map(a => a.href));
-        return hrefs.filter(href => href.indexOf(baseUrl) === 0);
-    });
-}
 function loadPage(projectId, id, url, distFolder, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         consumerRunning++;
-        let links;
         const filePath = utils_1.getFilePath(id, distFolder);
         const crawler = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
         const { viewport, url: baseUrl, method, limit } = crawler;
-        const browser = yield puppeteer_1.launch({});
-        const page = yield browser.newPage();
-        yield page.setUserAgent(config_1.USER_AGENT);
-        yield page.setViewport(viewport);
         try {
-            yield page.goto(url, {
-                waitUntil: 'networkidle2',
-                timeout: config_1.TIMEOUT,
-            });
-            const html = yield page.content();
-            yield fs_extra_1.writeFile(filePath('html'), html);
-            const metrics = yield page.metrics();
-            const performance = JSON.parse(yield page.evaluate(() => JSON.stringify(window.performance)));
-            let codeErr;
-            try {
-                const injectLinks = yield getLinks(page, crawler);
-                links = yield injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
-            }
-            catch (err) {
-                codeErr = err.toString();
-                logol_1.error('Something went wrong while injecting the code', id, url, err);
-            }
-            yield page.screenshot({ path: filePath('png'), fullPage: true });
-            const png = { width: viewport.width };
-            yield fs_extra_1.outputJson(filePath('json'), { url, id, performance, metrics, png, viewport, baseUrl, error: codeErr }, { spaces: 4 });
-            if (method !== index_1.CrawlerMethod.URLs) {
-                const urls = util_1.isArray(links) ? links : yield getLinks(page, crawler);
-                yield addUrls(urls, viewport, distFolder, limit);
+            const _a = yield puppeteer_1.startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder), { links } = _a, output = __rest(_a, ["links"]);
+            yield fs_extra_1.outputJson(filePath('json'), output, { spaces: 4 });
+            if (method !== index_1.CrawlerMethod.URLs && util_1.isArray(links)) {
+                const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
+                yield addUrls(siteUrls, viewport, distFolder, limit);
             }
             const result = yield diff_1.prepare(projectId, id, distFolder, crawler);
             resultsQueue.push({
                 result,
                 folder: distFolder,
-                isError: !!codeErr,
+                isError: !!output.error,
             });
         }
         catch (err) {
@@ -139,8 +117,6 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
             }
             consumerRunning--;
         }
-        yield browser.close();
-        logol_1.info('browser closed', url);
         consumerRunning--;
     });
 }
@@ -159,12 +135,14 @@ function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
         return links;
     });
 }
+exports.injectCodes = injectCodes;
 function injectCode(jsFile, page, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         if (yield fs_extra_1.pathExists(jsFile)) {
             logol_1.info('Inject code', url, links);
             const fn = require(jsFile);
-            return yield fn(page, url, links, id, crawler, distFolder);
+            const newLinks = yield fn(page, url, links, id, crawler, distFolder);
+            return newLinks || links;
         }
         return links;
     });
