@@ -11,6 +11,7 @@ export abstract class Storage {
     abstract saveJSON(file: string, data: any): Promise<void>;
     abstract saveFile(file: string, data: string): Promise<void>;
     abstract copy(src: string, dst: string): Promise<void>;
+    abstract copyBlob(src: string, dst: string): Promise<void>;
     abstract remove(file: string): Promise<void>;
     abstract crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void): Promise<undefined | string>;
     abstract jobs(projectId: string): Promise<Job[]>;

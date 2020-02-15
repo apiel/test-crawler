@@ -60,6 +60,10 @@ export class LocalStorage extends Storage {
         }
     }
 
+    copyBlob(src: string, dst: string) {
+        return this.copy(src, dst);
+    }
+
     remove(file: string) {
         return remove(this.root(file));
     }

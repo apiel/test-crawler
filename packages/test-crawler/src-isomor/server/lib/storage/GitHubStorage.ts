@@ -92,6 +92,54 @@ export class GitHubStorage extends Storage {
         return Buffer.from(content, 'base64');
     }
 
+    async saveBlob(file: string, content: Buffer) {
+        const { data: [
+            { sha: latestCommitSha, commit: { tree: { sha: base_tree } } }
+        ] } = await this.call({
+            url: `${this.baseRepo}/commits`,
+        });
+
+        const { data: { sha: newBlobSha } } = await this.call({
+            method: 'POST',
+            url: this.blobUrl,
+            data: {
+                content: content.toString('base64'),
+                encoding: 'base64',
+            },
+        });
+
+        const { data: { sha: newTreeSha } } = await this.call({
+            method: 'POST',
+            url: `${this.baseRepo}/git/trees`,
+            data: {
+                base_tree,
+                tree: [{
+                        path: file,
+                        mode: '100644',
+                        sha: newBlobSha,
+                }],
+            },
+        });
+
+        const { data: { sha: shaCommit } } = await this.call({
+            method: 'POST',
+            url: `${this.baseRepo}/git/commits`,
+            data: {
+                message: `${COMMIT_PREFIX} save blob`,
+                tree: newTreeSha,
+                parents: [latestCommitSha]
+            },
+        });
+
+        return this.call({
+            method: 'PATCH',
+            url: `${this.baseRepo}/git/refs/heads/master`,
+            data: {
+                sha: shaCommit,
+            },
+        });
+    }
+
     async read(path: string) {
         const { data: { content } } = await this.getContents(path);
         return Buffer.from(content, 'base64');
@@ -159,6 +207,15 @@ export class GitHubStorage extends Storage {
         }
     }
 
+    async copyBlob(src: string, dst: string) {
+        const srcData = await this.blob(src);
+        console.log('srcData', !!srcData, srcData);
+        if (srcData) {
+            console.log('yeah');
+            await this.saveBlob(dst, srcData);
+        }
+    }
+
     async crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
         if (crawlTarget?.projectId) { // run only if projectId provided (but we could think to do it also id)
             await this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
@@ -221,7 +278,7 @@ export class GitHubStorage extends Storage {
         const progressIds = runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
         const jobs = progressIds.map(async (id: string) => {
             const { data: { jobs } } = await this.call({
-                url: `${BASE_URL}/repos/${this.user}/${this.repo}/actions/runs/${id}/jobs`,
+                url: `${this.baseRepo}/actions/runs/${id}/jobs`,
             });
             const [job]: [GitHubJob] = jobs;
             const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !== undefined;
@@ -258,20 +315,24 @@ export class GitHubStorage extends Storage {
         });
     }
 
+    protected get baseRepo() {
+        return `${BASE_URL}/repos/${this.user}/${this.repo}`;
+    }
+
     protected get contentsUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/contents`;
+        return `${this.baseRepo}/contents`;
     }
 
     protected get blobUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/git/blobs`;
+        return `${this.baseRepo}/git/blobs`;
     }
 
     protected get ciDispatchUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/dispatches`;
+        return `${this.baseRepo}/dispatches`;
     }
 
     protected get runsUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/actions/workflows/test-crawler.yml/runs?event=repository_dispatch`;
+        return `${this.baseRepo}/actions/workflows/test-crawler.yml/runs?event=repository_dispatch`;
     }
 
     protected get redirectUrl() {

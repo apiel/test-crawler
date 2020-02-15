@@ -58,6 +58,9 @@ class LocalStorage extends Storage_1.Storage {
             }
         });
     }
+    copyBlob(src, dst) {
+        return this.copy(src, dst);
+    }
     remove(file) {
         return fs_extra_1.remove(this.root(file));
     }

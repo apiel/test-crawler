@@ -78,6 +78,49 @@ class GitHubStorage extends Storage_1.Storage {
             return Buffer.from(content, 'base64');
         });
     }
+    saveBlob(file, content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data: [{ sha: latestCommitSha, commit: { tree: { sha: base_tree } } }] } = yield this.call({
+                url: `${this.baseRepo}/commits`,
+            });
+            const { data: { sha: newBlobSha } } = yield this.call({
+                method: 'POST',
+                url: this.blobUrl,
+                data: {
+                    content: content.toString('base64'),
+                    encoding: 'base64',
+                },
+            });
+            const { data: { sha: newTreeSha } } = yield this.call({
+                method: 'POST',
+                url: `${this.baseRepo}/git/trees`,
+                data: {
+                    base_tree,
+                    tree: [{
+                            path: file,
+                            mode: '100644',
+                            sha: newBlobSha,
+                        }],
+                },
+            });
+            const { data: { sha: shaCommit } } = yield this.call({
+                method: 'POST',
+                url: `${this.baseRepo}/git/commits`,
+                data: {
+                    message: `${COMMIT_PREFIX} save blob`,
+                    tree: newTreeSha,
+                    parents: [latestCommitSha]
+                },
+            });
+            return this.call({
+                method: 'PATCH',
+                url: `${this.baseRepo}/git/refs/heads/master`,
+                data: {
+                    sha: shaCommit,
+                },
+            });
+        });
+    }
     read(path) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data: { content } } = yield this.getContents(path);
@@ -151,6 +194,16 @@ class GitHubStorage extends Storage_1.Storage {
             }
         });
     }
+    copyBlob(src, dst) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const srcData = yield this.blob(src);
+            console.log('srcData', !!srcData, srcData);
+            if (srcData) {
+                console.log('yeah');
+                yield this.saveBlob(dst, srcData);
+            }
+        });
+    }
     crawl(crawlTarget, consumeTimeout, push) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
@@ -220,7 +273,7 @@ class GitHubStorage extends Storage_1.Storage {
             const jobs = progressIds.map((id) => __awaiter(this, void 0, void 0, function* () {
                 var _a, _b;
                 const { data: { jobs } } = yield this.call({
-                    url: `${BASE_URL}/repos/${this.user}/${this.repo}/actions/runs/${id}/jobs`,
+                    url: `${this.baseRepo}/actions/runs/${id}/jobs`,
                 });
                 const [job] = jobs;
                 const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !== undefined;
@@ -253,17 +306,20 @@ class GitHubStorage extends Storage_1.Storage {
             url: `${this.contentsUrl}/${path}`,
         });
     }
+    get baseRepo() {
+        return `${BASE_URL}/repos/${this.user}/${this.repo}`;
+    }
     get contentsUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/contents`;
+        return `${this.baseRepo}/contents`;
     }
     get blobUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/git/blobs`;
+        return `${this.baseRepo}/git/blobs`;
     }
     get ciDispatchUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/dispatches`;
+        return `${this.baseRepo}/dispatches`;
     }
     get runsUrl() {
-        return `${BASE_URL}/repos/${this.user}/${this.repo}/actions/workflows/test-crawler.yml/runs?event=repository_dispatch`;
+        return `${this.baseRepo}/actions/workflows/test-crawler.yml/runs?event=repository_dispatch`;
     }
     get redirectUrl() {
         return `https://github.com/${this.user}/${this.repo}/actions`;

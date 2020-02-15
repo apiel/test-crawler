@@ -45,7 +45,7 @@ interface Props {
 export const PinPage = ({ storageType, projectId, id, url, viewport, onImg, png, setPins }: Props) => (
     <Card
         style={cardStyle}
-        cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} />}
+        cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} storageType={storageType} />}
         actions={[
             <Popconfirm
                 title="Are you sure delete this pin?"

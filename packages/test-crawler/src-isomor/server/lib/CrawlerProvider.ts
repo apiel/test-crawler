@@ -88,7 +88,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         const pinFolderPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
         await this.storage.saveJSON(pinFolderPath('json'), data);
         await this.storage.copy(crawlerFolderPath('html'), pinFolderPath('html'));
-        await this.storage.copy(crawlerFolderPath('png'), pinFolderPath('png'));
+        await this.storage.copyBlob(crawlerFolderPath('png'), pinFolderPath('png'));
 
         return data;
     }

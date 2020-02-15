@@ -94,7 +94,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             const pinFolderPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
             yield this.storage.saveJSON(pinFolderPath('json'), data);
             yield this.storage.copy(crawlerFolderPath('html'), pinFolderPath('html'));
-            yield this.storage.copy(crawlerFolderPath('png'), pinFolderPath('png'));
+            yield this.storage.copyBlob(crawlerFolderPath('png'), pinFolderPath('png'));
             return data;
         });
     }
