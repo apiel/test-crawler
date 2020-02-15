@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
-import { Project as ProjectType, Job } from '../server/typing';
+import { Project as ProjectType, Job, Browser } from '../server/typing';
 import { saveProject, startCrawler, getJobs } from '../server/service';
 import Spin from 'antd/lib/spin';
 import { getViewportName } from '../viewport';
@@ -91,6 +91,7 @@ export const Project = ({
                 <p><b>Name:</b> {project.name}</p>
                 <p><b>ID:</b> {projectId}</p>
                 <p><b>URL:</b> {project.crawlerInput.url}</p>
+                <p><b>Browser:</b> {project.crawlerInput.browser || Browser.ChromePuppeteer}</p>
                 <p><b>Screen:</b> {getViewportName(project.crawlerInput.viewport)}</p>
                 <p><b>Method:</b>
                     {project.crawlerInput.method === 'urls'

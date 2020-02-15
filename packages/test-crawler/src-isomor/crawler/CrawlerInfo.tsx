@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from 'antd/lib/typography';
 import Progress from 'antd/lib/progress';
 import Icon from 'antd/lib/icon';
-import { Crawler } from '../server/typing';
+import { Crawler, Browser } from '../server/typing';
 import { duration } from 'moment';
 import 'moment-duration-format';
 
@@ -35,6 +35,7 @@ export const CrawlerInfo = ({
     crawler: {
         timestamp,
         url,
+        browser,
         diffZoneCount,
         errorCount,
         status,
@@ -59,6 +60,7 @@ export const CrawlerInfo = ({
                 && <p><SwitchStatus storageType={storageType} setCrawler={setCrawler} projectId={projectId} status={status} timestamp={timestamp} /></p>}
             <ProjectName projectId={projectId} storageType={storageType} />
             <p><b>URL:</b> {url}</p>
+            <p><b>Browser:</b> {browser || Browser.ChromePuppeteer}</p>
             <p><b>Screen:</b> {screen}</p>
             <p>
                 <b>URL crawled:</b> {urlsCount}
