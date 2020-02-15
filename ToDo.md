@@ -1,4 +1,5 @@
-- fix flood of getThumbnail **important**
+- fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
+    - seem to work with asynccache but a bit buggy? we should see if we can find better solution
 
 - right now the CI job is always overwritten, should not be the case?
 - beforeAll script should be call in CI ?
