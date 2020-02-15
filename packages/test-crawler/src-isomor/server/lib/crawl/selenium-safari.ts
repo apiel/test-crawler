@@ -19,7 +19,6 @@ export async function startSeleniumSafari(
     url: string,
     distFolder: string,
 ) {
-    const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
         .forBrowser('safari')
         // .setChromeOptions(new safari.Options().windowSize({
@@ -27,15 +26,5 @@ export async function startSeleniumSafari(
         //     height: scrollHeight || viewport.height,
         // }).addArguments(`--user-agent=${USER_AGENT}`))
         .build();
-    driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
-}
-
-async function getScrollHeight(url: string, viewport: Viewport) {
-    let driver = await new Builder()
-        .forBrowser('safari')
-        // .setChromeOptions(new safari.Options().windowSize(viewport))
-        .build();
-    driver.manage().window().setSize(viewport.width, viewport.height);
-    return getScrollHeightCore(driver, url);
 }

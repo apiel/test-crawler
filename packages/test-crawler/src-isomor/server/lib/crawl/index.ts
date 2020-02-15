@@ -19,7 +19,7 @@ import {
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler, CrawlerInput, CrawlTarget, Browser } from '../../typing';
+import { Crawler, CrawlerInput, CrawlTarget, Browser, Project } from '../../typing';
 import { isArray, promisify } from 'util';
 import { CrawlerProvider } from '../CrawlerProvider';
 import rimraf = require('rimraf');
@@ -86,6 +86,19 @@ async function updateSiblingCount(url: string, distFolder: string) {
 
 export function getQueueFolder(distFolder: string) {
     return join(distFolder, 'queue');
+}
+
+let consumerMaxCount = CONSUMER_COUNT;
+async function setConsumerMaxCount(crawlTarget: CrawlTarget) {
+    const { crawlerInput: { browser } }: Project = await readJSON(join(ROOT_FOLDER, PROJECT_FOLDER, crawlTarget.projectId, 'project.json'));
+    if (browser === Browser.IeSelenium
+        || browser === Browser.EdgeSelenium
+        || browser === Browser.SafariSelenium) {
+        consumerMaxCount = 1;
+    }
+}
+function getConsumerMaxCount() {
+    return consumerMaxCount;
 }
 
 function startBrowser(
@@ -257,7 +270,7 @@ async function pickFromQueues(): Promise<ToCrawl> {
 
 let consumeQueuesRetry = 0;
 async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
-    if (consumerRunning < CONSUMER_COUNT) {
+    if (consumerRunning < getConsumerMaxCount()) {
         let toCrawl: ToCrawl;
         if (crawlTarget) {
             toCrawl = await pickFromQueue(crawlTarget.projectId, crawlTarget.pagesFolder);
@@ -274,7 +287,7 @@ async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
         }
     }
     if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
-        if (consumerRunning < CONSUMER_COUNT) {
+        if (consumerRunning < getConsumerMaxCount()) {
             consumeQueuesRetry++;
         }
         setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
@@ -420,6 +433,7 @@ export async function crawl(
 ) {
     await prepareFolders();
     await beforeAll(crawlTarget);
+    await setConsumerMaxCount(crawlTarget);
     crawlTarget && startCrawler(crawlTarget);
     consumeQueuesRetry = 0;
     consumeResultRetry = 0;

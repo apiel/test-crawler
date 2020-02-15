@@ -88,6 +88,20 @@ function getQueueFolder(distFolder) {
     return path_1.join(distFolder, 'queue');
 }
 exports.getQueueFolder = getQueueFolder;
+let consumerMaxCount = config_1.CONSUMER_COUNT;
+function setConsumerMaxCount(crawlTarget) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { crawlerInput: { browser } } = yield fs_extra_1.readJSON(path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, crawlTarget.projectId, 'project.json'));
+        if (browser === typing_1.Browser.IeSelenium
+            || browser === typing_1.Browser.EdgeSelenium
+            || browser === typing_1.Browser.SafariSelenium) {
+            consumerMaxCount = 1;
+        }
+    });
+}
+function getConsumerMaxCount() {
+    return consumerMaxCount;
+}
 function startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder) {
     if (browser === typing_1.Browser.FirefoxSelenium) {
         return selenium_firefox_1.startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder);
@@ -226,7 +240,7 @@ function pickFromQueues() {
 let consumeQueuesRetry = 0;
 function consumeQueues(consumeTimeout, crawlTarget) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (consumerRunning < config_1.CONSUMER_COUNT) {
+        if (consumerRunning < getConsumerMaxCount()) {
             let toCrawl;
             if (crawlTarget) {
                 toCrawl = yield pickFromQueue(crawlTarget.projectId, crawlTarget.pagesFolder);
@@ -243,7 +257,7 @@ function consumeQueues(consumeTimeout, crawlTarget) {
             }
         }
         if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
-            if (consumerRunning < config_1.CONSUMER_COUNT) {
+            if (consumerRunning < getConsumerMaxCount()) {
                 consumeQueuesRetry++;
             }
             setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
@@ -381,6 +395,7 @@ function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
         yield beforeAll(crawlTarget);
+        yield setConsumerMaxCount(crawlTarget);
         crawlTarget && startCrawler(crawlTarget);
         consumeQueuesRetry = 0;
         consumeResultRetry = 0;
