@@ -85,7 +85,7 @@ export const Project = ({
     const { project, setProject } = useProject(storageType, projectId);
     const { crawlers, loading, loadCrawlers } = useCrawlers(storageType, projectId);
     const { result: jobs, call: loadJobs } = useAsync<Job[]>(() => getJobs(storageType, projectId));
-    const browser = project.crawlerInput.browser || Browser.ChromePuppeteer;
+    const browser = project?.crawlerInput?.browser || Browser.ChromePuppeteer;
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>
