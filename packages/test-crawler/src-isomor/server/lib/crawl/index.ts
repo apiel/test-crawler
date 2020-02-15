@@ -15,11 +15,11 @@ import {
     ROOT_FOLDER,
 } from '../config';
 import {
-    getFilePath,
+    getFilePath, FilePath,
 } from '../utils';
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler, CrawlerInput, CrawlTarget } from '../../typing';
+import { Crawler, CrawlerInput, CrawlTarget, Browser } from '../../typing';
 import { isArray, promisify } from 'util';
 import { CrawlerProvider } from '../CrawlerProvider';
 import rimraf = require('rimraf');
@@ -27,6 +27,7 @@ import Axios from 'axios';
 import md5 = require('md5');
 import { StorageType } from '../../storage.typing';
 import { startPuppeteer } from './puppeteer';
+import { startSeleniumFirefox } from './selenium-firefox';
 
 interface ResultQueue {
     result?: {
@@ -83,15 +84,31 @@ export function getQueueFolder(distFolder: string) {
     return join(distFolder, 'queue');
 }
 
+export function startBrowser(
+    browser: Browser,
+    viewport: Viewport,
+    filePath: FilePath,
+    crawler: Crawler,
+    projectId: string,
+    id: string,
+    url: string,
+    distFolder: string,
+) {
+    if (browser === Browser.FirefoxSelenium) {
+        return startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    return startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
+}
+
 async function loadPage(projectId: string, id: string, url: string, distFolder: string, retry: number = 0) {
     consumerRunning++;
     const filePath = getFilePath(id, distFolder);
 
     const crawler: Crawler = await readJSON(join(distFolder, '_.json'));
-    const { viewport, url: baseUrl, method, limit } = crawler;
+    const { viewport, url: baseUrl, method, limit, browser } = crawler;
 
     try {
-        const { links, ...output } = await startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
+        const { links, ...output } = await startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder);
         await outputJson(
             filePath('json'),
             output,
@@ -241,7 +258,9 @@ async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
         }
     }
     if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
-        consumeQueuesRetry++;
+        if (consumerRunning < CONSUMER_COUNT) {
+            consumeQueuesRetry++;
+        }
         setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
     } else {
         info('consumeQueues timeout');

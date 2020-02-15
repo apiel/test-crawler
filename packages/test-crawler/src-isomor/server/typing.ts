@@ -2,6 +2,12 @@
 // import { Viewport } from 'puppeteer';
 // export { Viewport, Zone };
 
+export enum Browser {
+    ChromePuppeteer = 'chrome-puppeteer',
+    FirefoxSelenium = 'firefox-selenium',
+    ChromeSelenium = 'chrome-selenium',
+}
+
 export interface StartCrawler {
     timestamp: string;
     redirect?: string;
@@ -45,6 +51,7 @@ export enum BeforeAfterType {
 export interface CrawlerInput {
     url: string;
     viewport: Viewport;
+    browser: Browser;
     method: string;
     limit?: number;
     autopin: boolean;

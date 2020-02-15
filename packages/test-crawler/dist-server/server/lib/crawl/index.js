@@ -28,6 +28,7 @@ const config_1 = require("../config");
 const utils_1 = require("../utils");
 const index_1 = require("../index");
 const diff_1 = require("../diff");
+const typing_1 = require("../../typing");
 const util_1 = require("util");
 const CrawlerProvider_1 = require("../CrawlerProvider");
 const rimraf = require("rimraf");
@@ -35,6 +36,7 @@ const axios_1 = require("axios");
 const md5 = require("md5");
 const storage_typing_1 = require("../../storage.typing");
 const puppeteer_1 = require("./puppeteer");
+const selenium_firefox_1 = require("./selenium-firefox");
 let totalDiff = 0;
 let totalError = 0;
 let consumerRunning = 0;
@@ -82,14 +84,21 @@ function getQueueFolder(distFolder) {
     return path_1.join(distFolder, 'queue');
 }
 exports.getQueueFolder = getQueueFolder;
+function startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder) {
+    if (browser === typing_1.Browser.FirefoxSelenium) {
+        return selenium_firefox_1.startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    return puppeteer_1.startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
+}
+exports.startBrowser = startBrowser;
 function loadPage(projectId, id, url, distFolder, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         consumerRunning++;
         const filePath = utils_1.getFilePath(id, distFolder);
         const crawler = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
-        const { viewport, url: baseUrl, method, limit } = crawler;
+        const { viewport, url: baseUrl, method, limit, browser } = crawler;
         try {
-            const _a = yield puppeteer_1.startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder), { links } = _a, output = __rest(_a, ["links"]);
+            const _a = yield startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder), { links } = _a, output = __rest(_a, ["links"]);
             yield fs_extra_1.outputJson(filePath('json'), output, { spaces: 4 });
             if (method !== index_1.CrawlerMethod.URLs && util_1.isArray(links)) {
                 const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
@@ -219,7 +228,9 @@ function consumeQueues(consumeTimeout, crawlTarget) {
             }
         }
         if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
-            consumeQueuesRetry++;
+            if (consumerRunning < config_1.CONSUMER_COUNT) {
+                consumeQueuesRetry++;
+            }
             setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
         }
         else {

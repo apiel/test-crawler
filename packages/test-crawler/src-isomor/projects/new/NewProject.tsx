@@ -10,7 +10,7 @@ import Typography from 'antd/lib/typography';
 import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 import { RouteComponentProps } from 'react-router';
-import { CrawlerInput } from '../../server/typing';
+import { CrawlerInput, Browser } from '../../server/typing';
 
 import { getHomeRoute } from '../../routes';
 import { saveProject } from '../../server/service';
@@ -21,15 +21,7 @@ import { History } from 'history';
 import { StorageType } from '../../server/storage.typing';
 import { ProjectRepos } from '../ProjectRepos';
 import { useThisDoc } from '../../doc/useDoc';
-
-const inlineStyle = {
-    marginRight: 10,
-    display: 'inline-block',
-}
-
-const radioGroupdStyle = {
-    marginRight: 30,
-}
+import Select from 'antd/lib/select';
 
 const save = async (
     storageType: StorageType,
@@ -79,43 +71,60 @@ const NewProject = ({
                     <Input
                         placeholder="https://domain.com/"
                         addonBefore="URL"
-                        addonAfter={
-                            <Viewport
-                                getFieldDecorator={getFieldDecorator}
-                                initialValue={JSON.stringify(getDefaultViewport())}
-                            />
-                        }
                     />
                 )}
             </Form.Item>
-            <Form.Item>
-                <Form.Item style={inlineStyle}>
+            <div>
+                <Form.Item label="Browser" className="item-inline">
+                    {getFieldDecorator('browser', {
+                        initialValue: Browser.ChromePuppeteer,
+                        rules: [{ required: true, message: 'Please select a browser.' }],
+                    })(
+                        <Select>
+                            {Object.keys(Browser).map(
+                                (key) => <Select.Option key={key} value={Browser[key as keyof typeof Browser]}>{Browser[key as keyof typeof Browser]}</Select.Option>
+                            )}
+                        </Select>
+                    )}
+                </Form.Item>
+                <Form.Item label="Viewport" className="item-inline">
+                    <Viewport
+                        getFieldDecorator={getFieldDecorator}
+                        initialValue={JSON.stringify(getDefaultViewport())}
+                    />
+                </Form.Item>
+            </div>
+            <div>
+                <Form.Item label="Method" className="item-inline">
                     {getFieldDecorator('method', {
                         initialValue: 'spiderbot',
+                        rules: [{ required: true }],
                     })(
-                        <Radio.Group size="small" style={radioGroupdStyle}>
+                        <Radio.Group size="small">
                             <Radio.Button value={'spiderbot'}><Icon type="radar-chart" /> Spider bot</Radio.Button>
                             <Radio.Button value={'urls'}><Icon type="ordered-list" /> URLs list</Radio.Button>
                         </Radio.Group>
                     )}
                 </Form.Item>
-                {getFieldValue('method') === 'spiderbot' && <Form.Item style={inlineStyle}>
-                    Limit {getFieldDecorator('limit')(
-                        <InputNumber min={0} size="small" />
-                    )}
-                    &nbsp;<Popover content={<div>
-                        <b>Limit the number of sibling pages. </b>
-                        For example, with the urls:
+                {getFieldValue('method') === 'spiderbot' &&
+                    <Form.Item label="Limit" className="item-inline">
+                        {getFieldDecorator('limit')(
+                            <InputNumber min={0} size="small" />
+                        )}
+                        &nbsp;<Popover content={<div>
+                            <b>Limit the number of sibling pages. </b>
+                            For example, with the urls:
                         <ul>
-                            <li>/item/1</li>
-                            <li>/item/2</li>
-                            <li>/item/3</li>
-                            <li>/item/4</li>
-                        </ul> using the limit <b>2</b> will only crawl <b>/item/1</b> and <b>/item/2</b>.<br /><br />
-                        Use <b>0</b> to skip the limit.</div>} trigger="click" overlayStyle={{ width: 200 }}>
-                        <Icon type="question-circle" />
-                    </Popover>
-                </Form.Item>}
+                                <li>/item/1</li>
+                                <li>/item/2</li>
+                                <li>/item/3</li>
+                                <li>/item/4</li>
+                            </ul> using the limit <b>2</b> will only crawl <b>/item/1</b> and <b>/item/2</b>.<br /><br />
+                            Use <b>0</b> to skip the limit.</div>} trigger="click" overlayStyle={{ width: 200 }}>
+                            <Icon type="question-circle" />
+                        </Popover>
+                    </Form.Item>
+                }
                 <Info>
                     <Typography.Paragraph ellipsis={{ rows: 1, expandable: true }}>
                         <b>Spider bot</b> crawling method will get all the links inside the page of the given URL
@@ -131,7 +140,7 @@ const NewProject = ({
                         like <a href="https://pastebin.com" target="_blank" rel="noopener noreferrer">https://pastebin.com</a>.
                     </Typography.Paragraph>
                 </Info>
-            </Form.Item>
+            </div>
             <Form.Item>
                 {getFieldDecorator('autopin', {
                     valuePropName: 'checked',
@@ -143,15 +152,13 @@ const NewProject = ({
                 <ProjectRepos storageType={storageType} />
             </Form.Item>
             <Form.Item>
-                <Form.Item style={inlineStyle}>
-                    <Button
-                        type="primary"
-                        icon="plus"
-                        htmlType="submit"
-                    >
-                        Create
-                    </Button>
-                </Form.Item>
+                <Button
+                    type="primary"
+                    icon="plus"
+                    htmlType="submit"
+                >
+                    Create
+                </Button>
             </Form.Item>
         </Form>
     );
@@ -170,8 +177,20 @@ const Doc = () => (
             you should give the URL of the endpoint containing the list of URLs.
         </p>
         <p>
-            Next to the URL input, you can select the viewport (screen size). If you want
-            to test multiple viewports, you will have to create one project per viewport.
+            There is different kind of browser: <a
+                href="https://github.com/puppeteer/puppeteer"
+                target="_blank" rel="noopener noreferrer"
+            >chrome-puppeteer</a>, <a
+                href="https://github.com/SeleniumHQ/selenium"
+                target="_blank" rel="noopener noreferrer"
+            >firefox-selenium</a>... Depending of the browser you will select, different tool
+            will be available in the code injection. Also some brwoser are only available
+            depending of the OS where is test-crawler hosted.
+        </p>
+        <p>
+            There is multiple viewports (screen size) available. If you want to test
+            multiple viewports for the same website, you will have to create one
+            project per viewport.
         </p>
         <p>
             Finally, you can specify if you want to automatically pin the new pages founds.

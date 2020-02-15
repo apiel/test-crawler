@@ -1,3 +1,5 @@
+- fix flood of getThumbnail **important**
+
 - right now the CI job is always overwritten, should not be the case?
 - beforeAll script should be call in CI ?
   but this would work only for CI
