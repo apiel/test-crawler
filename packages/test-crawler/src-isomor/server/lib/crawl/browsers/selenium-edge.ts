@@ -23,11 +23,11 @@ export async function startSeleniumEdge(
     const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftWebDriver.10.0.17134/driver/');
     process.env.PATH = `${process.env.PATH};${driverPath};`;
 
-    const scrollHeight = await getScrollHeight(url, viewport);
+    // const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
         .forBrowser('MicrosoftEdge')
         .build();
-    driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
+    // driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 
