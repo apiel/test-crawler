@@ -10,25 +10,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const selenium_webdriver_1 = require("selenium-webdriver");
-const firefox = require("selenium-webdriver/firefox");
+const chrome = require("selenium-webdriver/chrome");
 const config_1 = require("../config");
 const selenium_core_1 = require("./selenium-core");
-function startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder) {
+function startSeleniumChrome(viewport, filePath, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const scrollHeight = yield getScrollHeight(url, viewport);
         const driver = yield new selenium_webdriver_1.Builder()
-            .forBrowser('firefox')
-            .setFirefoxOptions(new firefox.Options().headless().windowSize(Object.assign(Object.assign({}, viewport), { height: scrollHeight || viewport.height })).setPreference('general.useragent.override', config_1.USER_AGENT))
+            .forBrowser('chrome')
+            .setChromeOptions(new chrome.Options().headless().windowSize(Object.assign(Object.assign({}, viewport), { height: scrollHeight || viewport.height })).addArguments(`--user-agent=${config_1.USER_AGENT}`))
             .build();
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
     });
 }
-exports.startSeleniumFirefox = startSeleniumFirefox;
+exports.startSeleniumChrome = startSeleniumChrome;
 function getScrollHeight(url, viewport) {
     return __awaiter(this, void 0, void 0, function* () {
         let driver = yield new selenium_webdriver_1.Builder()
-            .forBrowser('firefox')
-            .setFirefoxOptions(new firefox.Options().headless().windowSize(viewport))
+            .forBrowser('chrome')
+            .setChromeOptions(new chrome.Options().headless().windowSize(viewport))
             .build();
         return selenium_core_1.getScrollHeightCore(driver, url);
     });
