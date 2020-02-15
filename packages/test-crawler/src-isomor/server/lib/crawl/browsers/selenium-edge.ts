@@ -1,6 +1,4 @@
 import { Builder } from 'selenium-webdriver';
-import * as edge from 'selenium-webdriver/edge';
-import * as edgedriver from 'edgedriver';
 
 import { FilePath } from '../../utils';
 import { Crawler } from '../../../typing';
@@ -22,12 +20,12 @@ export async function startSeleniumEdge(
     url: string,
     distFolder: string,
 ) {
-    const service = await new edge.ServiceBuilder(edgedriver.path);
+    const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftWebDriver.10.0.17134/driver/');
+    process.env.PATH = `${process.env.PATH};${driverPath};`;
 
     const scrollHeight = await getScrollHeight(url, viewport, service);
     const driver = await new Builder()
         .forBrowser('MicrosoftEdge')
-        .setEdgeService(service)
         .build();
     driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
@@ -36,7 +34,6 @@ export async function startSeleniumEdge(
 async function getScrollHeight(url: string, viewport: Viewport, service: any) {
     let driver = await new Builder()
         .forBrowser('MicrosoftEdge')
-        .setEdgeService(service)
         .build();
     driver.manage().window().setSize(viewport.width, viewport.height);
     return getScrollHeightCore(driver, url);

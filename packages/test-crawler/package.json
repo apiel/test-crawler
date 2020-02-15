@@ -52,7 +52,6 @@
     "axios": "^0.19.2",
     "brace": "^0.11.1",
     "chromedriver": "^80.0.1",
-    "edgedriver": "^4.17134.1",
     "expect": "^25.1.0",
     "fs-extra": "^8.1.0",
     "fuse.js": "^3.4.6",
