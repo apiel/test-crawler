@@ -88,7 +88,7 @@ export function getQueueFolder(distFolder: string) {
     return join(distFolder, 'queue');
 }
 
-export function startBrowser(
+function startBrowser(
     browser: Browser,
     viewport: Viewport,
     filePath: FilePath,

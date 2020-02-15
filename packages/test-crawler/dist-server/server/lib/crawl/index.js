@@ -106,7 +106,6 @@ function startBrowser(browser, viewport, filePath, crawler, projectId, id, url, 
     }
     return puppeteer_1.startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
 }
-exports.startBrowser = startBrowser;
 function loadPage(projectId, id, url, distFolder, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         consumerRunning++;
