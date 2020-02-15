@@ -1,9 +1,8 @@
 import { Builder } from 'selenium-webdriver';
-import * as firefox from 'selenium-webdriver/firefox';
+// import * as ie from 'selenium-webdriver/ie';
 
-import { USER_AGENT } from '../config';
-import { FilePath } from '../utils';
-import { Crawler } from '../../typing';
+import { FilePath } from '../../utils';
+import { Crawler } from '../../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 
 interface Viewport {
@@ -11,7 +10,7 @@ interface Viewport {
     height: number;
 }
 
-export async function startSeleniumFirefox(
+export async function startSeleniumIE(
     viewport: Viewport,
     filePath: FilePath,
     crawler: Crawler,
@@ -22,19 +21,24 @@ export async function startSeleniumFirefox(
 ) {
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
-        .forBrowser('firefox')
-        .setFirefoxOptions(new firefox.Options().headless().windowSize({
-            ...viewport,
-            height: scrollHeight || viewport.height,
-        }).setPreference('general.useragent.override', USER_AGENT))
+        .forBrowser('ie')
+        // .setChromeOptions(
+        // new ie.Options()
+        // .windowSize({
+        //     ...viewport,
+        //     height: scrollHeight || viewport.height,
+        // })
+        // )
         .build();
+    driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {
     let driver = await new Builder()
-        .forBrowser('firefox')
-        .setFirefoxOptions(new firefox.Options().headless().windowSize(viewport))
+        .forBrowser('ie')
+        // .setChromeOptions(new ie.Options().windowSize(viewport))
         .build();
+    driver.manage().window().setSize(viewport.width, viewport.height);
     return getScrollHeightCore(driver, url);
 }

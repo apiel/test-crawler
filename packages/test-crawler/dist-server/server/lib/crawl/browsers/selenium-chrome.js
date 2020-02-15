@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const selenium_webdriver_1 = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
-const config_1 = require("../config");
+const config_1 = require("../../config");
 const selenium_core_1 = require("./selenium-core");
 function startSeleniumChrome(viewport, filePath, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {

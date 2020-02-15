@@ -26,12 +26,12 @@ import rimraf = require('rimraf');
 import Axios from 'axios';
 import md5 = require('md5');
 import { StorageType } from '../../storage.typing';
-import { startPuppeteer } from './puppeteer';
-import { startSeleniumFirefox } from './selenium-firefox';
-import { startSeleniumChrome } from './selenium-chrome';
-import { startSeleniumIE } from './selenium-ie';
-import { startSeleniumEdge } from './selenium-edge';
-import { startSeleniumSafari } from './selenium-safari';
+import { startPuppeteer } from './browsers/puppeteer';
+import { startSeleniumFirefox } from './browsers/selenium-firefox';
+import { startSeleniumChrome } from './browsers/selenium-chrome';
+import { startSeleniumIE } from './browsers/selenium-ie';
+import { startSeleniumEdge } from './browsers/selenium-edge';
+import { startSeleniumSafari } from './browsers/selenium-safari';
 
 interface ResultQueue {
     result?: {

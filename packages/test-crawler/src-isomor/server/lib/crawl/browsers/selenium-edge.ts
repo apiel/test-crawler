@@ -1,9 +1,8 @@
 import { Builder } from 'selenium-webdriver';
-import * as chrome from 'selenium-webdriver/chrome';
+// import * as edge from 'selenium-webdriver/edge';
 
-import { USER_AGENT } from '../config';
-import { FilePath } from '../utils';
-import { Crawler } from '../../typing';
+import { FilePath } from '../../utils';
+import { Crawler } from '../../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 
 interface Viewport {
@@ -11,7 +10,7 @@ interface Viewport {
     height: number;
 }
 
-export async function startSeleniumChrome(
+export async function startSeleniumEdge(
     viewport: Viewport,
     filePath: FilePath,
     crawler: Crawler,
@@ -22,19 +21,24 @@ export async function startSeleniumChrome(
 ) {
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(new chrome.Options().headless().windowSize({
-            ...viewport,
-            height: scrollHeight || viewport.height,
-        }).addArguments(`--user-agent=${USER_AGENT}`))
+        .forBrowser('edge')
+        // .setChromeOptions(
+        //     new edge.Options()
+        //         .windowSize({
+        //             ...viewport,
+        //             height: scrollHeight || viewport.height,
+        //         })
+        // )
         .build();
+    driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {
     let driver = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(new chrome.Options().headless().windowSize(viewport))
+        .forBrowser('edge')
+        // .setChromeOptions(new ie.Options().windowSize(viewport))
         .build();
+    driver.manage().window().setSize(viewport.width, viewport.height);
     return getScrollHeightCore(driver, url);
 }

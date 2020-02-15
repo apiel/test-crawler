@@ -9,44 +9,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const puppeteer_1 = require("puppeteer");
 const logol_1 = require("logol");
-const config_1 = require("../config");
 const fs_extra_1 = require("fs-extra");
-const _1 = require(".");
-function startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder) {
+const __1 = require("..");
+function startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
-        const browser = yield puppeteer_1.launch({});
         try {
-            const page = yield browser.newPage();
-            yield page.setUserAgent(config_1.USER_AGENT);
-            yield page.setViewport(viewport);
-            yield page.goto(url, {
-                waitUntil: 'networkidle2',
-                timeout: config_1.TIMEOUT,
-            });
-            const html = yield page.content();
+            logol_1.info(`browser open "${url}"`);
+            yield driver.get(url);
+            const html = yield driver.getPageSource();
             yield fs_extra_1.writeFile(filePath('html'), html);
-            const metrics = yield page.metrics();
-            const performance = JSON.parse(yield page.evaluate(() => JSON.stringify(window.performance)));
+            const performance = yield driver.executeScript("return window.performance");
             let codeErr;
             let links;
             try {
-                const injectLinks = yield page.$$eval('a', as => as.map(a => a.href));
-                links = yield _1.injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
+                const injectLinks = yield driver.executeScript("return Array.from(document.links).map(a => a.href)");
+                links = yield __1.injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
             }
             catch (err) {
                 codeErr = err.toString();
                 logol_1.error('Something went wrong while injecting the code', id, url, err);
             }
-            yield page.screenshot({ path: filePath('png'), fullPage: true });
+            const image = yield driver.takeScreenshot();
+            yield fs_extra_1.outputFile(filePath('png'), Buffer.from(image, 'base64'));
             const png = { width: viewport.width };
-            return { links, url, id, performance, metrics, png, viewport, error: codeErr };
+            return { links, url, id, performance, png, viewport, error: codeErr };
         }
         finally {
-            yield browser.close();
+            yield driver.quit();
             logol_1.info('browser closed', url);
         }
     });
 }
-exports.startPuppeteer = startPuppeteer;
+exports.startSeleniumCore = startSeleniumCore;
+function getScrollHeightCore(driver, url) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield driver.get(url);
+            const scrollHeight = yield driver.executeScript("return document.body.scrollHeight");
+            return scrollHeight;
+        }
+        finally {
+            yield driver.quit();
+        }
+    });
+}
+exports.getScrollHeightCore = getScrollHeightCore;

@@ -2,11 +2,11 @@
 import { launch, Viewport } from 'puppeteer';
 import { error, info } from 'logol';
 
-import { USER_AGENT, TIMEOUT } from '../config';
-import { FilePath } from '../utils';
+import { USER_AGENT, TIMEOUT } from '../../config';
+import { FilePath } from '../../utils';
 import { writeFile } from 'fs-extra';
-import { Crawler } from '../../typing';
-import { injectCodes } from '.';
+import { Crawler } from '../../../typing';
+import { injectCodes } from '..';
 
 export async function startPuppeteer(
     viewport: Viewport,

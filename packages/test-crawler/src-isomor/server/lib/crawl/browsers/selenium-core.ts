@@ -2,10 +2,10 @@ import { Builder, WebDriver } from 'selenium-webdriver';
 import * as firefox from 'selenium-webdriver/firefox';
 import { error, info } from 'logol';
 
-import { FilePath } from '../utils';
+import { FilePath } from '../../utils';
 import { writeFile, outputFile } from 'fs-extra';
-import { Crawler } from '../../typing';
-import { injectCodes } from '.';
+import { Crawler } from '../../../typing';
+import { injectCodes } from '..';
 
 interface Viewport {
     width: number;

@@ -16,6 +16,7 @@ function startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, di
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('safari')
             .build();
+        driver.manage().window().maximize();
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
     });
 }
