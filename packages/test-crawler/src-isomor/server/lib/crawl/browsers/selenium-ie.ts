@@ -27,23 +27,15 @@ export async function startSeleniumIE(
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
         .forBrowser('internet explorer')
-        // .setChromeOptions(
-        // new ie.Options()
-        // .windowSize({
-        //     ...viewport,
-        //     height: scrollHeight || viewport.height,
-        // })
-        // )
         .build();
-    driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
+    driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {
     let driver = await new Builder()
         .forBrowser('internet explorer')
-        // .setChromeOptions(new ie.Options().windowSize(viewport))
         .build();
-    driver.manage().window().setSize(viewport.width, viewport.height);
+    driver.manage().window().setRect({ ...viewport, x: 0, y: 0 });
     return getScrollHeightCore(driver, url);
 }

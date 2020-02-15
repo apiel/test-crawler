@@ -21,7 +21,7 @@ function startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFo
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('internet explorer')
             .build();
-        driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
+        driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
     });
 }
@@ -31,7 +31,7 @@ function getScrollHeight(url, viewport) {
         let driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('internet explorer')
             .build();
-        driver.manage().window().setSize(viewport.width, viewport.height);
+        driver.manage().window().setRect(Object.assign(Object.assign({}, viewport), { x: 0, y: 0 }));
         return selenium_core_1.getScrollHeightCore(driver, url);
     });
 }

@@ -1,6 +1,10 @@
 - pin request timeout because it take very long even if succeed
 --> maybe all update should be done in a worklow job?
 
+- improve cli perf
+
+- make a hosted private button -> with registration, to see how many people want it...
+
 - fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
     - seem to work with asynccache but a bit buggy? we should see if we can find better solution
 
