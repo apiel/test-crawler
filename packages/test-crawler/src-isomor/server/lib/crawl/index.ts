@@ -28,6 +28,10 @@ import md5 = require('md5');
 import { StorageType } from '../../storage.typing';
 import { startPuppeteer } from './puppeteer';
 import { startSeleniumFirefox } from './selenium-firefox';
+import { startSeleniumChrome } from './selenium-chrome';
+import { startSeleniumIE } from './selenium-ie';
+import { startSeleniumEdge } from './selenium-edge';
+import { startSeleniumSafari } from './selenium-safari';
 
 interface ResultQueue {
     result?: {
@@ -96,6 +100,18 @@ export function startBrowser(
 ) {
     if (browser === Browser.FirefoxSelenium) {
         return startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === Browser.ChromePuppeteer) {
+        return startSeleniumChrome(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === Browser.IeSelenium) {
+        return startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === Browser.EdgeSelenium) {
+        return startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === Browser.SafariSelenium) {
+        return startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, distFolder);
     }
     return startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
 }

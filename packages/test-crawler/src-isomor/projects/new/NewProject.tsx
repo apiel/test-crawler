@@ -15,8 +15,7 @@ import { CrawlerInput, Browser } from '../../server/typing';
 import { getHomeRoute } from '../../routes';
 import { saveProject } from '../../server/service';
 import { Info } from '../../common/Info';
-import { Viewport } from './Viewport';
-import { getDefaultViewport } from '../../viewport';
+import { getDefaultViewport, viewportsStr } from '../../viewport';
 import { History } from 'history';
 import { StorageType } from '../../server/storage.typing';
 import { ProjectRepos } from '../ProjectRepos';
@@ -88,10 +87,16 @@ const NewProject = ({
                     )}
                 </Form.Item>
                 <Form.Item label="Viewport" className="item-inline">
-                    <Viewport
-                        getFieldDecorator={getFieldDecorator}
-                        initialValue={JSON.stringify(getDefaultViewport())}
-                    />
+                    {getFieldDecorator('viewport', {
+                            initialValue: JSON.stringify(getDefaultViewport()),
+                            rules: [{ required: true, message: 'Please select viewport.' }],
+                    })(
+                        <Select>
+                            {viewportsStr.map(
+                                ({ value, name }) => <Select.Option key={value} value={value}>{name}</Select.Option>
+                            )}
+                        </Select>
+                    )}
                 </Form.Item>
             </div>
             <div>
@@ -187,6 +192,9 @@ const Doc = () => (
             will be available in the code injection. Also some brwoser are only available
             depending of the OS where is test-crawler hosted.
         </p>
+        <Info>
+            <p>IE, Edge and Safari are in experimentation, might not be stable.</p>
+        </Info>
         <p>
             There is multiple viewports (screen size) available. If you want to test
             multiple viewports for the same website, you will have to create one

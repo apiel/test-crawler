@@ -28,10 +28,14 @@ on:
 jobs:
   test-crawler:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
+    - name: Enable safari driver
+      run: |
+        sudo safaridriver --enable
+        safaridriver -p 0 &
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
       uses: apiel/test-crawler/actions/run@master
     - name: Push changes

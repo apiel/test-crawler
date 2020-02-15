@@ -37,6 +37,10 @@ const md5 = require("md5");
 const storage_typing_1 = require("../../storage.typing");
 const puppeteer_1 = require("./puppeteer");
 const selenium_firefox_1 = require("./selenium-firefox");
+const selenium_chrome_1 = require("./selenium-chrome");
+const selenium_ie_1 = require("./selenium-ie");
+const selenium_edge_1 = require("./selenium-edge");
+const selenium_safari_1 = require("./selenium-safari");
 let totalDiff = 0;
 let totalError = 0;
 let consumerRunning = 0;
@@ -87,6 +91,18 @@ exports.getQueueFolder = getQueueFolder;
 function startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder) {
     if (browser === typing_1.Browser.FirefoxSelenium) {
         return selenium_firefox_1.startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === typing_1.Browser.ChromePuppeteer) {
+        return selenium_chrome_1.startSeleniumChrome(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === typing_1.Browser.IeSelenium) {
+        return selenium_ie_1.startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === typing_1.Browser.EdgeSelenium) {
+        return selenium_edge_1.startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder);
+    }
+    else if (browser === typing_1.Browser.SafariSelenium) {
+        return selenium_safari_1.startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, distFolder);
     }
     return puppeteer_1.startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
 }

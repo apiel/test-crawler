@@ -6,6 +6,9 @@ export enum Browser {
   ChromePuppeteer = 'chrome-puppeteer',
   FirefoxSelenium = 'firefox-selenium',
   ChromeSelenium = 'chrome-selenium',
+  IeSelenium = 'ie-selenium',
+  EdgeSelenium = 'edge-selenium',
+  SafariSelenium = 'safari-selenium',
 }
 export interface StartCrawler {
   timestamp: string;
