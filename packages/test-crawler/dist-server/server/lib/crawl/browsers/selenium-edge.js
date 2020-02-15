@@ -10,26 +10,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const selenium_webdriver_1 = require("selenium-webdriver");
+const edge = require("selenium-webdriver/edge");
+const edgedriver = require("edgedriver");
 const selenium_core_1 = require("./selenium-core");
-const config_1 = require("../../config");
-const path_1 = require("path");
 function startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
-        const driverPath = path_1.join(config_1.ROOT_FOLDER, '/Selenium.WebDriver.IEDriver.3.150.0/driver/');
-        process.env.PATH = `${process.env.PATH};${driverPath};`;
-        const scrollHeight = yield getScrollHeight(url, viewport);
+        const service = yield new edge.ServiceBuilder(edgedriver.path);
+        const scrollHeight = yield getScrollHeight(url, viewport, service);
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('MicrosoftEdge')
+            .setEdgeService(service)
             .build();
         driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
     });
 }
 exports.startSeleniumEdge = startSeleniumEdge;
-function getScrollHeight(url, viewport) {
+function getScrollHeight(url, viewport, service) {
     return __awaiter(this, void 0, void 0, function* () {
         let driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('MicrosoftEdge')
+            .setEdgeService(service)
             .build();
         driver.manage().window().setSize(viewport.width, viewport.height);
         return selenium_core_1.getScrollHeightCore(driver, url);
