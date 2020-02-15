@@ -97,6 +97,7 @@ function setConsumerMaxCount(crawlTarget) {
             || browser === typing_1.Browser.SafariSelenium) {
             consumerMaxCount = 1;
         }
+        logol_1.info('Max consumer', consumerMaxCount);
     });
 }
 function getConsumerMaxCount() {
@@ -344,7 +345,7 @@ function startCrawler({ projectId, pagesFolder }) {
 function startUrlsCrawling(crawlerInput, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data } = yield axios_1.default.get(crawlerInput.url);
-        const urls = data.split(`\n`).filter((url) => url.trim());
+        const urls = data.split(`\n`).filter((url) => url.trim().replace(/(\r\n|\n|\r)/gm, ''));
         yield Promise.all(urls.map((url) => addToQueue(url, crawlerInput.viewport, distFolder)));
     });
 }

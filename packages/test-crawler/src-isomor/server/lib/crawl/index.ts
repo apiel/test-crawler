@@ -88,6 +88,7 @@ export function getQueueFolder(distFolder: string) {
     return join(distFolder, 'queue');
 }
 
+// some browser support only one instance at once
 let consumerMaxCount = CONSUMER_COUNT;
 async function setConsumerMaxCount(crawlTarget: CrawlTarget) {
     const { crawlerInput: { browser } }: Project = await readJSON(join(ROOT_FOLDER, PROJECT_FOLDER, crawlTarget.projectId, 'project.json'));
@@ -96,6 +97,7 @@ async function setConsumerMaxCount(crawlTarget: CrawlTarget) {
         || browser === Browser.SafariSelenium) {
         consumerMaxCount = 1;
     }
+    info('Max consumer', consumerMaxCount);
 }
 function getConsumerMaxCount() {
     return consumerMaxCount;
@@ -383,7 +385,7 @@ async function startCrawler({ projectId, pagesFolder }: CrawlTarget) {
 
 async function startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
     const { data } = await Axios.get(crawlerInput.url);
-    const urls = data.split(`\n`).filter((url: string) => url.trim());
+    const urls = data.split(`\n`).filter((url: string) => url.trim().replace(/(\r\n|\n|\r)/gm, ''));
     await Promise.all(urls.map((url: string) =>
         addToQueue(url, crawlerInput.viewport, distFolder)));
 }
