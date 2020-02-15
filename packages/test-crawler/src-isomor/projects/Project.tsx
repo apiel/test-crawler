@@ -27,10 +27,11 @@ const onStart = (
     projectId: string,
     storageType: StorageType,
     loadJobs: () => Promise<void>,
+    browser: Browser,
 ) => async () => {
     try {
         const hide = message.loading('Starting crawlers', 0);
-        const { timestamp, redirect } = await startCrawler(storageType, projectId);
+        const { timestamp, redirect } = await startCrawler(storageType, projectId, browser);
         if (redirect) {
             setTimeout(loadJobs, 5000);
             setTimeout(loadJobs, 10000);
@@ -84,6 +85,7 @@ export const Project = ({
     const { project, setProject } = useProject(storageType, projectId);
     const { crawlers, loading, loadCrawlers } = useCrawlers(storageType, projectId);
     const { result: jobs, call: loadJobs } = useAsync<Job[]>(() => getJobs(storageType, projectId));
+    const browser = project.crawlerInput.browser || Browser.ChromePuppeteer;
     return (
         <>
             <Typography.Title level={3}>Project</Typography.Title>
@@ -91,7 +93,7 @@ export const Project = ({
                 <p><b>Name:</b> {project.name}</p>
                 <p><b>ID:</b> {projectId}</p>
                 <p><b>URL:</b> {project.crawlerInput.url}</p>
-                <p><b>Browser:</b> {project.crawlerInput.browser || Browser.ChromePuppeteer}</p>
+                <p><b>Browser:</b> {browser}</p>
                 <p><b>Screen:</b> {getViewportName(project.crawlerInput.viewport)}</p>
                 <p><b>Method:</b>
                     {project.crawlerInput.method === 'urls'
@@ -114,7 +116,7 @@ export const Project = ({
                     <Button
                         icon="caret-right"
                         size="small"
-                        onClick={onStart(history, projectId, storageType, loadJobs)}
+                        onClick={onStart(history, projectId, storageType, loadJobs, browser)}
                     >
                         Run
                     </Button> &nbsp;

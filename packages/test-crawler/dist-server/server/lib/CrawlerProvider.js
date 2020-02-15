@@ -238,12 +238,12 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             return newPage;
         });
     }
-    startCrawler(projectId) {
+    startCrawler(projectId, browser) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const pagesFolder = Math.floor(Date.now() / 1000).toString();
             const crawlTarget = { projectId, pagesFolder };
-            const redirect = yield this.storage.crawl(crawlTarget, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
+            const redirect = yield this.storage.crawl(crawlTarget, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push, browser);
             return {
                 timestamp: pagesFolder,
                 redirect,

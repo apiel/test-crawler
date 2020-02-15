@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Storage_1 = require("./Storage");
 const path_1 = require("path");
 const axios_1 = require("axios");
+const typing_1 = require("../../typing");
 const config_1 = require("../config");
 const error_1 = require("../../error");
 const CrawlerProviderStorage_1 = require("../CrawlerProviderStorage");
@@ -27,7 +28,7 @@ on:
 
 jobs:
   test-crawler:
-
+    if: github.event.client_payload.os == 'default'
     runs-on: macos-latest
 
     steps:
@@ -36,6 +37,23 @@ jobs:
       run: |
         sudo safaridriver --enable
         safaridriver -p 0 &
+    - name: Run test-crawler \${{ github.event.client_payload.projectId }}
+      uses: apiel/test-crawler/actions/run@master
+    - name: Push changes
+      uses: apiel/test-crawler/actions/push@master
+      with:
+        token: \${{ secrets.GITHUB_TOKEN }}
+
+  test-crawler-ie:
+    if: github.event.client_payload.os == 'win'
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: warrenbuckley/Setup-Nuget@v1
+    - name: Enable ie driver
+      run: |
+        nuget install Selenium.WebDriver.IEDriver -Version 3.150.0
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
       uses: apiel/test-crawler/actions/run@master
     - name: Push changes
@@ -203,11 +221,12 @@ class GitHubStorage extends Storage_1.Storage {
             }
         });
     }
-    crawl(crawlTarget, consumeTimeout, push) {
+    crawl(crawlTarget, consumeTimeout, push, browser) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if ((_a = crawlTarget) === null || _a === void 0 ? void 0 : _a.projectId) {
                 yield this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
+                const os = browser === typing_1.Browser.IeSelenium || browser === typing_1.Browser.EdgeSelenium ? 'win' : 'default';
                 yield this.call({
                     method: 'POST',
                     url: `${this.ciDispatchUrl}`,
@@ -215,6 +234,7 @@ class GitHubStorage extends Storage_1.Storage {
                         event_type: EVENT_TYPE,
                         client_payload: {
                             projectId: crawlTarget.projectId,
+                            os,
                         }
                     },
                 });

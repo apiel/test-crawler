@@ -1,4 +1,4 @@
-import { CrawlTarget, Job } from '../../typing';
+import { CrawlTarget, Job, Browser } from '../../typing';
 
 export abstract class Storage {
     abstract info(): Promise<string | undefined>;
@@ -13,6 +13,6 @@ export abstract class Storage {
     abstract copy(src: string, dst: string): Promise<void>;
     abstract copyBlob(src: string, dst: string): Promise<void>;
     abstract remove(file: string): Promise<void>;
-    abstract crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void): Promise<undefined | string>;
+    abstract crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void, browser?: Browser): Promise<undefined | string>;
     abstract jobs(projectId: string): Promise<Job[]>;
 }

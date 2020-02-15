@@ -3,7 +3,7 @@ import { Storage } from './Storage';
 import { basename, dirname } from 'path';
 import { WsContext, Context } from 'isomor-server';
 import axios, { AxiosRequestConfig } from 'axios';
-import { CrawlTarget, Job } from '../../typing';
+import { CrawlTarget, Job, Browser } from '../../typing';
 import { config, GitHubConfig } from '../config';
 import { ERR } from '../../error';
 import { getCookie } from '../CrawlerProviderStorage';
@@ -22,7 +22,7 @@ on:
 
 jobs:
   test-crawler:
-
+    if: github.event.client_payload.os == 'default'
     runs-on: macos-latest
 
     steps:
@@ -31,6 +31,23 @@ jobs:
       run: |
         sudo safaridriver --enable
         safaridriver -p 0 &
+    - name: Run test-crawler \${{ github.event.client_payload.projectId }}
+      uses: apiel/test-crawler/actions/run@master
+    - name: Push changes
+      uses: apiel/test-crawler/actions/push@master
+      with:
+        token: \${{ secrets.GITHUB_TOKEN }}
+
+  test-crawler-ie:
+    if: github.event.client_payload.os == 'win'
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: warrenbuckley/Setup-Nuget@v1
+    - name: Enable ie driver
+      run: |
+        nuget install Selenium.WebDriver.IEDriver -Version 3.150.0
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
       uses: apiel/test-crawler/actions/run@master
     - name: Push changes
@@ -115,9 +132,9 @@ export class GitHubStorage extends Storage {
             data: {
                 base_tree,
                 tree: [{
-                        path: file,
-                        mode: '100644',
-                        sha: newBlobSha,
+                    path: file,
+                    mode: '100644',
+                    sha: newBlobSha,
                 }],
             },
         });
@@ -215,9 +232,15 @@ export class GitHubStorage extends Storage {
         }
     }
 
-    async crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
+    async crawl(
+        crawlTarget?: CrawlTarget,
+        consumeTimeout?: number,
+        push?: (payload: any) => void,
+        browser?: Browser,
+    ) {
         if (crawlTarget?.projectId) { // run only if projectId provided (but we could think to do it also id)
             await this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
+            const os = browser === Browser.IeSelenium || browser === Browser.EdgeSelenium ? 'win' : 'default';
             await this.call({
                 method: 'POST',
                 url: `${this.ciDispatchUrl}`,
@@ -225,6 +248,7 @@ export class GitHubStorage extends Storage {
                     event_type: EVENT_TYPE,
                     client_payload: {
                         projectId: crawlTarget.projectId,
+                        os,
                     }
                 },
             });

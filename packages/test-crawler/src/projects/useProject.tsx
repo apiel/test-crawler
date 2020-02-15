@@ -4,6 +4,7 @@ import { useAsyncCacheWatch } from 'react-async-cache';
 import notification from 'antd/lib/notification';
 import { loadProject } from '../server/service';
 import { StorageType } from '../server/storage.typing';
+import { Project } from '../server/typing';
 
 export const useProject = (storageType: StorageType, projectId: string) => {
     const {
@@ -12,7 +13,7 @@ export const useProject = (storageType: StorageType, projectId: string) => {
         update: setProject,
         error,
         cache,
-    } = useAsyncCacheWatch(loadProject, storageType, projectId);
+    } = useAsyncCacheWatch<Project>(loadProject, storageType, projectId);
 
     React.useEffect(() => {
         if (!cache()) {

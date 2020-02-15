@@ -6,7 +6,7 @@ import { WsContext, Context } from 'isomor-server';
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser } from '../typing';
 import { StorageType } from '../storage.typing';
 import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 
@@ -237,11 +237,11 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return newPage!;
     }
 
-    async startCrawler(projectId: string): Promise<StartCrawler> {
+    async startCrawler(projectId: string, browser?: Browser): Promise<StartCrawler> {
         const pagesFolder = Math.floor(Date.now() / 1000).toString();
 
         const crawlTarget = { projectId, pagesFolder };
-        const redirect = await this.storage.crawl(crawlTarget, 30, (this.ctx as any)?.push);
+        const redirect = await this.storage.crawl(crawlTarget, 30, (this.ctx as any)?.push, browser);
 
         return {
             timestamp: pagesFolder,

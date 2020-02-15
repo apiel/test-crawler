@@ -11,6 +11,7 @@ import {
     CodeInfoList,
     StartCrawler,
     BeforeAfterType,
+    Browser,
 } from './typing';
 import { StorageType } from './storage.typing';
 
@@ -143,9 +144,9 @@ export function setStatus(storageType: StorageType, projectId: string, timestamp
     return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 
-export function startCrawler(storageType: StorageType, projectId: string): Promise<StartCrawler> {
+export function startCrawler(storageType: StorageType, projectId: string, browser: Browser): Promise<StartCrawler> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.startCrawler(projectId);
+    return crawlerProvider.startCrawler(projectId, browser);
 }
 
 export function startCrawlers(/* storageType: StorageType */): Promise<void> {
