@@ -196,9 +196,9 @@ const Doc = () => (
             <p>IE, Edge and Safari are in experimentation, might not be stable.</p>
         </Info>
         <p>
-            Running your test in safari work only on macOS. Right now, there it's not possible
-            to choose the viewport and the screenshot doesn't support fullpage. You will need
-            to activate safari webdriver for selenium with the following commands:
+            Running your test in safari work only on macOS. Safari doesn't support multiple instance
+            in parallel, therefor crawling might be very slow. Locally, you will need to activate safari
+            webdriver for selenium with the following commands:
         </p>
         <pre>
             <code>

@@ -13,12 +13,21 @@ const selenium_webdriver_1 = require("selenium-webdriver");
 const selenium_core_1 = require("./selenium-core");
 function startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
+        const scrollHeight = yield getScrollHeight(url, viewport);
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('safari')
             .build();
-        driver.manage().window().maximize();
-        driver.manage().window().setRect({ width: 800, height: 1600, x: 0, y: 0 });
+        driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
     });
 }
 exports.startSeleniumSafari = startSeleniumSafari;
+function getScrollHeight(url, viewport) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let driver = yield new selenium_webdriver_1.Builder()
+            .forBrowser('safari')
+            .build();
+        driver.manage().window().setRect(Object.assign(Object.assign({}, viewport), { x: 0, y: 0 }));
+        return selenium_core_1.getScrollHeightCore(driver, url);
+    });
+}

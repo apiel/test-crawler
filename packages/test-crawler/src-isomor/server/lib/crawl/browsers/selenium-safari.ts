@@ -19,18 +19,18 @@ export async function startSeleniumSafari(
     url: string,
     distFolder: string,
 ) {
+    const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
         .forBrowser('safari')
-        // .setChromeOptions(new safari.Options().windowSize({
-        //     ...viewport,
-        //     height: scrollHeight || viewport.height,
-        // }).addArguments(`--user-agent=${USER_AGENT}`))
         .build();
-    driver.manage().window().maximize();
-    // driver.manage().window().setSize(800, 1600);
-    driver.manage().window().setRect({ width: 800, height: 1600, x: 0, y: 0 });
+    driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 
-// to take full page screen, we could scroll down and take multiple screenshot, then combine them
-// but it might be tricky for website with afix
+async function getScrollHeight(url: string, viewport: Viewport) {
+    let driver = await new Builder()
+        .forBrowser('safari')
+        .build();
+    driver.manage().window().setRect({ ...viewport, x: 0, y: 0 });
+    return getScrollHeightCore(driver, url);
+}
