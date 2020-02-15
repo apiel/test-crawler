@@ -17,7 +17,7 @@ function startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, dist
     return __awaiter(this, void 0, void 0, function* () {
         const driverPath = path_1.join(config_1.ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftWebDriver.10.0.17134/driver/');
         process.env.PATH = `${process.env.PATH};${driverPath};`;
-        const scrollHeight = yield getScrollHeight(url, viewport, service);
+        const scrollHeight = yield getScrollHeight(url, viewport);
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('MicrosoftEdge')
             .build();
