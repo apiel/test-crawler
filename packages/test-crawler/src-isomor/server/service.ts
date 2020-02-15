@@ -112,7 +112,6 @@ export async function getThumbnail(storageType: StorageType, projectId: string, 
     if (!image) {
         throw new Error('Cannot load image.');
     }
-    // const sharpImg = width ? sharp(image).resize(width) : sharp(image);
     // return `data:image/png;base64, ${(await image.toBuffer()).toString('base64')}`;
     return `data:image/png;base64, ${(image).toString('base64')}`;
 }

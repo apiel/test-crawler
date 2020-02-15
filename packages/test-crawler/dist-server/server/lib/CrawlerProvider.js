@@ -50,6 +50,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
             const projects = yield this.storage.readdir(config_1.PROJECT_FOLDER);
+            console.log('projects', { projects });
             return Promise.all(projects.map(projectId => this.loadProject(projectId)));
         });
     }

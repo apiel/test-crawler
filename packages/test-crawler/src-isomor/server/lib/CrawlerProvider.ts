@@ -38,6 +38,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
     async loadProjects(): Promise<Project[]> {
         // we should use accumulator
         const projects = await this.storage.readdir(PROJECT_FOLDER);
+        console.log('projects', { projects });
         return Promise.all(
             projects.map(projectId => this.loadProject(projectId)),
         );
