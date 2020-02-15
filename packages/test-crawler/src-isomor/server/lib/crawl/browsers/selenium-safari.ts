@@ -28,6 +28,7 @@ export async function startSeleniumSafari(
         .build();
     driver.manage().window().maximize();
     // driver.manage().window().setSize(800, 1600);
+    driver.manage().window().setRect({ width: 800, height: 1600, x: 0, y: 0 });
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 

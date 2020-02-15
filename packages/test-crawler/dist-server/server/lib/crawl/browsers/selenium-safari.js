@@ -17,6 +17,7 @@ function startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, di
             .forBrowser('safari')
             .build();
         driver.manage().window().maximize();
+        driver.manage().window().setRect({ width: 800, height: 1600, x: 0, y: 0 });
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
     });
 }
