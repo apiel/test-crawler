@@ -4,6 +4,8 @@ import { Builder } from 'selenium-webdriver';
 import { FilePath } from '../../utils';
 import { Crawler } from '../../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
+import { ROOT_FOLDER } from '../../config';
+import { join } from 'path';
 
 interface Viewport {
     width: number;
@@ -19,6 +21,9 @@ export async function startSeleniumEdge(
     url: string,
     distFolder: string,
 ) {
+    const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.IEDriver.3.150.0/driver/');
+    process.env.PATH = `${process.env.PATH};${driverPath};`;
+
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
         .forBrowser('edge')
