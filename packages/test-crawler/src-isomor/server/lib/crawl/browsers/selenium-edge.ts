@@ -31,7 +31,7 @@ export async function startSeleniumEdge(
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 
-async function getScrollHeight(url: string, viewport: Viewport, service: any) {
+async function getScrollHeight(url: string, viewport: Viewport) {
     let driver = await new Builder()
         .forBrowser('MicrosoftEdge')
         .build();
