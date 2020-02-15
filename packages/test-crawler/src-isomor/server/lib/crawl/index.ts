@@ -1,13 +1,12 @@
-import { launch, Page, Viewport } from 'puppeteer';
+import { Page, Viewport } from 'puppeteer';
 import { error, info, warn } from 'logol';
-import { writeFile, readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson, outputJSON, readFile, outputFile } from 'fs-extra';
+import { readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson, outputJSON, readFile, outputFile } from 'fs-extra';
 import { join, extname } from 'path';
 import * as minimatch from 'minimatch';
+import { WebDriver } from 'selenium-webdriver';
 
 import {
     CONSUMER_COUNT,
-    TIMEOUT,
-    USER_AGENT,
     CRAWL_FOLDER,
     CONSUME_TIMEOUT,
     CODE_FOLDER,
@@ -128,7 +127,7 @@ async function loadPage(projectId: string, id: string, url: string, distFolder: 
 }
 
 export async function injectCodes(
-    page: Page,
+    page: Page | WebDriver,
     projectId: string,
     id: string,
     url: string,
@@ -153,7 +152,7 @@ export async function injectCodes(
 
 async function injectCode(
     jsFile: string,
-    page: Page,
+    page: Page | WebDriver,
     id: string,
     url: string,
     links: string[],
