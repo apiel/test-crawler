@@ -27,6 +27,7 @@ export async function startSeleniumSafari(
         // }).addArguments(`--user-agent=${USER_AGENT}`))
         .build();
     driver.manage().window().maximize();
+    driver.manage().window().setSize(800, 1600);
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 

@@ -88,8 +88,8 @@ const NewProject = ({
                 </Form.Item>
                 <Form.Item label="Viewport" className="item-inline">
                     {getFieldDecorator('viewport', {
-                            initialValue: JSON.stringify(getDefaultViewport()),
-                            rules: [{ required: true, message: 'Please select viewport.' }],
+                        initialValue: JSON.stringify(getDefaultViewport()),
+                        rules: [{ required: true, message: 'Please select viewport.' }],
                     })(
                         <Select>
                             {viewportsStr.map(
@@ -195,6 +195,17 @@ const Doc = () => (
         <Info>
             <p>IE, Edge and Safari are in experimentation, might not be stable.</p>
         </Info>
+        <p>
+            Running your test in safari work only on macOS. Right now, there it's not possible
+            to choose the viewport and the screenshot doesn't support fullpage. You will need
+            to activate safari webdriver for selenium with the following commands:
+        </p>
+        <pre>
+            <code>
+                sudo safaridriver --enable
+                safaridriver -p 0 &
+            </code>
+        </pre>
         <p>
             There is multiple viewports (screen size) available. If you want to test
             multiple viewports for the same website, you will have to create one
