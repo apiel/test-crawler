@@ -19,7 +19,7 @@ function startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, dist
         process.env.PATH = `${process.env.PATH};${driverPath};`;
         const scrollHeight = yield getScrollHeight(url, viewport);
         const driver = yield new selenium_webdriver_1.Builder()
-            .forBrowser('edge')
+            .forBrowser('MicrosoftEdge')
             .build();
         driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
@@ -29,7 +29,7 @@ exports.startSeleniumEdge = startSeleniumEdge;
 function getScrollHeight(url, viewport) {
     return __awaiter(this, void 0, void 0, function* () {
         let driver = yield new selenium_webdriver_1.Builder()
-            .forBrowser('edge')
+            .forBrowser('MicrosoftEdge')
             .build();
         driver.manage().window().setSize(viewport.width, viewport.height);
         return selenium_core_1.getScrollHeightCore(driver, url);

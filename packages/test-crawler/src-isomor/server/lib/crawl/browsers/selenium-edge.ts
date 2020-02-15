@@ -26,14 +26,7 @@ export async function startSeleniumEdge(
 
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
-        .forBrowser('edge')
-        // .setChromeOptions(
-        //     new edge.Options()
-        //         .windowSize({
-        //             ...viewport,
-        //             height: scrollHeight || viewport.height,
-        //         })
-        // )
+        .forBrowser('MicrosoftEdge')
         .build();
     driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
@@ -41,8 +34,7 @@ export async function startSeleniumEdge(
 
 async function getScrollHeight(url: string, viewport: Viewport) {
     let driver = await new Builder()
-        .forBrowser('edge')
-        // .setChromeOptions(new ie.Options().windowSize(viewport))
+        .forBrowser('MicrosoftEdge')
         .build();
     driver.manage().window().setSize(viewport.width, viewport.height);
     return getScrollHeightCore(driver, url);
