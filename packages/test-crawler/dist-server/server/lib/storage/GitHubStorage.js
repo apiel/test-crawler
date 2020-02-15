@@ -80,6 +80,7 @@ class GitHubStorage extends Storage_1.Storage {
     }
     saveBlob(file, content) {
         return __awaiter(this, void 0, void 0, function* () {
+            yield this.remove(file);
             const { data: [{ sha: latestCommitSha, commit: { tree: { sha: base_tree } } }] } = yield this.call({
                 url: `${this.baseRepo}/commits`,
             });
@@ -197,9 +198,7 @@ class GitHubStorage extends Storage_1.Storage {
     copyBlob(src, dst) {
         return __awaiter(this, void 0, void 0, function* () {
             const srcData = yield this.blob(src);
-            console.log('srcData', !!srcData, srcData);
             if (srcData) {
-                console.log('yeah');
                 yield this.saveBlob(dst, srcData);
             }
         });

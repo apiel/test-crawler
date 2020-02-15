@@ -93,6 +93,7 @@ export class GitHubStorage extends Storage {
     }
 
     async saveBlob(file: string, content: Buffer) {
+        await this.remove(file);
         const { data: [
             { sha: latestCommitSha, commit: { tree: { sha: base_tree } } }
         ] } = await this.call({
@@ -209,9 +210,7 @@ export class GitHubStorage extends Storage {
 
     async copyBlob(src: string, dst: string) {
         const srcData = await this.blob(src);
-        console.log('srcData', !!srcData, srcData);
         if (srcData) {
-            console.log('yeah');
             await this.saveBlob(dst, srcData);
         }
     }

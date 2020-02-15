@@ -1,3 +1,5 @@
+- pin request timeout because it take very long even if succeed
+
 - fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
     - seem to work with asynccache but a bit buggy? we should see if we can find better solution
 
