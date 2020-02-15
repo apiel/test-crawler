@@ -17,6 +17,7 @@ jobs:
       run: yarn doc
     - name: Generate live site for Github pages
       run: |
+        npx lerna bootstrap
         cd packages/test-crawler
         yarn github:pub
     - name: Commit changes
@@ -28,7 +29,3 @@ jobs:
         git commit -m "[CI cron] CI save" || echo "No changes to commit"
         git pull
         git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-    - name: Check if dependency work
-      run: |
-        cd packages/test-crawler
-        yarn
