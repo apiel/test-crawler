@@ -26,7 +26,7 @@ export async function startSeleniumIE(
 
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
-        .forBrowser('ie')
+        .forBrowser('internet explorer')
         // .setChromeOptions(
         // new ie.Options()
         // .windowSize({
@@ -41,7 +41,7 @@ export async function startSeleniumIE(
 
 async function getScrollHeight(url: string, viewport: Viewport) {
     let driver = await new Builder()
-        .forBrowser('ie')
+        .forBrowser('internet explorer')
         // .setChromeOptions(new ie.Options().windowSize(viewport))
         .build();
     driver.manage().window().setSize(viewport.width, viewport.height);
