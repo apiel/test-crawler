@@ -1,8 +1,6 @@
 - pin request timeout because it take very long even if succeed
 --> maybe all update should be done in a worklow job?
 
-- see if we can improve IE, full page? we could scroll till the bottom and make screenshot of each step
-
 - fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
     - seem to work with asynccache but a bit buggy? we should see if we can find better solution
 
@@ -21,10 +19,9 @@
 
 - support gitlab
 
-- make snapshot on other browser:
-    - https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Headless_mode
-    - https://dev.to/mizchi/run-crossbrowser-e2e-testing-on-github-actions-671
-    - look at selenium
+- see if we can improve IE, full page? we could scroll till the bottom and make screenshot of each step
+    getting link fails, try to find some alternative? like get by tag name, or by loading the html
+    in test-crawler and parsin the dom.
 
 - publish action there https://github.com/sdras/awesome-actions
 

@@ -209,6 +209,11 @@ const Doc = () => (
             </code>
         </pre>
         <p>
+            Internet explorer, is the browser giving the most problem till now. Setting viewport
+            has no effect, fullpage screenshot doesn't work, Spider Bot crawling will most likely
+            fail.
+        </p>
+        <p>
             There is multiple viewports (screen size) available. If you want to test
             multiple viewports for the same website, you will have to create one
             project per viewport.
