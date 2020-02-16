@@ -13,6 +13,7 @@ import { getThumbnail } from '../server/service';
 interface Props {
     zones?: PngDiffDataZone[];
     originalWidth?: number;
+    pages: PageData[];
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
@@ -24,6 +25,7 @@ export const DiffImageWithZone = ({
     zones,
     originalWidth = 0,
     width = imgStyle.width,
+    pages,
     setPages,
     marginLeft,
     ...props
@@ -53,6 +55,7 @@ export const DiffImageWithZone = ({
                     status={status}
                     zone={zone}
                     key={`zone-${id}-${index}`}
+                    pages={pages}
                     setPages={setPages}
                 />)
             }

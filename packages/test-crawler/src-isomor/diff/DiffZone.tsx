@@ -52,10 +52,11 @@ interface Props {
     width: number;
     marginLeft: number;
     projectId: string;
+    pages: PageData[];
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
-export const DiffZone = ({ storageType, thumb, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
+export const DiffZone = ({ storageType, thumb, pages, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
     const [hover, setHover] = useState(false);
     const ratio = originalWidth / width;
     return (
@@ -66,6 +67,7 @@ export const DiffZone = ({ storageType, thumb, setPages, projectId, folder, id, 
                 timestamp={folder}
                 id={id}
                 projectId={projectId}
+                pages={pages}
                 setPages={setPages}
             />
         )} trigger="click">

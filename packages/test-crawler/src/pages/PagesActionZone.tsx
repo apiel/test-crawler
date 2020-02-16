@@ -7,22 +7,25 @@ import { PageData } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
 const onClick = (
-    { timestamp, id, status, projectId, setPages, storageType }: Props,
-) => async () => {
-    try {
-        const pages = await setZonesStatus(storageType, projectId, timestamp.toString(), id, status);
-        setPages(pages);
-        message.success(`All zone are set to "${status}".`, 2);
-    } catch (error) {
-        notification['error']({
-            message: 'Something went wrong!',
-            description: error.toString(),
-        });
-    }
+    { timestamp, id, status, projectId, pages, setPages, storageType }: Props,
+) => () => {
+    // try {
+    // const pages = await setZonesStatus(storageType, projectId, timestamp.toString(), id, status);
+    const pageIndex = pages.findIndex(({ id: pageId }) => id === pageId);
+    pages[pageIndex].png?.diff?.zones?.forEach(zone => zone.status = status);
+    setPages([...pages]); // make a copy else changes don't apply
+    //     message.success(`All zone are set to "${status}".`, 2);
+    // } catch (error) {
+    //     notification['error']({
+    //         message: 'Something went wrong!',
+    //         description: error.toString(),
+    //     });
+    // }
 }
 
 interface Props {
     storageType: StorageType;
+    pages: PageData[];
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
     projectId: string;
     timestamp: string;

@@ -25,10 +25,11 @@ interface Props {
         width: number;
         diff?: PngDiffData;
     };
+    pages: PageData[];
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
-export const PagesActionFullscreen = ({ storageType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => {
+export const PagesActionFullscreen = ({ storageType, pages, setPages, projectId, timestamp, id, png, url, pageError }: Props) => {
     const [visible, setVisible] = React.useState<boolean>(false);
     return (
         <>
@@ -42,6 +43,7 @@ export const PagesActionFullscreen = ({ storageType, setPages, projectId, timest
                 <div style={{ position: "relative" }}>
                     <DiffImageWithZone
                         storageType={storageType}
+                        pages={pages}
                         setPages={setPages}
                         projectId={projectId}
                         folder={timestamp}

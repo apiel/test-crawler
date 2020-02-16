@@ -33,6 +33,11 @@ export const Pages = ({ projectId, timestamp, lastUpdate, storageType }: Props) 
         () => getPages(storageType, projectId, timestamp),
         [lastUpdate],
     );
+
+    React.useEffect(() => {
+        console.log('pages changed', pages);
+    }, [pages]);
+
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }
@@ -58,10 +63,11 @@ export const Pages = ({ projectId, timestamp, lastUpdate, storageType }: Props) 
                                     zones={png.diff && png.diff.zones}
                                     originalWidth={png.width}
                                     onImg={onMasonryImg}
+                                    pages={pages}
                                     setPages={setPages}
                                     marginLeft={cardImgMargin}
                                 />}
-                                actions={PagesActions({ storageType, setPages, projectId, id, timestamp, png, url, pageError })}
+                                actions={PagesActions({ storageType, pages, setPages, projectId, id, timestamp, png, url, pageError })}
                             >
                                 <Page url={url} pageError={pageError} png={png} />
                             </Card>

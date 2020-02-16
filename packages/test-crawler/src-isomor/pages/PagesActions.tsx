@@ -18,12 +18,13 @@ interface Props {
         diff?: PngDiffData;
     };
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
+    pages: PageData[];
 }
 
-export const PagesActions = ({ storageType, setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
-    ...[png && <PagesActionFullscreen storageType={storageType} setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
-    <PagesActionZone storageType={storageType} type="check" setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
-    <PagesActionZone storageType={storageType} type="warning" setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
+export const PagesActions = ({ storageType, pages, setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
+    ...[png && <PagesActionFullscreen storageType={storageType} pages={pages} setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
+    <PagesActionZone storageType={storageType} type="check" pages={pages} setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
+    <PagesActionZone storageType={storageType} type="warning" pages={pages} setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
     <PagesActionPin storageType={storageType} projectId={projectId} timestamp={timestamp} id={id} />,
     // <Icon type="ellipsis" title="more" />,
 ];

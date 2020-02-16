@@ -18,23 +18,28 @@ interface Props {
     id: string;
     projectId: string;
     storageType: StorageType;
+    pages: PageData[];
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 }
 
 const onSetStatus = (
     status: string,
-    { timestamp, id, index, projectId, setPages, storageType }: Props,
+    { timestamp, id, index, projectId, pages, setPages, storageType }: Props,
 ) => async () => {
-    try {
-        const pages = await setZoneStatus(storageType, projectId, timestamp, id, index, status);
-        setPages(pages);
-        message.success('Page pinned as reference for comparison.', 2);
-    } catch (error) {
-        notification['error']({
-            message: 'Something went wrong!',
-            description: error.toString(),
-        });
+    // try {
+    // const pages = await setZoneStatus(storageType, projectId, timestamp, id, index, status);
+    const pageIndex = pages.findIndex(({ id: pageId }) => id === pageId);
+    if (pages[pageIndex].png?.diff?.zones[index]) {
+        pages[pageIndex].png!.diff!.zones[index]!.status = status;
     }
+    setPages([...pages]);
+    //     message.success('Page pinned as reference for comparison.', 2);
+    // } catch (error) {
+    //     notification['error']({
+    //         message: 'Something went wrong!',
+    //         description: error.toString(),
+    //     });
+    // }
 }
 
 export const DiffImageButtons = (props: Props) => {
