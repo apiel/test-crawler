@@ -34,10 +34,6 @@ export const Pages = ({ projectId, timestamp, lastUpdate, storageType }: Props) 
         [lastUpdate],
     );
 
-    React.useEffect(() => {
-        console.log('pages changed', pages);
-    }, [pages]);
-
     if (error) {
         return <ErrorHandler description={error.toString()} />;
     }

@@ -6,6 +6,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { hotjar } from 'react-hotjar';
 import { DocProvider } from './doc/useDoc';
+import { ApplyChangesProvider } from './hook/useApplyChanges';
 
 // use hotjar only on github
 if (window.location.host === 'apiel.github.io') {
@@ -15,7 +16,9 @@ if (window.location.host === 'apiel.github.io') {
 ReactDOM.render((
     <AsyncCacheProvider>
         <DocProvider>
-            <App />
+            <ApplyChangesProvider>
+                <App />
+            </ApplyChangesProvider>
         </DocProvider>
     </AsyncCacheProvider>
 ), document.getElementById('root'));

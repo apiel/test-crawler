@@ -1,11 +1,9 @@
 import React from 'react';
-import message from 'antd/lib/message';
-import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 
-import { setZoneStatus } from '../server/service';
 import { PageData } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
+import { useApplyChanges, ChangeItem } from '../hook/useApplyChanges';
 
 const buttonStyle = {
     marginLeft: 5,
@@ -24,10 +22,16 @@ interface Props {
 
 const onSetStatus = (
     status: string,
+    add: (changeItem: ChangeItem) => void,
     { timestamp, id, index, projectId, pages, setPages, storageType }: Props,
 ) => async () => {
     // try {
     // const pages = await setZoneStatus(storageType, projectId, timestamp, id, index, status);
+    add({
+        key: ['setZoneStatus', storageType, projectId, timestamp, id, index].join('-'),
+        type: 'setZoneStatus',
+        args: [storageType, projectId, timestamp, id, index, status],
+    });
     const pageIndex = pages.findIndex(({ id: pageId }) => id === pageId);
     if (pages[pageIndex].png?.diff?.zones[index]) {
         pages[pageIndex].png!.diff!.zones[index]!.status = status;
@@ -43,24 +47,25 @@ const onSetStatus = (
 }
 
 export const DiffImageButtons = (props: Props) => {
+    const { add } = useApplyChanges();
     return (
         <>
             <Button
                 style={buttonStyle}
                 icon="check"
                 size="small"
-                onClick={onSetStatus('valid', props)}>Valid</Button>
+                onClick={onSetStatus('valid', add, props)}>Valid</Button>
             <Button
                 style={buttonStyle}
                 icon="pushpin"
                 size="small"
-                onClick={onSetStatus('pin', props)}>Always valid</Button>
+                onClick={onSetStatus('pin', add, props)}>Always valid</Button>
             <Button
                 style={buttonStyle}
                 icon="warning"
                 size="small"
                 type="danger"
-                onClick={onSetStatus('report', props)}>Report</Button>
+                onClick={onSetStatus('report', add, props)}>Report</Button>
         </>
     );
 }
