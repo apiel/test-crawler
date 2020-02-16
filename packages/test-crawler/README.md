@@ -4,7 +4,7 @@
 
 **[► Try it directly on GitHub](https://apiel.github.io/test-crawler/live/)**
 
-test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. Right now, it is mainly focus on visual regression testing but it will most likely support html comparison in the future.
+test-crawler is a tool for end to end testing, by crawling a website and making some snapshot comparison. This is fully open-source and can be self hosted or use directly on GitHub.
 
 ## Getting started
 

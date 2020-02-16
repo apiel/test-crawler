@@ -23,7 +23,9 @@ function startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, u
             let codeErr;
             let links;
             try {
+                console.log('get links');
                 const injectLinks = yield driver.executeScript("return Array.from(document.links).map(a => a.href)");
+                console.log('links to inject', injectLinks);
                 links = yield __1.injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
             }
             catch (err) {

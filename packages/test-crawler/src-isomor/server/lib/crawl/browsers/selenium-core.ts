@@ -34,7 +34,9 @@ export async function startSeleniumCore(
         let codeErr: string;
         let links: string[];
         try {
+            console.log('get links');
             const injectLinks: string[] = await driver.executeScript("return Array.from(document.links).map(a => a.href)");
+            console.log('links to inject', injectLinks);
             links = await injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
             // console.log('links', links);
         } catch (err) {

@@ -157,15 +157,11 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
 }
 function injectCodes(page, projectId, id, url, links, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('a');
         const crawlerProvider = new CrawlerProvider_1.CrawlerProvider(storage_typing_1.StorageType.Local);
-        console.log('b');
         const list = yield crawlerProvider.getCodeList(projectId, true);
-        console.log('injectCodes list', list);
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });
-        console.log('toInject', toInject);
         logol_1.info(toInject.length, 'code(s) to inject for', url);
         for (const codeInfo of toInject) {
             const sourcePath = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${codeInfo.id}.js`);

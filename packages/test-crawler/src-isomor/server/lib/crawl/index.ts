@@ -184,16 +184,13 @@ export async function injectCodes(
     distFolder: string,
     crawler: Crawler,
 ) {
-    console.log('a');
     const crawlerProvider = new CrawlerProvider(StorageType.Local);
-    console.log('b');
     const list = await crawlerProvider.getCodeList(projectId, true);
-    console.log('injectCodes list', list);
+    // console.log('injectCodes list', list);
     // console.log('Object.values', Object.values(list));
     const toInject = Object.values(list).filter(({ pattern }) => {
         return minimatch(url, pattern);
     }) as any;
-    console.log('toInject', toInject);
     info(toInject.length, 'code(s) to inject for', url);
     for (const codeInfo of toInject) {
         const sourcePath = join(ROOT_FOLDER, PROJECT_FOLDER, projectId, CODE_FOLDER, `${codeInfo.id}.js`);
