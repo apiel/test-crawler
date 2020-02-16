@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import Popover from 'antd/lib/popover';
 
 import { DiffImageButtons } from './DiffImageButtons';
-import { getThumbnail } from '../server/service';
 import { Zone, PageData } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
-import { useAsyncCacheWatch } from 'react-async-cache';
 
 export const getColorByStatus = (status: string) => {
     if (status === 'valid' || status === 'pin') {
@@ -44,6 +42,7 @@ const zoneStyle = (
 
 interface Props {
     storageType: StorageType;
+    thumb: string;
     folder: string;
     id: string;
     zone: Zone;
@@ -56,15 +55,7 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
-export const DiffZone = ({ storageType, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
-    const { call, response: thumb, cache } = useAsyncCacheWatch(getThumbnail, storageType, projectId, 'base', id, width);
-
-    React.useEffect(() => {
-        if (!cache()) {
-            call();
-        }
-    }, []);
-
+export const DiffZone = ({ storageType, thumb, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
     const [hover, setHover] = useState(false);
     const ratio = originalWidth / width;
     return (

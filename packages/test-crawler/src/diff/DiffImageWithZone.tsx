@@ -7,6 +7,8 @@ import {
 import { DiffZone } from './DiffZone';
 import { PngDiffDataZone, PageData } from '../server/typing';
 import { Props as DiffImageProps, DiffImage } from './DiffImage';
+import { useAsyncCacheWatch } from 'react-async-cache';
+import { getThumbnail } from '../server/service';
 
 interface Props {
     zones?: PngDiffDataZone[];
@@ -25,21 +27,35 @@ export const DiffImageWithZone = ({
     setPages,
     marginLeft,
     ...props
-}: Props & DiffImageProps) =>
-    <DiffImage storageType={storageType} projectId={projectId} folder={folder} id={id} width={width} {...props}>
-        {zones && zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
-            <DiffZone
-                storageType={storageType}
-                projectId={projectId}
-                folder={folder}
-                id={id}
-                width={width}
-                index={index}
-                originalWidth={originalWidth}
-                marginLeft={marginLeft}
-                status={status}
-                zone={zone}
-                key={`zone-${id}-${index}`}
-                setPages={setPages}
-            />)}
-    </DiffImage>
+}: Props & DiffImageProps) => {
+    // we might not even need useAsyncCacheWatch
+    const { call, response: thumb, cache } = useAsyncCacheWatch(getThumbnail, storageType, projectId, 'base', id, width);
+
+    React.useEffect(() => {
+        if (zones && !cache()) {
+            call();
+        }
+    }, [zones]);
+
+    return !zones ? null : (
+        <DiffImage storageType={storageType} projectId={projectId} folder={folder} id={id} width={width} {...props}>
+            {zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
+                <DiffZone
+                    storageType={storageType}
+                    thumb={thumb}
+                    projectId={projectId}
+                    folder={folder}
+                    id={id}
+                    width={width}
+                    index={index}
+                    originalWidth={originalWidth}
+                    marginLeft={marginLeft}
+                    status={status}
+                    zone={zone}
+                    key={`zone-${id}-${index}`}
+                    setPages={setPages}
+                />)
+            }
+        </DiffImage>
+    );
+};

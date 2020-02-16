@@ -1,23 +1,23 @@
 - pin request timeout because it take very long even if succeed
 --> maybe all update should be done in a worklow job?
 
-- fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
-    - seem to work with asynccache but a bit buggy? we should see if we can find better solution
-
 - update doc:
     + code and links
 
-- improve cli perf
-
-- right now the CI job is always overwritten, should not be the case? YES
 - beforeAll script should be call in CI ?
   but this would work only for CI
   or we should make a special one for CI
 
-- improve naming with all those crawlers, job, run, project...
-- need to make a big cleanup in crawler code
+- improve cli perf
+
+- base on history, use AI to identify if diff are normal or not...
 
 - support gitlab
+
+- right now the CI job is always overwritten, should not be the case? YES
+
+- improve naming with all those crawlers, job, run, project...
+- need to make a big cleanup in crawler code
 
 - see if we can improve IE, full page? we could scroll till the bottom and make screenshot of each step
     getting link fails, try to find some alternative? like get by tag name, or by loading the html
