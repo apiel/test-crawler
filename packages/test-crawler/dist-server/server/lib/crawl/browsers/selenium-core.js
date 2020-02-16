@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const selenium_webdriver_1 = require("selenium-webdriver");
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const __1 = require("..");
@@ -20,18 +19,11 @@ function startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, u
             yield driver.get(url);
             const html = yield driver.getPageSource();
             yield fs_extra_1.writeFile(filePath('html'), html);
-            const performance = yield driver.executeAsyncScript("return window.performance");
+            const performance = yield driver.executeScript("return window.performance");
             let codeErr;
             let links;
             try {
-                console.log('get links');
-                const elems = yield driver.findElements(selenium_webdriver_1.By.tagName("a"));
-                for (const elem of elems) {
-                    console.log('a', yield elem.getAttribute('href'));
-                }
-                console.log('second way seem to fail on IE');
-                const injectLinks = yield driver.executeAsyncScript("return Array.from(document.links).map(a => a.href)");
-                console.log('links to inject', injectLinks);
+                const injectLinks = yield driver.executeScript("return Array.from(document.links).map(a => a.href)");
                 links = yield __1.injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
             }
             catch (err) {
@@ -54,7 +46,7 @@ function getScrollHeightCore(driver, url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield driver.get(url);
-            const scrollHeight = yield driver.executeAsyncScript("return document.body.scrollHeight");
+            const scrollHeight = yield driver.executeScript("return document.body.scrollHeight");
             return scrollHeight;
         }
         finally {
