@@ -5,12 +5,10 @@
 
 - see if we can improve IE, full page?
 
-- make a hosted private button -> with registration, to see how many people want it...
-
 - fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
     - seem to work with asynccache but a bit buggy? we should see if we can find better solution
 
-- right now the CI job is always overwritten, should not be the case?
+- right now the CI job is always overwritten, should not be the case? YES
 - beforeAll script should be call in CI ?
   but this would work only for CI
   or we should make a special one for CI
