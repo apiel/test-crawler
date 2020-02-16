@@ -1,7 +1,7 @@
 - pin request timeout because it take very long even if succeed
 --> maybe all update should be done in a worklow job?
 
-- see if we can improve IE, full page?
+- see if we can improve IE, full page? we could scroll till the bottom and make screenshot of each step
 
 - fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
     - seem to work with asynccache but a bit buggy? we should see if we can find better solution

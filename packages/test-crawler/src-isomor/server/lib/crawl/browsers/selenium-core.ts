@@ -1,4 +1,4 @@
-import { Builder, WebDriver } from 'selenium-webdriver';
+import { Builder, WebDriver, By } from 'selenium-webdriver';
 import * as firefox from 'selenium-webdriver/firefox';
 import { error, info } from 'logol';
 
@@ -29,13 +29,18 @@ export async function startSeleniumCore(
         const html = await driver.getPageSource();
         await writeFile(filePath('html'), html);
 
-        const performance = await driver.executeScript("return window.performance");
+        const performance = await driver.executeAsyncScript("return window.performance");
 
         let codeErr: string;
         let links: string[];
         try {
             console.log('get links');
-            const injectLinks: string[] = await driver.executeScript("return Array.from(document.links).map(a => a.href)");
+            const elems = await driver.findElements(By.tagName("a"));
+            for (const elem of elems) {
+              console.log('a', await elem.getAttribute('href'));
+            }
+            console.log('second way seem to fail on IE');
+            const injectLinks: string[] = await driver.executeAsyncScript("return Array.from(document.links).map(a => a.href)");
             console.log('links to inject', injectLinks);
             links = await injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
             // console.log('links', links);
@@ -58,7 +63,7 @@ export async function startSeleniumCore(
 export async function getScrollHeightCore(driver: WebDriver, url: string) {
     try {
         await driver.get(url);
-        const scrollHeight = await driver.executeScript("return document.body.scrollHeight");
+        const scrollHeight = await driver.executeAsyncScript("return document.body.scrollHeight");
         return scrollHeight as number;
     } finally {
         await driver.quit();

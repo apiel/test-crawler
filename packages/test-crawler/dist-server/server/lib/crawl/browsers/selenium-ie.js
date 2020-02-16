@@ -20,7 +20,7 @@ function startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFo
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('internet explorer')
             .build();
-        driver.manage().window().setRect(Object.assign(Object.assign({}, viewport), { x: 800, y: 1600 }));
+        driver.manage().window().setRect(Object.assign(Object.assign({}, viewport), { x: 0, y: 0 }));
         return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
     });
 }
