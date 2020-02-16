@@ -1,26 +1,20 @@
 - pin request timeout because it take very long even if succeed
 --> maybe all update should be done in a worklow job?
 
-- improve cli perf
-
 - see if we can improve IE, full page?
 
 - fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache
     - seem to work with asynccache but a bit buggy? we should see if we can find better solution
 
+- update doc:
+    + code and links
+
+- improve cli perf
+
 - right now the CI job is always overwritten, should not be the case? YES
 - beforeAll script should be call in CI ?
   but this would work only for CI
   or we should make a special one for CI
-
-- update doc:
-    + github vs local storage
-    + you can run CI on every push
-    + you can schedule CI
-    + notification
-    + config file
-    + code and links
->> instead to have a documentation outdated, we need to have as much information as possible directly in the website, with some tooltips section. (We maybe then even generate the doc base on this, and automatically generate screenshot?)
 
 - improve naming with all those crawlers, job, run, project...
 - need to make a big cleanup in crawler code
