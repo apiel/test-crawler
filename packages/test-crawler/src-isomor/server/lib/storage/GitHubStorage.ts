@@ -48,7 +48,8 @@ jobs:
     - name: Enable ie driver
       run: |
         nuget install Selenium.WebDriver.IEDriver -Version 3.150.0
-        nuget install Selenium.WebDriver.MicrosoftWebDriver -Version 10.0.17134
+        nuget install Selenium.WebDriver.MicrosoftDriver -Version 17.17134.0
+        # nuget install Selenium.WebDriver.MicrosoftWebDriver -Version 10.0.17134
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
       uses: apiel/test-crawler/actions/run@master
     - name: Push changes
