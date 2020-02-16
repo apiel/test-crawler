@@ -24,11 +24,12 @@ export async function startSeleniumIE(
     const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.IEDriver.3.150.0/driver/');
     process.env.PATH = `${process.env.PATH};${driverPath};`;
 
-    const scrollHeight = await getScrollHeight(url, viewport);
+    // const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
         .forBrowser('internet explorer')
         .build();
-    driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
+    // driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
+    driver.manage().window().setRect({ width: 800, height: 1600, x: 0, y: 0 });
     return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
 }
 
