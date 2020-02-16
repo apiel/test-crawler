@@ -12,7 +12,7 @@ import {
     remove,
     outputFile,
 } from 'fs-extra';
-import { CrawlTarget, Job } from '../../typing';
+import { CrawlTarget, Job, Browser } from '../../typing';
 import { crawl } from '../crawl';
 import { join } from 'path';
 import { ROOT_FOLDER } from '../config';
@@ -20,6 +20,20 @@ import { ROOT_FOLDER } from '../config';
 export class LocalStorage extends Storage {
     constructor(protected ctx?: undefined | WsContext | Context) {
         super();
+    }
+
+    get browsers(): Browser[] {
+        const browsers = [
+            Browser.ChromePuppeteer,
+            Browser.FirefoxSelenium,
+            Browser.ChromeSelenium,
+        ];
+        if (process.platform == 'darwin') {
+            browsers.push(Browser.SafariSelenium);
+        } else if (process.platform == 'win32') {
+            browsers.push(Browser.IeSelenium);
+        }
+        return browsers;
     }
 
     async readdir(path: string) {

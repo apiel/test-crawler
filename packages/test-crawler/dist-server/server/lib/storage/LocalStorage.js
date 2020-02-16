@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Storage_1 = require("./Storage");
 const fs_extra_1 = require("fs-extra");
+const typing_1 = require("../../typing");
 const crawl_1 = require("../crawl");
 const path_1 = require("path");
 const config_1 = require("../config");
@@ -18,6 +19,20 @@ class LocalStorage extends Storage_1.Storage {
     constructor(ctx) {
         super();
         this.ctx = ctx;
+    }
+    get browsers() {
+        const browsers = [
+            typing_1.Browser.ChromePuppeteer,
+            typing_1.Browser.FirefoxSelenium,
+            typing_1.Browser.ChromeSelenium,
+        ];
+        if (process.platform == 'darwin') {
+            browsers.push(typing_1.Browser.SafariSelenium);
+        }
+        else if (process.platform == 'win32') {
+            browsers.push(typing_1.Browser.IeSelenium);
+        }
+        return browsers;
     }
     readdir(path) {
         return __awaiter(this, void 0, void 0, function* () {

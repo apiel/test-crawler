@@ -145,6 +145,13 @@ function setStatus(storageType, projectId, timestamp, status) {
     return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 exports.setStatus = setStatus;
+function getBrowsers(storageType) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
+        return crawlerProvider.browsers;
+    });
+}
+exports.getBrowsers = getBrowsers;
 function startCrawler(storageType, projectId, browser) {
     const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
     return crawlerProvider.startCrawler(projectId, browser);

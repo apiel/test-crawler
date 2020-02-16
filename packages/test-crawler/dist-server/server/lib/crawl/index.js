@@ -39,7 +39,6 @@ const puppeteer_1 = require("./browsers/puppeteer");
 const selenium_firefox_1 = require("./browsers/selenium-firefox");
 const selenium_chrome_1 = require("./browsers/selenium-chrome");
 const selenium_ie_1 = require("./browsers/selenium-ie");
-const selenium_edge_1 = require("./browsers/selenium-edge");
 const selenium_safari_1 = require("./browsers/selenium-safari");
 let totalDiff = 0;
 let totalError = 0;
@@ -94,7 +93,6 @@ function setConsumerMaxCount(crawlTarget) {
     return __awaiter(this, void 0, void 0, function* () {
         const { crawlerInput: { browser } } = yield fs_extra_1.readJSON(path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, crawlTarget.projectId, 'project.json'));
         if (browser === typing_1.Browser.IeSelenium
-            || browser === typing_1.Browser.EdgeSelenium
             || browser === typing_1.Browser.SafariSelenium) {
             consumerMaxCount = 1;
         }
@@ -113,9 +111,6 @@ function startBrowser(browser, viewport, filePath, crawler, projectId, id, url, 
     }
     else if (browser === typing_1.Browser.IeSelenium) {
         return selenium_ie_1.startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFolder);
-    }
-    else if (browser === typing_1.Browser.EdgeSelenium) {
-        return selenium_edge_1.startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder);
     }
     else if (browser === typing_1.Browser.SafariSelenium) {
         return selenium_safari_1.startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, distFolder);

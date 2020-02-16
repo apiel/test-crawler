@@ -249,6 +249,10 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         };
     }
 
+    get browsers(): Browser[] {
+        return this.storage.browsers;
+    }
+
     protected join(projectId: string, ...path: string[]) {
         return join(PROJECT_FOLDER, projectId, ...path);
     }

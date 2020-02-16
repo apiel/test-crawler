@@ -13,7 +13,7 @@ import { RouteComponentProps } from 'react-router';
 import { CrawlerInput, Browser } from '../../server/typing';
 
 import { getHomeRoute } from '../../routes';
-import { saveProject } from '../../server/service';
+import { saveProject, getBrowsers } from '../../server/service';
 import { Info } from '../../common/Info';
 import { getDefaultViewport, viewportsStr } from '../../viewport';
 import { History } from 'history';
@@ -21,6 +21,7 @@ import { StorageType } from '../../server/storage.typing';
 import { ProjectRepos } from '../ProjectRepos';
 import { useThisDoc } from '../../doc/useDoc';
 import Select from 'antd/lib/select';
+import { useAsync } from '../../hook/useAsync';
 
 const save = async (
     storageType: StorageType,
@@ -53,6 +54,7 @@ const NewProject = ({
     match: { params: { storageType } },
     form: { getFieldDecorator, validateFields, getFieldValue },
 }: Props) => {
+    const { result: browsers } = useAsync<Browser[]>(() => getBrowsers(storageType));
     useThisDoc(Doc);
     return (
         <Form onSubmit={handleSubmit(storageType, history, validateFields)}>
@@ -80,8 +82,8 @@ const NewProject = ({
                         rules: [{ required: true, message: 'Please select a browser.' }],
                     })(
                         <Select>
-                            {Object.keys(Browser).map(
-                                (key) => <Select.Option key={key} value={Browser[key as keyof typeof Browser]}>{Browser[key as keyof typeof Browser]}</Select.Option>
+                            {browsers?.map(
+                                (browser) => <Select.Option key={browser} value={browser}>{browser}</Select.Option>
                             )}
                         </Select>
                     )}
@@ -189,11 +191,11 @@ const Doc = () => (
                 href="https://github.com/SeleniumHQ/selenium"
                 target="_blank" rel="noopener noreferrer"
             >firefox-selenium</a>... Depending of the browser you will select, different tool
-            will be available in the code injection. Also some brwoser are only available
+            will be available in the code injection. Also some browser are only available
             depending of the OS where is test-crawler hosted.
         </p>
         <Info>
-            <p>IE, Edge and Safari are in experimentation, might not be stable.</p>
+            <p>IE and Safari are in experimentation, might not be stable.</p>
         </Info>
         <p>
             Running your test in safari work only on macOS. Safari doesn't support multiple instance

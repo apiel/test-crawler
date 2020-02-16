@@ -3,6 +3,8 @@
 
 - improve cli perf
 
+- see if we can improve IE, full page?
+
 - make a hosted private button -> with registration, to see how many people want it...
 
 - fix flood of getThumbnail **important** in DiffZone: create cache expiration in async cache

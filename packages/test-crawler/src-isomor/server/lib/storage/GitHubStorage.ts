@@ -48,7 +48,7 @@ jobs:
     - name: Enable ie driver
       run: |
         nuget install Selenium.WebDriver.IEDriver -Version 3.150.0
-        nuget install Selenium.WebDriver.MicrosoftDriver -Version 17.17134.0
+        # nuget install Selenium.WebDriver.MicrosoftDriver -Version 17.17134.0
         # nuget install Selenium.WebDriver.MicrosoftWebDriver -Version 10.0.17134
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
       uses: apiel/test-crawler/actions/run@master
@@ -84,6 +84,10 @@ export class GitHubStorage extends Storage {
     constructor(protected ctx?: undefined | WsContext | Context) {
         super();
         this.config = config.remote.github;
+    }
+
+    get browsers(): Browser[] {
+        return Object.values(Browser);
     }
 
     async readdir(path: string) {
@@ -242,7 +246,7 @@ export class GitHubStorage extends Storage {
     ) {
         if (crawlTarget?.projectId) { // run only if projectId provided (but we could think to do it also id)
             await this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
-            const os = browser === Browser.IeSelenium || browser === Browser.EdgeSelenium ? 'win' : 'default';
+            const os = browser === Browser.IeSelenium ? 'win' : 'default';
             await this.call({
                 method: 'POST',
                 url: `${this.ciDispatchUrl}`,

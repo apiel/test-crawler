@@ -71,6 +71,9 @@ export function setZonesStatus(...args: any) {
 export function setStatus(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setStatus", args);
 }
+export function getBrowsers(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getBrowsers", args);
+}
 export function startCrawler(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "startCrawler", args);
 }

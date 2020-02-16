@@ -250,6 +250,9 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             };
         });
     }
+    get browsers() {
+        return this.storage.browsers;
+    }
     join(projectId, ...path) {
         return path_1.join(config_1.PROJECT_FOLDER, projectId, ...path);
     }

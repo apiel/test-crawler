@@ -94,7 +94,7 @@ let consumerMaxCount = CONSUMER_COUNT;
 async function setConsumerMaxCount(crawlTarget: CrawlTarget) {
     const { crawlerInput: { browser } }: Project = await readJSON(join(ROOT_FOLDER, PROJECT_FOLDER, crawlTarget.projectId, 'project.json'));
     if (browser === Browser.IeSelenium
-        || browser === Browser.EdgeSelenium
+        // || browser === Browser.EdgeSelenium
         || browser === Browser.SafariSelenium) {
         consumerMaxCount = 1;
     }
@@ -123,9 +123,9 @@ function startBrowser(
     else if (browser === Browser.IeSelenium) {
         return startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFolder);
     }
-    else if (browser === Browser.EdgeSelenium) {
-        return startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder);
-    }
+    // else if (browser === Browser.EdgeSelenium) {
+    //     return startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder);
+    // }
     else if (browser === Browser.SafariSelenium) {
         return startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, distFolder);
     }

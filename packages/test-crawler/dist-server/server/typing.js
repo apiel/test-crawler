@@ -5,9 +5,8 @@ var Browser;
     Browser["ChromePuppeteer"] = "chrome-puppeteer";
     Browser["FirefoxSelenium"] = "firefox-selenium";
     Browser["ChromeSelenium"] = "chrome-selenium";
-    Browser["IeSelenium"] = "ie-selenium";
-    Browser["EdgeSelenium"] = "edge-selenium";
     Browser["SafariSelenium"] = "safari-selenium";
+    Browser["IeSelenium"] = "ie-selenium";
 })(Browser = exports.Browser || (exports.Browser = {}));
 var BeforeAfterType;
 (function (BeforeAfterType) {

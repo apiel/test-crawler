@@ -144,6 +144,11 @@ export function setStatus(storageType: StorageType, projectId: string, timestamp
     return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
 }
 
+export async function getBrowsers(storageType: StorageType) {
+    const crawlerProvider = new CrawlerProvider(storageType, this);
+    return crawlerProvider.browsers;
+}
+
 export function startCrawler(storageType: StorageType, projectId: string, browser: Browser): Promise<StartCrawler> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
     return crawlerProvider.startCrawler(projectId, browser);
