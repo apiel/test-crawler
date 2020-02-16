@@ -8,13 +8,13 @@
   but this would work only for CI
   or we should make a special one for CI
 
+- we review done, maybe we should have as well report
+
 - improve cli perf
 
 - base on history, use AI to identify if diff are normal or not...
 
 - support gitlab
-
-- right now the CI job is always overwritten, should not be the case? YES
 
 - improve naming with all those crawlers, job, run, project...
 - need to make a big cleanup in crawler code
