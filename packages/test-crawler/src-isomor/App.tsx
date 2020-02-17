@@ -29,6 +29,7 @@ import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
 import { CodeBreadcrumb } from './code/CodeBreadcrumb';
 import { DocSider } from './doc/DocSider';
 import { useDoc } from './doc/useDoc';
+import { ApplyChangesInfo } from './hook/useApplyChanges';
 
 const { Content, Header } = Layout;
 const { Title } = Typography;
@@ -57,6 +58,7 @@ const App = () => {
         // basename={process.env.PUBLIC_URL}
         >
             <DocSider>
+                <ApplyChangesInfo />
                 <Layout style={layoutStyle}>
                     <Header>
                         <Link to={getHomeRoute()}>

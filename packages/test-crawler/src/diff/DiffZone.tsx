@@ -6,10 +6,12 @@ import { Zone, PageData } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
 export const getColorByStatus = (status: string) => {
-    if (status === 'valid' || status === 'pin') {
+    if (status === 'valid' || status === 'zone-pin') {
         return '#0F0'; //'green';
     } else if (status === 'report') {
         return 'red';
+    } else if (status === 'pin') {
+        return 'blue';
     }
     return 'yellow';
 }

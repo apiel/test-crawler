@@ -11,8 +11,6 @@ const onClick = (
     add: (changeItem: ChangeItem) => void,
     { timestamp, id, status, projectId, pages, setPages, storageType }: Props,
 ) => () => {
-    // try {
-    // const pages = await setZonesStatus(storageType, projectId, timestamp.toString(), id, status);
     const pageIndex = pages.findIndex(({ id: pageId }) => id === pageId);
     pages[pageIndex].png?.diff?.zones?.forEach((zone, index) => {
         add({
@@ -23,13 +21,6 @@ const onClick = (
         zone.status = status;
     });
     setPages([...pages]); // make a copy else changes don't apply
-    //     message.success(`All zone are set to "${status}".`, 2);
-    // } catch (error) {
-    //     notification['error']({
-    //         message: 'Something went wrong!',
-    //         description: error.toString(),
-    //     });
-    // }
 }
 
 interface Props {

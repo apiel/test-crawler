@@ -25,8 +25,6 @@ const onSetStatus = (
     add: (changeItem: ChangeItem) => void,
     { timestamp, id, index, projectId, pages, setPages, storageType }: Props,
 ) => async () => {
-    // try {
-    // const pages = await setZoneStatus(storageType, projectId, timestamp, id, index, status);
     add({
         key: ['setZoneStatus', storageType, projectId, timestamp, id, index].join('-'),
         type: 'setZoneStatus',
@@ -37,13 +35,6 @@ const onSetStatus = (
         pages[pageIndex].png!.diff!.zones[index]!.status = status;
     }
     setPages([...pages]);
-    //     message.success('Page pinned as reference for comparison.', 2);
-    // } catch (error) {
-    //     notification['error']({
-    //         message: 'Something went wrong!',
-    //         description: error.toString(),
-    //     });
-    // }
 }
 
 export const DiffImageButtons = (props: Props) => {
@@ -59,7 +50,7 @@ export const DiffImageButtons = (props: Props) => {
                 style={buttonStyle}
                 icon="pushpin"
                 size="small"
-                onClick={onSetStatus('pin', add, props)}>Always valid</Button>
+                onClick={onSetStatus('zone-pin', add, props)}>Always valid</Button>
             <Button
                 style={buttonStyle}
                 icon="warning"

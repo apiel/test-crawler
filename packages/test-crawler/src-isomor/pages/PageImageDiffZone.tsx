@@ -11,7 +11,7 @@ export const PageImageDiffZone = ({ zones }: {
 }) => (
     <p>
         <b>Zone:</b>&nbsp;
-            {[['diff'], ['valid', 'pin'], ['report']].map(([status, ...more]) => (
+            {[['diff'], ['valid', 'zone-pin'], ['report']].map(([status, ...more]) => (
             <React.Fragment key={status}>
                 <span style={{
                     marginLeft: 10,

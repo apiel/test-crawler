@@ -205,7 +205,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const data: PageData = await this.storage.readJSON(filePath('json'));
-        if (status === 'pin') {
+        if (status === 'zone-pin') {
             const pinPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
             const pin: PageData = await this.storage.readJSON(pinPath('json'));
 
