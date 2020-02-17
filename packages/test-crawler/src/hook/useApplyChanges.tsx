@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Card from 'antd/lib/card';
 import Button from 'antd/lib/button';
-import Typography from 'antd/lib/typography';
+import Icon from 'antd/lib/icon';
 import Badge from 'antd/lib/badge';
 import { useProject } from '../projects/useProject';
 import { StorageType } from '../server/storage.typing';
@@ -97,32 +97,43 @@ export const ApplyChangesCard = ({
     const { project } = useProject(storageType, projectId);
 
     return (
-        <Card
-            style={applyChangesStyle}
-            size="small"
+        <Badge
+            style={{
+                ...applyChangesStyle,
+                backgroundColor: '#fff',
+                color: '#999',
+                boxShadow: '0 0 0 1px #d9d9d9 inset',
+                borderRadius: 3,
+            }}
+            count={<Icon  onClick={() => setOpen(false)} type="shrink" />}
         >
-            <p style={{ fontWeight: 'bold', marginBottom: 0 }}>{project?.name}</p>
-            <p style={{ color: '#999', marginTop: 0 }}>{timestampToString(timestamp)}</p>
-            <p>
-                {/* packages/test-crawler/src-isomor/pages/PageImageDiffZone.tsx */}
+            <Card
+                style={applyChangesStyle}
+                size="small"
+            >
+                <p style={{ fontWeight: 'bold', marginBottom: 0 }}>{project?.name}</p>
+                <p style={{ color: '#999', marginTop: 0 }}>{timestampToString(timestamp)}</p>
+                <p>
+                    {/* packages/test-crawler/src-isomor/pages/PageImageDiffZone.tsx */}
+                    <span style={{
+                        color: getColorByStatus('valid')
+                    }}>■</span> <b>6</b> valid
                 <span style={{
-                    color: getColorByStatus('valid')
-                }}>■</span> <b>6</b> valid
+                        marginLeft: 10,
+                        color: getColorByStatus('report')
+                    }}>■</span> <b>4</b> report
                 <span style={{
-                    marginLeft: 10,
-                    color: getColorByStatus('report')
-                }}>■</span> <b>4</b> report
-                <span style={{
-                    marginLeft: 10,
-                    color: getColorByStatus('pin')
-                }}>■</span> <b>7</b> pin
+                        marginLeft: 10,
+                        color: getColorByStatus('pin')
+                    }}>■</span> <b>7</b> pin
             </p>
-            <div style={{ textAlign: 'center' }}>
-                <Button icon="shrink" size="small" onClick={() => setOpen(false)}>Reduce</Button>
-                &nbsp;
-                <Button size="small" icon="check">Apply</Button>
-            </div>
+                <div style={{ textAlign: 'center' }}>
+                    <Button icon="undo" size="small">Cancel</Button>
+                    &nbsp;
+                    <Button size="small" icon="check">Apply</Button>
+                </div>
 
-        </Card>
+            </Card>
+        </Badge>
     );
 }
