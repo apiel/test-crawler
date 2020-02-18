@@ -15,3 +15,12 @@
   margin-right: 30px;
   display: inline-block;
 }
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

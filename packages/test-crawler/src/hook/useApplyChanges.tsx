@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import Card from 'antd/lib/card';
 import Button from 'antd/lib/button';
 import Icon from 'antd/lib/icon';
@@ -124,7 +124,7 @@ export const ApplyChangesCard = ({
 
     return (
         <Card
-            style={applyChangesStyle}
+            style={{ ...applyChangesStyle, animation: '0.1s ease-out 0s 1 slideInFromLeft', }}
             size="small"
         >
             <Icon
