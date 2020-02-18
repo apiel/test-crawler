@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from 'antd/lib/card';
 import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 import Icon from 'antd/lib/icon';
 import Badge from 'antd/lib/badge';
 import { useProject } from '../projects/useProject';
@@ -11,6 +12,7 @@ import { ChangeStatus } from '../server/typing';
 
 export enum ChangeType {
     setZoneStatus = 'setZoneStatus',
+    pin = 'pin',
 }
 
 export interface ChangeItem {
@@ -19,31 +21,30 @@ export interface ChangeItem {
     args: any[],
 }
 
+type Changes = { [key: string]: ChangeItem };
+
 const ApplyChangesContext = React.createContext<{
-    changes: ChangeItem[],
+    changes: Changes,
     apply: () => Promise<void>,
     add: (changeItem: ChangeItem) => void,
 }>({
-    changes: [],
+    changes: {},
     apply: async () => { },
     add: () => { },
 });
 
+let messageTimer: NodeJS.Timeout;
 export function ApplyChangesProvider({ children }: React.PropsWithChildren<any>) {
-    const [changes, setChanges] = React.useState<ChangeItem[]>([]);
+    const [changes, setChanges] = React.useState<Changes>({});
     return (
         <ApplyChangesContext.Provider value={{
             changes,
             apply: async () => { },
             add: (changeItem: ChangeItem) => {
-                const index = changes.findIndex(({ key }) => key === changeItem.key);
-                if (index !== -1) {
-                    changes[index] = changeItem;
-                } else {
-                    changes.push(changeItem);
-                }
-                setChanges([...changes]);
-                console.log('changes', changes);
+                changes[changeItem.key] = changeItem;
+                setChanges({...changes});
+                clearTimeout(messageTimer);
+                messageTimer = setTimeout(() => message.success(`${Object.values(changes).length} changes waiting for approval.`, 1), 100);
             },
         }}>
             {children}
@@ -64,21 +65,24 @@ const applyChangesStyle = {
 export const ApplyChangesInfo = () => {
     const { changes } = useApplyChanges();
     const [open, setOpen] = React.useState(true);
-    if (!changes?.length) {
+    if (!Object.values(changes).length) {
         return null;
     }
 
-    const [storageType, projectId, timestamp] = changes[0].args;
+    const changesValues = Object.values(changes);
+    const [storageType, projectId, timestamp] = changesValues[0].args;
     const values = {
         valid: 0,
         report: 0,
         pin: 0,
     }
-    changes.forEach(({ type, args }) => {
+    changesValues.forEach(({ type, args }) => {
         if (type === ChangeType.setZoneStatus) {
-            let [status] = args.reverse() as [ChangeStatus]; // status is last arg from args
+            let status = args[args.length-1] as ChangeStatus; // status is last arg from args
             if (status === ChangeStatus.zonePin) status = ChangeStatus.valid;
             (values as any)[status]++;
+        } else if (type === ChangeType.pin) {
+            values.pin++;
         }
     });
     return !open ? (
@@ -88,7 +92,7 @@ export const ApplyChangesInfo = () => {
             size="small"
             onClick={() => setOpen(true)}
         >
-            <Badge count={changes.length} style={applyChangesStyle}>View pending</Badge>
+            <Badge count={changesValues.length} style={applyChangesStyle}>View pending</Badge>
         </Button>
     ) : (
             <ApplyChangesCard
@@ -120,7 +124,7 @@ export const ApplyChangesCard = ({
         pin: number,
     },
 }) => {
-    const { project } = useProject(storageType, projectId);
+    // const { project } = useProject(storageType, projectId);
 
     return (
         <Card
@@ -140,16 +144,16 @@ export const ApplyChangesCard = ({
                 onClick={() => setOpen(false)}
                 type="shrink"
             />
-            <p style={{ fontWeight: 'bold', marginBottom: 0 }}>{project?.name}</p>
+            <ApplyChangesProjectName projectId={projectId} storageType={storageType} />
             <p style={{ color: '#999', marginTop: 0 }}>{timestampToString(timestamp)}</p>
             <p>
                 {
-                    Object.keys(values).map((key, index) => (<>
+                    Object.keys(values).map((key, index) => (<span key={`change-${key}`}>
                         <span style={{
                             ...(index > 0 && { marginLeft: 10 }),
                             color: getColorByStatus(key as ChangeStatus)
                         }}>■</span> <b>{(values as any)[key]}</b> {key}
-                    </>))
+                    </span>))
                 }
             </p>
             <div style={{ textAlign: 'center' }}>
@@ -160,4 +164,16 @@ export const ApplyChangesCard = ({
 
         </Card>
     );
+}
+
+export const ApplyChangesProjectName = ({
+    storageType,
+    projectId,
+}: {
+    storageType: StorageType,
+    projectId: string,
+}) => {
+    const { project } = useProject(storageType, projectId);
+
+    return <p style={{ fontWeight: 'bold', marginBottom: 0 }}>{project?.name}</p>;
 }
