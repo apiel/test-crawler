@@ -1,5 +1,5 @@
 import React from 'react';
-import { PngDiffData, PageData } from '../server/typing';
+import { PngDiffData, PageData, ChangeStatus } from '../server/typing';
 
 import { PagesActionZone } from './PagesActionZone';
 import PagesActionPin from './PagesActionPin';
@@ -23,8 +23,8 @@ interface Props {
 
 export const PagesActions = ({ storageType, pages, setPages, projectId, timestamp, id, png, url, pageError }: Props) => [
     ...[png && <PagesActionFullscreen storageType={storageType} pages={pages} setPages={setPages} projectId={projectId} png={png} id={id} timestamp={timestamp} url={url} pageError={pageError} />],
-    <PagesActionZone storageType={storageType} type="check" pages={pages} setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={'valid'} />,
-    <PagesActionZone storageType={storageType} type="warning" pages={pages} setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={'report'} />,
+    <PagesActionZone storageType={storageType} type="check" pages={pages} setPages={setPages} projectId={projectId}  timestamp={timestamp} id={id} status={ChangeStatus.valid} />,
+    <PagesActionZone storageType={storageType} type="warning" pages={pages} setPages={setPages} projectId={projectId} timestamp={timestamp} id={id} status={ChangeStatus.report} />,
     <PagesActionPin storageType={storageType} projectId={projectId} timestamp={timestamp} id={id} />,
     // <Icon type="ellipsis" title="more" />,
 ];

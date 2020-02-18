@@ -7,10 +7,15 @@ import { useProject } from '../projects/useProject';
 import { StorageType } from '../server/storage.typing';
 import { timestampToString } from '../utils';
 import { getColorByStatus } from '../diff/DiffZone';
+import { ChangeStatus } from '../server/typing';
+
+export enum ChangeType {
+    setZoneStatus = 'setZoneStatus',
+}
 
 export interface ChangeItem {
     key: string;
-    type: string;
+    type: ChangeType;
     args: any[],
 }
 
@@ -64,6 +69,18 @@ export const ApplyChangesInfo = () => {
     }
 
     const [storageType, projectId, timestamp] = changes[0].args;
+    const values = {
+        valid: 0,
+        report: 0,
+        pin: 0,
+    }
+    changes.forEach(({ type, args }) => {
+        if (type === ChangeType.setZoneStatus) {
+            let [status] = args.reverse() as [ChangeStatus]; // status is last arg from args
+            if (status === ChangeStatus.zonePin) status = ChangeStatus.valid;
+            (values as any)[status]++;
+        }
+    });
     return !open ? (
         <Button
             style={applyChangesStyle}
@@ -79,61 +96,68 @@ export const ApplyChangesInfo = () => {
                 storageType={storageType}
                 projectId={projectId}
                 timestamp={timestamp}
+                values={values}
             />
         );
 }
+
+// need to add animation
 
 export const ApplyChangesCard = ({
     storageType,
     projectId,
     timestamp,
     setOpen,
+    values,
 }: {
     storageType: StorageType,
     projectId: string,
     timestamp: string,
     setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    values: {
+        valid: number,
+        report: number,
+        pin: number,
+    },
 }) => {
     const { project } = useProject(storageType, projectId);
 
     return (
-        <Badge
-            style={{
-                ...applyChangesStyle,
-                backgroundColor: '#fff',
-                color: '#999',
-                boxShadow: '0 0 0 1px #d9d9d9 inset',
-                borderRadius: 3,
-            }}
-            count={<Icon  onClick={() => setOpen(false)} type="shrink" />}
+        <Card
+            style={applyChangesStyle}
+            size="small"
         >
-            <Card
-                style={applyChangesStyle}
-                size="small"
-            >
-                <p style={{ fontWeight: 'bold', marginBottom: 0 }}>{project?.name}</p>
-                <p style={{ color: '#999', marginTop: 0 }}>{timestampToString(timestamp)}</p>
-                <p>
-                    {/* packages/test-crawler/src-isomor/pages/PageImageDiffZone.tsx */}
-                    <span style={{
-                        color: getColorByStatus('valid')
-                    }}>■</span> <b>6</b> valid
-                <span style={{
-                        marginLeft: 10,
-                        color: getColorByStatus('report')
-                    }}>■</span> <b>4</b> report
-                <span style={{
-                        marginLeft: 10,
-                        color: getColorByStatus('pin')
-                    }}>■</span> <b>7</b> pin
+            <Icon
+                style={{
+                    ...applyChangesStyle,
+                    right: applyChangesStyle.right + 3,
+                    top: applyChangesStyle.top + 3,
+                    backgroundColor: '#fff',
+                    color: '#999',
+                    boxShadow: '0 0 0 1px #d9d9d9 inset',
+                    borderRadius: 3,
+                }}
+                onClick={() => setOpen(false)}
+                type="shrink"
+            />
+            <p style={{ fontWeight: 'bold', marginBottom: 0 }}>{project?.name}</p>
+            <p style={{ color: '#999', marginTop: 0 }}>{timestampToString(timestamp)}</p>
+            <p>
+                {
+                    Object.keys(values).map((key, index) => (<>
+                        <span style={{
+                            ...(index > 0 && { marginLeft: 10 }),
+                            color: getColorByStatus(key as ChangeStatus)
+                        }}>■</span> <b>{(values as any)[key]}</b> {key}
+                    </>))
+                }
             </p>
-                <div style={{ textAlign: 'center' }}>
-                    <Button icon="undo" size="small">Cancel</Button>
-                    &nbsp;
+            <div style={{ textAlign: 'center' }}>
+                <Button icon="undo" size="small">Cancel</Button>
+                &nbsp;
                     <Button size="small" icon="check">Apply</Button>
-                </div>
+            </div>
 
-            </Card>
-        </Badge>
+        </Card>
     );
 }

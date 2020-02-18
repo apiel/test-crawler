@@ -207,7 +207,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             const folder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const data = yield this.storage.readJSON(filePath('json'));
-            if (status === 'zone-pin') {
+            if (status === typing_1.ChangeStatus.zonePin) {
                 const pinPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
                 const pin = yield this.storage.readJSON(pinPath('json'));
                 if (((_c = (_b = (_a = pin) === null || _a === void 0 ? void 0 : _a.png) === null || _b === void 0 ? void 0 : _b.diff) === null || _c === void 0 ? void 0 : _c.zones) && ((_f = (_e = (_d = data) === null || _d === void 0 ? void 0 : _d.png) === null || _e === void 0 ? void 0 : _e.diff) === null || _f === void 0 ? void 0 : _f.zones)) {

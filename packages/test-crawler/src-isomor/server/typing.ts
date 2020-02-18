@@ -2,6 +2,15 @@
 // import { Viewport } from 'puppeteer';
 // export { Viewport, Zone };
 
+
+export enum ChangeStatus {
+    valid = 'valid',
+    zonePin = 'zone-pin',
+    report = 'report',
+    pin = 'pin',
+    diff = 'diff',
+}
+
 export enum Browser {
     ChromePuppeteer = 'chrome-puppeteer',
     FirefoxSelenium = 'firefox-selenium',
@@ -80,7 +89,7 @@ export interface Crawler extends CrawlerInput {
 
 export interface PngDiffDataZone {
     zone: Zone;
-    status: string;
+    status: ChangeStatus;
 }
 
 export interface PngDiffData {

@@ -3,9 +3,9 @@ import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import { setZonesStatus } from '../server/service';
-import { PageData } from '../server/typing';
+import { PageData, ChangeStatus } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges, ChangeItem } from '../hook/useApplyChanges';
+import { useApplyChanges, ChangeItem, ChangeType } from '../hook/useApplyChanges';
 
 const onClick = (
     add: (changeItem: ChangeItem) => void,
@@ -14,8 +14,8 @@ const onClick = (
     const pageIndex = pages.findIndex(({ id: pageId }) => id === pageId);
     pages[pageIndex].png?.diff?.zones?.forEach((zone, index) => {
         add({
-            key: ['setZoneStatus', storageType, projectId, timestamp, id, index].join('-'),
-            type: 'setZoneStatus',
+            key: [ChangeType.setZoneStatus, storageType, projectId, timestamp, id, index].join('-'),
+            type: ChangeType.setZoneStatus,
             args: [storageType, projectId, timestamp, id, index, status],
         });
         zone.status = status;
@@ -30,7 +30,7 @@ interface Props {
     projectId: string;
     timestamp: string;
     id: string;
-    status: string;
+    status: ChangeStatus;
     type: string;
 }
 export const PagesActionZone = (props: Props) => {

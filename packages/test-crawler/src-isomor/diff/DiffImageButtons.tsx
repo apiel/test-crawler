@@ -1,9 +1,9 @@
 import React from 'react';
 import Button from 'antd/lib/button';
 
-import { PageData } from '../server/typing';
+import { PageData, ChangeStatus } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges, ChangeItem } from '../hook/useApplyChanges';
+import { useApplyChanges, ChangeItem, ChangeType } from '../hook/useApplyChanges';
 
 const buttonStyle = {
     marginLeft: 5,
@@ -21,13 +21,13 @@ interface Props {
 }
 
 const onSetStatus = (
-    status: string,
+    status: ChangeStatus,
     add: (changeItem: ChangeItem) => void,
     { timestamp, id, index, projectId, pages, setPages, storageType }: Props,
 ) => async () => {
     add({
-        key: ['setZoneStatus', storageType, projectId, timestamp, id, index].join('-'),
-        type: 'setZoneStatus',
+        key: [ChangeType.setZoneStatus, storageType, projectId, timestamp, id, index].join('-'),
+        type: ChangeType.setZoneStatus,
         args: [storageType, projectId, timestamp, id, index, status],
     });
     const pageIndex = pages.findIndex(({ id: pageId }) => id === pageId);
@@ -45,18 +45,18 @@ export const DiffImageButtons = (props: Props) => {
                 style={buttonStyle}
                 icon="check"
                 size="small"
-                onClick={onSetStatus('valid', add, props)}>Valid</Button>
+                onClick={onSetStatus(ChangeStatus.valid, add, props)}>Valid</Button>
             <Button
                 style={buttonStyle}
                 icon="pushpin"
                 size="small"
-                onClick={onSetStatus('zone-pin', add, props)}>Always valid</Button>
+                onClick={onSetStatus(ChangeStatus.zonePin, add, props)}>Always valid</Button>
             <Button
                 style={buttonStyle}
                 icon="warning"
                 size="small"
                 type="danger"
-                onClick={onSetStatus('report', add, props)}>Report</Button>
+                onClick={onSetStatus(ChangeStatus.report, add, props)}>Report</Button>
         </>
     );
 }

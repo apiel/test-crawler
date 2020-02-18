@@ -6,7 +6,7 @@ import { WsContext, Context } from 'isomor-server';
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser, ChangeStatus } from '../typing';
 import { StorageType } from '../storage.typing';
 import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 
@@ -201,11 +201,11 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return crawler;
     }
 
-    async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
+    async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: ChangeStatus): Promise<PageData> {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const data: PageData = await this.storage.readJSON(filePath('json'));
-        if (status === 'zone-pin') {
+        if (status === ChangeStatus.zonePin) {
             const pinPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
             const pin: PageData = await this.storage.readJSON(pinPath('json'));
 
@@ -226,7 +226,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return data;
     }
 
-    async setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
+    async setZonesStatus(projectId: string, timestamp: string, id: string, status: ChangeStatus): Promise<PageData> {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const page: PageData = await this.storage.readJSON(filePath('json'));

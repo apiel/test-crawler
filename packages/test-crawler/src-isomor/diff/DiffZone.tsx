@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import Popover from 'antd/lib/popover';
 
 import { DiffImageButtons } from './DiffImageButtons';
-import { Zone, PageData } from '../server/typing';
+import { Zone, PageData, ChangeStatus } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
-export const getColorByStatus = (status: string) => {
-    if (status === 'valid' || status === 'zone-pin') {
+export const getColorByStatus = (status: ChangeStatus) => {
+    if (status === ChangeStatus.valid || status === ChangeStatus.zonePin) {
         return '#0F0'; //'green';
-    } else if (status === 'report') {
+    } else if (status === ChangeStatus.report) {
         return 'red';
-    } else if (status === 'pin') {
+    } else if (status === ChangeStatus.pin) {
         return 'blue';
     }
     return 'yellow';
@@ -23,7 +23,7 @@ const zoneStyle = (
     marginLeft: number,
     img: string | undefined,
     over: boolean,
-    status: string,
+    status: ChangeStatus,
 ) => {
     const top = yMin / ratio - 1;
     const left = xMin / ratio - 1;
@@ -50,7 +50,7 @@ interface Props {
     zone: Zone;
     originalWidth: number;
     index: number;
-    status: string;
+    status: ChangeStatus;
     width: number;
     marginLeft: number;
     projectId: string;

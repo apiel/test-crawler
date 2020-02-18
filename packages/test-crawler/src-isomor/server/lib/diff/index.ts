@@ -5,7 +5,7 @@ import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
-import { PageData, Crawler } from '../../typing';
+import { PageData, Crawler, ChangeStatus } from '../../typing';
 import { FilePath } from '../utils';
 import { CrawlerProvider } from '../index';
 import { join } from 'path';
@@ -67,7 +67,9 @@ async function parseZones(basePath: FilePath, zones: Zone[]) {
     const baseZones = base.png.diff.zones.map(z => z.zone);
     return zones.map(zone => ({
         zone,
-        status: groupOverlappingZone([...baseZones, zone]).length === baseZones.length ? 'valid' : 'diff',
+        status: groupOverlappingZone([...baseZones, zone]).length === baseZones.length
+            ? ChangeStatus.valid
+            : ChangeStatus.diff,
     }));
 }
 
