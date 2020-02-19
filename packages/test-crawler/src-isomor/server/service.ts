@@ -129,14 +129,12 @@ export function pin(storageType: StorageType, projectId: string, timestamp: stri
 
 export async function setZoneStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData[]> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
-    await crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
-    return getPages(storageType, projectId, timestamp);
+    return crawlerProvider.setZoneStatus(projectId, timestamp, id, status, index);
 }
 
 export async function setZonesStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, status: string): Promise<PageData[]> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
-    await crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
-    return getPages(storageType, projectId, timestamp);
+    return crawlerProvider.setZoneStatus(projectId, timestamp, id, status);
 }
 
 export function setStatus(storageType: StorageType, projectId: string, timestamp: string, status: string): Promise<Crawler> {

@@ -203,16 +203,18 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return crawler;
     }
 
-    async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData> {
+    async setZoneStatus(projectId: string, timestamp: string, id: string, status: string, index?: number): Promise<PageData[]> {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
         const filePath = getFilePath(id, folder);
         const data: PageData = await this.storage.readJSON(filePath('json'));
-        if (status === 'pin') {
+        if (index && status === 'pin') {
             const pinPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
             const pin: PageData = await this.storage.readJSON(pinPath('json'));
 
             if (pin?.png?.diff?.zones && data?.png?.diff?.zones) {
-                pin.png.diff.zones.push({ ...data.png.diff.zones[index], status });
+                if (index) {
+                    pin.png.diff.zones.push({ ...data.png.diff.zones[index], status });
+                }
                 const zones = pin.png.diff.zones.map(item => item.zone);
                 zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
                 const groupedZones = groupOverlappingZone(zones);
@@ -222,21 +224,14 @@ export class CrawlerProvider extends CrawlerProviderStorage {
             await this.storage.saveJSON(pinPath('json'), pin);
         }
         if (data?.png?.diff?.zones) {
-            data.png.diff.zones[index].status = status;
+            if (index) {
+                data.png.diff.zones[index].status = status;
+            } else {
+                data.png.diff.zones.forEach(zone => zone.status = status);
+            }
         }
         await this.storage.saveJSON(filePath('json'), data);
-        return data;
-    }
-
-    async setZonesStatus(projectId: string, timestamp: string, id: string, status: string): Promise<PageData> {
-        const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
-        const page: PageData = await this.storage.readJSON(filePath('json'));
-        let newPage: PageData;
-        for (let index = 0; index < page!.png!.diff!.zones.length; index++) {
-            newPage = await this.setZoneStatus(projectId, timestamp, id, index, status);
-        }
-        return newPage!;
+        return this.getPages(projectId, timestamp);
     }
 
     async startCrawler(projectId: string, browser?: Browser): Promise<StartCrawler> {

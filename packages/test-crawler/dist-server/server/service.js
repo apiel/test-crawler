@@ -127,16 +127,14 @@ exports.pin = pin;
 function setZoneStatus(storageType, projectId, timestamp, id, index, status) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-        yield crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
-        return getPages(storageType, projectId, timestamp);
+        return crawlerProvider.setZoneStatus(projectId, timestamp, id, status, index);
     });
 }
 exports.setZoneStatus = setZoneStatus;
 function setZonesStatus(storageType, projectId, timestamp, id, status) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-        yield crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
-        return getPages(storageType, projectId, timestamp);
+        return crawlerProvider.setZoneStatus(projectId, timestamp, id, status);
     });
 }
 exports.setZonesStatus = setZonesStatus;

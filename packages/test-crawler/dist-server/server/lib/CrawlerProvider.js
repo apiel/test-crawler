@@ -201,17 +201,19 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             return crawler;
         });
     }
-    setZoneStatus(projectId, timestamp, id, index, status) {
+    setZoneStatus(projectId, timestamp, id, status, index) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         return __awaiter(this, void 0, void 0, function* () {
             const folder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
             const filePath = utils_1.getFilePath(id, folder);
             const data = yield this.storage.readJSON(filePath('json'));
-            if (status === 'pin') {
+            if (index && status === 'pin') {
                 const pinPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
                 const pin = yield this.storage.readJSON(pinPath('json'));
                 if (((_c = (_b = (_a = pin) === null || _a === void 0 ? void 0 : _a.png) === null || _b === void 0 ? void 0 : _b.diff) === null || _c === void 0 ? void 0 : _c.zones) && ((_f = (_e = (_d = data) === null || _d === void 0 ? void 0 : _d.png) === null || _e === void 0 ? void 0 : _e.diff) === null || _f === void 0 ? void 0 : _f.zones)) {
-                    pin.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
+                    if (index) {
+                        pin.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
+                    }
                     const zones = pin.png.diff.zones.map(item => item.zone);
                     zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
                     const groupedZones = pixdiff_zone_1.groupOverlappingZone(zones);
@@ -220,22 +222,15 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                 yield this.storage.saveJSON(pinPath('json'), pin);
             }
             if ((_j = (_h = (_g = data) === null || _g === void 0 ? void 0 : _g.png) === null || _h === void 0 ? void 0 : _h.diff) === null || _j === void 0 ? void 0 : _j.zones) {
-                data.png.diff.zones[index].status = status;
+                if (index) {
+                    data.png.diff.zones[index].status = status;
+                }
+                else {
+                    data.png.diff.zones.forEach(zone => zone.status = status);
+                }
             }
             yield this.storage.saveJSON(filePath('json'), data);
-            return data;
-        });
-    }
-    setZonesStatus(projectId, timestamp, id, status) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const folder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
-            const filePath = utils_1.getFilePath(id, folder);
-            const page = yield this.storage.readJSON(filePath('json'));
-            let newPage;
-            for (let index = 0; index < page.png.diff.zones.length; index++) {
-                newPage = yield this.setZoneStatus(projectId, timestamp, id, index, status);
-            }
-            return newPage;
+            return this.getPages(projectId, timestamp);
         });
     }
     startCrawler(projectId, browser) {
