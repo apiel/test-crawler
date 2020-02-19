@@ -1,6 +1,6 @@
 {
     "name": "test-crawler-apply",
-    "version": "2.2.4-alpha.0",
+    "version": "2.2.4-alpha.1",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
     "license": "MIT",
     "main": "dist/index.js",
