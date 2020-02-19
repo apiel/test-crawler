@@ -4,8 +4,6 @@
 ---> change file structure, only move json for pin
 ---> on cleanup, the script would have to identify images to delete
 
-- enum interface type status
-
 - update doc:
     + code and links
 
