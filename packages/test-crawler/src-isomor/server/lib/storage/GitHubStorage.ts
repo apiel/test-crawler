@@ -155,13 +155,14 @@ export class GitHubStorage extends Storage {
             },
         });
 
-        return this.call({
+        await this.call({
             method: 'PATCH',
             url: `${this.baseRepo}/git/refs/heads/master`,
             data: {
                 sha: shaCommit,
             },
         });
+        console.log('Blob saved', file);
     }
 
     async read(path: string) {

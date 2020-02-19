@@ -136,13 +136,14 @@ class GitHubStorage extends Storage_1.Storage {
                     parents: [latestCommitSha]
                 },
             });
-            return this.call({
+            yield this.call({
                 method: 'PATCH',
                 url: `${this.baseRepo}/git/refs/heads/master`,
                 data: {
                     sha: shaCommit,
                 },
             });
+            console.log('Blob saved', file);
         });
     }
     read(path) {

@@ -1,5 +1,8 @@
 - pin request timeout because it take very long even if succeed
---> maybe all update should be done in a worklow job?
+--> maybe all update should be done in a worklow job? too complicated!!
+---> move img and html in a different folder.
+---> change file structure, only move json for pin
+---> on cleanup, the script would have to identify images to delete
 
 - update doc:
     + code and links
@@ -11,6 +14,8 @@
 - we review done, maybe we should have as well report
 
 - improve cli perf
+
+- improve commit
 
 - base on history, use AI to identify if diff are normal or not...
 
