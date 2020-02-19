@@ -21,7 +21,7 @@
         "lint": "tslint -p tsconfig.json -c tslint.json"
     },
     "dependencies": {
-        "pixdiff-zone": "^1.0.0-alpha.0"
+        "pixdiff-zone": "^2.2.4-alpha.0"
     },
     "devDependencies": {
         "@types/node": "^13.7.2",

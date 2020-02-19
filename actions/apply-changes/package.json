@@ -5,6 +5,6 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.2",
-    "test-crawler-apply": "^2.2.3"
+    "test-crawler-apply": "^2.2.4-alpha.0"
   }
 }
