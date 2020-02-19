@@ -1,6 +1,6 @@
 {
     "name": "pixdiff-zone",
-    "version": "2.2.3",
+    "version": "2.2.4-alpha.0",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
@@ -11,8 +11,6 @@
         "build": "tsc -p tsconfig.json",
         "example": "ts-node example/example.ts",
         "lint": "tslint -p tsconfig.json -c tslint.json"
-    },
-    "dependencies": {
     },
     "devDependencies": {
         "@types/fs-extra": "^8.0.1",

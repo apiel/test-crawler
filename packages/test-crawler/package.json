@@ -1,6 +1,6 @@
 {
   "name": "test-crawler",
-  "version": "2.2.3",
+  "version": "2.2.4-alpha.0",
   "bin": {
     "test-crawler": "./test-crawler.js",
     "test-crawler-cli": "bin/cli.js"
@@ -77,7 +77,7 @@
     "react-scripts": "3.3.1",
     "rimraf": "^3.0.2",
     "selenium-webdriver": "^4.0.0-alpha.5",
-    "test-crawler-apply": "^2.2.3",
+    "test-crawler-apply": "^2.2.4-alpha.0",
     "ts-node": "^8.6.2",
     "typescript": "3.7.5",
     "universal-cookie": "^4.0.3"
