@@ -1,6 +1,6 @@
 {
   "name": "test-crawler",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "bin": {
     "test-crawler": "./test-crawler.js",
     "test-crawler-cli": "bin/cli.js"
@@ -63,7 +63,7 @@
     "minimatch": "^3.0.4",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
-    "pixdiff-zone": "^2.3.0",
+    "pixdiff-zone": "^2.3.1",
     "pngjs": "^3.3.3",
     "puppeteer": "^2.1.1",
     "query-string": "^6.11.0",
