@@ -28,15 +28,15 @@ export function ApplyChangesProvider({ children }: React.PropsWithChildren<any>)
         <ApplyChangesContext.Provider value={{
             changes,
             cancel: () => {
-                setChanges({});
                 localStorage.removeItem('apply-changes');
+                setChanges({});
                 // window.onbeforeunload = () => false;
                 window.location.reload();
             },
             apply: (storageType: StorageType) => async () => {
                 await applyChanges(storageType, Object.values(changes));
-                setChanges({});
                 localStorage.removeItem('apply-changes');
+                setChanges({});
                 message.success(`Changes submitted.`, 2);
             },
             add: (changeItem: ChangeItem) => {

@@ -11,6 +11,7 @@
 - we review done, maybe we should have as well report
 
 - improve cli perf
+- improve commit msg
 
 - base on history, use AI to identify if diff are normal or not...
 
