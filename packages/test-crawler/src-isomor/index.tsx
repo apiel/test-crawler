@@ -6,7 +6,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { hotjar } from 'react-hotjar';
 import { DocProvider } from './doc/useDoc';
-import { ApplyChangesProvider } from './hook/useApplyChanges';
+import { ApplyChangesProvider } from './apply-changes/useApplyChanges';
 
 // use hotjar only on github
 if (window.location.host === 'apiel.github.io') {

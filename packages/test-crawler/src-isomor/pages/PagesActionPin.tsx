@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges } from '../hook/useApplyChanges';
+import { useApplyChanges } from '../apply-changes/useApplyChanges';
 import { ChangeItem, ChangeType } from '../server/typing';
 
 

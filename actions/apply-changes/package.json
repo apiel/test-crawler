@@ -1,0 +1,10 @@
+{
+  "name": "test-crawler-apply-changes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.2",
+    "test-crawler-apply": "^2.2.3"
+  }
+}

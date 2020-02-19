@@ -29,7 +29,7 @@ import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
 import { CodeBreadcrumb } from './code/CodeBreadcrumb';
 import { DocSider } from './doc/DocSider';
 import { useDoc } from './doc/useDoc';
-import { ApplyChangesInfo } from './hook/useApplyChanges';
+import { ApplyChangesInfo } from './apply-changes/ApplyChangesInfo';
 
 const { Content, Header } = Layout;
 const { Title } = Typography;

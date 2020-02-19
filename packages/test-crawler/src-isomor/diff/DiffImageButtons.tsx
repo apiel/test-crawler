@@ -3,7 +3,7 @@ import Button from 'antd/lib/button';
 
 import { PageData, ChangeStatus, ChangeItem, ChangeType } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges } from '../hook/useApplyChanges';
+import { useApplyChanges } from '../apply-changes/useApplyChanges';
 
 const buttonStyle = {
     marginLeft: 5,

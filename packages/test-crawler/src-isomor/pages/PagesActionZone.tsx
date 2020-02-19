@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from 'antd/lib/icon';
 import { PageData, ChangeStatus, ChangeItem, ChangeType } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges } from '../hook/useApplyChanges';
+import { useApplyChanges } from '../apply-changes/useApplyChanges';
 
 const onClick = (
     add: (changeItem: ChangeItem) => void,
