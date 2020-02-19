@@ -115,7 +115,7 @@ export class GitHubStorage extends Storage {
 
     applyChanges(changes: ChangesToApply[]): Promise<void> {
         return this.dispatch(CI_Workflow_apply_changes, 'apply_changes', {
-            changes,
+            changes: JSON.stringify(changes),
         });
     }
 

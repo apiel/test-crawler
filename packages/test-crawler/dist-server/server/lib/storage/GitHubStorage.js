@@ -95,7 +95,7 @@ class GitHubStorage extends Storage_1.Storage {
     }
     applyChanges(changes) {
         return this.dispatch(CI_Workflow_apply_changes, 'apply_changes', {
-            changes,
+            changes: JSON.stringify(changes),
         });
     }
     crawl(crawlTarget, consumeTimeout, push, browser) {

@@ -5,8 +5,8 @@ async function run() {
     try {
         core.info('Apply changes in test-crawler');
         const changes = core.getInput('changes');
-        core.info(JSON.stringify(changes, null, 4));
-        await applyChanges(changes);
+        core.info(`Changes: ${changes}`);
+        await applyChanges(JSON.parse(changes));
     } catch (error) {
         core.setFailed(error.message);
     }
