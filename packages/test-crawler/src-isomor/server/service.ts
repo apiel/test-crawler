@@ -12,6 +12,7 @@ import {
     StartCrawler,
     BeforeAfterType,
     Browser,
+    ZoneStatus,
 } from './typing';
 import { StorageType } from './storage.typing';
 
@@ -127,12 +128,12 @@ export function pin(storageType: StorageType, projectId: string, timestamp: stri
     return crawlerProvider.copyToPins(projectId, timestamp, id);
 }
 
-export async function setZoneStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, index: number, status: string): Promise<PageData[]> {
+export async function setZoneStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, index: number, status: ZoneStatus): Promise<PageData[]> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
     return crawlerProvider.setZoneStatus(projectId, timestamp, id, status, index);
 }
 
-export async function setZonesStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, status: string): Promise<PageData[]> {
+export async function setZonesStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, status: ZoneStatus): Promise<PageData[]> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
     return crawlerProvider.setZoneStatus(projectId, timestamp, id, status);
 }

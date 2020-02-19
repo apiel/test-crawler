@@ -15,6 +15,7 @@ const config_1 = require("../config");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");
+const typing_1 = require("../../typing");
 const index_1 = require("../index");
 const path_1 = require("path");
 const storage_typing_1 = require("../../storage.typing");
@@ -62,7 +63,9 @@ function parseZones(basePath, zones) {
         const baseZones = base.png.diff.zones.map(z => z.zone);
         return zones.map(zone => ({
             zone,
-            status: pixdiff_zone_1.groupOverlappingZone([...baseZones, zone]).length === baseZones.length ? 'valid' : 'diff',
+            status: pixdiff_zone_1.groupOverlappingZone([...baseZones, zone]).length === baseZones.length
+                ? typing_1.ZoneStatus.valid
+                : typing_1.ZoneStatus.diff,
         }));
     });
 }

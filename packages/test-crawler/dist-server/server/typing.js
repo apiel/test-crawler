@@ -1,5 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var ZoneStatus;
+(function (ZoneStatus) {
+    ZoneStatus["valid"] = "valid";
+    ZoneStatus["zonePin"] = "zone-pin";
+    ZoneStatus["report"] = "report";
+    ZoneStatus["diff"] = "diff";
+})(ZoneStatus = exports.ZoneStatus || (exports.ZoneStatus = {}));
 var Browser;
 (function (Browser) {
     Browser["ChromePuppeteer"] = "chrome-puppeteer";

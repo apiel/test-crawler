@@ -4,7 +4,7 @@ import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
 
 import { setZoneStatus } from '../server/service';
-import { PageData } from '../server/typing';
+import { PageData, ZoneStatus } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
 const buttonStyle = {
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const onSetStatus = (
-    status: string,
+    status: ZoneStatus,
     { timestamp, id, index, projectId, setPages, storageType }: Props,
 ) => async () => {
     try {
@@ -44,18 +44,18 @@ export const DiffImageButtons = (props: Props) => {
                 style={buttonStyle}
                 icon="check"
                 size="small"
-                onClick={onSetStatus('valid', props)}>Valid</Button>
+                onClick={onSetStatus(ZoneStatus.valid, props)}>Valid</Button>
             <Button
                 style={buttonStyle}
                 icon="pushpin"
                 size="small"
-                onClick={onSetStatus('pin', props)}>Always valid</Button>
+                onClick={onSetStatus(ZoneStatus.zonePin, props)}>Always valid</Button>
             <Button
                 style={buttonStyle}
                 icon="warning"
                 size="small"
                 type="danger"
-                onClick={onSetStatus('report', props)}>Report</Button>
+                onClick={onSetStatus(ZoneStatus.report, props)}>Report</Button>
         </>
     );
 }
