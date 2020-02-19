@@ -36,6 +36,7 @@ export function ApplyChangesProvider({ children }: React.PropsWithChildren<any>)
             apply: (storageType: StorageType) => async () => {
                 await applyChanges(storageType, Object.values(changes));
                 setChanges({});
+                localStorage.removeItem('apply-changes');
                 message.success(`Changes submitted.`, 2);
             },
             add: (changeItem: ChangeItem) => {
