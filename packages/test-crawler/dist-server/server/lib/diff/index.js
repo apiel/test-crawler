@@ -10,15 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
+const test_crawler_apply_1 = require("test-crawler-apply");
 const utils_1 = require("../utils");
 const config_1 = require("../config");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");
 const typing_1 = require("../../typing");
-const index_1 = require("../index");
 const path_1 = require("path");
-const storage_typing_1 = require("../../storage.typing");
 function parsePng(data, filePath, basePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = filePath('png');
@@ -84,8 +83,9 @@ function prepare(projectId, id, distFolder, crawler) {
             }
         }
         else if (crawler.autopin) {
-            const crawlerProvider = new index_1.CrawlerProvider(storage_typing_1.StorageType.Local);
-            crawlerProvider.copyToPins(projectId, crawler.timestamp, id);
+            const srcBase = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, crawler.timestamp, id);
+            const dstBase = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, id);
+            test_crawler_apply_1.copyToPins({ srcBase, dstBase });
         }
         return {
             diffZoneCount,

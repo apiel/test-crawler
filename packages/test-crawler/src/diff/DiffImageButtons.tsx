@@ -1,9 +1,9 @@
 import React from 'react';
 import Button from 'antd/lib/button';
 
-import { PageData, ChangeStatus } from '../server/typing';
+import { PageData, ChangeStatus, ChangeItem, ChangeType } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges, ChangeItem, ChangeType } from '../hook/useApplyChanges';
+import { useApplyChanges } from '../hook/useApplyChanges';
 
 const buttonStyle = {
     marginLeft: 5,
@@ -27,8 +27,11 @@ const onSetStatus = (
 ) => async () => {
     add({
         key: [ChangeType.setZoneStatus, storageType, projectId, timestamp, id, index].join('-'),
-        type: ChangeType.setZoneStatus,
-        args: [storageType, projectId, timestamp, id, index, status],
+        storageType,
+        item: {
+            type: ChangeType.setZoneStatus,
+            props: { projectId, timestamp, id, index, status },
+        }
     });
     const pageIndex = pages.findIndex(({ id: pageId }) => id === pageId);
     if (pages[pageIndex].png?.diff?.zones[index]) {

@@ -1,7 +1,7 @@
-// import { Zone } from 'pixdiff-zone';
-// import { Viewport } from 'puppeteer';
-// export { Viewport, Zone };
-
+export enum ChangeType {
+    setZoneStatus = 'setZoneStatus',
+    pin = 'pin',
+}
 
 export enum ChangeStatus {
     valid = 'valid',
@@ -9,6 +9,36 @@ export enum ChangeStatus {
     report = 'report',
     pin = 'pin',
     diff = 'diff',
+}
+
+export interface ChangeItem {
+    key: string;
+    storageType: any;
+    item: ChangeItemPin | ChangeSetZoneStatus;
+}
+
+export interface ChangeItemPin {
+    type: ChangeType.pin;
+    props: ChangePinProps;
+}
+
+export interface ChangePinProps {
+    projectId: string;
+    timestamp: string;
+    id: string;
+}
+
+export interface ChangeSetZoneStatus {
+    type: ChangeType.setZoneStatus;
+    props: ChangeSetZoneStatusProps;
+}
+
+export interface ChangeSetZoneStatusProps {
+    projectId: string;
+    timestamp: string;
+    id: string;
+    index: number;
+    status: ChangeStatus;
 }
 
 export enum Browser {

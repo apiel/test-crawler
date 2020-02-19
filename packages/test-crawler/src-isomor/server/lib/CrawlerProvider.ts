@@ -1,12 +1,12 @@
 import { join, extname } from 'path';
 import * as md5 from 'md5';
-import { groupOverlappingZone } from 'pixdiff-zone';
 import { WsContext, Context } from 'isomor-server';
+import { ChangesToApply } from 'test-crawler-apply';
 
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
 import { getFilePath } from './utils';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser, ChangeStatus } from '../typing';
+import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser, ChangeItem, ChangeType } from '../typing';
 import { StorageType } from '../storage.typing';
 import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 
@@ -67,32 +67,6 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return crawlers;
     }
 
-    async copyToPins(projectId: string, timestamp: string, id: string): Promise<PageData> {
-        const crawlerFolder = this.join(projectId, CRAWL_FOLDER, timestamp);
-        const crawlerFolderPath = getFilePath(id, crawlerFolder);
-
-        // set diff to 0
-        // instead to load this file again, we could get the data from the frontend?
-        const data: PageData = await this.storage.readJSON(crawlerFolderPath('json'));
-        if (data?.png) {
-            data.png.diff = {
-                pixelDiffRatio: 0,
-                zones: [],
-            };
-            if (data.png.diff.pixelDiffRatio > 0) {
-                await this.storage.saveJSON(crawlerFolderPath('json'), data);
-            }
-        }
-
-        // copy files
-        const pinFolderPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
-        await this.storage.saveJSON(pinFolderPath('json'), data);
-        await this.storage.copy(crawlerFolderPath('html'), pinFolderPath('html'));
-        await this.storage.copyBlob(crawlerFolderPath('png'), pinFolderPath('png'));
-
-        return data;
-    }
-
     async removeFromPins(projectId: string, id: string): Promise<PageData[]> {
         const pinFolderPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
 
@@ -127,8 +101,8 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         }
         try {
             const buf = await this.storage.read(this.join(projectId, `${type}`));
-            return buf?.toString() || '';   
-        } catch (err) {}
+            return buf?.toString() || '';
+        } catch (err) { }
         return '';
     }
 
@@ -201,40 +175,28 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return crawler;
     }
 
-    async setZoneStatus(projectId: string, timestamp: string, id: string, index: number, status: ChangeStatus): Promise<PageData> {
-        const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
-        const data: PageData = await this.storage.readJSON(filePath('json'));
-        if (status === ChangeStatus.zonePin) {
-            const pinPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
-            const pin: PageData = await this.storage.readJSON(pinPath('json'));
-
-            if (pin?.png?.diff?.zones && data?.png?.diff?.zones) {
-                pin.png.diff.zones.push({ ...data.png.diff.zones[index], status });
-                const zones = pin.png.diff.zones.map(item => item.zone);
-                zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
-                const groupedZones = groupOverlappingZone(zones);
-                pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
+    applyChanges(changes: ChangeItem[]): Promise<void> {
+        const changesToApply: ChangesToApply[] = [];
+        for (const { item } of changes) {
+            if (item.type === ChangeType.pin) {
+                const { projectId, timestamp, id } = item.props;
+                const srcBase = this.join(projectId, CRAWL_FOLDER, timestamp, id);
+                const dstBase = this.join(projectId, PIN_FOLDER, id);
+                changesToApply.push({
+                    type: 'copyToPins',
+                    props: { srcBase, dstBase },
+                });
+            } else if (item.type === ChangeType.setZoneStatus) {
+                const { projectId, timestamp, id, index, status } = item.props;
+                const jsonFile = this.join(projectId, CRAWL_FOLDER, timestamp, `${id}.json`);
+                const pinJsonFile = this.join(projectId, PIN_FOLDER, `${id}.json`);
+                changesToApply.push({
+                    type: 'setZoneStatus',
+                    props: { jsonFile, pinJsonFile, index, status },
+                });
             }
-
-            await this.storage.saveJSON(pinPath('json'), pin);
         }
-        if (data?.png?.diff?.zones) {
-            data.png.diff.zones[index].status = status;
-        }
-        await this.storage.saveJSON(filePath('json'), data);
-        return data;
-    }
-
-    async setZonesStatus(projectId: string, timestamp: string, id: string, status: ChangeStatus): Promise<PageData> {
-        const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
-        const page: PageData = await this.storage.readJSON(filePath('json'));
-        let newPage: PageData;
-        for (let index = 0; index < page!.png!.diff!.zones.length; index++) {
-            newPage = await this.setZoneStatus(projectId, timestamp, id, index, status);
-        }
-        return newPage!;
+        return this.storage.applyChanges(changesToApply);
     }
 
     async startCrawler(projectId: string, browser?: Browser): Promise<StartCrawler> {

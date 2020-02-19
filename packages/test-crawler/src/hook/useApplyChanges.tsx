@@ -4,32 +4,25 @@ import Button from 'antd/lib/button';
 import message from 'antd/lib/message';
 import Icon from 'antd/lib/icon';
 import Badge from 'antd/lib/badge';
+import { Prompt } from 'react-router-dom';
 import { useProject } from '../projects/useProject';
 import { StorageType } from '../server/storage.typing';
 import { timestampToString } from '../utils';
 import { getColorByStatus } from '../diff/DiffZone';
-import { ChangeStatus } from '../server/typing';
-
-export enum ChangeType {
-    setZoneStatus = 'setZoneStatus',
-    pin = 'pin',
-}
-
-export interface ChangeItem {
-    key: string;
-    type: ChangeType;
-    args: any[],
-}
+import { ChangeStatus, ChangeItem, ChangeType } from '../server/typing';
+import { applyChanges } from '../server/service';
 
 type Changes = { [key: string]: ChangeItem };
 
 const ApplyChangesContext = React.createContext<{
     changes: Changes,
-    apply: () => Promise<void>,
+    apply: (storageType: StorageType) => () => Promise<void>,
     add: (changeItem: ChangeItem) => void,
+    cancel: () => void,
 }>({
     changes: {},
-    apply: async () => { },
+    apply: () => async () => { },
+    cancel: () => { },
     add: () => { },
 });
 
@@ -39,10 +32,18 @@ export function ApplyChangesProvider({ children }: React.PropsWithChildren<any>)
     return (
         <ApplyChangesContext.Provider value={{
             changes,
-            apply: async () => { },
+            cancel: () => {
+                setChanges({});
+                window.location.reload();
+            },
+            apply: (storageType: StorageType) => async () => {
+                await applyChanges(storageType, Object.values(changes));
+                setChanges({});
+                message.success(`Changes submitted.`, 2);
+            },
             add: (changeItem: ChangeItem) => {
                 changes[changeItem.key] = changeItem;
-                setChanges({...changes});
+                setChanges({ ...changes });
                 clearTimeout(messageTimer);
                 messageTimer = setTimeout(() => message.success(`${Object.values(changes).length} changes waiting for approval.`, 1), 100);
             },
@@ -63,49 +64,58 @@ const applyChangesStyle = {
 }
 
 export const ApplyChangesInfo = () => {
-    const { changes } = useApplyChanges();
+    const { changes, apply, cancel } = useApplyChanges();
     const [open, setOpen] = React.useState(true);
     if (!Object.values(changes).length) {
+        window.onbeforeunload = () => false;
         return null;
     }
+    window.onbeforeunload = () => true;
 
     const changesValues = Object.values(changes);
-    const [storageType, projectId, timestamp] = changesValues[0].args;
+    const { storageType, item: { props: { projectId, timestamp } } } = changesValues[0];
     const values = {
         valid: 0,
         report: 0,
         pin: 0,
     }
-    changesValues.forEach(({ type, args }) => {
-        if (type === ChangeType.setZoneStatus) {
-            let status = args[args.length-1] as ChangeStatus; // status is last arg from args
+    changesValues.forEach(({ item }) => {
+        if (item.type === ChangeType.setZoneStatus) {
+            let { status } = item.props;
             if (status === ChangeStatus.zonePin) status = ChangeStatus.valid;
             (values as any)[status]++;
-        } else if (type === ChangeType.pin) {
+        } else if (item.type === ChangeType.pin) {
             values.pin++;
         }
     });
-    return !open ? (
-        <Button
-            style={applyChangesStyle}
-            type="primary"
-            size="small"
-            onClick={() => setOpen(true)}
-        >
-            <Badge count={changesValues.length} style={applyChangesStyle}>View pending</Badge>
-        </Button>
-    ) : (
-            <ApplyChangesCard
-                setOpen={setOpen}
-                storageType={storageType}
-                projectId={projectId}
-                timestamp={timestamp}
-                values={values}
-            />
-        );
+    return <>
+        <Prompt
+            message='You have unsaved changes, are you sure you want to leave?'
+        />
+        {
+            !open ? (
+                <Button
+                    style={applyChangesStyle}
+                    type="primary"
+                    size="small"
+                    onClick={() => setOpen(true)}
+                >
+                    <Badge count={changesValues.length} style={applyChangesStyle}>View pending</Badge>
+                </Button>
+            ) : (
+                    <ApplyChangesCard
+                        setOpen={setOpen}
+                        storageType={storageType}
+                        projectId={projectId}
+                        timestamp={timestamp}
+                        values={values}
+                        apply={apply}
+                        cancel={cancel}
+                    />
+                )
+            }
+    </>
 }
-
-// need to add animation
 
 export const ApplyChangesCard = ({
     storageType,
@@ -113,6 +123,8 @@ export const ApplyChangesCard = ({
     timestamp,
     setOpen,
     values,
+    apply,
+    cancel,
 }: {
     storageType: StorageType,
     projectId: string,
@@ -123,10 +135,9 @@ export const ApplyChangesCard = ({
         report: number,
         pin: number,
     },
-}) => {
-    // const { project } = useProject(storageType, projectId);
-
-    return (
+    apply: (storageType: StorageType) => () => Promise<void>,
+    cancel: () => void,
+}) => (
         <Card
             style={{ ...applyChangesStyle, animation: '0.1s ease-out 0s 1 slideInFromLeft', }}
             size="small"
@@ -157,14 +168,13 @@ export const ApplyChangesCard = ({
                 }
             </p>
             <div style={{ textAlign: 'center' }}>
-                <Button icon="undo" size="small">Cancel</Button>
+                <Button icon="undo" size="small" onClick={cancel}>Cancel</Button>
                 &nbsp;
-                    <Button size="small" icon="check">Apply</Button>
+                <Button size="small" icon="check" onClick={apply(storageType)}>Apply</Button>
             </div>
 
         </Card>
     );
-}
 
 export const ApplyChangesProjectName = ({
     storageType,

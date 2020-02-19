@@ -72,6 +72,10 @@ class GitHubStorage extends Storage_1.Storage {
     get browsers() {
         return Object.values(typing_1.Browser);
     }
+    applyChanges(changes) {
+        console.log('need to call CI', changes);
+        return;
+    }
     readdir(path) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {

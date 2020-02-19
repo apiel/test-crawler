@@ -1,11 +1,8 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
-import message from 'antd/lib/message';
-import notification from 'antd/lib/notification';
-import { setZonesStatus } from '../server/service';
-import { PageData, ChangeStatus } from '../server/typing';
+import { PageData, ChangeStatus, ChangeItem, ChangeType } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges, ChangeItem, ChangeType } from '../hook/useApplyChanges';
+import { useApplyChanges } from '../hook/useApplyChanges';
 
 const onClick = (
     add: (changeItem: ChangeItem) => void,
@@ -15,8 +12,11 @@ const onClick = (
     pages[pageIndex].png?.diff?.zones?.forEach((zone, index) => {
         add({
             key: [ChangeType.setZoneStatus, storageType, projectId, timestamp, id, index].join('-'),
-            type: ChangeType.setZoneStatus,
-            args: [storageType, projectId, timestamp, id, index, status],
+            storageType,
+            item: {
+                type: ChangeType.setZoneStatus,
+                props: { projectId, timestamp, id, index, status }
+            }
         });
         zone.status = status;
     });

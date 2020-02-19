@@ -59,14 +59,8 @@ export function getThumbnail(...args: any) {
 export function removePin(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "removePin", args);
 }
-export function pin(...args: any) {
-  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "pin", args);
-}
-export function setZoneStatus(...args: any) {
-  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setZoneStatus", args);
-}
-export function setZonesStatus(...args: any) {
-  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setZonesStatus", args);
+export function applyChanges(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "applyChanges", args);
 }
 export function setStatus(...args: any) {
   return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setStatus", args);

@@ -7,6 +7,7 @@ import { CrawlTarget, Job, Browser } from '../../typing';
 import { config, GitHubConfig } from '../config';
 import { ERR } from '../../error';
 import { getCookie } from '../CrawlerProviderStorage';
+import { ChangesToApply } from 'test-crawler-apply';
 
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
@@ -88,6 +89,12 @@ export class GitHubStorage extends Storage {
 
     get browsers(): Browser[] {
         return Object.values(Browser);
+    }
+
+    applyChanges(changes: ChangesToApply[]): Promise<void> {
+        // here we have to call CI
+        console.log('need to call CI', changes);
+        return;
     }
 
     async readdir(path: string) {

@@ -13,6 +13,7 @@ import {
     BeforeAfterType,
     Browser,
     ChangeStatus,
+    ChangeItem,
 } from './typing';
 import { StorageType } from './storage.typing';
 
@@ -123,21 +124,9 @@ export function removePin(storageType: StorageType, projectId: string, id: strin
     return crawlerProvider.removeFromPins(projectId, id);
 }
 
-export function pin(storageType: StorageType, projectId: string, timestamp: string, id: string): Promise<PageData> {
+export function applyChanges(storageType: StorageType, changes: ChangeItem[]): Promise<void> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.copyToPins(projectId, timestamp, id);
-}
-
-export async function setZoneStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, index: number, status: ChangeStatus): Promise<PageData[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    await crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
-    return getPages(storageType, projectId, timestamp);
-}
-
-export async function setZonesStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, status: ChangeStatus): Promise<PageData[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    await crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
-    return getPages(storageType, projectId, timestamp);
+    return crawlerProvider.applyChanges(changes);
 }
 
 export function setStatus(storageType: StorageType, projectId: string, timestamp: string, status: string): Promise<Crawler> {

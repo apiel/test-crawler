@@ -1,27 +1,32 @@
 {
-    "name": "pixdiff-zone",
+    "name": "test-crawler-apply",
     "version": "2.2.3",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
     "license": "MIT",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "description": "test-crawler apply",
+    "homepage": "https://apiel.github.io/test-crawler/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/apiel/test-crawler"
+    },
+    "engines": {
+        "node": ">=11"
+    },
     "scripts": {
         "prepublishOnly": "yarn build",
         "prebuild": "rm -rf dist/",
         "build": "tsc -p tsconfig.json",
-        "example": "ts-node example/example.ts",
         "lint": "tslint -p tsconfig.json -c tslint.json"
     },
     "dependencies": {
+        "pixdiff-zone": "^1.0.0-alpha.0"
     },
     "devDependencies": {
-        "@types/fs-extra": "^8.0.1",
-        "@types/pngjs": "^3.4.0",
-        "fs-extra": "^8.1.0",
-        "pngjs": "^3.3.3",
+        "@types/node": "^13.7.2",
         "ts-node": "^8.6.2",
         "tslint": "^6.0.0",
         "typescript": "^3.7.5"
-    },
-    "gitHead": "6221476c6a71bcdf843bb2a950781820c362de68"
+    }
 }

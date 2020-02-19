@@ -1,4 +1,5 @@
 import { WsContext, Context } from 'isomor-server';
+import { ChangesToApply, applyChanges } from 'test-crawler-apply';
 
 import { Storage } from './Storage';
 import {
@@ -12,10 +13,10 @@ import {
     remove,
     outputFile,
 } from 'fs-extra';
-import { CrawlTarget, Job, Browser } from '../../typing';
+import { CrawlTarget, Job, Browser, ChangeItem, ChangeType } from '../../typing';
 import { crawl } from '../crawl';
 import { join } from 'path';
-import { ROOT_FOLDER } from '../config';
+import { ROOT_FOLDER, PROJECT_FOLDER, CRAWL_FOLDER } from '../config';
 
 export class LocalStorage extends Storage {
     constructor(protected ctx?: undefined | WsContext | Context) {
@@ -34,6 +35,10 @@ export class LocalStorage extends Storage {
             browsers.push(Browser.IeSelenium);
         }
         return browsers;
+    }
+
+    async applyChanges(changes: ChangesToApply[]): Promise<void> {
+        return applyChanges(changes);
     }
 
     async readdir(path: string) {

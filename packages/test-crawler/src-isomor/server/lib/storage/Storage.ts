@@ -1,4 +1,5 @@
 import { CrawlTarget, Job, Browser } from '../../typing';
+import { ChangesToApply } from 'test-crawler-apply';
 
 export abstract class Storage {
     abstract get browsers(): Browser[];
@@ -16,4 +17,5 @@ export abstract class Storage {
     abstract remove(file: string): Promise<void>;
     abstract crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void, browser?: Browser): Promise<undefined | string>;
     abstract jobs(projectId: string): Promise<Job[]>;
+    abstract applyChanges(changes: ChangesToApply[]): Promise<void>;
 }

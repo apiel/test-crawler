@@ -119,27 +119,11 @@ function removePin(storageType, projectId, id) {
     return crawlerProvider.removeFromPins(projectId, id);
 }
 exports.removePin = removePin;
-function pin(storageType, projectId, timestamp, id) {
+function applyChanges(storageType, changes) {
     const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-    return crawlerProvider.copyToPins(projectId, timestamp, id);
+    return crawlerProvider.applyChanges(changes);
 }
-exports.pin = pin;
-function setZoneStatus(storageType, projectId, timestamp, id, index, status) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-        yield crawlerProvider.setZoneStatus(projectId, timestamp, id, index, status);
-        return getPages(storageType, projectId, timestamp);
-    });
-}
-exports.setZoneStatus = setZoneStatus;
-function setZonesStatus(storageType, projectId, timestamp, id, status) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-        yield crawlerProvider.setZonesStatus(projectId, timestamp, id, status);
-        return getPages(storageType, projectId, timestamp);
-    });
-}
-exports.setZonesStatus = setZonesStatus;
+exports.applyChanges = applyChanges;
 function setStatus(storageType, projectId, timestamp, status) {
     const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
     return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);

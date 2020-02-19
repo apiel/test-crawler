@@ -1,15 +1,14 @@
 import { info } from 'logol';
+import { copyToPins } from 'test-crawler-apply';
 import { getFilePath } from '../utils';
-import { PIN_FOLDER, PROJECT_FOLDER } from '../config';
+import { PIN_FOLDER, PROJECT_FOLDER, CRAWL_FOLDER } from '../config';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
 import { PageData, Crawler, ChangeStatus } from '../../typing';
 import { FilePath } from '../utils';
-import { CrawlerProvider } from '../index';
 import { join } from 'path';
-import { StorageType } from '../../storage.typing';
 
 async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
     const file = filePath('png');
@@ -86,8 +85,9 @@ export async function prepare(projectId: string, id: string, distFolder: string,
             info('DIFF', 'new png');
         }
     } else if (crawler.autopin) {
-        const crawlerProvider = new CrawlerProvider(StorageType.Local);
-        crawlerProvider.copyToPins(projectId, crawler.timestamp, id);
+        const srcBase = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, crawler.timestamp, id);
+        const dstBase = join(PROJECT_FOLDER, projectId, PIN_FOLDER, id);
+        copyToPins({ srcBase, dstBase });
         // we might want to put a flag to the page saying that it was automatically pin
     }
     return {

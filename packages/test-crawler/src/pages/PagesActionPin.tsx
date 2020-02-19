@@ -1,10 +1,8 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
-import message from 'antd/lib/message';
-import notification from 'antd/lib/notification';
-import { pin } from '../server/service';
 import { StorageType } from '../server/storage.typing';
-import { useApplyChanges, ChangeItem, ChangeType } from '../hook/useApplyChanges';
+import { useApplyChanges } from '../hook/useApplyChanges';
+import { ChangeItem, ChangeType } from '../server/typing';
 
 
 const onPin = (
@@ -13,20 +11,12 @@ const onPin = (
 ) => async () => {
     add({
         key: [ChangeType.pin, storageType, projectId, timestamp.toString(), id].join('-'),
-        type: ChangeType.pin,
-        args: [storageType, projectId, timestamp.toString(), id],
+        storageType,
+        item: {
+            type: ChangeType.pin,
+            props: { projectId, timestamp, id },
+        }
     });
-    // try {
-    //     const hide = message.loading('Pin in progress..', 0);
-    //     await pin(storageType, projectId, timestamp.toString(), id);
-    //     hide();
-    //     message.success('Page pinned as reference for comparison.', 2);
-    // } catch (error) {
-    //     notification['error']({
-    //         message: 'Something went wrong!',
-    //         description: error.toString(),
-    //     });
-    // }
 }
 
 interface Props {

@@ -1,5 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var ChangeType;
+(function (ChangeType) {
+    ChangeType["setZoneStatus"] = "setZoneStatus";
+    ChangeType["pin"] = "pin";
+})(ChangeType = exports.ChangeType || (exports.ChangeType = {}));
 var ChangeStatus;
 (function (ChangeStatus) {
     ChangeStatus["valid"] = "valid";
