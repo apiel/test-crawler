@@ -25,7 +25,6 @@ const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const minimatch = require("minimatch");
 const config_1 = require("../config");
-const utils_1 = require("../utils");
 const index_1 = require("../index");
 const diff_1 = require("../diff");
 const typing_1 = require("../../typing");
@@ -58,8 +57,8 @@ function addToQueue(url, viewport, distFolder, limit = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         const cleanUrl = url.replace(/(\n\r|\r\n|\n|\r)/gm, '');
         const id = md5(`${cleanUrl}-${JSON.stringify(viewport)}`);
-        const histFile = utils_1.getFilePath(id, distFolder)('json');
-        const queueFile = utils_1.getFilePath(id, getQueueFolder(distFolder))('json');
+        const histFile = path_1.join(distFolder, `${id}.json`);
+        const queueFile = path_1.join(getQueueFolder(distFolder), `${id}.json`);
         if (!(yield fs_extra_1.pathExists(queueFile)) && !(yield fs_extra_1.pathExists(histFile))) {
             if (!limit || (yield updateSiblingCount(cleanUrl, distFolder)) < limit) {
                 yield fs_extra_1.outputJson(queueFile, { url: cleanUrl, id }, { spaces: 4 });
@@ -102,30 +101,32 @@ function setConsumerMaxCount(crawlTarget) {
 function getConsumerMaxCount() {
     return consumerMaxCount;
 }
-function startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder) {
+function startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     if (browser === typing_1.Browser.FirefoxSelenium) {
-        return selenium_firefox_1.startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return selenium_firefox_1.startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
     else if (browser === typing_1.Browser.ChromePuppeteer) {
-        return selenium_chrome_1.startSeleniumChrome(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return selenium_chrome_1.startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
     else if (browser === typing_1.Browser.IeSelenium) {
-        return selenium_ie_1.startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return selenium_ie_1.startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
     else if (browser === typing_1.Browser.SafariSelenium) {
-        return selenium_safari_1.startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return selenium_safari_1.startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
-    return puppeteer_1.startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
+    return puppeteer_1.startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
 }
 function loadPage(projectId, id, url, distFolder, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         consumerRunning++;
-        const filePath = utils_1.getFilePath(id, distFolder);
+        const jsonFile = path_1.join(distFolder, `${id}.json`);
+        const pngFile = path_1.join(distFolder, `${id}.png`);
+        const htmlFile = path_1.join(distFolder, `${id}.html`);
         const crawler = yield fs_extra_1.readJSON(path_1.join(distFolder, '_.json'));
         const { viewport, url: baseUrl, method, limit, browser } = crawler;
         try {
-            const _a = yield startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder), { links } = _a, output = __rest(_a, ["links"]);
-            yield fs_extra_1.outputJson(filePath('json'), output, { spaces: 4 });
+            const _a = yield startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder), { links } = _a, output = __rest(_a, ["links"]);
+            yield fs_extra_1.outputJson(jsonFile, output, { spaces: 4 });
             if (method !== index_1.CrawlerMethod.URLs && util_1.isArray(links)) {
                 const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
                 yield addUrls(siteUrls, viewport, distFolder, limit);
@@ -144,7 +145,7 @@ function loadPage(projectId, id, url, distFolder, retry = 0) {
                 yield loadPage(projectId, id, url, distFolder, retry + 1);
             }
             else {
-                yield fs_extra_1.outputJson(filePath('json'), { url, id, error: err.toString() }, { spaces: 4 });
+                yield fs_extra_1.outputJson(jsonFile, { url, id, error: err.toString() }, { spaces: 4 });
                 resultsQueue.push({
                     folder: distFolder,
                     isError: true,
@@ -207,8 +208,7 @@ function pickFromQueue(projectId, pagesFolder) {
                 try {
                     const queueFile = path_1.join(queueFolder, file);
                     const { id, url } = yield fs_extra_1.readJSON(queueFile);
-                    const filePath = utils_1.getFilePath(id, distFolder);
-                    yield fs_extra_1.move(queueFile, filePath('json'));
+                    yield fs_extra_1.move(queueFile, path_1.join(distFolder, `${id}.json`));
                     return { projectId, id, url, distFolder };
                 }
                 catch (error) {

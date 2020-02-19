@@ -1,6 +1,5 @@
 import { Builder } from 'selenium-webdriver';
 
-import { FilePath } from '../../utils';
 import { Crawler } from '../../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 import { ROOT_FOLDER } from '../../config';
@@ -13,7 +12,8 @@ interface Viewport {
 
 export async function startSeleniumEdge(
     viewport: Viewport,
-    filePath: FilePath,
+    pngFile: string,
+    htmlFile: string,
     crawler: Crawler,
     projectId: string,
     id: string,
@@ -29,7 +29,7 @@ export async function startSeleniumEdge(
         .forBrowser('MicrosoftEdge')
         .build();
     driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
-    return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
+    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {

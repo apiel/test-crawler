@@ -13,14 +13,14 @@ const selenium_webdriver_1 = require("selenium-webdriver");
 const firefox = require("selenium-webdriver/firefox");
 const config_1 = require("../../config");
 const selenium_core_1 = require("./selenium-core");
-function startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder) {
+function startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const scrollHeight = yield getScrollHeight(url, viewport);
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('firefox')
             .setFirefoxOptions(new firefox.Options().headless().windowSize(Object.assign(Object.assign({}, viewport), { height: scrollHeight || viewport.height })).setPreference('general.useragent.override', config_1.USER_AGENT))
             .build();
-        return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
+        return selenium_core_1.startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     });
 }
 exports.startSeleniumFirefox = startSeleniumFirefox;

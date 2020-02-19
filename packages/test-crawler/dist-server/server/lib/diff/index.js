@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
-const utils_1 = require("../utils");
 const config_1 = require("../config");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
@@ -19,12 +18,11 @@ const typing_1 = require("../../typing");
 const index_1 = require("../index");
 const path_1 = require("path");
 const storage_typing_1 = require("../../storage.typing");
-function parsePng(data, filePath, basePath) {
+function parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile) {
     return __awaiter(this, void 0, void 0, function* () {
-        const file = filePath('png');
         const { id, url } = data;
-        const actual = yield fs_extra_1.readFile(file);
-        const expected = yield fs_extra_1.readFile(basePath('png'));
+        const actual = yield fs_extra_1.readFile(pngFile);
+        const expected = yield fs_extra_1.readFile(pinPngFile);
         const rawActual = pngjs_1.PNG.sync.read(actual);
         const rawExpected = pngjs_1.PNG.sync.read(expected);
         let { width, height } = rawActual;
@@ -38,15 +36,15 @@ function parsePng(data, filePath, basePath) {
         logol_1.info('PNG', 'zone', zones);
         if (pixelDiffRatio) {
             const buffer = pngjs_1.PNG.sync.write(diffImage, { colorType: 6 });
-            const diffFile = `${file}.diff.png`;
+            const diffFile = `${pngFile}.diff.png`;
             yield fs_extra_1.writeFile(diffFile, buffer);
             logol_1.info('PNG', id, url, 'diff file:', diffFile);
         }
         data.png.diff = {
             pixelDiffRatio,
-            zones: yield parseZones(basePath, zones),
+            zones: yield parseZones(pinJsonFile, zones),
         };
-        yield fs_extra_1.writeJSON(filePath('json'), data, { spaces: 4 });
+        yield fs_extra_1.writeJSON(jsonFile, data, { spaces: 4 });
         return zones.length;
     });
 }
@@ -57,9 +55,9 @@ function cropPng(png, width, height) {
     origin.bitblt(cropped, 0, 0, width, height);
     return cropped;
 }
-function parseZones(basePath, zones) {
+function parseZones(pinJsonFile, zones) {
     return __awaiter(this, void 0, void 0, function* () {
-        const base = yield fs_extra_1.readJson(basePath('json'));
+        const base = yield fs_extra_1.readJson(pinJsonFile);
         const baseZones = base.png.diff.zones.map(z => z.zone);
         return zones.map(zone => ({
             zone,
@@ -71,13 +69,15 @@ function parseZones(basePath, zones) {
 }
 function prepare(projectId, id, distFolder, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        const basePath = utils_1.getFilePath(id, path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER));
-        const filePath = utils_1.getFilePath(id, distFolder);
-        const data = yield fs_extra_1.readJson(filePath('json'));
+        const pngFile = path_1.join(distFolder, `${id}.png`);
+        const jsonFile = path_1.join(distFolder, `${id}.json`);
+        const pinPngFile = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, `${id}.png`);
+        const pinJsonFile = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, `${id}.json`);
+        const data = yield fs_extra_1.readJson(jsonFile);
         let diffZoneCount = 0;
-        if (yield fs_extra_1.pathExists(basePath('json'))) {
-            if (yield fs_extra_1.pathExists(basePath('png'))) {
-                diffZoneCount = yield parsePng(data, filePath, basePath);
+        if (yield fs_extra_1.pathExists(pinJsonFile)) {
+            if (yield fs_extra_1.pathExists(pinPngFile)) {
+                diffZoneCount = yield parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile);
             }
             else {
                 logol_1.info('DIFF', 'new png');

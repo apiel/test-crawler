@@ -3,14 +3,14 @@ import { launch, Viewport } from 'puppeteer';
 import { error, info } from 'logol';
 
 import { USER_AGENT, TIMEOUT } from '../../config';
-import { FilePath } from '../../utils';
 import { writeFile } from 'fs-extra';
 import { Crawler } from '../../../typing';
 import { injectCodes } from '..';
 
 export async function startPuppeteer(
     viewport: Viewport,
-    filePath: FilePath,
+    pngFile: string,
+    htmlFile: string,
     crawler: Crawler,
     projectId: string,
     id: string,
@@ -31,7 +31,7 @@ export async function startPuppeteer(
             timeout: TIMEOUT,
         });
         const html = await page.content();
-        await writeFile(filePath('html'), html);
+        await writeFile(htmlFile, html);
 
         const metrics = await page.metrics();
         const performance = JSON.parse(await page.evaluate(
@@ -49,7 +49,7 @@ export async function startPuppeteer(
             error('Something went wrong while injecting the code', id, url, err);
         }
 
-        await page.screenshot({ path: filePath('png'), fullPage: true });
+        await page.screenshot({ path: pngFile, fullPage: true });
 
         const png = { width: viewport.width };
 

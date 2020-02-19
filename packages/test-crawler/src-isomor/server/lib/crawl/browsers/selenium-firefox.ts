@@ -2,7 +2,6 @@ import { Builder } from 'selenium-webdriver';
 import * as firefox from 'selenium-webdriver/firefox';
 
 import { USER_AGENT } from '../../config';
-import { FilePath } from '../../utils';
 import { Crawler } from '../../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 
@@ -13,7 +12,8 @@ interface Viewport {
 
 export async function startSeleniumFirefox(
     viewport: Viewport,
-    filePath: FilePath,
+    pngFile: string,
+    htmlFile: string,
     crawler: Crawler,
     projectId: string,
     id: string,
@@ -28,7 +28,7 @@ export async function startSeleniumFirefox(
             height: scrollHeight || viewport.height,
         }).setPreference('general.useragent.override', USER_AGENT))
         .build();
-    return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
+    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {

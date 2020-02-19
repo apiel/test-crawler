@@ -4,7 +4,6 @@ import { groupOverlappingZone } from 'pixdiff-zone';
 import { WsContext, Context } from 'isomor-server';
 
 import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
-import { getFilePath } from './utils';
 
 import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser, ZoneStatus } from '../typing';
 import { StorageType } from '../storage.typing';
@@ -69,38 +68,42 @@ export class CrawlerProvider extends CrawlerProviderStorage {
 
     async copyToPins(projectId: string, timestamp: string, id: string): Promise<PageData> {
         const crawlerFolder = this.join(projectId, CRAWL_FOLDER, timestamp);
-        const crawlerFolderPath = getFilePath(id, crawlerFolder);
+
+        const jsonFile = join(crawlerFolder, `${id}.json`);
+        const htmlFile = join(crawlerFolder, `${id}.html`);
+        const pngFile = join(crawlerFolder, `${id}.png`);
 
         // set diff to 0
         // instead to load this file again, we could get the data from the frontend?
-        const data: PageData = await this.storage.readJSON(crawlerFolderPath('json'));
+        const data: PageData = await this.storage.readJSON(jsonFile);
         if (data?.png) {
             data.png.diff = {
                 pixelDiffRatio: 0,
                 zones: [],
             };
             if (data.png.diff.pixelDiffRatio > 0) {
-                await this.storage.saveJSON(crawlerFolderPath('json'), data);
+                await this.storage.saveJSON(jsonFile, data);
             }
         }
 
+        const pinJsonFile = this.join(projectId, PIN_FOLDER, `${id}.json`);
+        const pinHtmlFile = this.join(projectId, PIN_FOLDER, `${id}.html`);
+        const pinPngFile = this.join(projectId, PIN_FOLDER, `${id}.png`);
+
         // copy files
-        const pinFolderPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
-        await this.storage.saveJSON(pinFolderPath('json'), data);
-        await this.storage.copy(crawlerFolderPath('html'), pinFolderPath('html'));
+        await this.storage.saveJSON(pinJsonFile, data);
+        await this.storage.copy(htmlFile, pinHtmlFile);
 
         // await this.storage.copyBlob(crawlerFolderPath('png'), pinFolderPath('png'));
-        this.storage.copyBlob(crawlerFolderPath('png'), pinFolderPath('png')); // dont wait for it, to slow, we will fix it soon
+        this.storage.copyBlob(pngFile, pinPngFile); // dont wait for it, to slow, we will fix it soon
 
         return data;
     }
 
     async removeFromPins(projectId: string, id: string): Promise<PageData[]> {
-        const pinFolderPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
-
-        await this.storage.remove(pinFolderPath('png'));
-        await this.storage.remove(pinFolderPath('html'));
-        await this.storage.remove(pinFolderPath('json'));
+        await this.storage.remove(this.join(projectId, PIN_FOLDER, `${id}.png`));
+        await this.storage.remove(this.join(projectId, PIN_FOLDER, `${id}.html`));
+        await this.storage.remove(this.join(projectId, PIN_FOLDER, `${id}.json`));
 
         return this.getPins(projectId);
     }
@@ -109,7 +112,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         const target = folder === 'base'
             ? this.join(projectId, PIN_FOLDER)
             : this.join(projectId, CRAWL_FOLDER, folder);
-        return this.storage.blob(getFilePath(id, target)('png'));
+        return this.storage.blob(join(target, `${id}.png`));
     }
 
     saveBeforeAfterCode(projectId: string, type: BeforeAfterType, code: string): Promise<void> {
@@ -129,8 +132,8 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         }
         try {
             const buf = await this.storage.read(this.join(projectId, `${type}`));
-            return buf?.toString() || '';   
-        } catch (err) {}
+            return buf?.toString() || '';
+        } catch (err) { }
         return '';
     }
 
@@ -184,7 +187,8 @@ export class CrawlerProvider extends CrawlerProviderStorage {
     }
 
     private getPageInFolder(folder: string, id: string): Promise<PageData> {
-        return this.storage.readJSON(getFilePath(id, folder)('json'));
+        return this.storage.readJSON(join(folder, `${id}.json`));
+
     }
 
     private async getPinsInFolder(folder: string): Promise<PageData[]> {
@@ -205,11 +209,11 @@ export class CrawlerProvider extends CrawlerProviderStorage {
 
     async setZoneStatus(projectId: string, timestamp: string, id: string, status: ZoneStatus, index?: number): Promise<PageData[]> {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
-        const filePath = getFilePath(id, folder);
-        const data: PageData = await this.storage.readJSON(filePath('json'));
+        const fileJson = join(folder, `${id}.json`)
+        const data: PageData = await this.storage.readJSON(fileJson);
         if (index && status === ZoneStatus.zonePin) {
-            const pinPath = getFilePath(id, this.join(projectId, PIN_FOLDER));
-            const pin: PageData = await this.storage.readJSON(pinPath('json'));
+            const pinJsonFile = this.join(projectId, PIN_FOLDER, `${id}.json`);
+            const pin: PageData = await this.storage.readJSON(pinJsonFile);
 
             if (pin?.png?.diff?.zones && data?.png?.diff?.zones) {
                 if (index) {
@@ -221,7 +225,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
                 pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
             }
 
-            await this.storage.saveJSON(pinPath('json'), pin);
+            await this.storage.saveJSON(pinJsonFile, pin);
         }
         if (data?.png?.diff?.zones) {
             if (index) {
@@ -230,7 +234,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
                 data.png.diff.zones.forEach(zone => zone.status = status);
             }
         }
-        await this.storage.saveJSON(filePath('json'), data);
+        await this.storage.saveJSON(fileJson, data);
         return this.getPages(projectId, timestamp);
     }
 

@@ -1,21 +1,24 @@
 import { info } from 'logol';
-import { getFilePath } from '../utils';
 import { PIN_FOLDER, PROJECT_FOLDER } from '../config';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
 import { PageData, Crawler, ZoneStatus } from '../../typing';
-import { FilePath } from '../utils';
 import { CrawlerProvider } from '../index';
 import { join } from 'path';
 import { StorageType } from '../../storage.typing';
 
-async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) {
-    const file = filePath('png');
+async function parsePng(
+    data: PageData,
+    pngFile: string,
+    jsonFile: string,
+    pinPngFile: string,
+    pinJsonFile: string,
+) {
     const { id, url } = data;
-    const actual = await readFile(file);
-    const expected = await readFile(basePath('png'));
+    const actual = await readFile(pngFile);
+    const expected = await readFile(pinPngFile);
     const rawActual = PNG.sync.read(actual);
     const rawExpected = PNG.sync.read(expected);
 
@@ -35,9 +38,9 @@ async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) 
     info('PNG', id, url, `diff ratio: ${pixelDiffRatio}`);
     info('PNG', 'zone', zones);
 
-    if (pixelDiffRatio) {
+    if (pixelDiffRatio) { // what is this?
         const buffer = PNG.sync.write(diffImage, { colorType: 6 });
-        const diffFile = `${file}.diff.png`;
+        const diffFile = `${pngFile}.diff.png`;
         await writeFile(diffFile, buffer);
         info('PNG', id, url, 'diff file:', diffFile);
     }
@@ -45,9 +48,9 @@ async function parsePng(data: PageData, filePath: FilePath, basePath: FilePath) 
     data.png.diff = {
         pixelDiffRatio,
         // zones: zones.map(zone => ({ zone, status: 'diff' })),
-        zones: await parseZones(basePath, zones),
+        zones: await parseZones(pinJsonFile, zones),
     };
-    await writeJSON(filePath('json'), data, { spaces: 4 });
+    await writeJSON(jsonFile, data, { spaces: 4 });
 
     return zones.length;
 }
@@ -62,8 +65,8 @@ function cropPng(png: PNG, width: number, height: number) {
     return cropped;
 }
 
-async function parseZones(basePath: FilePath, zones: Zone[]) {
-    const base: PageData = await readJson(basePath('json'));
+async function parseZones(pinJsonFile: string, zones: Zone[]) {
+    const base: PageData = await readJson(pinJsonFile);
     const baseZones = base.png.diff.zones.map(z => z.zone);
     return zones.map(zone => ({
         zone,
@@ -74,14 +77,17 @@ async function parseZones(basePath: FilePath, zones: Zone[]) {
 }
 
 export async function prepare(projectId: string, id: string, distFolder: string, crawler: Crawler) {
-    const basePath = getFilePath(id, join(PROJECT_FOLDER, projectId, PIN_FOLDER));
-    const filePath = getFilePath(id, distFolder);
-    const data = await readJson(filePath('json'));
+    const pngFile = join(distFolder, `${id}.png`);
+    const jsonFile = join(distFolder, `${id}.json`);
+    const pinPngFile = join(PROJECT_FOLDER, projectId, PIN_FOLDER, `${id}.png`);
+    const pinJsonFile = join(PROJECT_FOLDER, projectId, PIN_FOLDER, `${id}.json`);
+
+    const data = await readJson(jsonFile);
 
     let diffZoneCount = 0;
-    if (await pathExists(basePath('json'))) {
-        if (await pathExists(basePath('png'))) {
-            diffZoneCount = await parsePng(data, filePath, basePath);
+    if (await pathExists(pinJsonFile)) {
+        if (await pathExists(pinPngFile)) {
+            diffZoneCount = await parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile);
         } else {
             info('DIFF', 'new png');
         }

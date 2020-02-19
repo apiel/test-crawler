@@ -14,9 +14,7 @@ import {
     MAX_HISTORY,
     ROOT_FOLDER,
 } from '../config';
-import {
-    getFilePath, FilePath,
-} from '../utils';
+
 import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
 import { Crawler, CrawlerInput, CrawlTarget, Browser, Project } from '../../typing';
@@ -30,7 +28,7 @@ import { startPuppeteer } from './browsers/puppeteer';
 import { startSeleniumFirefox } from './browsers/selenium-firefox';
 import { startSeleniumChrome } from './browsers/selenium-chrome';
 import { startSeleniumIE } from './browsers/selenium-ie';
-import { startSeleniumEdge } from './browsers/selenium-edge';
+// import { startSeleniumEdge } from './browsers/selenium-edge';
 import { startSeleniumSafari } from './browsers/selenium-safari';
 
 interface ResultQueue {
@@ -60,8 +58,8 @@ export async function addToQueue(url: string, viewport: Viewport, distFolder: st
     const cleanUrl = url.replace(/(\n\r|\r\n|\n|\r)/gm, '');
     // console.log('addToQueue', cleanUrl, viewport, distFolder);
     const id = md5(`${cleanUrl}-${JSON.stringify(viewport)}`);
-    const histFile = getFilePath(id, distFolder)('json');
-    const queueFile = getFilePath(id, getQueueFolder(distFolder))('json');
+    const histFile = join(distFolder, `${id}.json`);
+    const queueFile = join(getQueueFolder(distFolder), `${id}.json`);
 
     if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
         if (!limit || (await updateSiblingCount(cleanUrl, distFolder)) < limit) {
@@ -107,7 +105,8 @@ function getConsumerMaxCount() {
 function startBrowser(
     browser: Browser,
     viewport: Viewport,
-    filePath: FilePath,
+    pngFile: string,
+    htmlFile: string,
     crawler: Crawler,
     projectId: string,
     id: string,
@@ -115,37 +114,35 @@ function startBrowser(
     distFolder: string,
 ) {
     if (browser === Browser.FirefoxSelenium) {
-        return startSeleniumFirefox(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
     else if (browser === Browser.ChromePuppeteer) {
-        return startSeleniumChrome(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
     else if (browser === Browser.IeSelenium) {
-        return startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
     // else if (browser === Browser.EdgeSelenium) {
-    //     return startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder);
+    //     return startSeleniumEdge(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     // }
     else if (browser === Browser.SafariSelenium) {
-        return startSeleniumSafari(viewport, filePath, crawler, projectId, id, url, distFolder);
+        return startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     }
-    return startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder);
+    return startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
 }
 
 async function loadPage(projectId: string, id: string, url: string, distFolder: string, retry: number = 0) {
     consumerRunning++;
-    const filePath = getFilePath(id, distFolder);
+    const jsonFile = join(distFolder, `${id}.json`);
+    const pngFile = join(distFolder, `${id}.png`);
+    const htmlFile = join(distFolder, `${id}.html`);
 
     const crawler: Crawler = await readJSON(join(distFolder, '_.json'));
     const { viewport, url: baseUrl, method, limit, browser } = crawler;
 
     try {
-        const { links, ...output } = await startBrowser(browser, viewport, filePath, crawler, projectId, id, url, distFolder);
-        await outputJson(
-            filePath('json'),
-            output,
-            { spaces: 4 },
-        );
+        const { links, ...output } = await startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
+        await outputJson(jsonFile, output, { spaces: 4 });
 
         if (method !== CrawlerMethod.URLs && isArray(links)) {
             const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0)
@@ -164,7 +161,7 @@ async function loadPage(projectId: string, id: string, url: string, distFolder: 
             warn('Retry crawl', url);
             await loadPage(projectId, id, url, distFolder, retry + 1);
         } else {
-            await outputJson(filePath('json'), { url, id, error: err.toString() }, { spaces: 4 });
+            await outputJson(jsonFile, { url, id, error: err.toString() }, { spaces: 4 });
             resultsQueue.push({
                 folder: distFolder,
                 isError: true,
@@ -246,8 +243,7 @@ async function pickFromQueue(projectId: string, pagesFolder: string): Promise<To
             try {
                 const queueFile = join(queueFolder, file);
                 const { id, url } = await readJSON(queueFile);
-                const filePath = getFilePath(id, distFolder);
-                await move(queueFile, filePath('json'));
+                await move(queueFile, join(distFolder, `${id}.json`));
                 return { projectId, id, url, distFolder };
             } catch (error) {
                 warn('Crawl possible error', error);

@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const __1 = require("..");
-function startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder) {
+function startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             logol_1.info(`browser open "${url}"`);
             yield driver.get(url);
             const html = yield driver.getPageSource();
-            yield fs_extra_1.writeFile(filePath('html'), html);
+            yield fs_extra_1.writeFile(htmlFile, html);
             const performance = yield driver.executeScript("return window.performance");
             let codeErr;
             let links;
@@ -31,7 +31,7 @@ function startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, u
                 logol_1.error('Something went wrong while injecting the code', id, url, err);
             }
             const image = yield driver.takeScreenshot();
-            yield fs_extra_1.outputFile(filePath('png'), Buffer.from(image, 'base64'));
+            yield fs_extra_1.outputFile(pngFile, Buffer.from(image, 'base64'));
             const png = { width: viewport.width };
             return { links, url, id, performance, png, viewport, error: codeErr };
         }

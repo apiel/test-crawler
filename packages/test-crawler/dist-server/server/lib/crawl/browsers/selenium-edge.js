@@ -13,7 +13,7 @@ const selenium_webdriver_1 = require("selenium-webdriver");
 const selenium_core_1 = require("./selenium-core");
 const config_1 = require("../../config");
 const path_1 = require("path");
-function startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, distFolder) {
+function startSeleniumEdge(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const driverPath = path_1.join(config_1.ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftDriver.17.17134.0/driver/');
         process.env.PATH = `${process.env.PATH};${driverPath};`;
@@ -22,7 +22,7 @@ function startSeleniumEdge(viewport, filePath, crawler, projectId, id, url, dist
             .forBrowser('MicrosoftEdge')
             .build();
         driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
-        return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
+        return selenium_core_1.startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     });
 }
 exports.startSeleniumEdge = startSeleniumEdge;

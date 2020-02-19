@@ -14,7 +14,7 @@ const logol_1 = require("logol");
 const config_1 = require("../../config");
 const fs_extra_1 = require("fs-extra");
 const __1 = require("..");
-function startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFolder) {
+function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const browser = yield puppeteer_1.launch({});
         try {
@@ -26,7 +26,7 @@ function startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFol
                 timeout: config_1.TIMEOUT,
             });
             const html = yield page.content();
-            yield fs_extra_1.writeFile(filePath('html'), html);
+            yield fs_extra_1.writeFile(htmlFile, html);
             const metrics = yield page.metrics();
             const performance = JSON.parse(yield page.evaluate(() => JSON.stringify(window.performance)));
             let codeErr;
@@ -39,7 +39,7 @@ function startPuppeteer(viewport, filePath, crawler, projectId, id, url, distFol
                 codeErr = err.toString();
                 logol_1.error('Something went wrong while injecting the code', id, url, err);
             }
-            yield page.screenshot({ path: filePath('png'), fullPage: true });
+            yield page.screenshot({ path: pngFile, fullPage: true });
             const png = { width: viewport.width };
             return { links, url, id, performance, metrics, png, viewport, error: codeErr };
         }

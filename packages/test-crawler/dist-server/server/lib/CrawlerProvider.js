@@ -24,7 +24,6 @@ const path_1 = require("path");
 const md5 = require("md5");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const config_1 = require("./config");
-const utils_1 = require("./utils");
 const typing_1 = require("../typing");
 const CrawlerProviderStorage_1 = require("./CrawlerProviderStorage");
 class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
@@ -80,30 +79,33 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const crawlerFolder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
-            const crawlerFolderPath = utils_1.getFilePath(id, crawlerFolder);
-            const data = yield this.storage.readJSON(crawlerFolderPath('json'));
+            const jsonFile = path_1.join(crawlerFolder, `${id}.json`);
+            const htmlFile = path_1.join(crawlerFolder, `${id}.html`);
+            const pngFile = path_1.join(crawlerFolder, `${id}.png`);
+            const data = yield this.storage.readJSON(jsonFile);
             if ((_a = data) === null || _a === void 0 ? void 0 : _a.png) {
                 data.png.diff = {
                     pixelDiffRatio: 0,
                     zones: [],
                 };
                 if (data.png.diff.pixelDiffRatio > 0) {
-                    yield this.storage.saveJSON(crawlerFolderPath('json'), data);
+                    yield this.storage.saveJSON(jsonFile, data);
                 }
             }
-            const pinFolderPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
-            yield this.storage.saveJSON(pinFolderPath('json'), data);
-            yield this.storage.copy(crawlerFolderPath('html'), pinFolderPath('html'));
-            this.storage.copyBlob(crawlerFolderPath('png'), pinFolderPath('png'));
+            const pinJsonFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.json`);
+            const pinHtmlFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.html`);
+            const pinPngFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.png`);
+            yield this.storage.saveJSON(pinJsonFile, data);
+            yield this.storage.copy(htmlFile, pinHtmlFile);
+            this.storage.copyBlob(pngFile, pinPngFile);
             return data;
         });
     }
     removeFromPins(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const pinFolderPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
-            yield this.storage.remove(pinFolderPath('png'));
-            yield this.storage.remove(pinFolderPath('html'));
-            yield this.storage.remove(pinFolderPath('json'));
+            yield this.storage.remove(this.join(projectId, config_1.PIN_FOLDER, `${id}.png`));
+            yield this.storage.remove(this.join(projectId, config_1.PIN_FOLDER, `${id}.html`));
+            yield this.storage.remove(this.join(projectId, config_1.PIN_FOLDER, `${id}.json`));
             return this.getPins(projectId);
         });
     }
@@ -111,7 +113,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         const target = folder === 'base'
             ? this.join(projectId, config_1.PIN_FOLDER)
             : this.join(projectId, config_1.CRAWL_FOLDER, folder);
-        return this.storage.blob(utils_1.getFilePath(id, target)('png'));
+        return this.storage.blob(path_1.join(target, `${id}.png`));
     }
     saveBeforeAfterCode(projectId, type, code) {
         if (!Object.values(typing_1.BeforeAfterType).includes(type)) {
@@ -183,7 +185,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         return this.getPinsInFolder(this.join(projectId, config_1.CRAWL_FOLDER, timestamp));
     }
     getPageInFolder(folder, id) {
-        return this.storage.readJSON(utils_1.getFilePath(id, folder)('json'));
+        return this.storage.readJSON(path_1.join(folder, `${id}.json`));
     }
     getPinsInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -205,11 +207,11 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         return __awaiter(this, void 0, void 0, function* () {
             const folder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
-            const filePath = utils_1.getFilePath(id, folder);
-            const data = yield this.storage.readJSON(filePath('json'));
+            const fileJson = path_1.join(folder, `${id}.json`);
+            const data = yield this.storage.readJSON(fileJson);
             if (index && status === typing_1.ZoneStatus.zonePin) {
-                const pinPath = utils_1.getFilePath(id, this.join(projectId, config_1.PIN_FOLDER));
-                const pin = yield this.storage.readJSON(pinPath('json'));
+                const pinJsonFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.json`);
+                const pin = yield this.storage.readJSON(pinJsonFile);
                 if (((_c = (_b = (_a = pin) === null || _a === void 0 ? void 0 : _a.png) === null || _b === void 0 ? void 0 : _b.diff) === null || _c === void 0 ? void 0 : _c.zones) && ((_f = (_e = (_d = data) === null || _d === void 0 ? void 0 : _d.png) === null || _e === void 0 ? void 0 : _e.diff) === null || _f === void 0 ? void 0 : _f.zones)) {
                     if (index) {
                         pin.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
@@ -219,7 +221,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                     const groupedZones = pixdiff_zone_1.groupOverlappingZone(zones);
                     pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
                 }
-                yield this.storage.saveJSON(pinPath('json'), pin);
+                yield this.storage.saveJSON(pinJsonFile, pin);
             }
             if ((_j = (_h = (_g = data) === null || _g === void 0 ? void 0 : _g.png) === null || _h === void 0 ? void 0 : _h.diff) === null || _j === void 0 ? void 0 : _j.zones) {
                 if (index) {
@@ -229,7 +231,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                     data.png.diff.zones.forEach(zone => zone.status = status);
                 }
             }
-            yield this.storage.saveJSON(filePath('json'), data);
+            yield this.storage.saveJSON(fileJson, data);
             return this.getPages(projectId, timestamp);
         });
     }

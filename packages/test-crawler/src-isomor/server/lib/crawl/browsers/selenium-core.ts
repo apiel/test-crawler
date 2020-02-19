@@ -1,8 +1,6 @@
-import { Builder, WebDriver } from 'selenium-webdriver';
-import * as firefox from 'selenium-webdriver/firefox';
+import { WebDriver } from 'selenium-webdriver';
 import { error, info } from 'logol';
 
-import { FilePath } from '../../utils';
 import { writeFile, outputFile } from 'fs-extra';
 import { Crawler } from '../../../typing';
 import { injectCodes } from '..';
@@ -15,7 +13,8 @@ interface Viewport {
 export async function startSeleniumCore(
     driver: WebDriver,
     viewport: Viewport,
-    filePath: FilePath,
+    pngFile: string,
+    htmlFile: string,
     crawler: Crawler,
     projectId: string,
     id: string,
@@ -27,7 +26,7 @@ export async function startSeleniumCore(
         await driver.get(url);
 
         const html = await driver.getPageSource();
-        await writeFile(filePath('html'), html);
+        await writeFile(htmlFile, html);
 
         const performance = await driver.executeScript("return window.performance");
 
@@ -43,7 +42,7 @@ export async function startSeleniumCore(
         }
 
         const image = await driver.takeScreenshot();
-        await outputFile(filePath('png'), Buffer.from(image, 'base64'));
+        await outputFile(pngFile, Buffer.from(image, 'base64'));
         const png = { width: viewport.width };
 
         return { links, url, id, performance, png, viewport, error: codeErr };

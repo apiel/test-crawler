@@ -13,7 +13,7 @@ const selenium_webdriver_1 = require("selenium-webdriver");
 const path_1 = require("path");
 const selenium_core_1 = require("./selenium-core");
 const config_1 = require("../../config");
-function startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFolder) {
+function startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const driverPath = path_1.join(config_1.ROOT_FOLDER, '/Selenium.WebDriver.IEDriver.3.150.0/driver/');
         process.env.PATH = `${process.env.PATH};${driverPath};`;
@@ -21,7 +21,7 @@ function startSeleniumIE(viewport, filePath, crawler, projectId, id, url, distFo
             .forBrowser('internet explorer')
             .build();
         driver.manage().window().setRect(Object.assign(Object.assign({}, viewport), { x: 0, y: 0 }));
-        return selenium_core_1.startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
+        return selenium_core_1.startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
     });
 }
 exports.startSeleniumIE = startSeleniumIE;

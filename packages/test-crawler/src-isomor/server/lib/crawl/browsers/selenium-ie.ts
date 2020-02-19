@@ -2,7 +2,6 @@ import { Builder } from 'selenium-webdriver';
 // import * as ie from 'selenium-webdriver/ie';
 import { join } from 'path';
 
-import { FilePath } from '../../utils';
 import { Crawler } from '../../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 import { ROOT_FOLDER } from '../../config';
@@ -14,7 +13,8 @@ interface Viewport {
 
 export async function startSeleniumIE(
     viewport: Viewport,
-    filePath: FilePath,
+    pngFile: string,
+    htmlFile: string,
     crawler: Crawler,
     projectId: string,
     id: string,
@@ -31,7 +31,7 @@ export async function startSeleniumIE(
     // driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
     // driver.manage().window().setRect({ width: 800, height: 1600, x: 0, y: 0 });
     driver.manage().window().setRect({ ...viewport, x: 0, y: 0 });
-    return startSeleniumCore(driver, viewport, filePath, crawler, projectId, id, url, distFolder);
+    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {
