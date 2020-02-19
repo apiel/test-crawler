@@ -19,12 +19,12 @@ const CrawlerProviderStorage_1 = require("../CrawlerProviderStorage");
 const BASE_URL = 'https://api.github.com';
 const COMMIT_PREFIX = '[test-crawler]';
 const EVENT_TYPE = 'test-crawler';
-const CI_Workflow = `
+const CI_Workflow_main = `
 name: Test-crawler CI
 
 on:
   repository_dispatch:
-    types: [${EVENT_TYPE}]
+    types: [${EVENT_TYPE}_main]
 
 jobs:
   test-crawler:
@@ -63,6 +63,27 @@ jobs:
       with:
         token: \${{ secrets.GITHUB_TOKEN }}
 `;
+const CI_Workflow_apply_changes = `
+name: Test-crawler CI apply changes
+
+on:
+  repository_dispatch:
+    types: [${EVENT_TYPE}_apply_changes]
+
+jobs:
+  test-crawler:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Apply changes
+      uses: apiel/test-crawler/actions/apply-changes@master
+    - name: Push changes
+      uses: apiel/test-crawler/actions/push@master
+      with:
+        token: \${{ secrets.GITHUB_TOKEN }}
+
+`;
 class GitHubStorage extends Storage_1.Storage {
     constructor(ctx) {
         super();
@@ -73,8 +94,22 @@ class GitHubStorage extends Storage_1.Storage {
         return Object.values(typing_1.Browser);
     }
     applyChanges(changes) {
-        console.log('need to call CI', changes);
-        return;
+        return this.dispatch(CI_Workflow_apply_changes, 'apply_changes', {
+            changes,
+        });
+    }
+    crawl(crawlTarget, consumeTimeout, push, browser) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            if ((_a = crawlTarget) === null || _a === void 0 ? void 0 : _a.projectId) {
+                const os = browser === typing_1.Browser.IeSelenium ? 'win' : 'default';
+                yield this.dispatch(CI_Workflow_main, 'main', {
+                    projectId: crawlTarget.projectId,
+                    os,
+                });
+            }
+            return this.redirectUrl;
+        });
     }
     readdir(path) {
         var _a, _b;
@@ -230,27 +265,6 @@ class GitHubStorage extends Storage_1.Storage {
             }
         });
     }
-    crawl(crawlTarget, consumeTimeout, push, browser) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function* () {
-            if ((_a = crawlTarget) === null || _a === void 0 ? void 0 : _a.projectId) {
-                yield this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
-                const os = browser === typing_1.Browser.IeSelenium ? 'win' : 'default';
-                yield this.call({
-                    method: 'POST',
-                    url: `${this.ciDispatchUrl}`,
-                    data: {
-                        event_type: EVENT_TYPE,
-                        client_payload: {
-                            projectId: crawlTarget.projectId,
-                            os,
-                        }
-                    },
-                });
-            }
-            return this.redirectUrl;
-        });
-    }
     repos() {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
@@ -283,6 +297,19 @@ class GitHubStorage extends Storage_1.Storage {
             const inProgress = yield this.getInProgressJobs(projectId, workflow_runs);
             const queued = this.getQueuedJobs(workflow_runs);
             return [...queued, ...inProgress];
+        });
+    }
+    dispatch(workflow, suffix, client_payload = {}) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.saveFile(`.github/workflows/test-crawler_${suffix}.yml`, workflow);
+            yield this.call({
+                method: 'POST',
+                url: `${this.ciDispatchUrl}`,
+                data: {
+                    event_type: `${EVENT_TYPE}_${suffix}`,
+                    client_payload,
+                },
+            });
         });
     }
     getQueuedJobs(runs) {

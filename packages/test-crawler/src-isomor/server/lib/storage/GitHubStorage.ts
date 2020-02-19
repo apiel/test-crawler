@@ -14,12 +14,12 @@ const COMMIT_PREFIX = '[test-crawler]';
 const EVENT_TYPE = 'test-crawler';
 
 // need to keep yml config in here to be able to compile it in static mode
-const CI_Workflow = `
+const CI_Workflow_main = `
 name: Test-crawler CI
 
 on:
   repository_dispatch:
-    types: [${EVENT_TYPE}]
+    types: [${EVENT_TYPE}_main]
 
 jobs:
   test-crawler:
@@ -59,6 +59,28 @@ jobs:
         token: \${{ secrets.GITHUB_TOKEN }}
 `;
 
+const CI_Workflow_apply_changes = `
+name: Test-crawler CI apply changes
+
+on:
+  repository_dispatch:
+    types: [${EVENT_TYPE}_apply_changes]
+
+jobs:
+  test-crawler:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Apply changes
+      uses: apiel/test-crawler/actions/apply-changes@master
+    - name: Push changes
+      uses: apiel/test-crawler/actions/push@master
+      with:
+        token: \${{ secrets.GITHUB_TOKEN }}
+
+`;
+
 interface GitHubWorkflow {
     status: string;
     id: string;
@@ -92,9 +114,25 @@ export class GitHubStorage extends Storage {
     }
 
     applyChanges(changes: ChangesToApply[]): Promise<void> {
-        // here we have to call CI
-        console.log('need to call CI', changes);
-        return;
+        return this.dispatch(CI_Workflow_apply_changes, 'apply_changes', {
+            changes,
+        });
+    }
+
+    async crawl(
+        crawlTarget?: CrawlTarget,
+        consumeTimeout?: number,
+        push?: (payload: any) => void,
+        browser?: Browser,
+    ) {
+        if (crawlTarget?.projectId) { // run only if projectId provided (but we could think to do it also id)
+            const os = browser === Browser.IeSelenium ? 'win' : 'default';
+            await this.dispatch(CI_Workflow_main, 'main', {
+                projectId: crawlTarget.projectId,
+                os,
+            });
+        }
+        return this.redirectUrl;
     }
 
     async readdir(path: string) {
@@ -245,30 +283,6 @@ export class GitHubStorage extends Storage {
         }
     }
 
-    async crawl(
-        crawlTarget?: CrawlTarget,
-        consumeTimeout?: number,
-        push?: (payload: any) => void,
-        browser?: Browser,
-    ) {
-        if (crawlTarget?.projectId) { // run only if projectId provided (but we could think to do it also id)
-            await this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
-            const os = browser === Browser.IeSelenium ? 'win' : 'default';
-            await this.call({
-                method: 'POST',
-                url: `${this.ciDispatchUrl}`,
-                data: {
-                    event_type: EVENT_TYPE,
-                    client_payload: {
-                        projectId: crawlTarget.projectId,
-                        os,
-                    }
-                },
-            });
-        }
-        return this.redirectUrl;
-    }
-
     async repos() {
         const { data } = await this.call({
             url: `${BASE_URL}/users/${this.config?.user}/repos?sort=updated&per_page=1000`,
@@ -297,6 +311,18 @@ export class GitHubStorage extends Storage {
         const queued = this.getQueuedJobs(workflow_runs);
 
         return [...queued, ...inProgress];
+    }
+
+    protected async dispatch(workflow: string, suffix: string, client_payload = {}) {
+        await this.saveFile(`.github/workflows/test-crawler_${suffix}.yml`, workflow);
+        await this.call({
+            method: 'POST',
+            url: `${this.ciDispatchUrl}`,
+            data: {
+                event_type: `${EVENT_TYPE}_${suffix}`,
+                client_payload,
+            },
+        });
     }
 
     protected getQueuedJobs(runs: GitHubWorkflow[]) {
