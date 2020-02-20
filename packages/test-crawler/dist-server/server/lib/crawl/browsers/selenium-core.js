@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
-const __1 = require("..");
+const crawlPage_1 = require("../crawlPage");
 function startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -24,7 +24,7 @@ function startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, project
             let links;
             try {
                 const injectLinks = yield driver.executeScript("return Array.from(document.links).map(a => a.href)");
-                links = yield __1.injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
+                links = yield crawlPage_1.injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
             }
             catch (err) {
                 codeErr = err.toString();

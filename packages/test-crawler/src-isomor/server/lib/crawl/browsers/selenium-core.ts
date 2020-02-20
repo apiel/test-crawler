@@ -3,7 +3,7 @@ import { error, info } from 'logol';
 
 import { writeFile, outputFile } from 'fs-extra';
 import { Crawler } from '../../../typing';
-import { injectCodes } from '..';
+import { injectCodes } from '../crawlPage';
 
 interface Viewport {
     width: number;

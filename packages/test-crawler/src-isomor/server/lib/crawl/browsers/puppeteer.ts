@@ -5,7 +5,7 @@ import { error, info } from 'logol';
 import { USER_AGENT, TIMEOUT } from '../../config';
 import { writeFile } from 'fs-extra';
 import { Crawler } from '../../../typing';
-import { injectCodes } from '..';
+import { injectCodes } from '../crawlPage';
 
 export async function startPuppeteer(
     viewport: Viewport,

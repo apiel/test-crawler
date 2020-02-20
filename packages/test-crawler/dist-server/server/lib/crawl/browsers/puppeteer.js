@@ -13,7 +13,7 @@ const puppeteer_1 = require("puppeteer");
 const logol_1 = require("logol");
 const config_1 = require("../../config");
 const fs_extra_1 = require("fs-extra");
-const __1 = require("..");
+const crawlPage_1 = require("../crawlPage");
 function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
     return __awaiter(this, void 0, void 0, function* () {
         const browser = yield puppeteer_1.launch({});
@@ -33,7 +33,7 @@ function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url
             let links;
             try {
                 const injectLinks = yield page.$$eval('a', as => as.map(a => a.href));
-                links = yield __1.injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
+                links = yield crawlPage_1.injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
             }
             catch (err) {
                 codeErr = err.toString();
