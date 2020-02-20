@@ -13,7 +13,7 @@ const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const _1 = require(".");
-const utils_1 = require("./utils");
+const config_1 = require("../config");
 let totalDiff = 0;
 let totalError = 0;
 const resultsQueue = [];
@@ -42,7 +42,7 @@ function consumeResults(consumeTimeout, push) {
                 crawler.errorCount++;
                 totalError++;
             }
-            const queueFolder = utils_1.getQueueFolder(folder);
+            const queueFolder = path_1.join(folder, config_1.QUEUE_FOLDER);
             const filesInQueue = (yield fs_extra_1.pathExists(queueFolder)) ? yield fs_extra_1.readdir(queueFolder) : [];
             crawler.inQueue = filesInQueue.length;
             crawler.urlsCount = (yield fs_extra_1.readdir(folder)).filter(f => path_1.extname(f) === '.json' && f !== '_.json').length;

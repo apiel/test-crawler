@@ -15,7 +15,6 @@ const path_1 = require("path");
 const config_1 = require("../config");
 const typing_1 = require("../../typing");
 const crawlPage_1 = require("./crawlPage");
-const utils_1 = require("./utils");
 ;
 let consumerRunning = 0;
 let consumerMaxCount = config_1.CONSUMER_COUNT;
@@ -33,10 +32,10 @@ exports.setConsumerMaxCount = setConsumerMaxCount;
 function getConsumerMaxCount() {
     return consumerMaxCount;
 }
-function pickFromQueue(projectId, pagesFolder) {
+function pickFromQueue(projectId, timestamp) {
     return __awaiter(this, void 0, void 0, function* () {
-        const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, pagesFolder);
-        const queueFolder = utils_1.getQueueFolder(distFolder);
+        const distFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
+        const queueFolder = path_1.join(distFolder, config_1.QUEUE_FOLDER);
         if (yield fs_extra_1.pathExists(queueFolder)) {
             const [file] = yield fs_extra_1.readdir(queueFolder);
             if (file) {
@@ -60,9 +59,9 @@ function pickFromQueues() {
         for (const projectId of projectFolders) {
             const crawlFolder = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
             yield fs_extra_1.mkdirp(crawlFolder);
-            const pagesFolders = yield fs_extra_1.readdir(crawlFolder);
-            for (const pagesFolder of pagesFolders) {
-                const toCrawl = yield pickFromQueue(projectId, pagesFolder);
+            const timestampFolders = yield fs_extra_1.readdir(crawlFolder);
+            for (const timestamp of timestampFolders) {
+                const toCrawl = yield pickFromQueue(projectId, timestamp);
                 if (toCrawl) {
                     return toCrawl;
                 }
@@ -81,7 +80,7 @@ function consumeQueues(consumeTimeout, crawlTarget) {
         if (consumerRunning < getConsumerMaxCount()) {
             let toCrawl;
             if (crawlTarget) {
-                toCrawl = yield pickFromQueue(crawlTarget.projectId, crawlTarget.pagesFolder);
+                toCrawl = yield pickFromQueue(crawlTarget.projectId, crawlTarget.timestamp);
             }
             else {
                 toCrawl = yield pickFromQueues();

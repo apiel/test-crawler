@@ -1,39 +1,17 @@
-import { Page, Viewport } from 'puppeteer';
-import { error, info, warn } from 'logol';
-import { readdir, readJSON, move, writeJSON, pathExists, mkdirp, outputJson, outputJSON, readFile, outputFile } from 'fs-extra';
-import { join, extname } from 'path';
-import * as minimatch from 'minimatch';
-import { WebDriver } from 'selenium-webdriver';
+import { info, warn } from 'logol';
+import { readdir, readJSON, move, pathExists, mkdirp } from 'fs-extra';
+import { join } from 'path';
 
 import {
     CONSUMER_COUNT,
     CRAWL_FOLDER,
-    CONSUME_TIMEOUT,
-    CODE_FOLDER,
     PROJECT_FOLDER,
-    MAX_HISTORY,
     ROOT_FOLDER,
+    QUEUE_FOLDER,
 } from '../config';
 
-import { CrawlerMethod } from '../index';
-import { prepare } from '../diff';
-import { Crawler, CrawlerInput, CrawlTarget, Browser, Project } from '../../typing';
-import { isArray, promisify } from 'util';
-import { CrawlerProvider } from '../CrawlerProvider';
-import rimraf = require('rimraf');
-import Axios from 'axios';
-import md5 = require('md5');
-import { StorageType } from '../../storage.typing';
-import { startPuppeteer } from './browsers/puppeteer';
-import { startSeleniumFirefox } from './browsers/selenium-firefox';
-import { startSeleniumChrome } from './browsers/selenium-chrome';
-import { startSeleniumIE } from './browsers/selenium-ie';
-// import { startSeleniumEdge } from './browsers/selenium-edge';
-import { startSeleniumSafari } from './browsers/selenium-safari';
+import { CrawlTarget, Browser, Project } from '../../typing';
 import { loadPage } from './crawlPage';
-import { initConsumeResults } from './resultConsumer';
-import { getQueueFolder } from './utils';
-
 
 interface ToCrawl {
     projectId: string;
@@ -60,9 +38,9 @@ function getConsumerMaxCount() {
     return consumerMaxCount;
 }
 
-async function pickFromQueue(projectId: string, pagesFolder: string): Promise<ToCrawl> {
-    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, pagesFolder);
-    const queueFolder = getQueueFolder(distFolder);
+async function pickFromQueue(projectId: string, timestamp: string): Promise<ToCrawl> {
+    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
+    const queueFolder = join(distFolder, QUEUE_FOLDER);
     if (await pathExists(queueFolder)) {
         const [file] = await readdir(queueFolder);
         if (file) {
@@ -84,9 +62,9 @@ async function pickFromQueues(): Promise<ToCrawl> {
     for (const projectId of projectFolders) {
         const crawlFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
         await mkdirp(crawlFolder);
-        const pagesFolders = await readdir(crawlFolder);
-        for (const pagesFolder of pagesFolders) {
-            const toCrawl = await pickFromQueue(projectId, pagesFolder);
+        const timestampFolders = await readdir(crawlFolder);
+        for (const timestamp of timestampFolders) {
+            const toCrawl = await pickFromQueue(projectId, timestamp);
             if (toCrawl) {
                 return toCrawl;
             }
@@ -105,7 +83,7 @@ async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
     if (consumerRunning < getConsumerMaxCount()) {
         let toCrawl: ToCrawl;
         if (crawlTarget) {
-            toCrawl = await pickFromQueue(crawlTarget.projectId, crawlTarget.pagesFolder);
+            toCrawl = await pickFromQueue(crawlTarget.projectId, crawlTarget.timestamp);
         } else {
             toCrawl = await pickFromQueues();
         }

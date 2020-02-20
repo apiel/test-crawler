@@ -10,7 +10,3 @@ export async function getFolders(projectId: string) {
 
     return folders;
 }
-
-export function getQueueFolder(distFolder: string) {
-    return join(distFolder, 'queue');
-}

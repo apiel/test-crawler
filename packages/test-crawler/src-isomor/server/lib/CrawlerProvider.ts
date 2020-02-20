@@ -239,13 +239,13 @@ export class CrawlerProvider extends CrawlerProviderStorage {
     }
 
     async startCrawler(projectId: string, browser?: Browser): Promise<StartCrawler> {
-        const pagesFolder = Math.floor(Date.now() / 1000).toString();
+        const timestamp = Math.floor(Date.now() / 1000).toString();
 
-        const crawlTarget = { projectId, pagesFolder };
+        const crawlTarget = { projectId, timestamp };
         const redirect = await this.storage.crawl(crawlTarget, 30, (this.ctx as any)?.push, browser);
 
         return {
-            timestamp: pagesFolder,
+            timestamp,
             redirect,
         };
     }

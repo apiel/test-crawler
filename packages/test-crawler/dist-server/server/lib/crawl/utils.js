@@ -22,7 +22,3 @@ function getFolders(projectId) {
     });
 }
 exports.getFolders = getFolders;
-function getQueueFolder(distFolder) {
-    return path_1.join(distFolder, 'queue');
-}
-exports.getQueueFolder = getQueueFolder;

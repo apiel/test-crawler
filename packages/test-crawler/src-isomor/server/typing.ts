@@ -110,7 +110,7 @@ export interface PageData {
 }
 
 export interface CrawlTarget {
-    pagesFolder: string;
+    timestamp: string;
     projectId: string;
 }
 

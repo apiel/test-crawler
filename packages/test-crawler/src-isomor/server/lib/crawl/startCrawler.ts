@@ -5,6 +5,7 @@ import { join } from 'path';
 import {
     CRAWL_FOLDER,
     PROJECT_FOLDER,
+    QUEUE_FOLDER,
 } from '../config';
 
 import { CrawlerMethod } from '../index';
@@ -13,17 +14,16 @@ import { CrawlerProvider } from '../CrawlerProvider';
 import Axios from 'axios';
 import md5 = require('md5');
 import { StorageType } from '../../storage.typing';
-import { getQueueFolder } from './utils';
 
-export async function startCrawler({ projectId, pagesFolder }: CrawlTarget) {
+export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
     const crawlerProvider = new CrawlerProvider(StorageType.Local);
     const { crawlerInput } = await crawlerProvider.loadProject(projectId);
 
-    const id = md5(`${pagesFolder}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
+    const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
 
     const crawler: Crawler = {
         ...crawlerInput,
-        timestamp: pagesFolder,
+        timestamp,
         id,
         diffZoneCount: 0,
         errorCount: 0,
@@ -34,7 +34,7 @@ export async function startCrawler({ projectId, pagesFolder }: CrawlTarget) {
         lastUpdate: Date.now(),
     };
 
-    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, pagesFolder);
+    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
     await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
 
     if (crawlerInput.method === CrawlerMethod.URLs) {
@@ -62,10 +62,10 @@ export async function addToQueue(url: string, viewport: Viewport, distFolder: st
     const cleanUrl = url.replace(/(\n\r|\r\n|\n|\r)/gm, '');
     // console.log('addToQueue', cleanUrl, viewport, distFolder);
     const id = md5(`${cleanUrl}-${JSON.stringify(viewport)}`);
-    const histFile = join(distFolder, `${id}.json`);
-    const queueFile = join(getQueueFolder(distFolder), `${id}.json`);
+    const resultFile = join(distFolder, `${id}.json`);
+    const queueFile = join(distFolder, QUEUE_FOLDER, `${id}.json`);
 
-    if (!(await pathExists(queueFile)) && !(await pathExists(histFile))) {
+    if (!(await pathExists(queueFile)) && !(await pathExists(resultFile))) {
         if (!limit || (await updateSiblingCount(cleanUrl, distFolder)) < limit) {
             await outputJson(queueFile, { url: cleanUrl, id }, { spaces: 4 });
         }
@@ -74,6 +74,7 @@ export async function addToQueue(url: string, viewport: Viewport, distFolder: st
     return false;
 }
 
+// this is for the limit in spider bot
 async function updateSiblingCount(url: string, distFolder: string) {
     const urlPaths = url.split('/').filter(s => s);
     urlPaths.pop();

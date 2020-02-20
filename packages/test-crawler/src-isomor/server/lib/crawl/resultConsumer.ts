@@ -4,7 +4,7 @@ import { join, extname } from 'path';
 
 import { Crawler } from '../../typing';
 import { afterAll } from '.';
-import { getQueueFolder } from './utils';
+import { QUEUE_FOLDER } from '../config';
 
 interface ResultQueue {
     result?: {
@@ -45,7 +45,7 @@ async function consumeResults(consumeTimeout: number, push?: (payload: any) => v
             totalError++;
         }
 
-        const queueFolder = getQueueFolder(folder);
+        const queueFolder = join(folder, QUEUE_FOLDER);
         const filesInQueue = await pathExists(queueFolder) ? await readdir(queueFolder) : [];
         crawler.inQueue = filesInQueue.length;
         crawler.urlsCount = (await readdir(folder)).filter(f => extname(f) === '.json' && f !== '_.json').length;
