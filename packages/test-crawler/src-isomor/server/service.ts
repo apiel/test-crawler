@@ -108,9 +108,9 @@ export function getCodes(storageType: StorageType, projectId: string): Promise<C
     return crawlerProvider.getCodeList(projectId);
 }
 
-export async function getThumbnail(storageType: StorageType, projectId: string, folder: string, id: string, width: number = 300): Promise<string> {
+export async function getThumbnail(storageType: StorageType, projectId: string, timestamp: string, id: string, width: number = 300): Promise<string> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
-    const image = await crawlerProvider.image(projectId, folder, id);
+    const image = await crawlerProvider.image(projectId, timestamp, id);
     if (!image) {
         throw new Error('Cannot load image.');
     }

@@ -6,14 +6,14 @@ import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
 import { PageData, Crawler, ZoneStatus } from '../../typing';
 import { CrawlerProvider } from '../index';
 import { StorageType } from '../../storage.typing';
-import { pathImageFile, pathInfoFile, pathPinInfoFile, pathPinImageFile } from '../crawl/utils';
+import { pathImageFile, pathInfoFile, pathPinInfoFile } from '../crawl/utils';
 
 async function parsePng(
     data: PageData,
     pngFile: string,
     jsonFile: string,
     pinPngFile: string,
-    pinJsonFile: string,
+    pinInfo: PageData,
 ) {
     const { id, url } = data;
     const actual = await readFile(pngFile);
@@ -47,7 +47,7 @@ async function parsePng(
     data.png.diff = {
         pixelDiffRatio,
         // zones: zones.map(zone => ({ zone, status: 'diff' })),
-        zones: await parseZones(pinJsonFile, zones),
+        zones: await parseZones(pinInfo, zones),
     };
     await writeJSON(jsonFile, data, { spaces: 4 });
 
@@ -64,9 +64,8 @@ function cropPng(png: PNG, width: number, height: number) {
     return cropped;
 }
 
-async function parseZones(pinJsonFile: string, zones: Zone[]) {
-    const base: PageData = await readJson(pinJsonFile);
-    const baseZones = base.png.diff.zones.map(z => z.zone);
+async function parseZones(pinInfo: PageData, zones: Zone[]) {
+    const baseZones = pinInfo.png.diff.zones.map(z => z.zone);
     return zones.map(zone => ({
         zone,
         status: groupOverlappingZone([...baseZones, zone]).length === baseZones.length
@@ -76,21 +75,23 @@ async function parseZones(pinJsonFile: string, zones: Zone[]) {
 }
 
 export async function prepare(projectId: string, timestamp: string, id: string, crawler: Crawler) {
-    const pngFile = pathImageFile(projectId, timestamp, id);
     const jsonFile = pathInfoFile(projectId, timestamp, id);
-    const pinPngFile = pathPinImageFile(projectId, id);
     const pinJsonFile = pathPinInfoFile(projectId, id);
 
     const data = await readJson(jsonFile);
 
     let diffZoneCount = 0;
     if (await pathExists(pinJsonFile)) {
+        const pinInfo: PageData = await readJson(pinJsonFile);
+        const pngFile = pathImageFile(projectId, timestamp, id);
+        const pinPngFile = pathImageFile(projectId, pinInfo.timestamp, id);
         if (await pathExists(pinPngFile)) {
-            diffZoneCount = await parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile);
+            diffZoneCount = await parsePng(data, pngFile, jsonFile, pinPngFile, pinInfo);
         } else {
             info('DIFF', 'new png');
         }
     } else if (crawler.autopin) {
+        // now we could just make the copy directly without to instanciate CrawlerProvider
         const crawlerProvider = new CrawlerProvider(StorageType.Local);
         crawlerProvider.copyToPins(projectId, crawler.timestamp, id);
         // we might want to put a flag to the page saying that it was automatically pin

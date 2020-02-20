@@ -43,9 +43,10 @@ export const Pins = ({
                         options={masonryOptions}
                         ref={(c: any) => { setMasonry(c && c.masonry); }}
                     >
-                        {pins.map(({ id, url, png, viewport }: PageData) => (
+                        {pins.map(({ id, url, png, viewport, timestamp }: PageData) => (
                             <PinPage
                                 projectId={projectId}
+                                timestamp={timestamp}
                                 id={id}
                                 key={id}
                                 url={url}

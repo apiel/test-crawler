@@ -17,7 +17,7 @@ const typing_1 = require("../../typing");
 const index_1 = require("../index");
 const storage_typing_1 = require("../../storage.typing");
 const utils_1 = require("../crawl/utils");
-function parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile) {
+function parsePng(data, pngFile, jsonFile, pinPngFile, pinInfo) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id, url } = data;
         const actual = yield fs_extra_1.readFile(pngFile);
@@ -41,7 +41,7 @@ function parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile) {
         }
         data.png.diff = {
             pixelDiffRatio,
-            zones: yield parseZones(pinJsonFile, zones),
+            zones: yield parseZones(pinInfo, zones),
         };
         yield fs_extra_1.writeJSON(jsonFile, data, { spaces: 4 });
         return zones.length;
@@ -54,10 +54,9 @@ function cropPng(png, width, height) {
     origin.bitblt(cropped, 0, 0, width, height);
     return cropped;
 }
-function parseZones(pinJsonFile, zones) {
+function parseZones(pinInfo, zones) {
     return __awaiter(this, void 0, void 0, function* () {
-        const base = yield fs_extra_1.readJson(pinJsonFile);
-        const baseZones = base.png.diff.zones.map(z => z.zone);
+        const baseZones = pinInfo.png.diff.zones.map(z => z.zone);
         return zones.map(zone => ({
             zone,
             status: pixdiff_zone_1.groupOverlappingZone([...baseZones, zone]).length === baseZones.length
@@ -68,15 +67,16 @@ function parseZones(pinJsonFile, zones) {
 }
 function prepare(projectId, timestamp, id, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        const pngFile = utils_1.pathImageFile(projectId, timestamp, id);
         const jsonFile = utils_1.pathInfoFile(projectId, timestamp, id);
-        const pinPngFile = utils_1.pathPinImageFile(projectId, id);
         const pinJsonFile = utils_1.pathPinInfoFile(projectId, id);
         const data = yield fs_extra_1.readJson(jsonFile);
         let diffZoneCount = 0;
         if (yield fs_extra_1.pathExists(pinJsonFile)) {
+            const pinInfo = yield fs_extra_1.readJson(pinJsonFile);
+            const pngFile = utils_1.pathImageFile(projectId, timestamp, id);
+            const pinPngFile = utils_1.pathImageFile(projectId, pinInfo.timestamp, id);
             if (yield fs_extra_1.pathExists(pinPngFile)) {
-                diffZoneCount = yield parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile);
+                diffZoneCount = yield parsePng(data, pngFile, jsonFile, pinPngFile, pinInfo);
             }
             else {
                 logol_1.info('DIFF', 'new png');

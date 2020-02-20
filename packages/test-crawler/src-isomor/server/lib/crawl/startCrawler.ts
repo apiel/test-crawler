@@ -1,5 +1,5 @@
 import { Viewport } from 'puppeteer';
-import { pathExists, outputJson, outputJSON, readFile, outputFile } from 'fs-extra';
+import { pathExists, outputJson, outputJSON, readFile, outputFile, mkdirp } from 'fs-extra';
 
 import { CrawlerMethod } from '../index';
 import { Crawler, CrawlerInput, CrawlTarget } from '../../typing';
@@ -7,13 +7,15 @@ import { CrawlerProvider } from '../CrawlerProvider';
 import Axios from 'axios';
 import md5 = require('md5');
 import { StorageType } from '../../storage.typing';
-import { pathInfoFile, pathQueueFile, pathSiblingFile, pathCrawlerFile } from './utils';
+import { pathInfoFile, pathQueueFile, pathSiblingFile, pathCrawlerFile, pathSnapshotFolder } from './utils';
 
 export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
     const crawlerProvider = new CrawlerProvider(StorageType.Local);
     const { crawlerInput } = await crawlerProvider.loadProject(projectId);
 
     const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
+
+    await mkdirp(pathSnapshotFolder(projectId));
 
     const crawler: Crawler = {
         ...crawlerInput,

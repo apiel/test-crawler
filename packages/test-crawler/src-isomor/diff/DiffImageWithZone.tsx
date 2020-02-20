@@ -19,7 +19,7 @@ interface Props {
 export const DiffImageWithZone = ({
     storageType,
     projectId,
-    folder,
+    timestamp,
     id,
     zones,
     originalWidth = 0,
@@ -29,7 +29,7 @@ export const DiffImageWithZone = ({
     ...props
 }: Props & DiffImageProps) => {
     // we might not even need useAsyncCacheWatch
-    const { call, response: thumb, cache } = useAsyncCacheWatch(getThumbnail, storageType, projectId, 'base', id, width);
+    const { call, response: thumb, cache } = useAsyncCacheWatch(getThumbnail, storageType, projectId, 'pin', id, width);
 
     React.useEffect(() => {
         if (zones && !cache()) {
@@ -37,14 +37,14 @@ export const DiffImageWithZone = ({
         }
     }, [zones]);
 
-    return !zones ? null : (
-        <DiffImage storageType={storageType} projectId={projectId} folder={folder} id={id} width={width} {...props}>
-            {zones.map(({ zone, status }: PngDiffDataZone, index: number) =>
+    return (
+        <DiffImage storageType={storageType} projectId={projectId} timestamp={timestamp} id={id} width={width} {...props}>
+            {zones?.map(({ zone, status }: PngDiffDataZone, index: number) =>
                 <DiffZone
                     storageType={storageType}
                     thumb={thumb}
                     projectId={projectId}
-                    folder={folder}
+                    timestamp={timestamp}
                     id={id}
                     width={width}
                     index={index}

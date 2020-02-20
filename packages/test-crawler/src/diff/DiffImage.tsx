@@ -11,7 +11,7 @@ import { StorageType } from '../server/storage.typing';
 export interface Props {
     storageType: StorageType;
     projectId: string;
-    folder: string;
+    timestamp: string;
     id: string;
     width?: number;
     onImg?: () => void;
@@ -21,7 +21,7 @@ export interface Props {
 export const DiffImage = ({
     storageType,
     projectId,
-    folder,
+    timestamp,
     id,
     onImg = () => { },
     width = imgStyle.width,
@@ -29,7 +29,7 @@ export const DiffImage = ({
 }: Props & React.PropsWithChildren<any>) => {
     const [thumb, setThumb] = useState<string>();
     const load = async () => {
-        setThumb(await getThumbnail(storageType, projectId, folder, id, width));
+        setThumb(await getThumbnail(storageType, projectId, timestamp, id, width));
         onImg();
     }
     useEffect(() => { load(); }, []);

@@ -49,7 +49,6 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
             const projects = yield this.storage.readdir(config_1.PROJECT_FOLDER);
-            console.log('projects', { projects });
             return Promise.all(projects.map(projectId => this.loadProject(projectId)));
         });
     }
@@ -78,10 +77,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     copyToPins(projectId, timestamp, id) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const crawlerFolder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
-            const jsonFile = path_1.join(crawlerFolder, `${id}.json`);
-            const htmlFile = path_1.join(crawlerFolder, `${id}.html`);
-            const pngFile = path_1.join(crawlerFolder, `${id}.png`);
+            const jsonFile = this.join(projectId, config_1.CRAWL_FOLDER, timestamp, `${id}.json`);
             const data = yield this.storage.readJSON(jsonFile);
             if ((_a = data) === null || _a === void 0 ? void 0 : _a.png) {
                 data.png.diff = {
@@ -92,28 +88,26 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                     yield this.storage.saveJSON(jsonFile, data);
                 }
             }
-            const pinJsonFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.json`);
-            const pinHtmlFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.html`);
-            const pinPngFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.png`);
-            yield this.storage.saveJSON(pinJsonFile, data);
-            yield this.storage.copy(htmlFile, pinHtmlFile);
-            this.storage.copyBlob(pngFile, pinPngFile);
+            yield this.storage.saveJSON(this.join(projectId, config_1.PIN_FOLDER, `${id}.json`), data);
             return data;
         });
     }
     removeFromPins(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.storage.remove(this.join(projectId, config_1.PIN_FOLDER, `${id}.png`));
-            yield this.storage.remove(this.join(projectId, config_1.PIN_FOLDER, `${id}.html`));
             yield this.storage.remove(this.join(projectId, config_1.PIN_FOLDER, `${id}.json`));
             return this.getPins(projectId);
         });
     }
-    image(projectId, folder, id) {
-        const target = folder === 'base'
-            ? this.join(projectId, config_1.PIN_FOLDER)
-            : this.join(projectId, config_1.CRAWL_FOLDER, folder);
-        return this.storage.blob(path_1.join(target, `${id}.png`));
+    image(projectId, timestamp, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (timestamp === 'pin') {
+                const pin = yield this.storage.readJSON(this.join(projectId, config_1.PIN_FOLDER, `${id}.json`));
+                if (!pin)
+                    return;
+                timestamp = pin.timestamp;
+            }
+            return this.storage.blob(this.join(projectId, config_1.SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
+        });
     }
     saveBeforeAfterCode(projectId, type, code) {
         if (!Object.values(typing_1.BeforeAfterType).includes(type)) {

@@ -103,10 +103,10 @@ function getCodes(storageType, projectId) {
     return crawlerProvider.getCodeList(projectId);
 }
 exports.getCodes = getCodes;
-function getThumbnail(storageType, projectId, folder, id, width = 300) {
+function getThumbnail(storageType, projectId, timestamp, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
-        const image = yield crawlerProvider.image(projectId, folder, id);
+        const image = yield crawlerProvider.image(projectId, timestamp, id);
         if (!image) {
             throw new Error('Cannot load image.');
         }

@@ -23,6 +23,8 @@
 
 - base on history, use AI to identify if diff are normal or not...
 
+- should show performence
+
 - support gitlab
 
 - improve naming with all those crawlers, job, run, project...

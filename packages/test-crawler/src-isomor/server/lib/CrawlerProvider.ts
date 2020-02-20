@@ -3,7 +3,7 @@ import * as md5 from 'md5';
 import { groupOverlappingZone } from 'pixdiff-zone';
 import { WsContext, Context } from 'isomor-server';
 
-import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER } from './config';
+import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER, SNAPSHOT_FOLDER } from './config';
 
 import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser, ZoneStatus } from '../typing';
 import { StorageType } from '../storage.typing';
@@ -37,7 +37,6 @@ export class CrawlerProvider extends CrawlerProviderStorage {
     async loadProjects(): Promise<Project[]> {
         // we should use accumulator
         const projects = await this.storage.readdir(PROJECT_FOLDER);
-        console.log('projects', { projects });
         return Promise.all(
             projects.map(projectId => this.loadProject(projectId)),
         );
@@ -67,11 +66,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
     }
 
     async copyToPins(projectId: string, timestamp: string, id: string): Promise<PageData> {
-        const crawlerFolder = this.join(projectId, CRAWL_FOLDER, timestamp);
-
-        const jsonFile = join(crawlerFolder, `${id}.json`);
-        const htmlFile = join(crawlerFolder, `${id}.html`);
-        const pngFile = join(crawlerFolder, `${id}.png`);
+        const jsonFile = this.join(projectId, CRAWL_FOLDER, timestamp, `${id}.json`);
 
         // set diff to 0
         // instead to load this file again, we could get the data from the frontend?
@@ -85,34 +80,22 @@ export class CrawlerProvider extends CrawlerProviderStorage {
                 await this.storage.saveJSON(jsonFile, data);
             }
         }
-
-        const pinJsonFile = this.join(projectId, PIN_FOLDER, `${id}.json`);
-        const pinHtmlFile = this.join(projectId, PIN_FOLDER, `${id}.html`);
-        const pinPngFile = this.join(projectId, PIN_FOLDER, `${id}.png`);
-
-        // copy files
-        await this.storage.saveJSON(pinJsonFile, data);
-        await this.storage.copy(htmlFile, pinHtmlFile);
-
-        // await this.storage.copyBlob(crawlerFolderPath('png'), pinFolderPath('png'));
-        this.storage.copyBlob(pngFile, pinPngFile); // dont wait for it, to slow, we will fix it soon
-
+        await this.storage.saveJSON(this.join(projectId, PIN_FOLDER, `${id}.json`), data);
         return data;
     }
 
     async removeFromPins(projectId: string, id: string): Promise<PageData[]> {
-        await this.storage.remove(this.join(projectId, PIN_FOLDER, `${id}.png`));
-        await this.storage.remove(this.join(projectId, PIN_FOLDER, `${id}.html`));
         await this.storage.remove(this.join(projectId, PIN_FOLDER, `${id}.json`));
-
         return this.getPins(projectId);
     }
 
-    image(projectId: string, folder: string, id: string) {
-        const target = folder === 'base'
-            ? this.join(projectId, PIN_FOLDER)
-            : this.join(projectId, CRAWL_FOLDER, folder);
-        return this.storage.blob(join(target, `${id}.png`));
+    async image(projectId: string, timestamp: string, id: string) {
+        if (timestamp === 'pin') {
+            const pin: PageData = await this.storage.readJSON(this.join(projectId, PIN_FOLDER, `${id}.json`));
+            if (!pin) return;
+            timestamp = pin.timestamp;
+        }
+        return this.storage.blob(this.join(projectId, SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
     }
 
     saveBeforeAfterCode(projectId: string, type: BeforeAfterType, code: string): Promise<void> {

@@ -43,7 +43,7 @@ const zoneStyle = (
 interface Props {
     storageType: StorageType;
     thumb: string;
-    folder: string;
+    timestamp: string;
     id: string;
     zone: Zone;
     originalWidth: number;
@@ -55,7 +55,7 @@ interface Props {
     setPages: React.Dispatch<React.SetStateAction<PageData[]>>;
 };
 
-export const DiffZone = ({ storageType, thumb, setPages, projectId, folder, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
+export const DiffZone = ({ storageType, thumb, setPages, projectId, timestamp, id, index, originalWidth, zone, status, width, marginLeft }: Props) => {
     const [hover, setHover] = useState(false);
     const ratio = originalWidth / width;
     return (
@@ -63,7 +63,7 @@ export const DiffZone = ({ storageType, thumb, setPages, projectId, folder, id, 
             <DiffImageButtons
                 storageType={storageType}
                 index={index}
-                timestamp={folder}
+                timestamp={timestamp}
                 id={id}
                 projectId={projectId}
                 setPages={setPages}

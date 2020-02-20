@@ -61,7 +61,7 @@ function loadPage(projectId, id, url, timestamp, done, retry = 0) {
         const { viewport, url: baseUrl, method, limit, browser } = crawler;
         try {
             const _a = yield startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url), { links } = _a, output = __rest(_a, ["links"]);
-            yield fs_extra_1.outputJson(jsonFile, output, { spaces: 4 });
+            yield fs_extra_1.outputJson(jsonFile, Object.assign(Object.assign({}, output), { timestamp }), { spaces: 4 });
             if (method !== index_1.CrawlerMethod.URLs && util_1.isArray(links)) {
                 const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
                 yield addUrls(siteUrls, viewport, projectId, timestamp, limit);

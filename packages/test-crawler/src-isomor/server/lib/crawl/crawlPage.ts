@@ -65,7 +65,7 @@ export async function loadPage(
 
     try {
         const { links, ...output } = await startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url);
-        await outputJson(jsonFile, output, { spaces: 4 });
+        await outputJson(jsonFile, { ...output, timestamp }, { spaces: 4 });
 
         if (method !== CrawlerMethod.URLs && isArray(links)) {
             const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0)

@@ -83,6 +83,7 @@ export interface PngDiffData {
 export interface PageData {
   id: string;
   url: string;
+  timestamp: string;
   error?: string;
   performance?: Performance;
   metrics?: PageMetrics;

@@ -6,6 +6,7 @@ import {
     ROOT_FOLDER,
     CODE_FOLDER,
     PIN_FOLDER,
+    SNAPSHOT_FOLDER,
 } from '../config';
 import {
     mkdirp,
@@ -49,24 +50,20 @@ export function pathInfoFile(projectId: string, timestamp: string, id: string) {
     return join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, `${id}.json`);
 }
 
+export function pathSnapshotFolder(projectId: string) {
+    return join(PROJECT_FOLDER, projectId, SNAPSHOT_FOLDER);
+}
+
 export function pathImageFile(projectId: string, timestamp: string, id: string) {
-    return join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, `${id}.png`);
+    return join(PROJECT_FOLDER, projectId, SNAPSHOT_FOLDER, `${timestamp}-${id}.png`);
 }
 
 export function pathSourceFile(projectId: string, timestamp: string, id: string) {
-    return join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, `${id}.html`);
+    return join(PROJECT_FOLDER, projectId, SNAPSHOT_FOLDER, `${timestamp}-${id}.html`);
 }
 
 export function pathPinInfoFile(projectId: string, id: string) {
     return join(PROJECT_FOLDER, projectId, PIN_FOLDER, `${id}.json`);
-}
-
-export function pathPinImageFile(projectId: string, id: string) {
-    return join(PROJECT_FOLDER, projectId, PIN_FOLDER, `${id}.png`);
-}
-
-export function pathPinSourceFile(projectId: string, id: string) {
-    return join(PROJECT_FOLDER, projectId, PIN_FOLDER, `${id}.html`);
 }
 
 export function pathProjectFile(projectId: string) {

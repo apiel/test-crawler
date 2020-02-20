@@ -30,6 +30,7 @@ const handleDelete = (
 
 interface Props {
     projectId: string;
+    timestamp: string;
     storageType: StorageType,
     id: string;
     url: string;
@@ -42,10 +43,10 @@ interface Props {
     };
 }
 
-export const PinPage = ({ storageType, projectId, id, url, viewport, onImg, png, setPins }: Props) => (
+export const PinPage = ({ storageType, projectId, timestamp, id, url, viewport, onImg, png, setPins }: Props) => (
     <Card
         style={cardStyle}
-        cover={png && <DiffImage folder='base' id={id} onImg={onImg} projectId={projectId} storageType={storageType} />}
+        cover={png && <DiffImage timestamp={timestamp} id={id} onImg={onImg} projectId={projectId} storageType={storageType} />}
         actions={[
             <Popconfirm
                 title="Are you sure delete this pin?"

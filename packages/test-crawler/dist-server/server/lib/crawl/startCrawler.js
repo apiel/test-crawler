@@ -21,6 +21,7 @@ function startCrawler({ projectId, timestamp }) {
         const crawlerProvider = new CrawlerProvider_1.CrawlerProvider(storage_typing_1.StorageType.Local);
         const { crawlerInput } = yield crawlerProvider.loadProject(projectId);
         const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
+        yield fs_extra_1.mkdirp(utils_1.pathSnapshotFolder(projectId));
         const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp,
             id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
         yield fs_extra_1.outputJSON(utils_1.pathCrawlerFile(projectId, timestamp), crawler, { spaces: 4 });
