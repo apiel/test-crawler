@@ -13,9 +13,13 @@
 
 - we review done, maybe we should have as well report
 
+- save Token with AES encryption, so we can make the cookie last only for short time
+
+- on read blob make blob request only if necessary
+
 - improve cli perf
 
-- improve commit
+- Improve commit messages by including project name...
 
 - base on history, use AI to identify if diff are normal or not...
 

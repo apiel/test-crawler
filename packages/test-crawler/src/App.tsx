@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import './App.css';
+import { ReactComponent as Logo } from './logo.svg';
 import NewProject from './projects/new/NewProject';
 import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
@@ -61,8 +62,9 @@ const App = () => {
                     <Header>
                         <Link to={getHomeRoute()}>
                             <Title level={3} style={titleStyle}>
-                                Test-crawler
-                    </Title>
+                                <Logo style={{ height: 32, width: 32, position: 'absolute', fill: '#8c8c8c', }} /> 
+                                <span style={{ marginLeft: 45 }}>Test-crawler</span>
+                            </Title>
                         </Link>
                         <Menu
                             theme="dark"
