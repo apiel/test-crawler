@@ -131,7 +131,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
             throw new Error(`Unknown code type ${type}.`);
         }
         try {
-            const buf = await this.storage.read(this.join(projectId, `${type}`));
+            const buf = await this.storage.read(this.join(projectId, `${type}.js`));
             return buf?.toString() || '';
         } catch (err) { }
         return '';
@@ -168,7 +168,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         };
     }
 
-    async getCodeList(projectId: string, forceLocal = false): Promise<CodeInfoList> {
+    async getCodeList(projectId: string): Promise<CodeInfoList> {
         const listPath = this.join(projectId, CODE_FOLDER, `list.json`);
         const list = await this.storage.readJSON(listPath);
         return list || {};

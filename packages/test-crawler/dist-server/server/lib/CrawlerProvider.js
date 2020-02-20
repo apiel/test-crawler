@@ -132,7 +132,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                 throw new Error(`Unknown code type ${type}.`);
             }
             try {
-                const buf = yield this.storage.read(this.join(projectId, `${type}`));
+                const buf = yield this.storage.read(this.join(projectId, `${type}.js`));
                 return ((_a = buf) === null || _a === void 0 ? void 0 : _a.toString()) || '';
             }
             catch (err) { }
@@ -168,7 +168,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             };
         });
     }
-    getCodeList(projectId, forceLocal = false) {
+    getCodeList(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
             const listPath = this.join(projectId, config_1.CODE_FOLDER, `list.json`);
             const list = yield this.storage.readJSON(listPath);
