@@ -98,7 +98,7 @@ exports.loadPage = loadPage;
 function injectCodes(page, projectId, id, url, links, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new CrawlerProvider_1.CrawlerProvider(storage_typing_1.StorageType.Local);
-        const list = yield crawlerProvider.getCodeList(projectId, true);
+        const list = yield crawlerProvider.getCodeList(projectId);
         const toInject = Object.values(list).filter(({ pattern }) => {
             return minimatch(url, pattern);
         });

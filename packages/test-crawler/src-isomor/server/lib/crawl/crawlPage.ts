@@ -106,7 +106,7 @@ export async function injectCodes(
     crawler: Crawler,
 ) {
     const crawlerProvider = new CrawlerProvider(StorageType.Local);
-    const list = await crawlerProvider.getCodeList(projectId, true);
+    const list = await crawlerProvider.getCodeList(projectId);
     const toInject = Object.values(list).filter(({ pattern }) => {
         return minimatch(url, pattern);
     }) as any;
