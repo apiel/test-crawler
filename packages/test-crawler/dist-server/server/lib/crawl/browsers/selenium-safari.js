@@ -11,14 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const selenium_webdriver_1 = require("selenium-webdriver");
 const selenium_core_1 = require("./selenium-core");
-function startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder) {
+function startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url) {
     return __awaiter(this, void 0, void 0, function* () {
         const scrollHeight = yield getScrollHeight(url, viewport);
         const driver = yield new selenium_webdriver_1.Builder()
             .forBrowser('safari')
             .build();
         driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
-        return selenium_core_1.startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
+        return selenium_core_1.startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url);
     });
 }
 exports.startSeleniumSafari = startSeleniumSafari;

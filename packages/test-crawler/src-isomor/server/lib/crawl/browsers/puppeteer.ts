@@ -15,7 +15,6 @@ export async function startPuppeteer(
     projectId: string,
     id: string,
     url: string,
-    distFolder: string,
 ) {
     const browser = await launch({
         // headless: false,
@@ -42,7 +41,7 @@ export async function startPuppeteer(
         let links: string[];
         try {
             const injectLinks = await page.$$eval('a', as => as.map(a => (a as any).href));
-            links = await injectCodes(page, projectId, id, url, injectLinks, distFolder, crawler);
+            links = await injectCodes(page, projectId, id, url, injectLinks, crawler);
             // console.log('links', links);
         } catch (err) {
             codeErr = err.toString();

@@ -1,13 +1,12 @@
 import { info } from 'logol';
-import { PIN_FOLDER, PROJECT_FOLDER } from '../config';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
 import { readJson, readFile, pathExists, writeFile, writeJSON } from 'fs-extra';
 import { PageData, Crawler, ZoneStatus } from '../../typing';
 import { CrawlerProvider } from '../index';
-import { join } from 'path';
 import { StorageType } from '../../storage.typing';
+import { pathImageFile, pathInfoFile, pathPinInfoFile, pathPinImageFile } from '../crawl/utils';
 
 async function parsePng(
     data: PageData,
@@ -76,11 +75,11 @@ async function parseZones(pinJsonFile: string, zones: Zone[]) {
     }));
 }
 
-export async function prepare(projectId: string, id: string, distFolder: string, crawler: Crawler) {
-    const pngFile = join(distFolder, `${id}.png`);
-    const jsonFile = join(distFolder, `${id}.json`);
-    const pinPngFile = join(PROJECT_FOLDER, projectId, PIN_FOLDER, `${id}.png`);
-    const pinJsonFile = join(PROJECT_FOLDER, projectId, PIN_FOLDER, `${id}.json`);
+export async function prepare(projectId: string, timestamp: string, id: string, crawler: Crawler) {
+    const pngFile = pathImageFile(projectId, timestamp, id);
+    const jsonFile = pathInfoFile(projectId, timestamp, id);
+    const pinPngFile = pathPinImageFile(projectId, id);
+    const pinJsonFile = pathPinInfoFile(projectId, id);
 
     const data = await readJson(jsonFile);
 

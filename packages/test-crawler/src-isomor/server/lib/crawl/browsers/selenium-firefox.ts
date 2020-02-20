@@ -18,7 +18,6 @@ export async function startSeleniumFirefox(
     projectId: string,
     id: string,
     url: string,
-    distFolder: string,
 ) {
     const scrollHeight = await getScrollHeight(url, viewport);
     const driver = await new Builder()
@@ -28,7 +27,7 @@ export async function startSeleniumFirefox(
             height: scrollHeight || viewport.height,
         }).setPreference('general.useragent.override', USER_AGENT))
         .build();
-    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
+    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {

@@ -19,7 +19,6 @@ export async function startSeleniumIE(
     projectId: string,
     id: string,
     url: string,
-    distFolder: string,
 ) {
     const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.IEDriver.3.150.0/driver/');
     process.env.PATH = `${process.env.PATH};${driverPath};`;
@@ -31,7 +30,7 @@ export async function startSeleniumIE(
     // driver.manage().window().setRect({ width: viewport.width, height: scrollHeight, x: 0, y: 0 });
     // driver.manage().window().setRect({ width: 800, height: 1600, x: 0, y: 0 });
     driver.manage().window().setRect({ ...viewport, x: 0, y: 0 });
-    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
+    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {

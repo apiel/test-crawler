@@ -18,7 +18,6 @@ export async function startSeleniumEdge(
     projectId: string,
     id: string,
     url: string,
-    distFolder: string,
 ) {
     // const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftWebDriver.10.0.17134/driver/');
     const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftDriver.17.17134.0/driver/');
@@ -29,7 +28,7 @@ export async function startSeleniumEdge(
         .forBrowser('MicrosoftEdge')
         .build();
     driver.manage().window().setSize(viewport.width, scrollHeight || viewport.height);
-    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url, distFolder);
+    return startSeleniumCore(driver, viewport, pngFile, htmlFile, crawler, projectId, id, url);
 }
 
 async function getScrollHeight(url: string, viewport: Viewport) {

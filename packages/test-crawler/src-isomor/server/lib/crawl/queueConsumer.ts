@@ -4,28 +4,26 @@ import { join } from 'path';
 
 import {
     CONSUMER_COUNT,
-    CRAWL_FOLDER,
     PROJECT_FOLDER,
-    ROOT_FOLDER,
-    QUEUE_FOLDER,
 } from '../config';
 
 import { CrawlTarget, Browser, Project } from '../../typing';
 import { loadPage } from './crawlPage';
+import { pathQueueFolder, pathInfoFile, pathCrawlFolder, pathProjectFile } from './utils';
 
 interface ToCrawl {
     projectId: string;
     id: any;
     url: any;
-    distFolder: string;
+    timestamp: string;
 };
 
 let consumerRunning = 0;
 let consumerMaxCount = CONSUMER_COUNT;
 
 // some browser support only one instance at once
-export async function setConsumerMaxCount(crawlTarget: CrawlTarget) {
-    const { crawlerInput: { browser } }: Project = await readJSON(join(ROOT_FOLDER, PROJECT_FOLDER, crawlTarget.projectId, 'project.json'));
+export async function setConsumerMaxCount({ projectId }: CrawlTarget) {
+    const { crawlerInput: { browser } }: Project = await readJSON(pathProjectFile(projectId));
     if (browser === Browser.IeSelenium
         // || browser === Browser.EdgeSelenium
         || browser === Browser.SafariSelenium) {
@@ -39,8 +37,7 @@ function getConsumerMaxCount() {
 }
 
 async function pickFromQueue(projectId: string, timestamp: string): Promise<ToCrawl> {
-    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
-    const queueFolder = join(distFolder, QUEUE_FOLDER);
+    const queueFolder = pathQueueFolder(projectId, timestamp);
     if (await pathExists(queueFolder)) {
         const [file] = await readdir(queueFolder);
         if (file) {
@@ -48,8 +45,8 @@ async function pickFromQueue(projectId: string, timestamp: string): Promise<ToCr
             try {
                 const queueFile = join(queueFolder, file);
                 const { id, url } = await readJSON(queueFile);
-                await move(queueFile, join(distFolder, `${id}.json`));
-                return { projectId, id, url, distFolder };
+                await move(queueFile, pathInfoFile(projectId, timestamp, id));
+                return { projectId, id, url, timestamp };
             } catch (error) {
                 warn('Crawl possible error', error);
             }
@@ -60,7 +57,7 @@ async function pickFromQueue(projectId: string, timestamp: string): Promise<ToCr
 async function pickFromQueues(): Promise<ToCrawl> {
     const projectFolders = await readdir(PROJECT_FOLDER);
     for (const projectId of projectFolders) {
-        const crawlFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER);
+        const crawlFolder = pathCrawlFolder(projectId);
         await mkdirp(crawlFolder);
         const timestampFolders = await readdir(crawlFolder);
         for (const timestamp of timestampFolders) {
@@ -90,9 +87,9 @@ async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
         // console.log('toCrawl', toCrawl);
         if (toCrawl) {
             consumeQueuesRetry = 0;
-            const { projectId, id, url, distFolder } = toCrawl;
+            const { projectId, id, url, timestamp } = toCrawl;
             consumerRunning++;
-            loadPage(projectId, id, url, distFolder, () => consumerRunning--);
+            loadPage(projectId, id, url, timestamp, () => consumerRunning--);
             consumeQueues(consumeTimeout, crawlTarget);
             return;
         }

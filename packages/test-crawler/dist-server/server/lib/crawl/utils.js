@@ -22,3 +22,59 @@ function getFolders(projectId) {
     });
 }
 exports.getFolders = getFolders;
+function pathQueueFolder(projectId, timestamp) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, config_1.QUEUE_FOLDER);
+}
+exports.pathQueueFolder = pathQueueFolder;
+function pathQueueFile(projectId, timestamp, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, config_1.QUEUE_FOLDER, `${id}.json`);
+}
+exports.pathQueueFile = pathQueueFile;
+function pathSiblingFile(projectId, timestamp, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, 'sibling', id);
+}
+exports.pathSiblingFile = pathSiblingFile;
+function pathCrawlFolder(projectId) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER);
+}
+exports.pathCrawlFolder = pathCrawlFolder;
+function pathResultFolder(projectId, timestamp) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp);
+}
+exports.pathResultFolder = pathResultFolder;
+function pathCrawlerFile(projectId, timestamp) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, `_.json`);
+}
+exports.pathCrawlerFile = pathCrawlerFile;
+function pathInfoFile(projectId, timestamp, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, `${id}.json`);
+}
+exports.pathInfoFile = pathInfoFile;
+function pathImageFile(projectId, timestamp, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, `${id}.png`);
+}
+exports.pathImageFile = pathImageFile;
+function pathSourceFile(projectId, timestamp, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.CRAWL_FOLDER, timestamp, `${id}.html`);
+}
+exports.pathSourceFile = pathSourceFile;
+function pathPinInfoFile(projectId, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, `${id}.json`);
+}
+exports.pathPinInfoFile = pathPinInfoFile;
+function pathPinImageFile(projectId, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, `${id}.png`);
+}
+exports.pathPinImageFile = pathPinImageFile;
+function pathPinSourceFile(projectId, id) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, `${id}.html`);
+}
+exports.pathPinSourceFile = pathPinSourceFile;
+function pathProjectFile(projectId) {
+    return path_1.join(config_1.PROJECT_FOLDER, projectId, 'project.json');
+}
+exports.pathProjectFile = pathProjectFile;
+function pathCodeJsFile(projectId, id) {
+    return path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, projectId, config_1.CODE_FOLDER, `${id}.js`);
+}
+exports.pathCodeJsFile = pathCodeJsFile;

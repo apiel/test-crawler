@@ -19,7 +19,6 @@ export async function startSeleniumCore(
     projectId: string,
     id: string,
     url: string,
-    distFolder: string,
 ) {
     try {
         info(`browser open "${url}"`);
@@ -34,7 +33,7 @@ export async function startSeleniumCore(
         let links: string[];
         try {
             const injectLinks: string[] = await driver.executeScript("return Array.from(document.links).map(a => a.href)");
-            links = await injectCodes(driver, projectId, id, url, injectLinks, distFolder, crawler);
+            links = await injectCodes(driver, projectId, id, url, injectLinks, crawler);
             // console.log('links', links);
         } catch (err) {
             codeErr = err.toString();

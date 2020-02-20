@@ -10,14 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
-const config_1 = require("../config");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");
 const typing_1 = require("../../typing");
 const index_1 = require("../index");
-const path_1 = require("path");
 const storage_typing_1 = require("../../storage.typing");
+const utils_1 = require("../crawl/utils");
 function parsePng(data, pngFile, jsonFile, pinPngFile, pinJsonFile) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id, url } = data;
@@ -67,12 +66,12 @@ function parseZones(pinJsonFile, zones) {
         }));
     });
 }
-function prepare(projectId, id, distFolder, crawler) {
+function prepare(projectId, timestamp, id, crawler) {
     return __awaiter(this, void 0, void 0, function* () {
-        const pngFile = path_1.join(distFolder, `${id}.png`);
-        const jsonFile = path_1.join(distFolder, `${id}.json`);
-        const pinPngFile = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, `${id}.png`);
-        const pinJsonFile = path_1.join(config_1.PROJECT_FOLDER, projectId, config_1.PIN_FOLDER, `${id}.json`);
+        const pngFile = utils_1.pathImageFile(projectId, timestamp, id);
+        const jsonFile = utils_1.pathInfoFile(projectId, timestamp, id);
+        const pinPngFile = utils_1.pathPinImageFile(projectId, id);
+        const pinJsonFile = utils_1.pathPinInfoFile(projectId, id);
         const data = yield fs_extra_1.readJson(jsonFile);
         let diffZoneCount = 0;
         if (yield fs_extra_1.pathExists(pinJsonFile)) {

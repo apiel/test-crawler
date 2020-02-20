@@ -1,12 +1,5 @@
 import { Viewport } from 'puppeteer';
 import { pathExists, outputJson, outputJSON, readFile, outputFile } from 'fs-extra';
-import { join } from 'path';
-
-import {
-    CRAWL_FOLDER,
-    PROJECT_FOLDER,
-    QUEUE_FOLDER,
-} from '../config';
 
 import { CrawlerMethod } from '../index';
 import { Crawler, CrawlerInput, CrawlTarget } from '../../typing';
@@ -14,6 +7,7 @@ import { CrawlerProvider } from '../CrawlerProvider';
 import Axios from 'axios';
 import md5 = require('md5');
 import { StorageType } from '../../storage.typing';
+import { pathInfoFile, pathQueueFile, pathSiblingFile, pathCrawlerFile } from './utils';
 
 export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
     const crawlerProvider = new CrawlerProvider(StorageType.Local);
@@ -34,39 +28,51 @@ export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
         lastUpdate: Date.now(),
     };
 
-    const distFolder = join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp);
-    await outputJSON(join(distFolder, '_.json'), crawler, { spaces: 4 });
+    await outputJSON(pathCrawlerFile(projectId, timestamp), crawler, { spaces: 4 });
 
     if (crawlerInput.method === CrawlerMethod.URLs) {
-        await startUrlsCrawling(crawlerInput, distFolder);
+        await startUrlsCrawling(crawlerInput, projectId, timestamp);
     } else {
-        await startSpiderBotCrawling(crawlerInput, distFolder);
+        await startSpiderBotCrawling(crawlerInput, projectId, timestamp);
     }
 }
 
-async function startUrlsCrawling(crawlerInput: CrawlerInput, distFolder: string) {
+async function startUrlsCrawling(
+    crawlerInput: CrawlerInput,
+    projectId: string,
+    timestamp: string,
+) {
     const { data } = await Axios.get(crawlerInput.url);
     const urls = data.split(`\n`).filter((url: string) => url.trim());
     await Promise.all(urls.map((url: string) =>
-        addToQueue(url, crawlerInput.viewport, distFolder)));
+        addToQueue(url, crawlerInput.viewport, projectId, timestamp)));
 }
 
-async function startSpiderBotCrawling({ url, viewport, limit }: CrawlerInput, distFolder: string) {
-    const addedToqueue = await addToQueue(url, viewport, distFolder, limit);
+async function startSpiderBotCrawling(
+    { url, viewport, limit }: CrawlerInput,
+    projectId: string,
+    timestamp: string,
+) {
+    const addedToqueue = await addToQueue(url, viewport, projectId, timestamp, limit);
     if (!addedToqueue) {
         throw (new Error('Something went wrong while adding job to queue'));
     }
 }
 
-export async function addToQueue(url: string, viewport: Viewport, distFolder: string, limit: number = 0): Promise<boolean> {
+export async function addToQueue(
+    url: string,
+    viewport: Viewport,
+    projectId: string,
+    timestamp: string,
+    limit: number = 0,
+): Promise<boolean> {
     const cleanUrl = url.replace(/(\n\r|\r\n|\n|\r)/gm, '');
-    // console.log('addToQueue', cleanUrl, viewport, distFolder);
     const id = md5(`${cleanUrl}-${JSON.stringify(viewport)}`);
-    const resultFile = join(distFolder, `${id}.json`);
-    const queueFile = join(distFolder, QUEUE_FOLDER, `${id}.json`);
+    const resultFile = pathInfoFile(projectId, timestamp, id);
+    const queueFile = pathQueueFile(projectId, timestamp, id);
 
     if (!(await pathExists(queueFile)) && !(await pathExists(resultFile))) {
-        if (!limit || (await updateSiblingCount(cleanUrl, distFolder)) < limit) {
+        if (!limit || (await updateSiblingCount(cleanUrl, projectId, timestamp)) < limit) {
             await outputJson(queueFile, { url: cleanUrl, id }, { spaces: 4 });
         }
         return true;
@@ -75,11 +81,15 @@ export async function addToQueue(url: string, viewport: Viewport, distFolder: st
 }
 
 // this is for the limit in spider bot
-async function updateSiblingCount(url: string, distFolder: string) {
+async function updateSiblingCount(
+    url: string,
+    projectId: string,
+    timestamp: string,
+) {
     const urlPaths = url.split('/').filter(s => s);
     urlPaths.pop();
     const id = md5(urlPaths.join('/'));
-    const file = join(distFolder, 'sibling', id);
+    const file = pathSiblingFile(projectId, timestamp, id);
     let count = 0;
     if (await pathExists(file)) {
         count = parseInt((await readFile(file)).toString(), 10) + 1;
