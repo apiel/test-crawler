@@ -1,6 +1,6 @@
 {
     "name": "pixdiff-zone",
-    "version": "2.3.1",
+    "version": "3.0.0",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "author": "Alexandre Piel <alexandre.piel@gmail.com>",
