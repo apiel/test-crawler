@@ -2823,6 +2823,10 @@
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.3.3.tgz#85bc74ba782fb7aa3a514d11767832b0e3bc6803"
 
+"@types/crypto-js@^3.1.43":
+  version "3.1.43"
+  resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-3.1.43.tgz#b859347d6289ba13e347c335a4c9efa63337a748"
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -5543,6 +5547,10 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+crypto-js@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
 
 crypto-random-string@^1.0.0:
   version "1.0.0"
@@ -10985,11 +10993,9 @@ pirates@^4.0.1:
   dependencies:
     node-modules-regexp "^1.0.0"
 
-pixdiff-zone@^1.0.0-alpha.0:
-  version "1.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-1.0.0-alpha.0.tgz#016a3fe53fd69a733e8c381e5f84cf02be35e9e4"
-  dependencies:
-    typescript "^3.7.5"
+pixdiff-zone@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-3.0.1.tgz#dc22aac996584f1b990e72498ce1c5b8389204ae"
 
 pkg-dir@^1.0.0:
   version "1.0.0"

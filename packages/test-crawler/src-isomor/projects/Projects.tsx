@@ -2,6 +2,7 @@ import React from 'react';
 import Button from 'antd/lib/button';
 import { Link } from 'react-router-dom';
 import Typography from 'antd/lib/typography';
+import Icon from 'antd/lib/icon';
 import { StorageType } from '../server/storage.typing';
 import { getNewProjectRoute } from '../routes';
 import { ProjectsPerRemote } from './ProjectsPerRemote';
@@ -66,8 +67,16 @@ const Doc = () => (
             >personal access tokens</a> to the <a
                 href="https://developer.github.com/v3/"
                 target="_blank" rel="noopener noreferrer"
-            >GitHub API</a>. Note, the personal access tokens is a sensible information.
-            Use this app, only on a trustable device. To <a
+            >GitHub API</a>. Personal access tokens is a sensible information and you should keep
+            it safe. For this reason, we are saving this token in your cookie only for a limited
+            amount of time. After 5 min of inactivity, you will need to enter it again.
+        </p>
+        <p>
+            To keep this token safe, use some password manager like Lastpass or Bitwarden.
+            Alternatively, you can use the build-in token AES encryption. To decrypt the token
+            click on lock icon <Icon type="unlock" />.
+        </p>
+        <p>To <a
                 href="https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line"
                 target="_blank" rel="noopener noreferrer"
             >create a token</a>, go in developer settings, personal access tokens and then generate
