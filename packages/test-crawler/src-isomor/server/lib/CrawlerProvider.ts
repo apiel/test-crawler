@@ -95,7 +95,7 @@ export class CrawlerProvider extends CrawlerProviderStorage {
             if (!pin) return;
             timestamp = pin.timestamp;
         }
-        return this.storage.blob(this.join(projectId, SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
+        return this.storage.image(this.join(projectId, SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
     }
 
     saveBeforeAfterCode(projectId: string, type: BeforeAfterType, code: string): Promise<void> {

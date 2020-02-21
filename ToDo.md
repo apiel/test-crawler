@@ -1,5 +1,7 @@
 - add test for test-crawler
 
+- need to refresh token, make max age 10min
+
 - we might need to redirect to home page when token expired
 
 - update doc:
@@ -8,8 +10,6 @@
 - beforeAll script should be call in CI ?
   but this would work only for CI
   or we should make a special one for CI
-
-- on read blob make blob request only if necessary
 
 - improve cli perf
 

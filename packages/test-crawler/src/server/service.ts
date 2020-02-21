@@ -1,159 +1,82 @@
-import {
-    CrawlerProvider,
-} from './lib';
-
-import {
-    Crawler,
-    CrawlerInput,
-    PageData,
-    Project,
-    Code,
-    CodeInfoList,
-    StartCrawler,
-    BeforeAfterType,
-    Browser,
-    ZoneStatus,
-} from './typing';
-import { StorageType } from './storage.typing';
-
-// Force getSettings to be a async since crawlerProvider.getSettings is sync
-export async function getSettings() {
-    return {
-        dir: __dirname,
-    }
+import { isomorRemote } from "isomor";
+export function getSettings(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getSettings", args);
 }
-
-export function getInfo(storageType: StorageType) {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.info();
+export function getInfo(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getInfo", args);
 }
-
-export function getJobs(storageType: StorageType, projectId: string) {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.jobs(projectId);
+export function getJobs(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getJobs", args);
 }
-
-export function getRepo(storageType: StorageType) {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.repo();
+export function getRepo(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getRepo", args);
 }
-
-export function loadRepos(storageType: StorageType) {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.repos();
+export function loadRepos(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "loadRepos", args);
 }
-
-export function loadProject(storageType: StorageType, projectId: string): Promise<Project> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.loadProject(projectId);
+export function loadProject(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "loadProject", args);
 }
-
-export function loadProjects(storageType: StorageType): Promise<Project[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.loadProjects();
+export function loadProjects(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "loadProjects", args);
 }
-
-export function saveProject(storageType: StorageType, crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.saveProject(crawlerInput, name, projectId);
+export function saveProject(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "saveProject", args);
 }
-
-export function getCrawler(storageType: StorageType, projectId: string, timestamp: string): Promise<Crawler> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.getCrawler(projectId, timestamp);
+export function getCrawler(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getCrawler", args);
 }
-
-export function getCrawlers(storageType: StorageType, projectId: string): Promise<Crawler[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.getAllCrawlers(projectId);
+export function getCrawlers(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getCrawlers", args);
 }
-
-export function getPages(storageType: StorageType, projectId: string, timestamp: string): Promise<PageData[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.getPages(projectId, timestamp);
+export function getPages(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getPages", args);
 }
-
-export function getPins(storageType: StorageType, projectId: string): Promise<PageData[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.getPins(projectId);
+export function getPins(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getPins", args);
 }
-
-export function getPin(storageType: StorageType, projectId: string, id: string): Promise<PageData> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.getPin(projectId, id);
+export function getPin(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getPin", args);
 }
-
-export function saveBeforeAfterCode(storageType: StorageType, projectId: string, type: BeforeAfterType, code: string): Promise<void> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.saveBeforeAfterCode(projectId, type, code);
+export function saveBeforeAfterCode(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "saveBeforeAfterCode", args);
 }
-
-export function getBeforeAfterCode(storageType: StorageType, projectId: string, type: BeforeAfterType): Promise<string> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.getBeforeAfterCode(projectId, type);
+export function getBeforeAfterCode(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getBeforeAfterCode", args);
 }
-
-export function setCode(storageType: StorageType, projectId: string, code: Code): Promise<void> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.saveCode(projectId, code);
+export function setCode(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setCode", args);
 }
-
-export function getCode(storageType: StorageType, projectId: string, id: string): Promise<Code> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.loadCode(projectId, id);
+export function getCode(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getCode", args);
 }
-
-export function getCodes(storageType: StorageType, projectId: string): Promise<CodeInfoList> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.getCodeList(projectId);
+export function getCodes(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getCodes", args);
 }
-
-export async function getThumbnail(storageType: StorageType, projectId: string, timestamp: string, id: string, width: number = 300): Promise<string> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    const image = await crawlerProvider.image(projectId, timestamp, id);
-    if (!image) {
-        throw new Error('Cannot load image.');
-    }
-    // return `data:image/png;base64, ${(await image.toBuffer()).toString('base64')}`;
-    return `data:image/png;base64, ${(image).toString('base64')}`;
+export function getThumbnail(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getThumbnail", args);
 }
-
-export function removePin(storageType: StorageType, projectId: string, id: string): Promise<PageData[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.removeFromPins(projectId, id);
+export function removePin(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "removePin", args);
 }
-
-export function pin(storageType: StorageType, projectId: string, timestamp: string, id: string): Promise<PageData> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.copyToPins(projectId, timestamp, id);
+export function pin(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "pin", args);
 }
-
-export async function setZoneStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, index: number, status: ZoneStatus): Promise<PageData[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.setZoneStatus(projectId, timestamp, id, status, index);
+export function setZoneStatus(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setZoneStatus", args);
 }
-
-export async function setZonesStatus(storageType: StorageType, projectId: string, timestamp: string, id: string, status: ZoneStatus): Promise<PageData[]> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.setZoneStatus(projectId, timestamp, id, status);
+export function setZonesStatus(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setZonesStatus", args);
 }
-
-export function setStatus(storageType: StorageType, projectId: string, timestamp: string, status: string): Promise<Crawler> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.setCrawlerStatus(projectId, timestamp, status);
+export function setStatus(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "setStatus", args);
 }
-
-export async function getBrowsers(storageType: StorageType) {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.browsers;
+export function getBrowsers(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "getBrowsers", args);
 }
-
-export function startCrawler(storageType: StorageType, projectId: string, browser: Browser): Promise<StartCrawler> {
-    const crawlerProvider = new CrawlerProvider(storageType, this);
-    return crawlerProvider.startCrawler(projectId, browser);
+export function startCrawler(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "startCrawler", args);
 }
-
-export function startCrawlers(/* storageType: StorageType */): Promise<void> {
-    const crawlerProvider = new CrawlerProvider(undefined, this);
-    return crawlerProvider.startCrawlers();
+export function startCrawlers(...args: any) {
+  return isomorRemote("ws", "ws://127.0.0.1:3005", "server-service", "test-crawler", "startCrawlers", args);
 }

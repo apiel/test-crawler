@@ -107,6 +107,7 @@ function getThumbnail(storageType, projectId, timestamp, id, width = 300) {
     return __awaiter(this, void 0, void 0, function* () {
         const crawlerProvider = new lib_1.CrawlerProvider(storageType, this);
         const image = yield crawlerProvider.image(projectId, timestamp, id);
+        console.log('img', image);
         if (!image) {
             throw new Error('Cannot load image.');
         }

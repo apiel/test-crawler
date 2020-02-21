@@ -56,6 +56,10 @@ export class LocalStorage extends Storage {
         }
     }
 
+    image(path: string) {
+        return this.read(path);
+    }
+
     blob(path: string) {
         return this.read(path);
     }

@@ -106,7 +106,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                     return;
                 timestamp = pin.timestamp;
             }
-            return this.storage.blob(this.join(projectId, config_1.SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
+            return this.storage.image(this.join(projectId, config_1.SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
         });
     }
     saveBeforeAfterCode(projectId, type, code) {

@@ -111,6 +111,7 @@ export function getCodes(storageType: StorageType, projectId: string): Promise<C
 export async function getThumbnail(storageType: StorageType, projectId: string, timestamp: string, id: string, width: number = 300): Promise<string> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
     const image = await crawlerProvider.image(projectId, timestamp, id);
+    console.log('img', image);
     if (!image) {
         throw new Error('Cannot load image.');
     }

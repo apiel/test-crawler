@@ -3,6 +3,7 @@ import { CrawlTarget, Job, Browser } from '../../typing';
 export abstract class Storage {
     abstract get browsers(): Browser[];
     abstract info(): Promise<string | undefined>;
+    abstract image(path: string): Promise<Buffer | string | undefined>;
     abstract blob(path: string): Promise<Buffer | undefined>;
     abstract repos(): Promise<string[] | undefined>;
     abstract getRepo(): Promise<string | undefined>;

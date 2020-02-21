@@ -102,11 +102,16 @@ export class GitHubStorage extends Storage {
         }
     }
 
-    async blob(path: string) {
-        const { data } = await this.getContents(dirname(path));
+    async image(path: string) {
+        const { data } = await this.getContents(path);
         if (data.content) {
             return Buffer.from(data.content, 'base64');
         }
+        return data.download_url;
+    }
+
+    async blob(path: string) {
+        const { data } = await this.getContents(dirname(path)); // we might need to increase limit
         const filename = basename(path);
         const filedata = data.find((item: any) => item.name === filename);
         if (!filedata) {

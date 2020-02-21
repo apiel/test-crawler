@@ -57,6 +57,9 @@ class LocalStorage extends Storage_1.Storage {
             }
         });
     }
+    image(path) {
+        return this.read(path);
+    }
     blob(path) {
         return this.read(path);
     }
