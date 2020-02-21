@@ -55,7 +55,7 @@ export const Code = ({ match: { params: { id, projectId, storageType } }, locati
                             id={id}
                             code={code}
                             setSource={setSource(code, setCode)}
-                            location={location}
+                            location={location as any}
                             storageType={storageType}
                         />
                         <AceEditor
