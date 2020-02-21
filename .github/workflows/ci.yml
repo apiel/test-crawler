@@ -15,11 +15,11 @@ jobs:
       uses: actions/setup-node@v1
     - name: Generate doc
       run: yarn doc
-    - name: Generate live site for Github pages
-      run: |
-        npx lerna bootstrap
-        cd packages/test-crawler
-        yarn github:pub
+    # - name: Generate live site for Github pages
+    #   run: |
+    #     npx lerna bootstrap
+    #     cd packages/test-crawler
+    #     yarn github:pub
     - name: Commit changes
       run: |
         git config --local user.email "action@github.com"
