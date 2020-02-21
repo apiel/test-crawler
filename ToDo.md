@@ -7,8 +7,6 @@
   but this would work only for CI
   or we should make a special one for CI
 
-- save Token with AES encryption, so we can make the cookie last only for short time
-
 - on read blob make blob request only if necessary
 
 - improve cli perf
