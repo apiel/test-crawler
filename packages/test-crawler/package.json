@@ -15,7 +15,9 @@
     "cli-dev": "ts-node --project tsconfig-cli.json cli/cli.ts",
     "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && chmod +x bin/cli.js",
     "test-crawler": "test-crawler",
-    "prepublishOnly": "cp ../../README.md . && yarn cli-build && yarn isomor:build && yarn serv:build && chmod +x test-crawler.js",
+    "prepublishOnly": "cp ../../README.md . && yarn prepublishLocal && yarn prepublishGithub && chmod +x test-crawler.js",
+    "prepublishLocal": "yarn cli-build && yarn isomor:build && yarn serv:build && yarn build",
+    "prepublishGithub": "yarn cli-build && yarn isomor:build && yarn github:pub",
     "isomor:build": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true isomor-transpiler",
     "isomor:build:dev": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true ISOMOR_WATCH=true isomor-transpiler",
     "isomor:server": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true node ../isomor-server/dist/bin/server.js",
@@ -33,7 +35,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "github:build:static": "rm -rf src && cp -r src-isomor src && rm src/server/lib/CrawlerProviderStorage.ts && mv src/server/lib/CrawlerProviderGitHubStorage.ts src/server/lib/CrawlerProviderStorage.ts && rm src/server/storage.typing.ts && mv src/server/storageGitHub.typing.ts src/server/storage.typing.ts && rm -rf src/server/lib/crawl  && rm -rf src/server/lib/diff && rm src/server/lib/storage/LocalStorage.ts",
-    "github:pub": "yarn github:build:static && PUBLIC_URL=/test-crawler/live yarn build && cp -r build/* ../../docs/live && yarn build"
+    "github:pub": "yarn github:build:static && PUBLIC_URL=/test-crawler/live yarn build && cp -r build/* ../../docs/live"
   },
   "eslintConfig": {
     "extends": "react-app"

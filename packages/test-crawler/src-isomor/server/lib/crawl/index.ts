@@ -1,6 +1,6 @@
 import { error, info } from 'logol';
-import { readdir, pathExists, mkdirp } from 'fs-extra';
-import { join } from 'path';
+import { readdir, pathExists, mkdirp, remove, readJSON } from 'fs-extra';
+import { join, basename, extname } from 'path';
 
 import {
     CRAWL_FOLDER,
@@ -9,12 +9,13 @@ import {
     MAX_HISTORY,
     ROOT_FOLDER,
 } from '../config';
-import { CrawlTarget } from '../../typing';
+import { CrawlTarget, PageData } from '../../typing';
 import { promisify } from 'util';
 import rimraf = require('rimraf');
 import { initConsumeResults } from './resultConsumer';
 import { setConsumerMaxCount, initConsumeQueues } from './queueConsumer';
 import { startCrawler } from './startCrawler';
+import { pathSnapshotFolder, pathInfoFile, pathPinInfoFile } from './utils';
 
 let projectIdForExit: string;
 
@@ -64,6 +65,31 @@ async function cleanHistory() {
             const cleanUp = results.slice(0, -(MAX_HISTORY - 1));
             for (const toRemove of cleanUp) {
                 await promisify(rimraf)(join(crawlFolder, toRemove));
+            }
+            await cleanSnapshot(project);
+        }
+    }
+}
+
+async function cleanSnapshot(projectId: string) {
+    const snapshotFolder = pathSnapshotFolder(projectId);
+    if (await pathExists(snapshotFolder)) {
+        const files = await readdir(snapshotFolder);
+        for (const file of files) {
+            const [timestamp, id] = basename(file, extname(file)).split('-');
+            const infoFile = pathInfoFile(projectId, timestamp, id);
+            if (!await pathExists(infoFile)) {
+                const pinFile = pathPinInfoFile(projectId, id);
+                if (!await pathExists(pinFile)) {
+                    info('Remove unused snapshot', snapshotFolder, file);
+                    await remove(join(snapshotFolder, file));
+                } else {
+                    const pin: PageData = await readJSON(pinFile);
+                    if (!pin || pin.timestamp !== timestamp) {
+                        info('Remove unused snapshot', snapshotFolder, file);
+                        await remove(join(snapshotFolder, file));
+                    }
+                }
             }
         }
     }

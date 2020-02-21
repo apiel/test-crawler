@@ -90,6 +90,9 @@ class GitHubStorage extends Storage_1.Storage {
     blob(path) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = yield this.getContents(path_1.dirname(path));
+            if (data.content) {
+                return Buffer.from(data.content, 'base64');
+            }
             const filename = path_1.basename(path);
             const filedata = data.find((item) => item.name === filename);
             if (!filedata) {

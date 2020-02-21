@@ -1,8 +1,4 @@
-- pin request timeout because it take very long even if succeed
---> maybe all update should be done in a worklow job? too complicated!!
----> move img and html in a different folder.
----> change file structure, only move json for pin
----> on cleanup, the script would have to identify images to delete
+- add test for test-crawler
 
 - update doc:
     + code and links
@@ -10,8 +6,6 @@
 - beforeAll script should be call in CI ?
   but this would work only for CI
   or we should make a special one for CI
-
-- we review done, maybe we should have as well report
 
 - save Token with AES encryption, so we can make the cookie last only for short time
 
@@ -28,7 +22,23 @@
 - support gitlab
 
 - improve naming with all those crawlers, job, run, project...
-- need to make a big cleanup in crawler code
+
+- we able to set review as done, maybe we should have as well report
+
+- getThumbnail use download_url or git_url from blob
+    // {
+    //     name: '1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
+    //     path: 'test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
+    //     sha: '0ce471ac6a7822202771df6c8a9caffff1c950bd',
+    //     size: 1309164,
+    //     url: 'https://api.github.com/repos/apiel/test-crawler-remote-folder/contents/test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png?ref=master',
+    //     html_url: 'https://github.com/apiel/test-crawler-remote-folder/blob/master/test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
+    //     git_url: 'https://api.github.com/repos/apiel/test-crawler-remote-folder/git/blobs/0ce471ac6a7822202771df6c8a9caffff1c950bd',
+    //     download_url: 'https://raw.githubusercontent.com/apiel/test-crawler-remote-folder/master/test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
+    //     type: 'file',
+    //   },
+
+- show affix of job in progress
 
 - see if we can improve IE, full page? we could scroll till the bottom and make screenshot of each step
     getting link fails, try to find some alternative? like get by tag name, or by loading the html
@@ -61,6 +71,40 @@
 
 
 - track user behavior, save it in history and reproduce scenarios... (e2e?)
+
+
+
+waitForNetworkIdle(idleTime: number = 500) {
+        const MAX_TIMEOUT = 10 * 1000;
+        return new Promise((resolve, reject) => {
+            const succeed = () => {
+                clearTimeout(timeoutTimer);
+                page.removeListener('request', onRequest);
+                resolve();
+            };
+            const fail = () => {
+                clearTimeout(idleTimer);
+                page.removeListener('request', onRequest);
+                reject(
+                    new Error(
+                        `Maximum timeout of ${MAX_TIMEOUT}ms exceeded while waiting for network to become idle`,
+                    ),
+                );
+            };
+
+            let idleTimer = setTimeout(succeed, idleTime);
+            let timeoutTimer = setTimeout(fail, MAX_TIMEOUT);
+
+            const onRequest = () => {
+                clearTimeout(idleTimer);
+                idleTimer = setTimeout(succeed, idleTime);
+            };
+
+            page.on('request', onRequest);
+        });
+    }
+
+
 
 
 storybook

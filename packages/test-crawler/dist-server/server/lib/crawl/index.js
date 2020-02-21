@@ -18,6 +18,7 @@ const rimraf = require("rimraf");
 const resultConsumer_1 = require("./resultConsumer");
 const queueConsumer_1 = require("./queueConsumer");
 const startCrawler_1 = require("./startCrawler");
+const utils_1 = require("./utils");
 let projectIdForExit;
 function beforeAll(crawlTarget) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -72,6 +73,33 @@ function cleanHistory() {
                 const cleanUp = results.slice(0, -(config_1.MAX_HISTORY - 1));
                 for (const toRemove of cleanUp) {
                     yield util_1.promisify(rimraf)(path_1.join(crawlFolder, toRemove));
+                }
+                yield cleanSnapshot(project);
+            }
+        }
+    });
+}
+function cleanSnapshot(projectId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const snapshotFolder = utils_1.pathSnapshotFolder(projectId);
+        if (yield fs_extra_1.pathExists(snapshotFolder)) {
+            const files = yield fs_extra_1.readdir(snapshotFolder);
+            for (const file of files) {
+                const [timestamp, id] = path_1.basename(file, path_1.extname(file)).split('-');
+                const infoFile = utils_1.pathInfoFile(projectId, timestamp, id);
+                if (!(yield fs_extra_1.pathExists(infoFile))) {
+                    const pinFile = utils_1.pathPinInfoFile(projectId, id);
+                    if (!(yield fs_extra_1.pathExists(pinFile))) {
+                        logol_1.info('Remove unused snapshot', snapshotFolder, file);
+                        yield fs_extra_1.remove(path_1.join(snapshotFolder, file));
+                    }
+                    else {
+                        const pin = yield fs_extra_1.readJSON(pinFile);
+                        if (!pin || pin.timestamp !== timestamp) {
+                            logol_1.info('Remove unused snapshot', snapshotFolder, file);
+                            yield fs_extra_1.remove(path_1.join(snapshotFolder, file));
+                        }
+                    }
                 }
             }
         }
