@@ -30,6 +30,7 @@ import { PinsBreadcrumb } from './pin/PinsBreadcrumb';
 import { CodeBreadcrumb } from './code/CodeBreadcrumb';
 import { DocSider } from './doc/DocSider';
 import { useDoc } from './doc/useDoc';
+import { githubRefresh } from './auth/githubCookie';
 
 const { Content, Header } = Layout;
 const { Title } = Typography;
@@ -52,6 +53,7 @@ const contentStyle = {
 
 const App = () => {
     const { toggle } = useDoc();
+    githubRefresh();
     return (
         // <BrowserRouter basename={process.env.PUBLIC_URL}>
         <HashRouter

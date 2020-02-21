@@ -8,6 +8,7 @@ import { getNewProjectRoute } from '../routes';
 import { ProjectsPerRemote } from './ProjectsPerRemote';
 import { useThisDoc } from '../doc/useDoc';
 import { Info } from '../common/Info';
+import { MAX_AGE } from '../auth/githubCookie';
 
 export const Projects = () => {
     useThisDoc(Doc);
@@ -69,7 +70,7 @@ const Doc = () => (
                 target="_blank" rel="noopener noreferrer"
             >GitHub API</a>. Personal access tokens is a sensible information and you should keep
             it safe. For this reason, we are saving this token in your cookie only for a limited
-            amount of time. After 5 min of inactivity, you will need to enter it again.
+            amount of time. After { MAX_AGE } min of inactivity, you will need to enter it again.
         </p>
         <p>
             To keep this token safe, use some password manager like Lastpass or Bitwarden.

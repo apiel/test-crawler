@@ -11,6 +11,7 @@ import encUtf8 from 'crypto-js/enc-utf8';
 import AES from 'crypto-js/aes';
 
 import { GitHubSave } from './GitHubSave';
+import { MAX_AGE } from './githubCookie';
 
 const handleSubmit = (validateFields: any) => (event: React.FormEvent<any>) => {
     event.preventDefault();
@@ -18,7 +19,7 @@ const handleSubmit = (validateFields: any) => (event: React.FormEvent<any>) => {
         if (!err) {
             // save
             const cookies = new Cookies();
-            cookies.set('github', values, { path: '/', maxAge: 5 * 60 });
+            cookies.set('github', values, { path: '/', maxAge: MAX_AGE * 60 });
             window?.location?.reload();
         }
     });

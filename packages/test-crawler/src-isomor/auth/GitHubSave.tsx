@@ -6,6 +6,7 @@ import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import Cookies from 'universal-cookie';
 import AES from 'crypto-js/aes';
+import { MAX_AGE } from './githubCookie';
 
 const handleCancel = (
     setToken: React.Dispatch<React.SetStateAction<string>>,
@@ -68,7 +69,7 @@ export const GitHubSave = ({ token, setToken }: Props) => {
             <p style={{ textAlign: 'justify' }}>
                 Personal access tokens is a sensible information and you should keep it safe. For this
                 reason, we are saving this token in your cookie only for a limited amount of time. After
-                5 min of inactivity, you will need to enter it again.
+                { MAX_AGE } min of inactivity, you will need to enter it again.
             </p>
             <p style={{ textAlign: 'justify' }}>
                 To keep this token safe, use some password manager like Lastpass or Bitwarden.

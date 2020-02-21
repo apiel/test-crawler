@@ -163,6 +163,9 @@ class GitHubStorage extends Storage_1.Storage {
     }
     readJSON(path) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!this.token || !this.user) {
+                throw new Error(error_1.ERR.missingGitHubConfig);
+            }
             try {
                 return JSON.parse((yield this.read(path)).toString());
             }
