@@ -1,8 +1,6 @@
 - add test for test-crawler
 
-- need to refresh token, make max age 10min
-
-- we might need to redirect to home page when token expired
+- show registration form when token expired
 
 - update doc:
     + code and links
@@ -24,19 +22,6 @@
 - improve naming with all those crawlers, job, run, project...
 
 - we able to set review as done, maybe we should have as well report
-
-- getThumbnail use download_url or git_url from blob
-    // {
-    //     name: '1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
-    //     path: 'test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
-    //     sha: '0ce471ac6a7822202771df6c8a9caffff1c950bd',
-    //     size: 1309164,
-    //     url: 'https://api.github.com/repos/apiel/test-crawler-remote-folder/contents/test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png?ref=master',
-    //     html_url: 'https://github.com/apiel/test-crawler-remote-folder/blob/master/test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
-    //     git_url: 'https://api.github.com/repos/apiel/test-crawler-remote-folder/git/blobs/0ce471ac6a7822202771df6c8a9caffff1c950bd',
-    //     download_url: 'https://raw.githubusercontent.com/apiel/test-crawler-remote-folder/master/test-crawler/0d0e76ce512d243aa54d9150107b03cb/snapshot/1582232947-6bb6daef2f3976799fdf0e3faf2bcb22.png',
-    //     type: 'file',
-    //   },
 
 - show affix of job in progress
 
