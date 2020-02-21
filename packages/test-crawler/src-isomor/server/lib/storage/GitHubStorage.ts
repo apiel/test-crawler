@@ -192,7 +192,7 @@ export class GitHubStorage extends Storage {
     async remove(file: string) {
         const { data: { sha } } = await this.getContents(file);
         const data = JSON.stringify({
-            message: `${COMMIT_PREFIX} save json`,
+            message: `${COMMIT_PREFIX} delete file`,
             sha,
         });
         await this.call({

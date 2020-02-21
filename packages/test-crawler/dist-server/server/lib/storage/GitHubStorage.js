@@ -178,7 +178,7 @@ class GitHubStorage extends Storage_1.Storage {
         return __awaiter(this, void 0, void 0, function* () {
             const { data: { sha } } = yield this.getContents(file);
             const data = JSON.stringify({
-                message: `${COMMIT_PREFIX} save json`,
+                message: `${COMMIT_PREFIX} delete file`,
                 sha,
             });
             yield this.call({

@@ -1,3 +1,5 @@
+- improve cli perf
+
 - add test for test-crawler
 
 - update doc:
@@ -6,8 +8,6 @@
 - beforeAll script should be call in CI ?
   but this would work only for CI
   or we should make a special one for CI
-
-- improve cli perf
 
 - Improve commit messages by including project name...
 
