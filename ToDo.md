@@ -1,7 +1,5 @@
 - add test for test-crawler
 
-- show registration form when token expired
-
 - update doc:
     + code and links
 
