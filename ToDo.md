@@ -1,5 +1,7 @@
 - add test for test-crawler
 
+- we might need to redirect to home page when token expired
+
 - update doc:
     + code and links
 
