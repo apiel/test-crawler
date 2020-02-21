@@ -11,10 +11,12 @@ import { Crawler } from '../server/typing';
 import { getCrawler } from '../server/service';
 import { StorageType } from '../server/storage.typing';
 import { useThisDoc } from '../doc/useDoc';
+import { useGitHub } from '../auth/useGitHub';
 
 export const CrawlerResults = ({
     match: { params: { timestamp, projectId, storageType } },
 }: RouteComponentProps<{ timestamp: string, projectId: string, storageType: StorageType }>) => {
+    useGitHub(storageType);
     useThisDoc();
     const { result: crawler, error, setResult: setCrawler } = useAsync<Crawler>(
         () => getCrawler(storageType, projectId, timestamp)

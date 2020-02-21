@@ -1,7 +1,5 @@
 import React from 'react';
 import Modal from 'antd/lib/modal';
-import { Info } from '../common/Info';
-import Form, { FormComponentProps } from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import Cookies from 'universal-cookie';

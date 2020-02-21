@@ -16,7 +16,7 @@ import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
 import {
     getHomeRoute, getResultsRoute, getPinsRoute, getProjectRoute,
-    getCodeRoute, getSettingsRoute, getNewProjectRoute
+    getCodeRoute, getSettingsRoute, getNewProjectRoute, getGitHubAuthRoute
 } from './routes';
 import { Pins } from './pin/Pins';
 import { Code } from './code/Code';
@@ -31,6 +31,7 @@ import { CodeBreadcrumb } from './code/CodeBreadcrumb';
 import { DocSider } from './doc/DocSider';
 import { useDoc } from './doc/useDoc';
 import { githubRefresh } from './auth/githubCookie';
+import { GitHubAuth } from './auth/GitHubAuth';
 
 const { Content, Header } = Layout;
 const { Title } = Typography;
@@ -64,7 +65,7 @@ const App = () => {
                     <Header>
                         <Link to={getHomeRoute()}>
                             <Title level={3} style={titleStyle}>
-                                <Logo style={{ height: 32, width: 32, position: 'absolute', fill: '#8c8c8c', }} /> 
+                                <Logo style={{ height: 32, width: 32, position: 'absolute', fill: '#8c8c8c', }} />
                                 <span style={{ marginLeft: 45 }}>Test-crawler</span>
                             </Title>
                         </Link>
@@ -102,6 +103,7 @@ const App = () => {
                         <Route path={getCodeRoute(':storageType', ':projectId', ':id')} exact component={CodeBreadcrumb} />
                     </Breadcrumb>
                     <Content style={contentStyle}>
+                        <Route path={getGitHubAuthRoute()} exact component={GitHubAuth} />
                         <Route path={getHomeRoute()} exact component={Projects} />
                         <Route path={getSettingsRoute()} exact component={Settings} />
 

@@ -12,15 +12,19 @@ import AES from 'crypto-js/aes';
 
 import { GitHubSave } from './GitHubSave';
 import { MAX_AGE } from './githubCookie';
+import { useReferer } from './useGitHub';
 
-const handleSubmit = (validateFields: any) => (event: React.FormEvent<any>) => {
+const handleSubmit = (
+    validateFields: any,
+    redirect: () => void,
+) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     validateFields((err: any, values: any) => {
         if (!err) {
             // save
             const cookies = new Cookies();
             cookies.set('github', values, { path: '/', maxAge: MAX_AGE * 60 });
-            window?.location?.reload();
+            redirect();
         }
     });
 }
@@ -58,6 +62,7 @@ const handleUnlock = (
 }
 
 const GitHubAuthForm = ({ form: { getFieldDecorator, validateFields } }: FormComponentProps) => {
+    const redirect = useReferer();
     const [showSave, setShowSave] = React.useState('');
     const [token, setToken] = React.useState('');
     const cookies = new Cookies();
@@ -76,7 +81,7 @@ const GitHubAuthForm = ({ form: { getFieldDecorator, validateFields } }: FormCom
                     you will only need to give permission for <Typography.Text code>public_repo</Typography.Text>.
                 </Typography.Paragraph>
             </Info>
-            <Form onSubmit={handleSubmit(validateFields)}>
+            <Form onSubmit={handleSubmit(validateFields, redirect)}>
                 <Form.Item>
                     {getFieldDecorator('user', {
                         rules: [{ required: true, message: 'Please provide your GitHub username.' }],

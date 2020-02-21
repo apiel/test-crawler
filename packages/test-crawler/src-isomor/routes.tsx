@@ -19,3 +19,6 @@ export function getResultsRoute<T = StorageType>(storageType: T, projectId: stri
 export function getProjectRoute<T = StorageType>(storageType: T, projectId: string) {
     return `/project/${storageType}/${projectId}`;;
 }
+export function getGitHubAuthRoute() {
+    return `/auth/github`;
+}

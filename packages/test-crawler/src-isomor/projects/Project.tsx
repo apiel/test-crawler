@@ -21,6 +21,7 @@ import message from 'antd/lib/message';
 import { ProjectJobs } from './ProjectJobs';
 import { useAsync } from '../hook/useAsync';
 import { useThisDoc } from '../doc/useDoc';
+import { useGitHub } from '../auth/useGitHub';
 
 const onStart = (
     history: History<any>,
@@ -81,6 +82,7 @@ export const Project = ({
     match: { params: { projectId, storageType } },
     history,
 }: RouteComponentProps<{ projectId: string, storageType: StorageType }>) => {
+    useGitHub(storageType);
     useThisDoc(Doc);
     const { project, setProject } = useProject(storageType, projectId);
     const { crawlers, loading, loadCrawlers } = useCrawlers(storageType, projectId);
