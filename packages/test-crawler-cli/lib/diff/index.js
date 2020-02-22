@@ -54,7 +54,7 @@ function cropPng(png, width, height) {
 }
 function parseZones(pinInfo, zones) {
     return __awaiter(this, void 0, void 0, function* () {
-        const baseZones = pinInfo.png.diff.zones.map(z => z.zone);
+        const baseZones = pinInfo.png.diff.zones.map(z => z === null || z === void 0 ? void 0 : z.zone);
         return zones.map(zone => ({
             zone,
             status: pixdiff_zone_1.groupOverlappingZone([...baseZones, zone]).length ===

@@ -71,7 +71,7 @@ function cropPng(png: PNG, width: number, height: number) {
 }
 
 async function parseZones(pinInfo: PageData, zones: Zone[]) {
-    const baseZones = pinInfo.png.diff.zones.map(z => z.zone);
+    const baseZones = pinInfo.png.diff.zones.map(z => z?.zone);
     return zones.map(zone => ({
         zone,
         status:

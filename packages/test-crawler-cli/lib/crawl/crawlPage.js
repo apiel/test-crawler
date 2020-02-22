@@ -27,29 +27,10 @@ const util_1 = require("util");
 const test_crawler_core_1 = require("test-crawler-core");
 const diff_1 = require("../diff");
 const utils_1 = require("../utils");
-const puppeteer_1 = require("./browsers/puppeteer");
-const selenium_firefox_1 = require("./browsers/selenium-firefox");
-const selenium_chrome_1 = require("./browsers/selenium-chrome");
-const selenium_ie_1 = require("./browsers/selenium-ie");
-const selenium_safari_1 = require("./browsers/selenium-safari");
 const resultConsumer_1 = require("./resultConsumer");
 const startCrawler_1 = require("./startCrawler");
+const browsers_1 = require("./browsers");
 const path_1 = require("../path");
-function startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url) {
-    if (browser === test_crawler_core_1.Browser.FirefoxSelenium) {
-        return selenium_firefox_1.startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    else if (browser === test_crawler_core_1.Browser.ChromePuppeteer) {
-        return selenium_chrome_1.startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    else if (browser === test_crawler_core_1.Browser.IeSelenium) {
-        return selenium_ie_1.startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    else if (browser === test_crawler_core_1.Browser.SafariSelenium) {
-        return selenium_safari_1.startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    return puppeteer_1.startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-}
 function loadPage(projectId, id, url, timestamp, done, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         const jsonFile = path_1.pathInfoFile(projectId, timestamp, id);
@@ -58,7 +39,7 @@ function loadPage(projectId, id, url, timestamp, done, retry = 0) {
         const crawler = yield fs_extra_1.readJSON(path_1.pathCrawlerFile(projectId, timestamp));
         const { viewport, url: baseUrl, method, limit, browser } = crawler;
         try {
-            const _a = yield startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url), { links } = _a, output = __rest(_a, ["links"]);
+            const _a = yield browsers_1.startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url), { links } = _a, output = __rest(_a, ["links"]);
             yield fs_extra_1.outputJson(jsonFile, Object.assign(Object.assign({}, output), { timestamp }), { spaces: 4 });
             if (method !== test_crawler_core_1.CrawlerMethod.URLs && util_1.isArray(links)) {
                 const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
