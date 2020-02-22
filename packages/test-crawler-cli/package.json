@@ -4,16 +4,18 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "bin": {
-    "test-crawler-cli": "bin/cli.js"
+    "test-crawler-cli": "cli/cli.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/apiel/test-crawler"
   },
   "scripts": {
-    "cli": "node bin/cli.js",
+    "cli": "node cli/cli.js",
     "cli-dev": "ts-node --project tsconfig-cli.json src/cli/cli.ts",
-    "build": "rm -rf bin/ && rm -rf lib/ && tsc -p tsconfig.json && chmod +x bin/cli.js",
+    "rm": "rm -rf cli/ && rm -rf lib/",
+    "move": "mv dist/* . && rm -rf dist/",
+    "build": "yarn rm && tsc -p tsconfig.json && yarn move && chmod +x cli/cli.js",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {
