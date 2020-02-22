@@ -1,5 +1,5 @@
 import { Builder } from 'selenium-webdriver';
-import { Crawler, Viewport } from 'test-crawler-core';
+import { Crawler, Viewport, ROOT_FOLDER } from 'test-crawler-core';
 
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 import { join } from 'path';
@@ -15,7 +15,7 @@ export async function startSeleniumEdge(
 ) {
     // const driverPath = join(ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftWebDriver.10.0.17134/driver/');
     const driverPath = join(
-        process.cwd(),
+        ROOT_FOLDER,
         '/Selenium.WebDriver.MicrosoftDriver.17.17134.0/driver/',
     );
     process.env.PATH = `${process.env.PATH};${driverPath};`;

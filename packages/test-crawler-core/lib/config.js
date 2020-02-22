@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = require("path");
+exports.ROOT_FOLDER = path_1.resolve(process.env.ROOT_FOLDER) || process.cwd();
 exports.PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';
 exports.CRAWL_FOLDER = 'crawl';
 exports.PIN_FOLDER = 'pin';

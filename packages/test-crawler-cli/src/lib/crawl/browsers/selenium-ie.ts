@@ -1,7 +1,7 @@
 import { Builder } from 'selenium-webdriver';
 // import * as ie from 'selenium-webdriver/ie';
 import { join } from 'path';
-import { Crawler, Viewport } from 'test-crawler-core';
+import { Crawler, Viewport, ROOT_FOLDER } from 'test-crawler-core';
 
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 
@@ -15,7 +15,7 @@ export async function startSeleniumIE(
     url: string,
 ) {
     const driverPath = join(
-        process.cwd(),
+        ROOT_FOLDER,
         '/Selenium.WebDriver.IEDriver.3.150.0/driver/',
     );
     process.env.PATH = `${process.env.PATH};${driverPath};`;

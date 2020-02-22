@@ -1,3 +1,4 @@
+export declare const ROOT_FOLDER: string;
 export declare const PROJECT_FOLDER: string;
 export declare const CRAWL_FOLDER = "crawl";
 export declare const PIN_FOLDER = "pin";

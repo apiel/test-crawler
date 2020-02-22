@@ -8,6 +8,7 @@ import {
     CONSUME_TIMEOUT,
     PROJECT_FOLDER,
     MAX_HISTORY,
+    ROOT_FOLDER,
 } from 'test-crawler-core';
 import { promisify } from 'util';
 import rimraf = require('rimraf');
@@ -24,7 +25,7 @@ async function beforeAll(crawlTarget?: CrawlTarget) {
         try {
             projectIdForExit = crawlTarget.projectId;
             const jsFile = join(
-                process.cwd(),
+                ROOT_FOLDER,
                 PROJECT_FOLDER,
                 crawlTarget.projectId,
                 'before.js',
@@ -44,7 +45,7 @@ export async function afterAll(totalDiff: number, totalError: number) {
     if (projectIdForExit) {
         try {
             const jsFile = join(
-                process.cwd(),
+                ROOT_FOLDER,
                 PROJECT_FOLDER,
                 projectIdForExit,
                 'after.js',

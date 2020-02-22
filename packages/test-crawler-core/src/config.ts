@@ -1,4 +1,6 @@
+import { resolve } from 'path';
 
+export const ROOT_FOLDER = resolve(process.env.ROOT_FOLDER) || process.cwd();
 export const PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';
 export const CRAWL_FOLDER = 'crawl';
 export const PIN_FOLDER = 'pin';
