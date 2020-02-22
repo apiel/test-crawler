@@ -21,8 +21,4 @@ function getCodeList(projectId) {
     });
 }
 exports.getCodeList = getCodeList;
-function generateTinestampFolder() {
-    return Math.floor(Date.now() / 1000).toString();
-}
-exports.generateTinestampFolder = generateTinestampFolder;
 //# sourceMappingURL=utils.js.map

@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import { info } from 'logol';
-import { crawl, generateTinestampFolder } from '../lib';
+import { generateTinestampFolder } from 'test-crawler-core';
+
+import { crawl } from '../lib';
 import * as configs from '../lib/config';
 
 async function start() {

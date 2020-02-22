@@ -30,7 +30,8 @@
     "pngjs": "^3.3.3",
     "puppeteer": "^2.1.1",
     "rimraf": "^3.0.2",
-    "selenium-webdriver": "^4.0.0-alpha.5"
+    "selenium-webdriver": "^4.0.0-alpha.5",
+    "test-crawler-core": "^3.2.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

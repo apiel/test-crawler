@@ -1,6 +1,6 @@
 import { Builder } from 'selenium-webdriver';
+import { Crawler, Viewport } from 'test-crawler-core';
 
-import { Crawler, Viewport } from '../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 import { ROOT_FOLDER } from '../../config';
 import { join } from 'path';

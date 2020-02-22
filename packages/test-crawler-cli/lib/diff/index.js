@@ -13,7 +13,7 @@ const logol_1 = require("logol");
 const pngjs_1 = require("pngjs");
 const pixdiff_zone_1 = require("pixdiff-zone");
 const fs_extra_1 = require("fs-extra");
-const typing_1 = require("../typing");
+const test_crawler_core_1 = require("test-crawler-core");
 const path_1 = require("../path");
 function parsePng(data, pngFile, jsonFile, pinPngFile, pinInfo) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -59,8 +59,8 @@ function parseZones(pinInfo, zones) {
             zone,
             status: pixdiff_zone_1.groupOverlappingZone([...baseZones, zone]).length ===
                 baseZones.length
-                ? typing_1.ZoneStatus.valid
-                : typing_1.ZoneStatus.diff,
+                ? test_crawler_core_1.ZoneStatus.valid
+                : test_crawler_core_1.ZoneStatus.diff,
         }));
     });
 }

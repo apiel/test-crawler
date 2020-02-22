@@ -1,7 +1,6 @@
 import { info } from 'logol';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
-
 import {
     readJson,
     readFile,
@@ -10,7 +9,8 @@ import {
     writeJSON,
     copy,
 } from 'fs-extra';
-import { PageData, Crawler, ZoneStatus } from '../typing';
+import { PageData, Crawler, ZoneStatus } from 'test-crawler-core';
+
 import { pathImageFile, pathInfoFile, pathPinInfoFile } from '../path';
 
 async function parsePng(

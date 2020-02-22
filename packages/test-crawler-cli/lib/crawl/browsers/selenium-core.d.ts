@@ -1,5 +1,5 @@
 import { WebDriver } from 'selenium-webdriver';
-import { Crawler, Viewport } from '../../typing';
+import { Crawler, Viewport } from 'test-crawler-core';
 export declare function startSeleniumCore(driver: WebDriver, viewport: Viewport, pngFile: string, htmlFile: string, crawler: Crawler, projectId: string, id: string, url: string): Promise<{
     links: string[];
     url: string;

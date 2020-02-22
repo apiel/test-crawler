@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const puppeteer_1 = require("puppeteer");
 const logol_1 = require("logol");
-const config_1 = require("../../config");
+const test_crawler_core_1 = require("test-crawler-core");
 const fs_extra_1 = require("fs-extra");
 const crawlPage_1 = require("../crawlPage");
 function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url) {
@@ -19,11 +19,11 @@ function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url
         const browser = yield puppeteer_1.launch({});
         try {
             const page = yield browser.newPage();
-            yield page.setUserAgent(config_1.USER_AGENT);
+            yield page.setUserAgent(test_crawler_core_1.USER_AGENT);
             yield page.setViewport(viewport);
             yield page.goto(url, {
                 waitUntil: 'networkidle2',
-                timeout: config_1.TIMEOUT,
+                timeout: test_crawler_core_1.TIMEOUT,
             });
             const html = yield page.content();
             yield fs_extra_1.writeFile(htmlFile, html);

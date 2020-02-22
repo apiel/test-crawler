@@ -1,10 +1,14 @@
 import { info, warn } from 'logol';
 import { readdir, readJSON, move, pathExists, mkdirp } from 'fs-extra';
 import { join } from 'path';
+import {
+    CONSUMER_COUNT,
+    PROJECT_FOLDER,
+    CrawlTarget,
+    Browser,
+    Project,
+} from 'test-crawler-core';
 
-import { CONSUMER_COUNT, PROJECT_FOLDER } from '../config';
-
-import { CrawlTarget, Browser, Project } from '../typing';
 import { loadPage } from './crawlPage';
 import {
     pathQueueFolder,

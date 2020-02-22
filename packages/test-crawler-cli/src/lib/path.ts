@@ -3,11 +3,12 @@ import {
     PROJECT_FOLDER,
     CRAWL_FOLDER,
     QUEUE_FOLDER,
-    ROOT_FOLDER,
     CODE_FOLDER,
     PIN_FOLDER,
     SNAPSHOT_FOLDER,
-} from './config';
+} from 'test-crawler-core';
+
+import { ROOT_FOLDER } from './config';
 
 export function pathQueueFolder(projectId: string, timestamp: string) {
     return join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, QUEUE_FOLDER);

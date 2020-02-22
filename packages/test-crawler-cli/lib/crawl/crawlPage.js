@@ -24,8 +24,8 @@ const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const minimatch = require("minimatch");
 const util_1 = require("util");
+const test_crawler_core_1 = require("test-crawler-core");
 const diff_1 = require("../diff");
-const typing_1 = require("../typing");
 const utils_1 = require("../utils");
 const puppeteer_1 = require("./browsers/puppeteer");
 const selenium_firefox_1 = require("./browsers/selenium-firefox");
@@ -36,16 +36,16 @@ const resultConsumer_1 = require("./resultConsumer");
 const startCrawler_1 = require("./startCrawler");
 const path_1 = require("../path");
 function startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url) {
-    if (browser === typing_1.Browser.FirefoxSelenium) {
+    if (browser === test_crawler_core_1.Browser.FirefoxSelenium) {
         return selenium_firefox_1.startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     }
-    else if (browser === typing_1.Browser.ChromePuppeteer) {
+    else if (browser === test_crawler_core_1.Browser.ChromePuppeteer) {
         return selenium_chrome_1.startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     }
-    else if (browser === typing_1.Browser.IeSelenium) {
+    else if (browser === test_crawler_core_1.Browser.IeSelenium) {
         return selenium_ie_1.startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     }
-    else if (browser === typing_1.Browser.SafariSelenium) {
+    else if (browser === test_crawler_core_1.Browser.SafariSelenium) {
         return selenium_safari_1.startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     }
     return puppeteer_1.startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url);
@@ -60,7 +60,7 @@ function loadPage(projectId, id, url, timestamp, done, retry = 0) {
         try {
             const _a = yield startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url), { links } = _a, output = __rest(_a, ["links"]);
             yield fs_extra_1.outputJson(jsonFile, Object.assign(Object.assign({}, output), { timestamp }), { spaces: 4 });
-            if (method !== typing_1.CrawlerMethod.URLs && util_1.isArray(links)) {
+            if (method !== test_crawler_core_1.CrawlerMethod.URLs && util_1.isArray(links)) {
                 const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
                 yield addUrls(siteUrls, viewport, projectId, timestamp, limit);
             }

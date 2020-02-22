@@ -1,8 +1,7 @@
 import { Builder } from 'selenium-webdriver';
 import * as firefox from 'selenium-webdriver/firefox';
+import { USER_AGENT, Crawler, Viewport } from 'test-crawler-core';
 
-import { USER_AGENT } from '../../config';
-import { Crawler, Viewport } from '../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 
 export async function startSeleniumFirefox(

@@ -1,8 +1,8 @@
 import { info } from 'logol';
 import { readdir, readJSON, writeJSON, pathExists } from 'fs-extra';
 import { extname } from 'path';
+import { Crawler } from 'test-crawler-core';
 
-import { Crawler } from '../typing';
 import { afterAll } from '.';
 import { pathCrawlerFile, pathQueueFolder, pathResultFolder } from '../path';
 

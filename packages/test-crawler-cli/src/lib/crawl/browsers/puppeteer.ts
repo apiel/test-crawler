@@ -1,9 +1,8 @@
 import { launch } from 'puppeteer';
 import { error, info } from 'logol';
+import { USER_AGENT, TIMEOUT, Crawler, Viewport } from 'test-crawler-core';
 
-import { USER_AGENT, TIMEOUT } from '../../config';
 import { writeFile } from 'fs-extra';
-import { Crawler, Viewport } from '../../typing';
 import { injectCodes } from '../crawlPage';
 
 export async function startPuppeteer(

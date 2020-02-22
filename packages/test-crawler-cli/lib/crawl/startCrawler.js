@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_extra_1 = require("fs-extra");
-const typing_1 = require("../typing");
+const test_crawler_core_1 = require("test-crawler-core");
 const axios_1 = require("axios");
 const md5 = require("md5");
 const path_1 = require("../path");
@@ -24,7 +24,7 @@ function startCrawler({ projectId, timestamp }) {
         yield fs_extra_1.outputJSON(path_1.pathCrawlerFile(projectId, timestamp), crawler, {
             spaces: 4,
         });
-        if (crawlerInput.method === typing_1.CrawlerMethod.URLs) {
+        if (crawlerInput.method === test_crawler_core_1.CrawlerMethod.URLs) {
             yield startUrlsCrawling(crawlerInput, projectId, timestamp);
         }
         else {

@@ -1,8 +1,8 @@
 import { Builder } from 'selenium-webdriver';
 // import * as ie from 'selenium-webdriver/ie';
 import { join } from 'path';
+import { Crawler, Viewport } from 'test-crawler-core';
 
-import { Crawler, Viewport } from '../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 import { ROOT_FOLDER } from '../../config';
 

@@ -1,7 +1,7 @@
 import { Builder } from 'selenium-webdriver';
 // import * as safari from 'selenium-webdriver/safari';
+import { Crawler, Viewport } from 'test-crawler-core';
 
-import { Crawler, Viewport } from '../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 
 export async function startSeleniumSafari(

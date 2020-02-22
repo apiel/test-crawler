@@ -6,10 +6,16 @@ import {
     mkdirp,
     readJSON,
 } from 'fs-extra';
-
-import { Crawler, CrawlerInput, CrawlTarget, CrawlerMethod, Viewport } from '../typing';
+import {
+    Crawler,
+    CrawlerInput,
+    CrawlTarget,
+    CrawlerMethod,
+    Viewport,
+} from 'test-crawler-core';
 import Axios from 'axios';
 import md5 = require('md5');
+
 import {
     pathInfoFile,
     pathQueueFile,

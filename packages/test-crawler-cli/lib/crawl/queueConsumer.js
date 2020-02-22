@@ -12,17 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
-const config_1 = require("../config");
-const typing_1 = require("../typing");
+const test_crawler_core_1 = require("test-crawler-core");
 const crawlPage_1 = require("./crawlPage");
 const path_2 = require("../path");
 let consumerRunning = 0;
-let consumerMaxCount = config_1.CONSUMER_COUNT;
+let consumerMaxCount = test_crawler_core_1.CONSUMER_COUNT;
 function setConsumerMaxCount({ projectId }) {
     return __awaiter(this, void 0, void 0, function* () {
         const { crawlerInput: { browser }, } = yield fs_extra_1.readJSON(path_2.pathProjectFile(projectId));
-        if (browser === typing_1.Browser.IeSelenium ||
-            browser === typing_1.Browser.SafariSelenium) {
+        if (browser === test_crawler_core_1.Browser.IeSelenium ||
+            browser === test_crawler_core_1.Browser.SafariSelenium) {
             consumerMaxCount = 1;
         }
         logol_1.info('Max consumer', consumerMaxCount);
@@ -54,7 +53,7 @@ function pickFromQueue(projectId, timestamp) {
 }
 function pickFromQueues() {
     return __awaiter(this, void 0, void 0, function* () {
-        const projectFolders = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
+        const projectFolders = yield fs_extra_1.readdir(test_crawler_core_1.PROJECT_FOLDER);
         for (const projectId of projectFolders) {
             const crawlFolder = path_2.pathCrawlFolder(projectId);
             yield fs_extra_1.mkdirp(crawlFolder);

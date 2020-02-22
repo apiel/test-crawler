@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
+const test_crawler_core_1 = require("test-crawler-core");
 const lib_1 = require("../lib");
 const configs = require("../lib/config");
 function start() {
@@ -22,7 +23,7 @@ function start() {
             if (option === '--project') {
                 const crawlTarget = {
                     projectId: value,
-                    timestamp: lib_1.generateTinestampFolder(),
+                    timestamp: test_crawler_core_1.generateTinestampFolder(),
                 };
                 logol_1.info('Start project', crawlTarget);
                 const result = yield lib_1.crawl(crawlTarget, 30);

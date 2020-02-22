@@ -12,9 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
-const config_1 = require("../config");
+const test_crawler_core_1 = require("test-crawler-core");
 const util_1 = require("util");
 const rimraf = require("rimraf");
+const config_1 = require("../config");
 const resultConsumer_1 = require("./resultConsumer");
 const queueConsumer_1 = require("./queueConsumer");
 const startCrawler_1 = require("./startCrawler");
@@ -25,7 +26,7 @@ function beforeAll(crawlTarget) {
         if (crawlTarget) {
             try {
                 projectIdForExit = crawlTarget.projectId;
-                const jsFile = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
+                const jsFile = path_1.join(config_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
                     const fn = require(jsFile);
                     yield fn();
@@ -42,7 +43,7 @@ function afterAll(totalDiff, totalError) {
         logol_1.info('Done', { totalDiff, totalError });
         if (projectIdForExit) {
             try {
-                const jsFile = path_1.join(config_1.ROOT_FOLDER, config_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
+                const jsFile = path_1.join(config_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
                     const fn = require(jsFile);
                     fn(totalDiff, totalError);
@@ -57,20 +58,20 @@ function afterAll(totalDiff, totalError) {
 exports.afterAll = afterAll;
 function prepareFolders() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!(yield fs_extra_1.pathExists(config_1.PROJECT_FOLDER))) {
-            yield fs_extra_1.mkdirp(config_1.PROJECT_FOLDER);
+        if (!(yield fs_extra_1.pathExists(test_crawler_core_1.PROJECT_FOLDER))) {
+            yield fs_extra_1.mkdirp(test_crawler_core_1.PROJECT_FOLDER);
         }
         return cleanHistory();
     });
 }
 function cleanHistory() {
     return __awaiter(this, void 0, void 0, function* () {
-        const projects = yield fs_extra_1.readdir(config_1.PROJECT_FOLDER);
+        const projects = yield fs_extra_1.readdir(test_crawler_core_1.PROJECT_FOLDER);
         for (const project of projects) {
-            const crawlFolder = path_1.join(config_1.PROJECT_FOLDER, project, config_1.CRAWL_FOLDER);
+            const crawlFolder = path_1.join(test_crawler_core_1.PROJECT_FOLDER, project, test_crawler_core_1.CRAWL_FOLDER);
             if (yield fs_extra_1.pathExists(crawlFolder)) {
                 const results = yield fs_extra_1.readdir(crawlFolder);
-                const cleanUp = results.slice(0, -(config_1.MAX_HISTORY - 1));
+                const cleanUp = results.slice(0, -(test_crawler_core_1.MAX_HISTORY - 1));
                 for (const toRemove of cleanUp) {
                     yield util_1.promisify(rimraf)(path_1.join(crawlFolder, toRemove));
                 }
@@ -105,7 +106,7 @@ function cleanSnapshot(projectId) {
         }
     });
 }
-function crawl(crawlTarget, consumeTimeout = config_1.CONSUME_TIMEOUT, push) {
+function crawl(crawlTarget, consumeTimeout = test_crawler_core_1.CONSUME_TIMEOUT, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
         yield beforeAll(crawlTarget);

@@ -4,9 +4,9 @@ import { readJSON, pathExists, outputJson } from 'fs-extra';
 import * as minimatch from 'minimatch';
 import { WebDriver } from 'selenium-webdriver';
 import { isArray } from 'util';
+import { Crawler, Browser, CrawlerMethod, Viewport } from 'test-crawler-core';
 
 import { prepare } from '../diff';
-import { Crawler, Browser, CrawlerMethod, Viewport } from '../typing';
 import { getCodeList } from '../utils';
 import { startPuppeteer } from './browsers/puppeteer';
 import { startSeleniumFirefox } from './browsers/selenium-firefox';

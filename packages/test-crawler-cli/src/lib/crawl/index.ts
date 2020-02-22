@@ -1,17 +1,18 @@
 import { error, info } from 'logol';
 import { readdir, pathExists, mkdirp, remove, readJSON } from 'fs-extra';
 import { join, basename, extname } from 'path';
-
 import {
+    CrawlTarget,
+    PageData,
     CRAWL_FOLDER,
     CONSUME_TIMEOUT,
     PROJECT_FOLDER,
     MAX_HISTORY,
-    ROOT_FOLDER,
-} from '../config';
-import { CrawlTarget, PageData } from '../typing';
+} from 'test-crawler-core';
 import { promisify } from 'util';
 import rimraf = require('rimraf');
+
+import { ROOT_FOLDER } from '../config';
 import { initConsumeResults } from './resultConsumer';
 import { setConsumerMaxCount, initConsumeQueues } from './queueConsumer';
 import { startCrawler } from './startCrawler';
