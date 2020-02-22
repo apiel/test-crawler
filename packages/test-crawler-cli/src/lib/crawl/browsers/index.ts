@@ -19,9 +19,11 @@ export function startBrowser(
     url: string,
 ) {
     if (browser === Browser.FirefoxSelenium) {
+        install('geckodriver');
         // prettier-ignore
         return startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     } else if (browser === Browser.ChromePuppeteer) {
+        install('chromedriver');
         // prettier-ignore
         return startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     } else if (browser === Browser.IeSelenium) {
