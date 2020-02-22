@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test-crawler": "test-crawler",
-    "prepublishOnly": "cp ../../README.md . && yarn prepublishLocal && yarn prepublishGithub && chmod +x test-crawler.js",
+    "prepublishOnly": "cp ../../README.md . && yarn prepublishGithub && yarn prepublishLocal && chmod +x test-crawler.js",
     "prepublishLocal": "yarn isomor:build && yarn serv:build && yarn build",
     "prepublishGithub": "yarn isomor:build && yarn github:pub",
     "isomor:build": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true isomor-transpiler",
