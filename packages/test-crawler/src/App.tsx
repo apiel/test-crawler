@@ -11,6 +11,7 @@ import {
 
 import './App.css';
 import { ReactComponent as Logo } from './logo.svg';
+import pkg from '../package.json';
 import NewProject from './projects/new/NewProject';
 import { Projects } from './projects/Projects';
 import { CrawlerResults } from './crawler/CrawlerResults';
@@ -66,7 +67,11 @@ const App = () => {
                         <Link to={getHomeRoute()}>
                             <Title level={3} style={titleStyle}>
                                 <Logo style={{ height: 32, width: 32, position: 'absolute', fill: '#8c8c8c', }} />
-                                <span style={{ marginLeft: 45 }}>Test-crawler</span>
+                                <span style={{ marginLeft: 45 }}>
+                                    Test-crawler
+                                </span> <span style={{ fontSize: 10, color: '#535a61' }}>
+                                    v{pkg.version}
+                                </span>
                             </Title>
                         </Link>
                         <Menu
