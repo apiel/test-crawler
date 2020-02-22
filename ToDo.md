@@ -2,6 +2,10 @@
 
 - new button should not show up if not loggin to github
 
+- generate animated preview automatically:
+  make a system that's could bundle all the screenshot in a gif
+  with some explaination of each screenshot... or video with music? :p
+
 - add test for test-crawler
 
 - update doc:
