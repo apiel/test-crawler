@@ -1,3 +1,3 @@
 export * from './config';
 export * from './typing';
-export { crawl } from './crawl'
+export { crawl } from './crawl';

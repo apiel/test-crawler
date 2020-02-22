@@ -2,13 +2,8 @@ import { WebDriver } from 'selenium-webdriver';
 import { error, info } from 'logol';
 
 import { writeFile, outputFile } from 'fs-extra';
-import { Crawler } from '../../typing';
+import { Crawler, Viewport } from '../../typing';
 import { injectCodes } from '../crawlPage';
-
-interface Viewport {
-    width: number;
-    height: number;
-}
 
 export async function startSeleniumCore(
     driver: WebDriver,

@@ -1,4 +1,4 @@
-import { Page, Viewport } from 'puppeteer';
+import { Page } from 'puppeteer';
 import { error, info, warn } from 'logol';
 import { readJSON, pathExists, outputJson } from 'fs-extra';
 import * as minimatch from 'minimatch';
@@ -6,7 +6,7 @@ import { WebDriver } from 'selenium-webdriver';
 import { isArray } from 'util';
 
 import { prepare } from '../diff';
-import { Crawler, Browser, CrawlerMethod } from '../typing';
+import { Crawler, Browser, CrawlerMethod, Viewport } from '../typing';
 import { getCodeList } from '../utils';
 import { startPuppeteer } from './browsers/puppeteer';
 import { startSeleniumFirefox } from './browsers/selenium-firefox';

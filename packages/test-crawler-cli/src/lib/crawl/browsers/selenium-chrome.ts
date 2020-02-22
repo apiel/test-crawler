@@ -2,13 +2,8 @@ import { Builder } from 'selenium-webdriver';
 import * as chrome from 'selenium-webdriver/chrome';
 
 import { USER_AGENT } from '../../config';
-import { Crawler } from '../../typing';
+import { Crawler, Viewport } from '../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
-
-interface Viewport {
-    width: number;
-    height: number;
-}
 
 export async function startSeleniumChrome(
     viewport: Viewport,

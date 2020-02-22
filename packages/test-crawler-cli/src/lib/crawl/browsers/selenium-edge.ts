@@ -1,14 +1,9 @@
 import { Builder } from 'selenium-webdriver';
 
-import { Crawler } from '../../typing';
+import { Crawler, Viewport } from '../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 import { ROOT_FOLDER } from '../../config';
 import { join } from 'path';
-
-interface Viewport {
-    width: number;
-    height: number;
-}
 
 export async function startSeleniumEdge(
     viewport: Viewport,

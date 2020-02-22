@@ -2,14 +2,9 @@ import { Builder } from 'selenium-webdriver';
 // import * as ie from 'selenium-webdriver/ie';
 import { join } from 'path';
 
-import { Crawler } from '../../typing';
+import { Crawler, Viewport } from '../../typing';
 import { startSeleniumCore, getScrollHeightCore } from './selenium-core';
 import { ROOT_FOLDER } from '../../config';
-
-interface Viewport {
-    width: number;
-    height: number;
-}
 
 export async function startSeleniumIE(
     viewport: Viewport,
