@@ -8,8 +8,6 @@ import {
     SNAPSHOT_FOLDER,
 } from 'test-crawler-core';
 
-import { ROOT_FOLDER } from './config';
-
 export function pathQueueFolder(projectId: string, timestamp: string) {
     return join(PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, QUEUE_FOLDER);
 }
@@ -55,14 +53,13 @@ export function pathPinInfoFile(projectId: string, id: string) {
 }
 
 export function pathProjectFile(projectId: string) {
-    // return join(ROOT_FOLDER, PROJECT_FOLDER, projectId, 'project.json');
-    return join(PROJECT_FOLDER, projectId, 'project.json'); // ROOT_FOLDER might be necessary
+    return join(PROJECT_FOLDER, projectId, 'project.json');
 }
 
 export function pathCodeJsFile(projectId: string, id: string) {
-    return join(ROOT_FOLDER, PROJECT_FOLDER, projectId, CODE_FOLDER, `${id}.js`);
+    return join(process.cwd(), PROJECT_FOLDER, projectId, CODE_FOLDER, `${id}.js`);
 }
 
 export function pathCodeListFile(projectId: string) {
-    return join(ROOT_FOLDER, PROJECT_FOLDER, projectId, CODE_FOLDER, `list.json`);
+    return join(PROJECT_FOLDER, projectId, CODE_FOLDER, `list.json`);
 }

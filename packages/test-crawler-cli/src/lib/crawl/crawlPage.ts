@@ -1,4 +1,5 @@
-import { Page } from 'puppeteer';
+// import { Page } from 'puppeteer';
+type Page = any;
 import { error, info, warn } from 'logol';
 import { readJSON, pathExists, outputJson } from 'fs-extra';
 import * as minimatch from 'minimatch';

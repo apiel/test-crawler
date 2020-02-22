@@ -2,9 +2,9 @@
 
 import { info } from 'logol';
 import { generateTinestampFolder } from 'test-crawler-core';
+import * as configs from 'test-crawler-core/lib/config';
 
 import { crawl } from '../lib';
-import * as configs from '../lib/config';
 
 async function start() {
     info('Test-crawler');

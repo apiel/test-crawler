@@ -12,8 +12,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
 const test_crawler_core_1 = require("test-crawler-core");
+const configs = require("test-crawler-core/lib/config");
 const lib_1 = require("../lib");
-const configs = require("../lib/config");
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         logol_1.info('Test-crawler');

@@ -15,7 +15,6 @@ const path_1 = require("path");
 const test_crawler_core_1 = require("test-crawler-core");
 const util_1 = require("util");
 const rimraf = require("rimraf");
-const config_1 = require("../config");
 const resultConsumer_1 = require("./resultConsumer");
 const queueConsumer_1 = require("./queueConsumer");
 const startCrawler_1 = require("./startCrawler");
@@ -26,7 +25,7 @@ function beforeAll(crawlTarget) {
         if (crawlTarget) {
             try {
                 projectIdForExit = crawlTarget.projectId;
-                const jsFile = path_1.join(config_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
+                const jsFile = path_1.join(test_crawler_core_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
                     const fn = require(jsFile);
                     yield fn();
@@ -43,7 +42,7 @@ function afterAll(totalDiff, totalError) {
         logol_1.info('Done', { totalDiff, totalError });
         if (projectIdForExit) {
             try {
-                const jsFile = path_1.join(config_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
+                const jsFile = path_1.join(test_crawler_core_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
                     const fn = require(jsFile);
                     fn(totalDiff, totalError);

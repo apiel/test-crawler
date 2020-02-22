@@ -11,8 +11,9 @@
     "url": "https://github.com/apiel/test-crawler"
   },
   "scripts": {
+    "test": "",
     "cli": "node cli/cli.js",
-    "cli-dev": "ts-node --project tsconfig-cli.json src/cli/cli.ts",
+    "cli-dev": "PROJECT_FOLDER=../test-crawler/test-crawler ts-node --project tsconfig.json src/cli/cli.ts",
     "rm": "rm -rf cli/ && rm -rf lib/",
     "move": "mv dist/* . && rm -rf dist/",
     "build": "yarn rm && tsc -p tsconfig.json && yarn move && chmod +x cli/cli.js",

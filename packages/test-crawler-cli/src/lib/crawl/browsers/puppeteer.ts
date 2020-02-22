@@ -1,4 +1,5 @@
 import { launch } from 'puppeteer';
+// const { launch } = require('puppeteer');
 import { error, info } from 'logol';
 import { USER_AGENT, TIMEOUT, Crawler, Viewport } from 'test-crawler-core';
 

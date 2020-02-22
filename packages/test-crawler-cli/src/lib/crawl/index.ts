@@ -12,7 +12,6 @@ import {
 import { promisify } from 'util';
 import rimraf = require('rimraf');
 
-import { ROOT_FOLDER } from '../config';
 import { initConsumeResults } from './resultConsumer';
 import { setConsumerMaxCount, initConsumeQueues } from './queueConsumer';
 import { startCrawler } from './startCrawler';
@@ -25,7 +24,7 @@ async function beforeAll(crawlTarget?: CrawlTarget) {
         try {
             projectIdForExit = crawlTarget.projectId;
             const jsFile = join(
-                ROOT_FOLDER,
+                process.cwd(),
                 PROJECT_FOLDER,
                 crawlTarget.projectId,
                 'before.js',
@@ -45,7 +44,7 @@ export async function afterAll(totalDiff: number, totalError: number) {
     if (projectIdForExit) {
         try {
             const jsFile = join(
-                ROOT_FOLDER,
+                process.cwd(),
                 PROJECT_FOLDER,
                 projectIdForExit,
                 'after.js',
