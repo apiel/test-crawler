@@ -1,5 +1,5 @@
 import React from 'react';
-import { PngDiffDataZone, ZoneStatus } from '../server/typing';
+import { PngDiffDataZone, ZoneStatus } from 'test-crawler-core';
 
 import { getColorByStatus } from '../diff/DiffZone';
 

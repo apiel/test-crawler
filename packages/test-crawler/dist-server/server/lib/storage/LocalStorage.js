@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const test_crawler_core_1 = require("test-crawler-core");
+const test_crawler_cli_1 = require("test-crawler-cli");
 const Storage_1 = require("./Storage");
 const fs_extra_1 = require("fs-extra");
-const typing_1 = require("../../typing");
-const crawl_1 = require("../crawl");
 const path_1 = require("path");
 const config_1 = require("../config");
 class LocalStorage extends Storage_1.Storage {
@@ -22,15 +22,15 @@ class LocalStorage extends Storage_1.Storage {
     }
     get browsers() {
         const browsers = [
-            typing_1.Browser.ChromePuppeteer,
-            typing_1.Browser.FirefoxSelenium,
-            typing_1.Browser.ChromeSelenium,
+            test_crawler_core_1.Browser.ChromePuppeteer,
+            test_crawler_core_1.Browser.FirefoxSelenium,
+            test_crawler_core_1.Browser.ChromeSelenium,
         ];
         if (process.platform == 'darwin') {
-            browsers.push(typing_1.Browser.SafariSelenium);
+            browsers.push(test_crawler_core_1.Browser.SafariSelenium);
         }
         else if (process.platform == 'win32') {
-            browsers.push(typing_1.Browser.IeSelenium);
+            browsers.push(test_crawler_core_1.Browser.IeSelenium);
         }
         return browsers;
     }
@@ -84,7 +84,7 @@ class LocalStorage extends Storage_1.Storage {
     }
     crawl(crawlTarget, consumeTimeout, push) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield crawl_1.crawl(crawlTarget, consumeTimeout, push);
+            yield test_crawler_cli_1.crawl(crawlTarget, consumeTimeout, push);
             return undefined;
         });
     }

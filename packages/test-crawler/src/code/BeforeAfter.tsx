@@ -4,7 +4,6 @@ import Typography from 'antd/lib/typography';
 import Button from 'antd/lib/button';
 import notification from 'antd/lib/notification';
 import AceEditor from 'react-ace';
-import { BeforeAfterType } from '../server/typing';
 
 import 'brace/mode/javascript';
 import 'brace/theme/tomorrow';
@@ -15,6 +14,7 @@ import { ErrorHandler } from '../common/ErrorHandler';
 import { useAsync } from '../hook/useAsync';
 import { StorageType } from '../server/storage.typing';
 import { Info } from '../common/Info';
+import { BeforeAfterType } from '../server/typing';
 
 const { Title, Paragraph } = Typography;
 

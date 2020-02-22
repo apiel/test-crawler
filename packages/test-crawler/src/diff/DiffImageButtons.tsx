@@ -2,9 +2,9 @@ import React from 'react';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
 import Button from 'antd/lib/button';
+import { PageData, ZoneStatus } from 'test-crawler-core';
 
 import { setZoneStatus } from '../server/service';
-import { PageData, ZoneStatus } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
 const buttonStyle = {

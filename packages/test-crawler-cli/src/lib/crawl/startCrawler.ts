@@ -1,4 +1,3 @@
-import { Viewport } from 'puppeteer';
 import {
     pathExists,
     outputJSON,
@@ -8,7 +7,7 @@ import {
     readJSON,
 } from 'fs-extra';
 
-import { Crawler, CrawlerInput, CrawlTarget, CrawlerMethod } from '../typing';
+import { Crawler, CrawlerInput, CrawlTarget, CrawlerMethod, Viewport } from '../typing';
 import Axios from 'axios';
 import md5 = require('md5');
 import {

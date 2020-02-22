@@ -1,4 +1,4 @@
-import { PageData } from '../server/typing';
+import { PageData } from 'test-crawler-core';
 import Fuse from 'fuse.js';
 import get from 'lodash/get';
 import { cardStyle, masonryOptions } from '../pages/pageStyle';

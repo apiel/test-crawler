@@ -1,6 +1,7 @@
 import { Zone } from 'pixdiff-zone';
+export { Zone };
 import { Viewport } from 'puppeteer';
-export { Viewport, Zone };
+export { Viewport };
 export declare enum CrawlerMethod {
     URLs = "urls",
     SPIDER_BOT = "spiderbot"

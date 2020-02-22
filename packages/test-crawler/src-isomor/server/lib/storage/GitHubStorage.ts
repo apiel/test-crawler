@@ -1,9 +1,10 @@
-import { Storage } from './Storage';
-
 import { basename, dirname } from 'path';
+import { CrawlTarget, Browser } from 'test-crawler-core';
 import { WsContext, Context } from 'isomor-server';
 import axios, { AxiosRequestConfig } from 'axios';
-import { CrawlTarget, Job, Browser } from '../../typing';
+
+import { Storage } from './Storage';
+import { Job } from '../../typing';
 import { config, GitHubConfig } from '../config';
 import { ERR } from '../../error';
 import { getCookie } from '../CrawlerProviderStorage';
@@ -93,7 +94,7 @@ export class GitHubStorage extends Storage {
     async readdir(path: string) {
         try {
             const { data } = await this.getContents(path);
-            return data.map(({ name }: any) => name) as string[]; // type is also available so we could filter for type === 'file'   
+            return data.map(({ name }: any) => name) as string[]; // type is also available so we could filter for type === 'file'
         } catch (error) {
             if (error?.response?.status === 404) {
                 return [] as string[];
@@ -117,7 +118,9 @@ export class GitHubStorage extends Storage {
         if (!filedata) {
             return;
         }
-        const { data: { content } } = await this.call({
+        const {
+            data: { content },
+        } = await this.call({
             url: `${this.blobUrl}/${filedata.sha}`,
         });
         return Buffer.from(content, 'base64');
@@ -125,13 +128,22 @@ export class GitHubStorage extends Storage {
 
     async saveBlob(file: string, content: Buffer) {
         await this.remove(file);
-        const { data: [
-            { sha: latestCommitSha, commit: { tree: { sha: base_tree } } }
-        ] } = await this.call({
+        const {
+            data: [
+                {
+                    sha: latestCommitSha,
+                    commit: {
+                        tree: { sha: base_tree },
+                    },
+                },
+            ],
+        } = await this.call({
             url: `${this.baseRepo}/commits`,
         });
 
-        const { data: { sha: newBlobSha } } = await this.call({
+        const {
+            data: { sha: newBlobSha },
+        } = await this.call({
             method: 'POST',
             url: this.blobUrl,
             data: {
@@ -140,26 +152,32 @@ export class GitHubStorage extends Storage {
             },
         });
 
-        const { data: { sha: newTreeSha } } = await this.call({
+        const {
+            data: { sha: newTreeSha },
+        } = await this.call({
             method: 'POST',
             url: `${this.baseRepo}/git/trees`,
             data: {
                 base_tree,
-                tree: [{
-                    path: file,
-                    mode: '100644',
-                    sha: newBlobSha,
-                }],
+                tree: [
+                    {
+                        path: file,
+                        mode: '100644',
+                        sha: newBlobSha,
+                    },
+                ],
             },
         });
 
-        const { data: { sha: shaCommit } } = await this.call({
+        const {
+            data: { sha: shaCommit },
+        } = await this.call({
             method: 'POST',
             url: `${this.baseRepo}/git/commits`,
             data: {
                 message: `${COMMIT_PREFIX} save blob`,
                 tree: newTreeSha,
-                parents: [latestCommitSha]
+                parents: [latestCommitSha],
             },
         });
 
@@ -174,7 +192,9 @@ export class GitHubStorage extends Storage {
     }
 
     async read(path: string) {
-        const { data: { content } } = await this.getContents(path);
+        const {
+            data: { content },
+        } = await this.getContents(path);
         return Buffer.from(content, 'base64');
     }
 
@@ -190,7 +210,9 @@ export class GitHubStorage extends Storage {
     }
 
     async remove(file: string) {
-        const { data: { sha } } = await this.getContents(file);
+        const {
+            data: { sha },
+        } = await this.getContents(file);
         const data = JSON.stringify({
             message: `${COMMIT_PREFIX} delete file`,
             sha,
@@ -233,7 +255,7 @@ export class GitHubStorage extends Storage {
     }
 
     async saveJSON(file: string, content: any) {
-        return this.saveFile(file, JSON.stringify(content, null, 4))
+        return this.saveFile(file, JSON.stringify(content, null, 4));
     }
 
     async copy(src: string, dst: string) {
@@ -256,8 +278,12 @@ export class GitHubStorage extends Storage {
         push?: (payload: any) => void,
         browser?: Browser,
     ) {
-        if (crawlTarget?.projectId) { // run only if projectId provided (but we could think to do it also id)
-            await this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
+        if (crawlTarget?.projectId) {
+            // run only if projectId provided (but we could think to do it also id)
+            await this.saveFile(
+                '.github/workflows/test-crawler.yml',
+                CI_Workflow,
+            );
             const os = browser === Browser.IeSelenium ? 'win' : 'default';
             await this.call({
                 method: 'POST',
@@ -267,7 +293,7 @@ export class GitHubStorage extends Storage {
                     client_payload: {
                         projectId: crawlTarget.projectId,
                         os,
-                    }
+                    },
                 },
             });
         }
@@ -286,7 +312,11 @@ export class GitHubStorage extends Storage {
     }
 
     async info() {
-        const { data: { rate: { limit, remaining } } } = await this.call({
+        const {
+            data: {
+                rate: { limit, remaining },
+            },
+        } = await this.call({
             url: `${BASE_URL}/rate_limit`,
         });
         return `For GitHub API requests, you can make up to 5000 requests per hour.
@@ -295,17 +325,25 @@ export class GitHubStorage extends Storage {
     }
 
     async jobs(projectId: string) {
-        const { data: { workflow_runs } } = await this.call({
+        const {
+            data: { workflow_runs },
+        } = await this.call({
             url: this.runsUrl,
         });
-        const inProgress = await this.getInProgressJobs(projectId, workflow_runs);
+        const inProgress = await this.getInProgressJobs(
+            projectId,
+            workflow_runs,
+        );
         const queued = this.getQueuedJobs(workflow_runs);
 
         return [...queued, ...inProgress];
     }
 
     protected getQueuedJobs(runs: GitHubWorkflow[]) {
-        return runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
+        return runs
+            .filter(
+                ({ status }) => !['in_progress', 'completed'].includes(status),
+            )
             .map(({ id, html_url, status, created_at, updated_at }) => ({
                 id,
                 url: html_url,
@@ -315,25 +353,43 @@ export class GitHubStorage extends Storage {
             })) as Job[];
     }
 
-    protected async getInProgressJobs(projectId: string, runs: GitHubWorkflow[]) {
-        const progressIds = runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
+    protected async getInProgressJobs(
+        projectId: string,
+        runs: GitHubWorkflow[],
+    ) {
+        const progressIds = runs
+            .filter(({ status }) => status === 'in_progress')
+            .map(({ id }) => id);
         const jobs = progressIds.map(async (id: string) => {
-            const { data: { jobs } } = await this.call({
+            const {
+                data: { jobs },
+            } = await this.call({
                 url: `${this.baseRepo}/actions/runs/${id}/jobs`,
             });
             const [job]: [GitHubJob] = jobs;
-            const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !== undefined;
+            const isProjectJob =
+                job.steps.find(({ name }) => name.includes(projectId)) !==
+                undefined;
             if (isProjectJob) {
-                const step = job.steps.find(({ status }) => status === 'in_progress');
+                const step = job.steps.find(
+                    ({ status }) => status === 'in_progress',
+                );
                 return {
                     id,
                     url: job.html_url,
                     status: job.status,
-                    startAt: Math.round(new Date(job.started_at).getTime() / 1000),
+                    startAt: Math.round(
+                        new Date(job.started_at).getTime() / 1000,
+                    ),
                     stepsCount: job.steps.length,
-                    stepsDone: job.steps.filter(({ status }) => status === 'completed').length,
+                    stepsDone: job.steps.filter(
+                        ({ status }) => status === 'completed',
+                    ).length,
                     currentStep: step?.name || 'unknown',
-                    lastUpdate: Math.round(new Date(step?.started_at || job.started_at).getTime() / 1000),
+                    lastUpdate: Math.round(
+                        new Date(step?.started_at || job.started_at).getTime() /
+                            1000,
+                    ),
                 } as Job;
             }
         }) as Promise<Job | undefined>[];
@@ -346,7 +402,10 @@ export class GitHubStorage extends Storage {
         }
         return axios({
             ...config,
-            headers: { ...config?.headers, 'Authorization': `token ${this.token}` },
+            headers: {
+                ...config?.headers,
+                Authorization: `token ${this.token}`,
+            },
         });
     }
 

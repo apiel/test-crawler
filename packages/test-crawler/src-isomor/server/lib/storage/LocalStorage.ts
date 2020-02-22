@@ -1,4 +1,6 @@
 import { WsContext, Context } from 'isomor-server';
+import { CrawlTarget, Browser } from 'test-crawler-core';
+import { crawl } from 'test-crawler-cli';
 
 import { Storage } from './Storage';
 import {
@@ -12,8 +14,7 @@ import {
     remove,
     outputFile,
 } from 'fs-extra';
-import { CrawlTarget, Job, Browser } from '../../typing';
-import { crawl } from '../crawl';
+import { Job } from '../../typing';
 import { join } from 'path';
 import { ROOT_FOLDER } from '../config';
 
@@ -86,7 +87,11 @@ export class LocalStorage extends Storage {
         return remove(this.root(file));
     }
 
-    async crawl(crawlTarget?: CrawlTarget, consumeTimeout?: number, push?: (payload: any) => void) {
+    async crawl(
+        crawlTarget?: CrawlTarget,
+        consumeTimeout?: number,
+        push?: (payload: any) => void,
+    ) {
         await crawl(crawlTarget, consumeTimeout, push);
         return undefined;
     }

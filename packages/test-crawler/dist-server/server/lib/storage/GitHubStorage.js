@@ -9,10 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Storage_1 = require("./Storage");
 const path_1 = require("path");
+const test_crawler_core_1 = require("test-crawler-core");
 const axios_1 = require("axios");
-const typing_1 = require("../../typing");
+const Storage_1 = require("./Storage");
 const config_1 = require("../config");
 const error_1 = require("../../error");
 const CrawlerProviderStorage_1 = require("../CrawlerProviderStorage");
@@ -70,7 +70,7 @@ class GitHubStorage extends Storage_1.Storage {
         this.config = config_1.config.remote.github;
     }
     get browsers() {
-        return Object.values(typing_1.Browser);
+        return Object.values(test_crawler_core_1.Browser);
     }
     readdir(path) {
         var _a, _b;
@@ -104,7 +104,7 @@ class GitHubStorage extends Storage_1.Storage {
             if (!filedata) {
                 return;
             }
-            const { data: { content } } = yield this.call({
+            const { data: { content }, } = yield this.call({
                 url: `${this.blobUrl}/${filedata.sha}`,
             });
             return Buffer.from(content, 'base64');
@@ -113,10 +113,10 @@ class GitHubStorage extends Storage_1.Storage {
     saveBlob(file, content) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.remove(file);
-            const { data: [{ sha: latestCommitSha, commit: { tree: { sha: base_tree } } }] } = yield this.call({
+            const { data: [{ sha: latestCommitSha, commit: { tree: { sha: base_tree }, }, },], } = yield this.call({
                 url: `${this.baseRepo}/commits`,
             });
-            const { data: { sha: newBlobSha } } = yield this.call({
+            const { data: { sha: newBlobSha }, } = yield this.call({
                 method: 'POST',
                 url: this.blobUrl,
                 data: {
@@ -124,25 +124,27 @@ class GitHubStorage extends Storage_1.Storage {
                     encoding: 'base64',
                 },
             });
-            const { data: { sha: newTreeSha } } = yield this.call({
+            const { data: { sha: newTreeSha }, } = yield this.call({
                 method: 'POST',
                 url: `${this.baseRepo}/git/trees`,
                 data: {
                     base_tree,
-                    tree: [{
+                    tree: [
+                        {
                             path: file,
                             mode: '100644',
                             sha: newBlobSha,
-                        }],
+                        },
+                    ],
                 },
             });
-            const { data: { sha: shaCommit } } = yield this.call({
+            const { data: { sha: shaCommit }, } = yield this.call({
                 method: 'POST',
                 url: `${this.baseRepo}/git/commits`,
                 data: {
                     message: `${COMMIT_PREFIX} save blob`,
                     tree: newTreeSha,
-                    parents: [latestCommitSha]
+                    parents: [latestCommitSha],
                 },
             });
             yield this.call({
@@ -157,7 +159,7 @@ class GitHubStorage extends Storage_1.Storage {
     }
     read(path) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data: { content } } = yield this.getContents(path);
+            const { data: { content }, } = yield this.getContents(path);
             return Buffer.from(content, 'base64');
         });
     }
@@ -176,7 +178,7 @@ class GitHubStorage extends Storage_1.Storage {
     }
     remove(file) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data: { sha } } = yield this.getContents(file);
+            const { data: { sha }, } = yield this.getContents(file);
             const data = JSON.stringify({
                 message: `${COMMIT_PREFIX} delete file`,
                 sha,
@@ -244,7 +246,7 @@ class GitHubStorage extends Storage_1.Storage {
         return __awaiter(this, void 0, void 0, function* () {
             if ((_a = crawlTarget) === null || _a === void 0 ? void 0 : _a.projectId) {
                 yield this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
-                const os = browser === typing_1.Browser.IeSelenium ? 'win' : 'default';
+                const os = browser === test_crawler_core_1.Browser.IeSelenium ? 'win' : 'default';
                 yield this.call({
                     method: 'POST',
                     url: `${this.ciDispatchUrl}`,
@@ -253,7 +255,7 @@ class GitHubStorage extends Storage_1.Storage {
                         client_payload: {
                             projectId: crawlTarget.projectId,
                             os,
-                        }
+                        },
                     },
                 });
             }
@@ -275,7 +277,7 @@ class GitHubStorage extends Storage_1.Storage {
     }
     info() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data: { rate: { limit, remaining } } } = yield this.call({
+            const { data: { rate: { limit, remaining }, }, } = yield this.call({
                 url: `${BASE_URL}/rate_limit`,
             });
             return `For GitHub API requests, you can make up to 5000 requests per hour.
@@ -285,7 +287,7 @@ class GitHubStorage extends Storage_1.Storage {
     }
     jobs(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data: { workflow_runs } } = yield this.call({
+            const { data: { workflow_runs }, } = yield this.call({
                 url: this.runsUrl,
             });
             const inProgress = yield this.getInProgressJobs(projectId, workflow_runs);
@@ -294,7 +296,8 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     getQueuedJobs(runs) {
-        return runs.filter(({ status }) => !['in_progress', 'completed'].includes(status))
+        return runs
+            .filter(({ status }) => !['in_progress', 'completed'].includes(status))
             .map(({ id, html_url, status, created_at, updated_at }) => ({
             id,
             url: html_url,
@@ -305,14 +308,17 @@ class GitHubStorage extends Storage_1.Storage {
     }
     getInProgressJobs(projectId, runs) {
         return __awaiter(this, void 0, void 0, function* () {
-            const progressIds = runs.filter(({ status }) => status === 'in_progress').map(({ id }) => id);
+            const progressIds = runs
+                .filter(({ status }) => status === 'in_progress')
+                .map(({ id }) => id);
             const jobs = progressIds.map((id) => __awaiter(this, void 0, void 0, function* () {
                 var _a, _b;
-                const { data: { jobs } } = yield this.call({
+                const { data: { jobs }, } = yield this.call({
                     url: `${this.baseRepo}/actions/runs/${id}/jobs`,
                 });
                 const [job] = jobs;
-                const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !== undefined;
+                const isProjectJob = job.steps.find(({ name }) => name.includes(projectId)) !==
+                    undefined;
                 if (isProjectJob) {
                     const step = job.steps.find(({ status }) => status === 'in_progress');
                     return {
@@ -323,7 +329,8 @@ class GitHubStorage extends Storage_1.Storage {
                         stepsCount: job.steps.length,
                         stepsDone: job.steps.filter(({ status }) => status === 'completed').length,
                         currentStep: ((_a = step) === null || _a === void 0 ? void 0 : _a.name) || 'unknown',
-                        lastUpdate: Math.round(new Date(((_b = step) === null || _b === void 0 ? void 0 : _b.started_at) || job.started_at).getTime() / 1000),
+                        lastUpdate: Math.round(new Date(((_b = step) === null || _b === void 0 ? void 0 : _b.started_at) || job.started_at).getTime() /
+                            1000),
                     };
                 }
             }));
@@ -335,7 +342,7 @@ class GitHubStorage extends Storage_1.Storage {
         if (!this.token || !this.user) {
             throw new Error(error_1.ERR.missingGitHubConfig);
         }
-        return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { 'Authorization': `token ${this.token}` }) }));
+        return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { Authorization: `token ${this.token}` }) }));
     }
     getContents(path) {
         return this.call({

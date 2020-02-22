@@ -2,8 +2,9 @@ import React from 'react';
 import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
+import { PageData, ZoneStatus } from 'test-crawler-core';
+
 import { setZonesStatus } from '../server/service';
-import { PageData, ZoneStatus } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
 const onClick = (

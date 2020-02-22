@@ -1,5 +1,5 @@
 import React from 'react';
-import { PngDiffData, PageData, ZoneStatus } from '../server/typing';
+import { PngDiffData, PageData, ZoneStatus } from 'test-crawler-core';
 
 import { PagesActionZone } from './PagesActionZone';
 import PagesActionPin from './PagesActionPin';

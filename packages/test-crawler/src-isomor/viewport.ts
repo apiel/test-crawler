@@ -1,4 +1,4 @@
-import { Viewport as ViewportObject } from './server/typing';
+import { Viewport as ViewportObject } from 'test-crawler-core';
 
 export interface ViewportString {
     name: string;

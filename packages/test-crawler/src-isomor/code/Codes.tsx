@@ -1,10 +1,10 @@
 import React from 'react';
 import Typography from 'antd/lib/typography';
-import { BeforeAfterType } from '../server/typing';
 
 import { StorageType } from '../server/storage.typing';
 import { ForEachPage } from './ForEachPage';
 import { BeforeAfter } from './BeforeAfter';
+import { BeforeAfterType } from '../server/typing';
 
 const { Title } = Typography;
 

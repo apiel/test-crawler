@@ -2,15 +2,33 @@ import { join, extname } from 'path';
 import * as md5 from 'md5';
 import { groupOverlappingZone } from 'pixdiff-zone';
 import { WsContext, Context } from 'isomor-server';
+import {
+    generateTinestampFolder,
+    CRAWL_FOLDER,
+    PIN_FOLDER,
+    CODE_FOLDER,
+    PROJECT_FOLDER,
+    SNAPSHOT_FOLDER,
+    Crawler,
+    CrawlerInput,
+    PageData,
+    Project,
+    CodeInfoList,
+    Browser,
+    ZoneStatus,
+} from 'test-crawler-core';
 
-import { CRAWL_FOLDER, PIN_FOLDER, CODE_FOLDER, PROJECT_FOLDER, SNAPSHOT_FOLDER } from './config';
+import {} from './config';
 
-import { Crawler, CrawlerInput, PageData, Project, Code, CodeInfoList, StartCrawler, BeforeAfterType, Browser, ZoneStatus } from '../typing';
+import { Code, StartCrawler, BeforeAfterType } from '../typing';
 import { StorageType } from '../storage.typing';
 import { CrawlerProviderStorage } from './CrawlerProviderStorage';
 
 export class CrawlerProvider extends CrawlerProviderStorage {
-    constructor(storageType?: StorageType, public ctx?: undefined | WsContext | Context) {
+    constructor(
+        storageType?: StorageType,
+        public ctx?: undefined | WsContext | Context,
+    ) {
         super(storageType, ctx);
     }
 
@@ -42,12 +60,19 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         );
     }
 
-    async saveProject(crawlerInput: CrawlerInput, name: string, projectId?: string): Promise<Project> {
+    async saveProject(
+        crawlerInput: CrawlerInput,
+        name: string,
+        projectId?: string,
+    ): Promise<Project> {
         if (!projectId) {
             projectId = (md5 as any)(name) as string;
         }
         const project = { id: projectId, name, crawlerInput };
-        await this.storage.saveJSON(this.join(projectId, 'project.json'), project);
+        await this.storage.saveJSON(
+            this.join(projectId, 'project.json'),
+            project,
+        );
         return project;
     }
 
@@ -65,8 +90,17 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return crawlers;
     }
 
-    async copyToPins(projectId: string, timestamp: string, id: string): Promise<PageData> {
-        const jsonFile = this.join(projectId, CRAWL_FOLDER, timestamp, `${id}.json`);
+    async copyToPins(
+        projectId: string,
+        timestamp: string,
+        id: string,
+    ): Promise<PageData> {
+        const jsonFile = this.join(
+            projectId,
+            CRAWL_FOLDER,
+            timestamp,
+            `${id}.json`,
+        );
 
         // set diff to 0
         // instead to load this file again, we could get the data from the frontend?
@@ -80,25 +114,38 @@ export class CrawlerProvider extends CrawlerProviderStorage {
                 await this.storage.saveJSON(jsonFile, data);
             }
         }
-        await this.storage.saveJSON(this.join(projectId, PIN_FOLDER, `${id}.json`), data);
+        await this.storage.saveJSON(
+            this.join(projectId, PIN_FOLDER, `${id}.json`),
+            data,
+        );
         return data;
     }
 
     async removeFromPins(projectId: string, id: string): Promise<PageData[]> {
-        await this.storage.remove(this.join(projectId, PIN_FOLDER, `${id}.json`));
+        await this.storage.remove(
+            this.join(projectId, PIN_FOLDER, `${id}.json`),
+        );
         return this.getPins(projectId);
     }
 
     async image(projectId: string, timestamp: string, id: string) {
         if (timestamp === 'pin') {
-            const pin: PageData = await this.storage.readJSON(this.join(projectId, PIN_FOLDER, `${id}.json`));
+            const pin: PageData = await this.storage.readJSON(
+                this.join(projectId, PIN_FOLDER, `${id}.json`),
+            );
             if (!pin) return;
             timestamp = pin.timestamp;
         }
-        return this.storage.image(this.join(projectId, SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
+        return this.storage.image(
+            this.join(projectId, SNAPSHOT_FOLDER, `${timestamp}-${id}.png`),
+        );
     }
 
-    saveBeforeAfterCode(projectId: string, type: BeforeAfterType, code: string): Promise<void> {
+    saveBeforeAfterCode(
+        projectId: string,
+        type: BeforeAfterType,
+        code: string,
+    ): Promise<void> {
         if (!Object.values(BeforeAfterType).includes(type)) {
             throw new Error(`Unknown code type ${type}.`);
         }
@@ -109,14 +156,19 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return this.storage.saveFile(file, code);
     }
 
-    async getBeforeAfterCode(projectId: string, type: BeforeAfterType): Promise<string> {
+    async getBeforeAfterCode(
+        projectId: string,
+        type: BeforeAfterType,
+    ): Promise<string> {
         if (!Object.values(BeforeAfterType).includes(type)) {
             throw new Error(`Unknown code type ${type}.`);
         }
         try {
-            const buf = await this.storage.read(this.join(projectId, `${type}.js`));
+            const buf = await this.storage.read(
+                this.join(projectId, `${type}.js`),
+            );
             return buf?.toString() || '';
-        } catch (err) { }
+        } catch (err) {}
         return '';
     }
 
@@ -126,10 +178,12 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         list[code.id] = codeInfo;
         await this.storage.saveJSON(
             this.join(projectId, CODE_FOLDER, `list.json`),
-            { ...list }); // for some reason it need a copy
+            { ...list },
+        ); // for some reason it need a copy
         await this.storage.saveFile(
             this.join(projectId, CODE_FOLDER, `${code.id}.js`),
-            source);
+            source,
+        );
     }
 
     async loadCode(projectId: string, id: string): Promise<Code> {
@@ -166,23 +220,29 @@ export class CrawlerProvider extends CrawlerProviderStorage {
     }
 
     getPages(projectId: string, timestamp: string): Promise<PageData[]> {
-        return this.getPinsInFolder(this.join(projectId, CRAWL_FOLDER, timestamp));
+        return this.getPinsInFolder(
+            this.join(projectId, CRAWL_FOLDER, timestamp),
+        );
     }
 
     private getPageInFolder(folder: string, id: string): Promise<PageData> {
         return this.storage.readJSON(join(folder, `${id}.json`));
-
     }
 
     private async getPinsInFolder(folder: string): Promise<PageData[]> {
         const files = await this.storage.readdir(folder);
         return Promise.all(
-            files.filter(file => extname(file) === '.json' && file !== '_.json')
+            files
+                .filter(file => extname(file) === '.json' && file !== '_.json')
                 .map(file => this.storage.readJSON(join(folder, file))),
         );
     }
 
-    async setCrawlerStatus(projectId: string, timestamp: string, status: string): Promise<Crawler> {
+    async setCrawlerStatus(
+        projectId: string,
+        timestamp: string,
+        status: string,
+    ): Promise<Crawler> {
         const file = this.join(projectId, CRAWL_FOLDER, timestamp, '_.json');
         const crawler: Crawler = await this.storage.readJSON(file);
         crawler.status = status;
@@ -190,9 +250,15 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         return crawler;
     }
 
-    async setZoneStatus(projectId: string, timestamp: string, id: string, status: ZoneStatus, index?: number): Promise<PageData[]> {
+    async setZoneStatus(
+        projectId: string,
+        timestamp: string,
+        id: string,
+        status: ZoneStatus,
+        index?: number,
+    ): Promise<PageData[]> {
         const folder = this.join(projectId, CRAWL_FOLDER, timestamp);
-        const fileJson = join(folder, `${id}.json`)
+        const fileJson = join(folder, `${id}.json`);
         const data: PageData = await this.storage.readJSON(fileJson);
         if (index && status === ZoneStatus.zonePin) {
             const pinJsonFile = this.join(projectId, PIN_FOLDER, `${id}.json`);
@@ -200,12 +266,18 @@ export class CrawlerProvider extends CrawlerProviderStorage {
 
             if (pin?.png?.diff?.zones && data?.png?.diff?.zones) {
                 if (index) {
-                    pin.png.diff.zones.push({ ...data.png.diff.zones[index], status });
+                    pin.png.diff.zones.push({
+                        ...data.png.diff.zones[index],
+                        status,
+                    });
                 }
                 const zones = pin.png.diff.zones.map(item => item.zone);
                 zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
                 const groupedZones = groupOverlappingZone(zones);
-                pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
+                pin.png.diff.zones = groupedZones.map(zone => ({
+                    zone,
+                    status,
+                }));
             }
 
             await this.storage.saveJSON(pinJsonFile, pin);
@@ -214,18 +286,26 @@ export class CrawlerProvider extends CrawlerProviderStorage {
             if (index) {
                 data.png.diff.zones[index].status = status;
             } else {
-                data.png.diff.zones.forEach(zone => zone.status = status);
+                data.png.diff.zones.forEach(zone => (zone.status = status));
             }
         }
         await this.storage.saveJSON(fileJson, data);
         return this.getPages(projectId, timestamp);
     }
 
-    async startCrawler(projectId: string, browser?: Browser): Promise<StartCrawler> {
-        const timestamp = Math.floor(Date.now() / 1000).toString();
+    async startCrawler(
+        projectId: string,
+        browser?: Browser,
+    ): Promise<StartCrawler> {
+        const timestamp = generateTinestampFolder();
 
         const crawlTarget = { projectId, timestamp };
-        const redirect = await this.storage.crawl(crawlTarget, 30, (this.ctx as any)?.push, browser);
+        const redirect = await this.storage.crawl(
+            crawlTarget,
+            30,
+            (this.ctx as any)?.push,
+            browser,
+        );
 
         return {
             timestamp,

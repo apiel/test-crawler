@@ -1,8 +1,7 @@
 import React from 'react';
 import Alert from 'antd/lib/alert';
 import Icon from 'antd/lib/icon';
-import { PngDiffData } from '../server/typing';
-// import * as Convert from 'ansi-to-html';
+import { PngDiffData } from 'test-crawler-core';
 
 import { iconTheme } from './pageStyle';
 import { PageImage } from './PageImage';

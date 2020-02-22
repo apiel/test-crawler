@@ -1,7 +1,7 @@
 import { join } from 'path';
 
 export const ROOT_FOLDER =
-    process.env.ROOT_FOLDER || join(__dirname, '../../..');
+    process.env.ROOT_FOLDER || join(__dirname, '../../..'); // this iswrong need to fix
 export const PROJECT_FOLDER = process.env.PROJECT_FOLDER || 'test-crawler';
 export const CRAWL_FOLDER = 'crawl';
 export const PIN_FOLDER = 'pin';

@@ -2,8 +2,9 @@ import React from 'react';
 import Switch from 'antd/lib/switch';
 import message from 'antd/lib/message';
 import notification from 'antd/lib/notification';
+import { Crawler } from 'test-crawler-core';
+
 import { setStatus } from '../server/service';
-import { Crawler } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
 const onChange = (

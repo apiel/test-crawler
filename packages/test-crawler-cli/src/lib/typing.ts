@@ -1,6 +1,9 @@
 import { Zone } from 'pixdiff-zone';
+export { Zone };
+
 import { Viewport } from 'puppeteer';
-export { Viewport, Zone };
+export { Viewport };
+
 
 // export interface Zone {
 //     xMin: number;

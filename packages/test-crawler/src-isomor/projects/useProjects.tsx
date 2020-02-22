@@ -1,5 +1,5 @@
 // import notification from 'antd/lib/notification';
-import { Project } from '../server/typing';
+import { Project } from 'test-crawler-core';
 import { loadProjects } from '../server/service';
 import { useAsync } from '../hook/useAsync';
 import { StorageType } from '../server/storage.typing';

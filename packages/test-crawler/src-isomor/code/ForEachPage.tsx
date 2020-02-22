@@ -3,7 +3,7 @@ import Spin from 'antd/lib/spin';
 import List from 'antd/lib/list';
 import Button from 'antd/lib/button';
 import Typography from 'antd/lib/typography';
-import { CodeInfoList } from '../server/typing';
+import { CodeInfoList } from 'test-crawler-core';
 
 import { getCodes } from '../server/service';
 import { CodeInfo } from './CodeInfo';

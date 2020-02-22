@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Popover from 'antd/lib/popover';
+import { Zone, PageData, ZoneStatus } from 'test-crawler-core';
 
 import { DiffImageButtons } from './DiffImageButtons';
-import { Zone, PageData, ZoneStatus } from '../server/typing';
 import { StorageType } from '../server/storage.typing';
 
 export const getColorByStatus = (status: ZoneStatus) => {

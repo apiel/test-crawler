@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const test_crawler_cli_1 = require("test-crawler-cli");
 const Cookies = require('universal-cookie');
 const LocalStorage_1 = require("./storage/LocalStorage");
 const GitHubStorage_1 = require("./storage/GitHubStorage");
 const storage_typing_1 = require("../storage.typing");
-const crawl_1 = require("./crawl");
 const CrawlerProviderStorageBase_1 = require("./CrawlerProviderStorageBase");
 function getCookie(key, ctx) {
     var _a, _b;
@@ -38,7 +38,7 @@ class CrawlerProviderStorage extends CrawlerProviderStorageBase_1.CrawlerProvide
     startCrawlers() {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            crawl_1.crawl(undefined, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
+            test_crawler_cli_1.crawl(undefined, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
         });
     }
 }

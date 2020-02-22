@@ -2,12 +2,12 @@ import React from 'react';
 import Spin from 'antd/lib/spin';
 import { RouteComponentProps } from 'react-router-dom';
 import { subscrib, unsubscrib } from 'isomor';
+import { Crawler } from 'test-crawler-core';
 
 import { Pages } from '../pages/Pages';
 import { CrawlerInfo } from './CrawlerInfo';
 import { ErrorHandler } from '../common/ErrorHandler';
 import { useAsync } from '../hook/useAsync';
-import { Crawler } from '../server/typing';
 import { getCrawler } from '../server/service';
 import { StorageType } from '../server/storage.typing';
 import { useThisDoc } from '../doc/useDoc';

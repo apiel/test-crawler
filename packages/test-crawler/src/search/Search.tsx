@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageData } from '../server/typing';
+import { PageData } from 'test-crawler-core';
 
 import { onSearch, searchStyle, onFilter } from './search';
 import Select from 'antd/lib/select';

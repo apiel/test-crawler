@@ -1,11 +1,11 @@
 import React from 'react';
+import { PngDiffDataZone, PageData } from 'test-crawler-core';
 
 import {
     imgStyle,
 } from '../pages/pageStyle';
 
 import { DiffZone } from './DiffZone';
-import { PngDiffDataZone, PageData } from '../server/typing';
 import { Props as DiffImageProps, DiffImage } from './DiffImage';
 import { useAsyncCacheWatch } from 'react-async-cache';
 import { getThumbnail } from '../server/service';

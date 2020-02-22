@@ -1,10 +1,10 @@
 import React from 'react';
 import { useAsyncCacheWatch } from 'react-async-cache';
+import { Project } from 'test-crawler-core';
 
 import notification from 'antd/lib/notification';
 import { loadProject } from '../server/service';
 import { StorageType } from '../server/storage.typing';
-import { Project } from '../server/typing';
 
 export const useProject = (storageType: StorageType, projectId: string) => {
     const {
@@ -30,4 +30,4 @@ export const useProject = (storageType: StorageType, projectId: string) => {
         project,
         setProject,
     };
-}
+};

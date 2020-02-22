@@ -1,5 +1,4 @@
-import { Viewport } from 'puppeteer';
-import { Crawler } from '../../typing';
+import { Crawler, Viewport } from '../../typing';
 export declare function startPuppeteer(viewport: Viewport, pngFile: string, htmlFile: string, crawler: Crawler, projectId: string, id: string, url: string): Promise<{
     links: string[];
     url: string;

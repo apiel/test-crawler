@@ -1,5 +1,7 @@
 - improve cli perf
 
+- fix ROOT_FOLDER
+
 - new button should not show up if not loggin to github
 
 - generate animated preview automatically:

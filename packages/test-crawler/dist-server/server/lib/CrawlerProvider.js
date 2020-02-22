@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const md5 = require("md5");
 const pixdiff_zone_1 = require("pixdiff-zone");
-const config_1 = require("./config");
+const test_crawler_core_1 = require("test-crawler-core");
 const typing_1 = require("../typing");
 const CrawlerProviderStorage_1 = require("./CrawlerProviderStorage");
 class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
@@ -48,7 +48,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     }
     loadProjects() {
         return __awaiter(this, void 0, void 0, function* () {
-            const projects = yield this.storage.readdir(config_1.PROJECT_FOLDER);
+            const projects = yield this.storage.readdir(test_crawler_core_1.PROJECT_FOLDER);
             return Promise.all(projects.map(projectId => this.loadProject(projectId)));
         });
     }
@@ -63,12 +63,12 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         });
     }
     getCrawler(projectId, timestamp) {
-        const path = this.join(projectId, config_1.CRAWL_FOLDER, timestamp, '_.json');
+        const path = this.join(projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp, '_.json');
         return this.storage.readJSON(path);
     }
     getAllCrawlers(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const path = this.join(projectId, config_1.CRAWL_FOLDER);
+            const path = this.join(projectId, test_crawler_core_1.CRAWL_FOLDER);
             const folders = yield this.storage.readdir(path);
             const crawlers = yield Promise.all(folders.map(timestamp => this.getCrawler(projectId, timestamp)));
             return crawlers;
@@ -77,7 +77,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     copyToPins(projectId, timestamp, id) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const jsonFile = this.join(projectId, config_1.CRAWL_FOLDER, timestamp, `${id}.json`);
+            const jsonFile = this.join(projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp, `${id}.json`);
             const data = yield this.storage.readJSON(jsonFile);
             if ((_a = data) === null || _a === void 0 ? void 0 : _a.png) {
                 data.png.diff = {
@@ -88,25 +88,25 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                     yield this.storage.saveJSON(jsonFile, data);
                 }
             }
-            yield this.storage.saveJSON(this.join(projectId, config_1.PIN_FOLDER, `${id}.json`), data);
+            yield this.storage.saveJSON(this.join(projectId, test_crawler_core_1.PIN_FOLDER, `${id}.json`), data);
             return data;
         });
     }
     removeFromPins(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.storage.remove(this.join(projectId, config_1.PIN_FOLDER, `${id}.json`));
+            yield this.storage.remove(this.join(projectId, test_crawler_core_1.PIN_FOLDER, `${id}.json`));
             return this.getPins(projectId);
         });
     }
     image(projectId, timestamp, id) {
         return __awaiter(this, void 0, void 0, function* () {
             if (timestamp === 'pin') {
-                const pin = yield this.storage.readJSON(this.join(projectId, config_1.PIN_FOLDER, `${id}.json`));
+                const pin = yield this.storage.readJSON(this.join(projectId, test_crawler_core_1.PIN_FOLDER, `${id}.json`));
                 if (!pin)
                     return;
                 timestamp = pin.timestamp;
             }
-            return this.storage.image(this.join(projectId, config_1.SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
+            return this.storage.image(this.join(projectId, test_crawler_core_1.SNAPSHOT_FOLDER, `${timestamp}-${id}.png`));
         });
     }
     saveBeforeAfterCode(projectId, type, code) {
@@ -138,15 +138,15 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             const { source } = code, codeInfo = __rest(code, ["source"]);
             const list = yield this.getCodeList(projectId);
             list[code.id] = codeInfo;
-            yield this.storage.saveJSON(this.join(projectId, config_1.CODE_FOLDER, `list.json`), Object.assign({}, list));
-            yield this.storage.saveFile(this.join(projectId, config_1.CODE_FOLDER, `${code.id}.js`), source);
+            yield this.storage.saveJSON(this.join(projectId, test_crawler_core_1.CODE_FOLDER, `list.json`), Object.assign({}, list));
+            yield this.storage.saveFile(this.join(projectId, test_crawler_core_1.CODE_FOLDER, `${code.id}.js`), source);
         });
     }
     loadCode(projectId, id) {
         return __awaiter(this, void 0, void 0, function* () {
             const list = yield this.getCodeList(projectId);
             const codeInfo = list[id];
-            const sourcePath = this.join(projectId, config_1.CODE_FOLDER, `${id}.js`);
+            const sourcePath = this.join(projectId, test_crawler_core_1.CODE_FOLDER, `${id}.js`);
             if (codeInfo) {
                 const buffer = yield this.storage.read(sourcePath);
                 if (buffer) {
@@ -164,19 +164,19 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     }
     getCodeList(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const listPath = this.join(projectId, config_1.CODE_FOLDER, `list.json`);
+            const listPath = this.join(projectId, test_crawler_core_1.CODE_FOLDER, `list.json`);
             const list = yield this.storage.readJSON(listPath);
             return list || {};
         });
     }
     getPins(projectId) {
-        return this.getPinsInFolder(this.join(projectId, config_1.PIN_FOLDER));
+        return this.getPinsInFolder(this.join(projectId, test_crawler_core_1.PIN_FOLDER));
     }
     getPin(projectId, id) {
-        return this.getPageInFolder(this.join(projectId, config_1.PIN_FOLDER), id);
+        return this.getPageInFolder(this.join(projectId, test_crawler_core_1.PIN_FOLDER), id);
     }
     getPages(projectId, timestamp) {
-        return this.getPinsInFolder(this.join(projectId, config_1.CRAWL_FOLDER, timestamp));
+        return this.getPinsInFolder(this.join(projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp));
     }
     getPageInFolder(folder, id) {
         return this.storage.readJSON(path_1.join(folder, `${id}.json`));
@@ -184,13 +184,14 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     getPinsInFolder(folder) {
         return __awaiter(this, void 0, void 0, function* () {
             const files = yield this.storage.readdir(folder);
-            return Promise.all(files.filter(file => path_1.extname(file) === '.json' && file !== '_.json')
+            return Promise.all(files
+                .filter(file => path_1.extname(file) === '.json' && file !== '_.json')
                 .map(file => this.storage.readJSON(path_1.join(folder, file))));
         });
     }
     setCrawlerStatus(projectId, timestamp, status) {
         return __awaiter(this, void 0, void 0, function* () {
-            const file = this.join(projectId, config_1.CRAWL_FOLDER, timestamp, '_.json');
+            const file = this.join(projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp, '_.json');
             const crawler = yield this.storage.readJSON(file);
             crawler.status = status;
             yield this.storage.saveJSON(file, crawler);
@@ -200,11 +201,11 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     setZoneStatus(projectId, timestamp, id, status, index) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         return __awaiter(this, void 0, void 0, function* () {
-            const folder = this.join(projectId, config_1.CRAWL_FOLDER, timestamp);
+            const folder = this.join(projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp);
             const fileJson = path_1.join(folder, `${id}.json`);
             const data = yield this.storage.readJSON(fileJson);
-            if (index && status === typing_1.ZoneStatus.zonePin) {
-                const pinJsonFile = this.join(projectId, config_1.PIN_FOLDER, `${id}.json`);
+            if (index && status === test_crawler_core_1.ZoneStatus.zonePin) {
+                const pinJsonFile = this.join(projectId, test_crawler_core_1.PIN_FOLDER, `${id}.json`);
                 const pin = yield this.storage.readJSON(pinJsonFile);
                 if (((_c = (_b = (_a = pin) === null || _a === void 0 ? void 0 : _a.png) === null || _b === void 0 ? void 0 : _b.diff) === null || _c === void 0 ? void 0 : _c.zones) && ((_f = (_e = (_d = data) === null || _d === void 0 ? void 0 : _d.png) === null || _e === void 0 ? void 0 : _e.diff) === null || _f === void 0 ? void 0 : _f.zones)) {
                     if (index) {
@@ -213,7 +214,10 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                     const zones = pin.png.diff.zones.map(item => item.zone);
                     zones.sort((a, b) => a.xMin * a.yMin - b.xMin * b.yMin);
                     const groupedZones = pixdiff_zone_1.groupOverlappingZone(zones);
-                    pin.png.diff.zones = groupedZones.map(zone => ({ zone, status }));
+                    pin.png.diff.zones = groupedZones.map(zone => ({
+                        zone,
+                        status,
+                    }));
                 }
                 yield this.storage.saveJSON(pinJsonFile, pin);
             }
@@ -222,7 +226,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                     data.png.diff.zones[index].status = status;
                 }
                 else {
-                    data.png.diff.zones.forEach(zone => zone.status = status);
+                    data.png.diff.zones.forEach(zone => (zone.status = status));
                 }
             }
             yield this.storage.saveJSON(fileJson, data);
@@ -232,7 +236,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
     startCrawler(projectId, browser) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const timestamp = Math.floor(Date.now() / 1000).toString();
+            const timestamp = test_crawler_core_1.generateTinestampFolder();
             const crawlTarget = { projectId, timestamp };
             const redirect = yield this.storage.crawl(crawlTarget, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push, browser);
             return {
@@ -245,7 +249,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         return this.storage.browsers;
     }
     join(projectId, ...path) {
-        return path_1.join(config_1.PROJECT_FOLDER, projectId, ...path);
+        return path_1.join(test_crawler_core_1.PROJECT_FOLDER, projectId, ...path);
     }
 }
 exports.CrawlerProvider = CrawlerProvider;
