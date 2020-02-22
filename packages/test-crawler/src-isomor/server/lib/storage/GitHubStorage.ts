@@ -188,7 +188,7 @@ export class GitHubStorage extends Storage {
                 sha: shaCommit,
             },
         });
-        console.log('Blob saved', file);
+        // console.log('Blob saved', file);
     }
 
     async read(path: string) {

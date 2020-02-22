@@ -10,11 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const selenium_webdriver_1 = require("selenium-webdriver");
+const test_crawler_core_1 = require("test-crawler-core");
 const selenium_core_1 = require("./selenium-core");
 const path_1 = require("path");
 function startSeleniumEdge(viewport, pngFile, htmlFile, crawler, projectId, id, url) {
     return __awaiter(this, void 0, void 0, function* () {
-        const driverPath = path_1.join('/Selenium.WebDriver.MicrosoftDriver.17.17134.0/driver/');
+        const driverPath = path_1.join(test_crawler_core_1.ROOT_FOLDER, '/Selenium.WebDriver.MicrosoftDriver.17.17134.0/driver/');
         process.env.PATH = `${process.env.PATH};${driverPath};`;
         const scrollHeight = yield getScrollHeight(url, viewport);
         const driver = yield new selenium_webdriver_1.Builder().forBrowser('MicrosoftEdge').build();

@@ -159,7 +159,6 @@ export async function getThumbnail(
 ): Promise<string> {
     const crawlerProvider = new CrawlerProvider(storageType, this);
     const image = await crawlerProvider.image(projectId, timestamp, id);
-    console.log('img', image);
     if (!image) {
         throw new Error('Cannot load image.');
     }

@@ -25,7 +25,7 @@ function beforeAll(crawlTarget) {
         if (crawlTarget) {
             try {
                 projectIdForExit = crawlTarget.projectId;
-                const jsFile = path_1.join(test_crawler_core_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
+                const jsFile = path_1.join(test_crawler_core_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
                     const fn = require(jsFile);
                     yield fn();
@@ -42,7 +42,7 @@ function afterAll(totalDiff, totalError) {
         logol_1.info('Done', { totalDiff, totalError });
         if (projectIdForExit) {
             try {
-                const jsFile = path_1.join(test_crawler_core_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
+                const jsFile = path_1.join(test_crawler_core_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER, projectIdForExit, 'after.js');
                 if (yield fs_extra_1.pathExists(jsFile)) {
                     const fn = require(jsFile);
                     fn(totalDiff, totalError);

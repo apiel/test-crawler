@@ -1,6 +1,5 @@
 import { join } from 'path';
-
-export const ROOT_FOLDER = process.env.ROOT_FOLDER || join(__dirname, '../../..');
+import { ROOT_FOLDER } from 'test-crawler-core';
 
 export const config = getConfig();
 

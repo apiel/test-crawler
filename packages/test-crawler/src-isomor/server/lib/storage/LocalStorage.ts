@@ -1,5 +1,5 @@
 import { WsContext, Context } from 'isomor-server';
-import { CrawlTarget, Browser } from 'test-crawler-core';
+import { CrawlTarget, Browser, ROOT_FOLDER } from 'test-crawler-core';
 import { crawl } from 'test-crawler-cli';
 
 import { Storage } from './Storage';
@@ -16,7 +16,6 @@ import {
 } from 'fs-extra';
 import { Job } from '../../typing';
 import { join } from 'path';
-import { ROOT_FOLDER } from '../config';
 
 export class LocalStorage extends Storage {
     constructor(protected ctx?: undefined | WsContext | Context) {

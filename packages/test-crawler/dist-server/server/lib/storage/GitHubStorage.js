@@ -154,7 +154,6 @@ class GitHubStorage extends Storage_1.Storage {
                     sha: shaCommit,
                 },
             });
-            console.log('Blob saved', file);
         });
     }
     read(path) {

@@ -14,7 +14,6 @@ const test_crawler_cli_1 = require("test-crawler-cli");
 const Storage_1 = require("./Storage");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
-const config_1 = require("../config");
 class LocalStorage extends Storage_1.Storage {
     constructor(ctx) {
         super();
@@ -89,7 +88,7 @@ class LocalStorage extends Storage_1.Storage {
         });
     }
     root(...path) {
-        return path_1.join(config_1.ROOT_FOLDER, ...path);
+        return path_1.join(test_crawler_core_1.ROOT_FOLDER, ...path);
     }
     repos() {
         return __awaiter(this, void 0, void 0, function* () {
