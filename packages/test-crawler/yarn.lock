@@ -14754,9 +14754,9 @@ terser@^4.3.9, terser@^4.4.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-test-crawler-cli@^3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.2.4.tgz#8ef2a8410ffbed17c7d5b4e7ddab95aa234f2671"
+test-crawler-cli@^3.2.7:
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.2.7.tgz#0cecb5696090f902d336439aaae5379fca25756f"
   dependencies:
     axios "^0.19.2"
     fs-extra "^8.1.0"

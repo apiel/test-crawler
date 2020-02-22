@@ -1,5 +1,8 @@
 - improve cli perf
 
+
+- update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
+
 - fix ROOT_FOLDER
 
 - new button should not show up if not loggin to github

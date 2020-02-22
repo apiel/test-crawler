@@ -51,13 +51,18 @@ function install(name: string) {
     } catch (err) {
         try {
             info('Need to install peer dependency', name);
-            execSync(`yarn add ${name} --peer`, {stdio: 'inherit'});
+            execSync(`yarn add ${name} --peer`, { stdio: 'inherit' });
             require(name);
         } catch (err2) {
             if (!err2.message.includes(`Cannot find module '${name}'`)) {
-                error('Something went wrong while trying to install peer dependency.', err2);
+                error(
+                    'Something went wrong while trying to install peer dependency.',
+                    err2,
+                );
             }
-            error(`To run the crawler, some extra package are required. Please install them: yarn add ${name}`);
+            error(
+                `To run the crawler, some extra package are required. Please install them: yarn add ${name}`,
+            );
             process.exit();
         }
     }

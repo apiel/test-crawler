@@ -137,6 +137,14 @@ You can run test directly from the cli. This can be useful for continuous integr
 test-crawler-cli --project f0258b6685684c113bad94d91b8fa02a
 ```
 
+With npx:
+
+```bash
+ROOT_FOLDER=/the/target/folder npx -p geckodriver -p test-crawler-cli test-crawler-cli --project the_id_of_the_project
+```
+
+You might need to include geckodriver, chromedriver or puppeteer depending of the browser you want to test against.
+
 ## Continuous integration
 
 As mentioned before, to don't get false visual differences, you must run your test always on the same environment. The best way to solve this is to include test-crawler in your continue integration, with

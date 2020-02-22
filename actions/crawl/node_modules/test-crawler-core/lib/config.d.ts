@@ -1,0 +1,12 @@
+export declare const ROOT_FOLDER: string;
+export declare const PROJECT_FOLDER: string;
+export declare const CRAWL_FOLDER = "crawl";
+export declare const PIN_FOLDER = "pin";
+export declare const CODE_FOLDER = "code";
+export declare const QUEUE_FOLDER = "queue";
+export declare const SNAPSHOT_FOLDER = "snapshot";
+export declare const MAX_HISTORY = 10;
+export declare const TIMEOUT = 10000;
+export declare const CONSUMER_COUNT = 5;
+export declare const USER_AGENT = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
+export declare const CONSUME_TIMEOUT: number;

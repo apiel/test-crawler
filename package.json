@@ -9,7 +9,8 @@
     "doc": "npx remarkable README.md > templates/readme.html && node templates/doc.js"
   },
   "dependencies": {
-    "lerna": "^3.13.1"
+    "lerna": "^3.13.1",
+    "test-crawler-cli": "^3.2.7"
   },
   "devDependencies": {
     "docsify-cli": "^4.3.0",

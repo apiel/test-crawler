@@ -21,7 +21,7 @@ export const useGitHub = (storageType: StorageType) => {
 
 export const useReferer = () => {
     const history = useHistory();
-    const location = useLocation();
+    const location: any = useLocation();
     return () => {
         if (location.pathname === getHomeRoute()) {
             window?.location?.reload();
