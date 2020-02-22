@@ -11,10 +11,9 @@ test-crawler is a tool for end to end testing, by crawling a website and making 
 > 🛈 **Note:** you need to use at least node v11
 
 ```bash
-yarn global add test-crawler puppeteer geckodriver chromedriver
+yarn global add test-crawler
 test-crawler
 ```
-> 🛈 **Note:** puppeteer, geckodriver and chromedriver are optional depending on the browser you want to test.
 
 Open url http://127.0.0.1:3005/ and create a new project:
 
