@@ -5,18 +5,13 @@ import { readJSON, pathExists, outputJson } from 'fs-extra';
 import * as minimatch from 'minimatch';
 import { WebDriver } from 'selenium-webdriver';
 import { isArray } from 'util';
-import { Crawler, Browser, CrawlerMethod, Viewport } from 'test-crawler-core';
+import { Crawler, CrawlerMethod, Viewport } from 'test-crawler-core';
 
 import { prepare } from '../diff';
 import { getCodeList } from '../utils';
-import { startPuppeteer } from './browsers/puppeteer';
-import { startSeleniumFirefox } from './browsers/selenium-firefox';
-import { startSeleniumChrome } from './browsers/selenium-chrome';
-import { startSeleniumIE } from './browsers/selenium-ie';
-// import { startSeleniumEdge } from './browsers/selenium-edge';
-import { startSeleniumSafari } from './browsers/selenium-safari';
 import { pushToResultConsumer } from './resultConsumer';
 import { addToQueue } from './startCrawler';
+import { startBrowser } from './browsers';
 import {
     pathInfoFile,
     pathSourceFile,
@@ -24,38 +19,6 @@ import {
     pathCrawlerFile,
     pathCodeJsFile,
 } from '../path';
-
-function startBrowser(
-    browser: Browser,
-    viewport: Viewport,
-    pngFile: string,
-    htmlFile: string,
-    crawler: Crawler,
-    projectId: string,
-    id: string,
-    url: string,
-) {
-    if (browser === Browser.FirefoxSelenium) {
-        // prettier-ignore
-        return startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    } else if (browser === Browser.ChromePuppeteer) {
-        // prettier-ignore
-        return startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    } else if (browser === Browser.IeSelenium) {
-        // prettier-ignore
-        return startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    // else if (browser === Browser.EdgeSelenium) {
-    //     // prettier-ignore
-    //     return startSeleniumEdge(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    // }
-    else if (browser === Browser.SafariSelenium) {
-        // prettier-ignore
-        return startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    // prettier-ignore
-    return startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-}
 
 export async function loadPage(
     projectId: string,
