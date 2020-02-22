@@ -261,10 +261,9 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     repos() {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = yield this.call({
-                url: `${BASE_URL}/users/${(_a = this.config) === null || _a === void 0 ? void 0 : _a.user}/repos?sort=updated&per_page=1000`,
+                url: `${BASE_URL}/users/${this.user}/repos?sort=updated&per_page=1000`,
             });
             return data.map(({ name }) => name);
         });

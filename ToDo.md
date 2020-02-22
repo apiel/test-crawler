@@ -1,5 +1,7 @@
 - improve cli perf
 
+- new button should not show up if not loggin to github
+
 - add test for test-crawler
 
 - update doc:

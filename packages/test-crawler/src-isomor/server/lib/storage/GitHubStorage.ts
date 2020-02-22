@@ -276,7 +276,7 @@ export class GitHubStorage extends Storage {
 
     async repos() {
         const { data } = await this.call({
-            url: `${BASE_URL}/users/${this.config?.user}/repos?sort=updated&per_page=1000`,
+            url: `${BASE_URL}/users/${this.user}/repos?sort=updated&per_page=1000`,
         });
         return data.map(({ name }: any) => name) as string[];
     }
