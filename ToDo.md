@@ -1,5 +1,6 @@
 - improve cli perf
 
+- when click on token field open password if githubtoken is set
 
 - update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
 

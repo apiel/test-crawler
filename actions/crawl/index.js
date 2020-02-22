@@ -11,6 +11,7 @@ async function run() {
             projectId,
             timestamp: generateTinestampFolder(),
         };
+        console.log('crawlTarget', crawlTarget);
         crawl(crawlTarget, 30);
     } catch (error) {
         core.setFailed(error.message);
