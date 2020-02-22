@@ -9,3 +9,7 @@ export async function getCodeList(projectId: string): Promise<CodeInfoList> {
     }
     return {};
 }
+
+export function generateTinestampFolder() {
+    return Math.floor(Date.now() / 1000).toString();
+}

@@ -13,9 +13,7 @@
   "scripts": {
     "cli": "node bin/cli.js",
     "cli-dev": "ts-node --project tsconfig-cli.json src/cli/cli.ts",
-    "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && chmod +x bin/cli.js",
-    "lib-build": "rm -rf lib/ && tsc -p tsconfig-lib.json",
-    "build": "yarn cli-build && yarn lib-build",
+    "build": "rm -rf bin/ && rm -rf lib/ && tsc -p tsconfig.json && chmod +x bin/cli.js",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {

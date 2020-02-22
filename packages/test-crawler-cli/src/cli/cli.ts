@@ -1,14 +1,8 @@
 #!/usr/bin/env node
 
-import { checkSync, lockSync } from 'lockfile';
 import { info } from 'logol';
-import { join } from 'path';
-import { CrawlerProvider } from '../dist-server/server/lib';
-import { crawl } from '../dist-server/server/lib/crawl';
-import * as configs from '../dist-server/server/lib/config';
-import { StorageType } from '../dist-server/server/storage.typing';
-
-const lockFile = join(__dirname, '../../test-crawler.lock');
+import { crawl, generateTinestampFolder } from '../lib';
+import * as configs from '../lib/config';
 
 async function start() {
     info('Test-crawler');
@@ -16,9 +10,12 @@ async function start() {
     const [, , option, value] = process.argv;
     if (option && value) {
         if (option === '--project') {
-            info('Start project', value);
-            const crawlerProvider = new CrawlerProvider(StorageType.Local);
-            const result = await crawlerProvider.startCrawler(value);
+            const crawlTarget = {
+                projectId: value,
+                timestamp: generateTinestampFolder(),
+            };
+            info('Start project', crawlTarget);
+            const result = await crawl(crawlTarget, 30);
             info('result', result);
             return;
         }
@@ -26,9 +23,4 @@ async function start() {
     crawl(undefined, 30);
 }
 
-if (!checkSync(lockFile)) {
-    lockSync(lockFile);
-    start();
-} else {
-    info('Test-crawler already running', lockFile);
-}
+start();
