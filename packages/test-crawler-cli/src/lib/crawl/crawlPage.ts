@@ -5,9 +5,8 @@ import * as minimatch from 'minimatch';
 import { WebDriver } from 'selenium-webdriver';
 import { isArray } from 'util';
 
-import { CrawlerMethod } from '../index';
 import { prepare } from '../diff';
-import { Crawler, Browser } from '../typing';
+import { Crawler, Browser, CrawlerMethod } from '../typing';
 import { getCodeList } from '../utils';
 import { startPuppeteer } from './browsers/puppeteer';
 import { startSeleniumFirefox } from './browsers/selenium-firefox';
@@ -36,20 +35,24 @@ function startBrowser(
     url: string,
 ) {
     if (browser === Browser.FirefoxSelenium) {
+        // prettier-ignore
         return startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    else if (browser === Browser.ChromePuppeteer) {
+    } else if (browser === Browser.ChromePuppeteer) {
+        // prettier-ignore
         return startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url);
-    }
-    else if (browser === Browser.IeSelenium) {
+    } else if (browser === Browser.IeSelenium) {
+        // prettier-ignore
         return startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     }
     // else if (browser === Browser.EdgeSelenium) {
+    //     // prettier-ignore
     //     return startSeleniumEdge(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     // }
     else if (browser === Browser.SafariSelenium) {
+        // prettier-ignore
         return startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     }
+    // prettier-ignore
     return startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url);
 }
 
@@ -65,15 +68,26 @@ export async function loadPage(
     const pngFile = pathImageFile(projectId, timestamp, id);
     const htmlFile = pathSourceFile(projectId, timestamp, id);
 
-    const crawler: Crawler = await readJSON(pathCrawlerFile(projectId, timestamp));
+    const crawler: Crawler = await readJSON(
+        pathCrawlerFile(projectId, timestamp),
+    );
     const { viewport, url: baseUrl, method, limit, browser } = crawler;
 
     try {
-        const { links, ...output } = await startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url);
+        const { links, ...output } = await startBrowser(
+            browser,
+            viewport,
+            pngFile,
+            htmlFile,
+            crawler,
+            projectId,
+            id,
+            url,
+        );
         await outputJson(jsonFile, { ...output, timestamp }, { spaces: 4 });
 
         if (method !== CrawlerMethod.URLs && isArray(links)) {
-            const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0)
+            const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
             await addUrls(siteUrls, viewport, projectId, timestamp, limit);
         }
 
@@ -90,7 +104,11 @@ export async function loadPage(
             warn('Retry crawl', url);
             await loadPage(projectId, id, url, timestamp, done, retry + 1);
         } else {
-            await outputJson(jsonFile, { url, id, error: err.toString() }, { spaces: 4 });
+            await outputJson(
+                jsonFile,
+                { url, id, error: err.toString() },
+                { spaces: 4 },
+            );
             pushToResultConsumer({
                 projectId,
                 timestamp,

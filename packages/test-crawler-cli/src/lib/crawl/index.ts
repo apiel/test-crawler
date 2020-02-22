@@ -23,7 +23,12 @@ async function beforeAll(crawlTarget?: CrawlTarget) {
     if (crawlTarget) {
         try {
             projectIdForExit = crawlTarget.projectId;
-            const jsFile = join(ROOT_FOLDER, PROJECT_FOLDER, crawlTarget.projectId, 'before.js');
+            const jsFile = join(
+                ROOT_FOLDER,
+                PROJECT_FOLDER,
+                crawlTarget.projectId,
+                'before.js',
+            );
             if (await pathExists(jsFile)) {
                 const fn = require(jsFile);
                 await fn();
@@ -38,7 +43,12 @@ export async function afterAll(totalDiff: number, totalError: number) {
     info('Done', { totalDiff, totalError });
     if (projectIdForExit) {
         try {
-            const jsFile = join(ROOT_FOLDER, PROJECT_FOLDER, projectIdForExit, 'after.js');
+            const jsFile = join(
+                ROOT_FOLDER,
+                PROJECT_FOLDER,
+                projectIdForExit,
+                'after.js',
+            );
             if (await pathExists(jsFile)) {
                 const fn = require(jsFile);
                 fn(totalDiff, totalError);
@@ -78,9 +88,9 @@ async function cleanSnapshot(projectId: string) {
         for (const file of files) {
             const [timestamp, id] = basename(file, extname(file)).split('-');
             const infoFile = pathInfoFile(projectId, timestamp, id);
-            if (!await pathExists(infoFile)) {
+            if (!(await pathExists(infoFile))) {
                 const pinFile = pathPinInfoFile(projectId, id);
-                if (!await pathExists(pinFile)) {
+                if (!(await pathExists(pinFile))) {
                     info('Remove unused snapshot', snapshotFolder, file);
                     await remove(join(snapshotFolder, file));
                 } else {

@@ -4,15 +4,11 @@ import { extname } from 'path';
 
 import { Crawler } from '../typing';
 import { afterAll } from '.';
-import {
-    pathCrawlerFile,
-    pathQueueFolder,
-    pathResultFolder,
-} from '../path';
+import { pathCrawlerFile, pathQueueFolder, pathResultFolder } from '../path';
 
 interface ResultQueue {
     result?: {
-        diffZoneCount: number,
+        diffZoneCount: number;
     };
     projectId: string;
     timestamp: string;
@@ -28,16 +24,25 @@ export function pushToResultConsumer(resultQueue: ResultQueue) {
     resultsQueue.push(resultQueue);
 }
 
-export function initConsumeResults(consumeTimeout: number, push?: (payload: any) => void) {
+export function initConsumeResults(
+    consumeTimeout: number,
+    push?: (payload: any) => void,
+) {
     consumeResultRetry = 0;
     return consumeResults(consumeTimeout, push);
 }
 
-async function consumeResults(consumeTimeout: number, push?: (payload: any) => void) {
+async function consumeResults(
+    consumeTimeout: number,
+    push?: (payload: any) => void,
+) {
     // console.log('resultsQueue.length', resultsQueue.length, consumeResultRetry, consumeTimeout);
     if (resultsQueue.length) {
         consumeResultRetry = 0;
-        const [{ projectId, timestamp, result, isError }] = resultsQueue.splice(0, 1);
+        const [{ projectId, timestamp, result, isError }] = resultsQueue.splice(
+            0,
+            1,
+        );
         const crawlerFile = pathCrawlerFile(projectId, timestamp);
         const crawler: Crawler = await readJSON(crawlerFile);
         if (result) {
@@ -50,10 +55,13 @@ async function consumeResults(consumeTimeout: number, push?: (payload: any) => v
         }
 
         const queueFolder = pathQueueFolder(projectId, timestamp);
-        const filesInQueue = await pathExists(queueFolder) ? await readdir(queueFolder) : [];
+        const filesInQueue = (await pathExists(queueFolder))
+            ? await readdir(queueFolder)
+            : [];
         crawler.inQueue = filesInQueue.length;
-        crawler.urlsCount = (await readdir(pathResultFolder(projectId, timestamp)))
-            .filter(f => extname(f) === '.json' && f !== '_.json').length;
+        crawler.urlsCount = (
+            await readdir(pathResultFolder(projectId, timestamp))
+        ).filter(f => extname(f) === '.json' && f !== '_.json').length;
         crawler.lastUpdate = Date.now();
 
         await writeJSON(crawlerFile, crawler, { spaces: 4 });

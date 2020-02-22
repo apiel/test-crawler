@@ -2,7 +2,7 @@ import { WebDriver } from 'selenium-webdriver';
 import { error, info } from 'logol';
 
 import { writeFile, outputFile } from 'fs-extra';
-import { Crawler } from '../../../typing';
+import { Crawler } from '../../typing';
 import { injectCodes } from '../crawlPage';
 
 interface Viewport {
@@ -27,17 +27,33 @@ export async function startSeleniumCore(
         const html = await driver.getPageSource();
         await writeFile(htmlFile, html);
 
-        const performance = await driver.executeScript("return window.performance");
+        const performance = await driver.executeScript(
+            'return window.performance',
+        );
 
         let codeErr: string;
         let links: string[];
         try {
-            const injectLinks: string[] = await driver.executeScript("return Array.from(document.links).map(a => a.href)");
-            links = await injectCodes(driver, projectId, id, url, injectLinks, crawler);
+            const injectLinks: string[] = await driver.executeScript(
+                'return Array.from(document.links).map(a => a.href)',
+            );
+            links = await injectCodes(
+                driver,
+                projectId,
+                id,
+                url,
+                injectLinks,
+                crawler,
+            );
             // console.log('links', links);
         } catch (err) {
             codeErr = err.toString();
-            error('Something went wrong while injecting the code', id, url, err);
+            error(
+                'Something went wrong while injecting the code',
+                id,
+                url,
+                err,
+            );
         }
 
         const image = await driver.takeScreenshot();
@@ -54,7 +70,9 @@ export async function startSeleniumCore(
 export async function getScrollHeightCore(driver: WebDriver, url: string) {
     try {
         await driver.get(url);
-        const scrollHeight = await driver.executeScript("return document.body.scrollHeight");
+        const scrollHeight = await driver.executeScript(
+            'return document.body.scrollHeight',
+        );
         return scrollHeight as number;
     } finally {
         await driver.quit();

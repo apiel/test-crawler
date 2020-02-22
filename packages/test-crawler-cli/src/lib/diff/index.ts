@@ -2,7 +2,14 @@ import { info } from 'logol';
 import { PNG } from 'pngjs';
 import { pixdiff, Zone, groupOverlappingZone } from 'pixdiff-zone';
 
-import { readJson, readFile, pathExists, writeFile, writeJSON, copy } from 'fs-extra';
+import {
+    readJson,
+    readFile,
+    pathExists,
+    writeFile,
+    writeJSON,
+    copy,
+} from 'fs-extra';
 import { PageData, Crawler, ZoneStatus } from '../typing';
 import { pathImageFile, pathInfoFile, pathPinInfoFile } from '../path';
 
@@ -35,7 +42,8 @@ async function parsePng(
     info('PNG', id, url, `diff ratio: ${pixelDiffRatio}`);
     info('PNG', 'zone', zones);
 
-    if (pixelDiffRatio) { // what is this?
+    if (pixelDiffRatio) {
+        // what is this?
         const buffer = PNG.sync.write(diffImage, { colorType: 6 });
         const diffFile = `${pngFile}.diff.png`;
         await writeFile(diffFile, buffer);
@@ -66,13 +74,20 @@ async function parseZones(pinInfo: PageData, zones: Zone[]) {
     const baseZones = pinInfo.png.diff.zones.map(z => z.zone);
     return zones.map(zone => ({
         zone,
-        status: groupOverlappingZone([...baseZones, zone]).length === baseZones.length
-            ? ZoneStatus.valid
-            : ZoneStatus.diff,
+        status:
+            groupOverlappingZone([...baseZones, zone]).length ===
+            baseZones.length
+                ? ZoneStatus.valid
+                : ZoneStatus.diff,
     }));
 }
 
-export async function prepare(projectId: string, timestamp: string, id: string, crawler: Crawler) {
+export async function prepare(
+    projectId: string,
+    timestamp: string,
+    id: string,
+    crawler: Crawler,
+) {
     const jsonFile = pathInfoFile(projectId, timestamp, id);
     const pinJsonFile = pathPinInfoFile(projectId, id);
 
@@ -84,7 +99,13 @@ export async function prepare(projectId: string, timestamp: string, id: string, 
         const pngFile = pathImageFile(projectId, timestamp, id);
         const pinPngFile = pathImageFile(projectId, pinInfo.timestamp, id);
         if (await pathExists(pinPngFile)) {
-            diffZoneCount = await parsePng(data, pngFile, jsonFile, pinPngFile, pinInfo);
+            diffZoneCount = await parsePng(
+                data,
+                pngFile,
+                jsonFile,
+                pinPngFile,
+                pinInfo,
+            );
         } else {
             info('DIFF', 'new png');
         }

@@ -55,7 +55,7 @@ export function pathPinInfoFile(projectId: string, id: string) {
 
 export function pathProjectFile(projectId: string) {
     // return join(ROOT_FOLDER, PROJECT_FOLDER, projectId, 'project.json');
-    return join(PROJECT_FOLDER, projectId, 'project.json'); // ROOT_FOLDER might not be necessary
+    return join(PROJECT_FOLDER, projectId, 'project.json'); // ROOT_FOLDER might be necessary
 }
 
 export function pathCodeJsFile(projectId: string, id: string) {

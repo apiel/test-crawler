@@ -1,10 +1,9 @@
-
 import { launch, Viewport } from 'puppeteer';
 import { error, info } from 'logol';
 
 import { USER_AGENT, TIMEOUT } from '../../config';
 import { writeFile } from 'fs-extra';
-import { Crawler } from '../../../typing';
+import { Crawler } from '../../typing';
 import { injectCodes } from '../crawlPage';
 
 export async function startPuppeteer(
@@ -33,26 +32,49 @@ export async function startPuppeteer(
         await writeFile(htmlFile, html);
 
         const metrics = await page.metrics();
-        const performance = JSON.parse(await page.evaluate(
-            () => JSON.stringify(window.performance),
-        ));
+        const performance = JSON.parse(
+            await page.evaluate(() => JSON.stringify(window.performance)),
+        );
 
         let codeErr: string;
         let links: string[];
         try {
-            const injectLinks = await page.$$eval('a', as => as.map(a => (a as any).href));
-            links = await injectCodes(page, projectId, id, url, injectLinks, crawler);
+            const injectLinks = await page.$$eval('a', as =>
+                as.map(a => (a as any).href),
+            );
+            links = await injectCodes(
+                page,
+                projectId,
+                id,
+                url,
+                injectLinks,
+                crawler,
+            );
             // console.log('links', links);
         } catch (err) {
             codeErr = err.toString();
-            error('Something went wrong while injecting the code', id, url, err);
+            error(
+                'Something went wrong while injecting the code',
+                id,
+                url,
+                err,
+            );
         }
 
         await page.screenshot({ path: pngFile, fullPage: true });
 
         const png = { width: viewport.width };
 
-        return { links, url, id, performance, metrics, png, viewport, error: codeErr };
+        return {
+            links,
+            url,
+            id,
+            performance,
+            metrics,
+            png,
+            viewport,
+            error: codeErr,
+        };
     } finally {
         await browser.close();
         info('browser closed', url);

@@ -8,8 +8,7 @@ import {
     readJSON,
 } from 'fs-extra';
 
-import { CrawlerMethod } from '../index';
-import { Crawler, CrawlerInput, CrawlTarget } from '../typing';
+import { Crawler, CrawlerInput, CrawlTarget, CrawlerMethod } from '../typing';
 import Axios from 'axios';
 import md5 = require('md5');
 import {
@@ -24,7 +23,11 @@ import {
 export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
     const { crawlerInput } = await readJSON(pathProjectFile(projectId));
 
-    const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
+    const id = md5(
+        `${timestamp}-${crawlerInput.url}-${JSON.stringify(
+            crawlerInput.viewport,
+        )}`,
+    );
 
     await mkdirp(pathSnapshotFolder(projectId));
 
@@ -41,7 +44,9 @@ export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
         lastUpdate: Date.now(),
     };
 
-    await outputJSON(pathCrawlerFile(projectId, timestamp), crawler, { spaces: 4 });
+    await outputJSON(pathCrawlerFile(projectId, timestamp), crawler, {
+        spaces: 4,
+    });
 
     if (crawlerInput.method === CrawlerMethod.URLs) {
         await startUrlsCrawling(crawlerInput, projectId, timestamp);
@@ -57,8 +62,11 @@ async function startUrlsCrawling(
 ) {
     const { data } = await Axios.get(crawlerInput.url);
     const urls = data.split(`\n`).filter((url: string) => url.trim());
-    await Promise.all(urls.map((url: string) =>
-        addToQueue(url, crawlerInput.viewport, projectId, timestamp)));
+    await Promise.all(
+        urls.map((url: string) =>
+            addToQueue(url, crawlerInput.viewport, projectId, timestamp),
+        ),
+    );
 }
 
 async function startSpiderBotCrawling(
@@ -66,9 +74,15 @@ async function startSpiderBotCrawling(
     projectId: string,
     timestamp: string,
 ) {
-    const addedToqueue = await addToQueue(url, viewport, projectId, timestamp, limit);
+    const addedToqueue = await addToQueue(
+        url,
+        viewport,
+        projectId,
+        timestamp,
+        limit,
+    );
     if (!addedToqueue) {
-        throw (new Error('Something went wrong while adding job to queue'));
+        throw new Error('Something went wrong while adding job to queue');
     }
 }
 
@@ -85,7 +99,10 @@ export async function addToQueue(
     const queueFile = pathQueueFile(projectId, timestamp, id);
 
     if (!(await pathExists(queueFile)) && !(await pathExists(resultFile))) {
-        if (!limit || (await updateSiblingCount(cleanUrl, projectId, timestamp)) < limit) {
+        if (
+            !limit ||
+            (await updateSiblingCount(cleanUrl, projectId, timestamp)) < limit
+        ) {
             await outputJSON(queueFile, { url: cleanUrl, id }, { spaces: 4 });
         }
         return true;

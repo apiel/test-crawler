@@ -18,6 +18,11 @@ export { Viewport, Zone };
 //     isLandscape?: boolean;
 // }
 
+export enum CrawlerMethod {
+    URLs = 'urls',
+    SPIDER_BOT = 'spiderbot',
+}
+
 export enum ZoneStatus {
     valid = 'valid',
     zonePin = 'zone-pin',
@@ -34,11 +39,6 @@ export enum Browser {
     // EdgeSelenium = 'edge-selenium',
 }
 
-// export interface StartCrawler {
-//     timestamp: string;
-//     redirect?: string;
-// }
-
 export interface CodeInfoList {
     [id: string]: CodeInfo;
 }
@@ -48,15 +48,6 @@ export interface CodeInfo {
     pattern: string;
     name: string;
 }
-
-// export interface Code extends CodeInfo {
-//     source: string;
-// }
-
-// export enum BeforeAfterType {
-//     Before = 'before',
-//     After = 'after',
-// }
 
 export interface CrawlerInput {
     url: string;
@@ -130,49 +121,3 @@ export interface PageMetrics {
     JSHeapUsedSize: number;
     JSHeapTotalSize: number;
 }
-
-// export interface Performance {
-//     timeOrigin: number;
-//     timing: Timing;
-//     navigation: Navigation;
-// }
-
-// export interface Navigation {
-//     type: 0;
-//     redirectCount: 0;
-// }
-
-// export interface Timing {
-//     navigationStart: number;
-//     unloadEventStart: number;
-//     unloadEventEnd: number;
-//     redirectStart: number;
-//     redirectEnd: number;
-//     fetchStart: number;
-//     domainLookupStart: number;
-//     domainLookupEnd: number;
-//     connectStart: number;
-//     connectEnd: number;
-//     secureConnectionStart: number;
-//     requestStart: number;
-//     responseStart: number;
-//     responseEnd: number;
-//     domLoading: number;
-//     domInteractive: number;
-//     domContentLoadedEventStart: number;
-//     domContentLoadedEventEnd: number;
-//     domComplete: number;
-//     loadEventStart: number;
-//     loadEventEnd: number;
-// }
-
-// export interface Job {
-//     id: string;
-//     url: string;
-//     status: string;
-//     startAt: number;
-//     lastUpdate: number;
-//     stepsCount?: number;
-//     stepsDone?: number;
-//     currentStep?: string;
-// }
