@@ -15,5 +15,6 @@
     "@types/node": "13.7.4",
     "tslint": "^6.0.0",
     "typescript": "3.8.2"
-  }
+  },
+  "gitHead": "3c49bd868005806f23f183f7dcc64509c6a06e53"
 }

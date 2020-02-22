@@ -2,22 +2,17 @@
   "name": "test-crawler",
   "version": "3.2.1",
   "bin": {
-    "test-crawler": "./test-crawler.js",
-    "test-crawler-cli": "bin/cli.js"
+    "test-crawler": "./test-crawler.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/apiel/test-crawler"
   },
   "scripts": {
-    "cli": "node bin/cli.js",
-    "cli-start": "PROCESS_TIMEOUT=30 test-crawler-cli",
-    "cli-dev": "ts-node --project tsconfig-cli.json cli/cli.ts",
-    "cli-build": "rm -rf bin/ && tsc -p tsconfig-cli.json && chmod +x bin/cli.js",
     "test-crawler": "test-crawler",
     "prepublishOnly": "cp ../../README.md . && yarn prepublishLocal && yarn prepublishGithub && chmod +x test-crawler.js",
-    "prepublishLocal": "yarn cli-build && yarn isomor:build && yarn serv:build && yarn build",
-    "prepublishGithub": "yarn cli-build && yarn isomor:build && yarn github:pub",
+    "prepublishLocal": "yarn isomor:build && yarn serv:build && yarn build",
+    "prepublishGithub": "yarn isomor:build && yarn github:pub",
     "isomor:build": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true isomor-transpiler",
     "isomor:build:dev": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true ISOMOR_WATCH=true isomor-transpiler",
     "isomor:server": "ISOMOR_WS=.* ISOMOR_NO_VALIDATION=true node ../isomor-server/dist/bin/server.js",
@@ -28,8 +23,7 @@
     "prod": "yarn isomor:build && yarn build && yarn serv:prod",
     "dev": "ISOMOR_WS=.* run-screen 'yarn isomor:build:dev' 'yarn serv:dev' 'yarn start' 'tail -f test-crawler-cli.log'",
     "start": "BROWSER=none react-scripts start",
-    "app-build": "react-scripts build",
-    "build": "yarn app-build && yarn cli-build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
@@ -114,5 +108,5 @@
     "run-screen": "^0.5.3",
     "tslint": "^6.0.0"
   },
-  "gitHead": "844645fcad5b06102da4bef0f092ca8ba4be3d25"
+  "gitHead": "3c49bd868005806f23f183f7dcc64509c6a06e53"
 }
