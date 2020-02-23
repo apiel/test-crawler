@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import { info } from 'logol';
-import { getGeckodriver } from '../lib'
+import { getGeckodriver, Platform } from '../lib'
 
 async function start() {
     info('Test-crawler driver manager');
-    await getGeckodriver('win32', 'x86');
+    await getGeckodriver(Platform.mac);
 }
 
 start();

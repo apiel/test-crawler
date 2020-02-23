@@ -1,43 +1,34 @@
 import { info } from 'logol';
-// import { spawn } from 'child_process';
 import { dirname, join } from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 
-// function exec(cmd: string) {
-//     return new Promise((resolve, reject) => {
-//         const child = spawn(cmd, { stdio: 'inherit', shell: true });
-//         child.on('close', resolve);
-//         child.on('exit', resolve);
-//         child.on('error', reject);
-//     });
-// }
+export enum Platform {
+    mac = 'darwin',
+    linux = 'linux',
+    win = 'win32',
+}
 
-// darwin
-// win32
-// linux
+export enum Arch {
+    x64 = 'x64',
+    x32 = 'x32',
+}
 
-// x64
-// x32
-
-export async function getGeckodriver(platform: string, arch: string) {
-    const name = 'geckodriver';
-    const pkgFolder = dirname(require.resolve(name));
-    // await exec(`node ${join(pkgFolder, 'install.js')}`);
-
+export async function getGeckodriver(platform: Platform, arch: Arch = Arch.x64) {
+    const pkgFolder = getGeckoFolder();
     mockFnOnce(os, 'platform', () => platform);
     mockFnOnce(os, 'arch', () => arch);
     mockFnOnce(fs, 'createWriteStream', (file: string) => {
-        return fs.createWriteStream(join(pkgFolder, '..', file));
+        return fs.createWriteStream(join(pkgFolder, file));
     });
 
-    // const restoreCreateWriteStream = fs.createWriteStream;
-    // (fs as any).createWriteStream = (file: string) => {
-    //     (fs as any).createWriteStream = restoreCreateWriteStream;
-    //     return restoreCreateWriteStream(join(pkgFolder, '..', file));
-    // };
+    require(join(pkgFolder, 'index.js'))
+}
 
-    require(join(pkgFolder, '..', 'index.js'))
+function getGeckoFolder() {
+    const name = 'geckodriver';
+    const pkgFolder = dirname(require.resolve(name));
+    return join(pkgFolder, '..');
 }
 
 function mockFnOnce(module: any, name: string, ret: any) {
