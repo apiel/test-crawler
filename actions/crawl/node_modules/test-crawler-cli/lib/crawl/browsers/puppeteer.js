@@ -9,14 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const puppeteer_1 = require("puppeteer");
+const puppeteer_core_1 = require("puppeteer-core");
 const logol_1 = require("logol");
 const test_crawler_core_1 = require("test-crawler-core");
+const child_process_1 = require("child_process");
+const path_1 = require("path");
 const fs_extra_1 = require("fs-extra");
 const crawlPage_1 = require("../crawlPage");
 function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url) {
     return __awaiter(this, void 0, void 0, function* () {
-        const browser = yield puppeteer_1.launch({});
+        yield downloadChrome();
+        const browser = yield puppeteer_core_1.launch({});
         try {
             const page = yield browser.newPage();
             yield page.setUserAgent(test_crawler_core_1.USER_AGENT);
@@ -59,4 +62,14 @@ function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url
     });
 }
 exports.startPuppeteer = startPuppeteer;
+function downloadChrome() {
+    logol_1.info('check chome');
+    try {
+        const pptrFolder = path_1.dirname(require.resolve('puppeteer-core'));
+        return child_process_1.execSync(`node ${path_1.join(pptrFolder, 'install.js')}`, { stdio: 'inherit' });
+    }
+    catch (err) {
+        return child_process_1.execSync(`node ./node_modules/puppeteer-core/install.js`, { stdio: 'inherit' });
+    }
+}
 //# sourceMappingURL=puppeteer.js.map

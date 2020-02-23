@@ -5,7 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.2",
-    "test-crawler-cli": "^3.2.7",
+    "test-crawler-cli": "^3.2.11",
     "test-crawler-core": "^3.2.3"
   }
 }

@@ -18,7 +18,7 @@ const fs_extra_1 = require("fs-extra");
 const crawlPage_1 = require("../crawlPage");
 function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield downloadChrome();
+        downloadChrome();
         const browser = yield puppeteer_core_1.launch({});
         try {
             const page = yield browser.newPage();
@@ -62,14 +62,22 @@ function startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url
     });
 }
 exports.startPuppeteer = startPuppeteer;
+let chromeChecked = false;
 function downloadChrome() {
-    logol_1.info('check chome');
-    try {
-        const pptrFolder = path_1.dirname(require.resolve('puppeteer-core'));
-        return child_process_1.execSync(`node ${path_1.join(pptrFolder, 'install.js')}`, { stdio: 'inherit' });
-    }
-    catch (err) {
-        return child_process_1.execSync(`node ./node_modules/puppeteer-core/install.js`, { stdio: 'inherit' });
+    if (!chromeChecked) {
+        logol_1.info('check Chrome browser');
+        try {
+            const pptrFolder = path_1.dirname(require.resolve('puppeteer-core'));
+            child_process_1.execSync(`node ${path_1.join(pptrFolder, 'install.js')}`, {
+                stdio: 'inherit',
+            });
+        }
+        catch (err) {
+            child_process_1.execSync(`node ./node_modules/puppeteer-core/install.js`, {
+                stdio: 'inherit',
+            });
+        }
+        chromeChecked = true;
     }
 }
 //# sourceMappingURL=puppeteer.js.map
