@@ -1,7 +1,11 @@
 import { info } from 'logol';
-import { dirname, join } from 'path';
+import { dirname, join, basename } from 'path';
+import { promisify } from 'util';
 import * as os from 'os';
 import * as fs from 'fs';
+
+const move = promisify(fs.rename);
+const mkdir = promisify(fs.mkdir);
 
 export enum Platform {
     mac = 'darwin',
@@ -14,7 +18,10 @@ export enum Arch {
     x32 = 'x32',
 }
 
-export async function getGeckodriver(platform: Platform, arch: Arch = Arch.x64) {
+export async function getGeckodriver(
+    platform: Platform,
+    arch: Arch = Arch.x64,
+) {
     const pkgFolder = getGeckoFolder();
     mockFnOnce(os, 'platform', () => platform);
     mockFnOnce(os, 'arch', () => arch);
@@ -22,7 +29,19 @@ export async function getGeckodriver(platform: Platform, arch: Arch = Arch.x64) 
         return fs.createWriteStream(join(pkgFolder, file));
     });
 
-    require(join(pkgFolder, 'index.js'))
+    require(join(pkgFolder, 'index.js'));
+
+    return join(
+        pkgFolder,
+        platform === Platform.win ? 'geckodriver.exe' : 'geckodriver',
+    );
+}
+
+export async function moveFile(dstFolder: string, driverFile: string) {
+    await mkdir(dstFolder, { recursive: true });
+    const dstFile = `${dstFolder}/${basename(driverFile)}`;
+    await move(driverFile, dstFile);
+    return dstFile;
 }
 
 function getGeckoFolder() {
