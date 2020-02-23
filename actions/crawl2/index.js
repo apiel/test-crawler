@@ -1,4 +1,6 @@
 const core = require('@actions/core');
+const exec = require('@actions/exec');
+
 const { crawl } = require('test-crawler-cli');
 const { generateTinestampFolder } = require('test-crawler-core');
 
