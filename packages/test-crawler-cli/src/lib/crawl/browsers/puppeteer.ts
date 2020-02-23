@@ -1,7 +1,8 @@
-import { launch } from 'puppeteer';
-// const { launch } = require('puppeteer');
+import { launch } from 'puppeteer-core';
 import { error, info } from 'logol';
 import { USER_AGENT, TIMEOUT, Crawler, Viewport } from 'test-crawler-core';
+import { execSync } from 'child_process';
+import { dirname, join } from 'path';
 
 import { writeFile } from 'fs-extra';
 import { injectCodes } from '../crawlPage';
@@ -15,6 +16,7 @@ export async function startPuppeteer(
     id: string,
     url: string,
 ) {
+    await downloadChrome();
     const browser = await launch({
         // headless: false,
     });
@@ -78,5 +80,16 @@ export async function startPuppeteer(
     } finally {
         await browser.close();
         info('browser closed', url);
+    }
+}
+
+function downloadChrome() {
+    info('check chome');
+    // need to use execSync else multiple process will run at the same time
+    try {
+        const pptrFolder = dirname(require.resolve('puppeteer-core'));
+        return execSync(`node ${join(pptrFolder, 'install.js')}`, { stdio: 'inherit' });
+    } catch (err) {
+        return execSync(`node ./node_modules/puppeteer-core/install.js`, { stdio: 'inherit' });
     }
 }

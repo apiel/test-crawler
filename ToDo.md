@@ -5,6 +5,9 @@
 - diff number seem to be wrong
 
 - need to make a driver downloader
+  -> by default use firefox-selenium or chrome-selenium? faster than pptr
+  -> driver downloader should be able to download on runtime
+  -> driver downloader should also be able to download before runtime
 
 - update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
 
