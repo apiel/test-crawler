@@ -1,5 +1,3 @@
-- improve cli perf: should be kind of ok, still have to look at actions cache
-
 - diff number seem to be wrong
 
 - need to make a driver downloader
@@ -55,6 +53,10 @@
 
 - **we could track the number of query per page and see if there is some changes...**
 
+
+- improve cli perf: should be kind of ok, still have to look at actions cache
+  Dirname /Users/runner/runners/2.165.2/work/_actions/apiel/test-crawler/master/actions/crawl
+  cache action is only for push and PR but we could maybe trick it out?
 
 - run test-crawler in docker?
 

@@ -7,7 +7,6 @@ async function run() {
         core.info('Run test-crawler');
         const projectId = core.getInput('projectId');
 
-        core.info(`Dirname ${__dirname}`);
         const crawlTarget = {
             projectId,
             timestamp: generateTinestampFolder(),
