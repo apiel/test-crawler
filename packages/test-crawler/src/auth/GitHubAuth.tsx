@@ -24,6 +24,7 @@ const handleSubmit = (
             // save
             const cookies = new Cookies();
             cookies.set('github', values, { path: '/', maxAge: MAX_AGE * 60 });
+            cookies.set('githubUser', values.user, { path: '/' });
             redirect();
         }
     });
@@ -84,6 +85,7 @@ const GitHubAuthForm = ({ form: { getFieldDecorator, validateFields } }: FormCom
             <Form onSubmit={handleSubmit(validateFields, redirect)}>
                 <Form.Item>
                     {getFieldDecorator('user', {
+                        initialValue: cookies.get('githubUser'),
                         rules: [{ required: true, message: 'Please provide your GitHub username.' }],
                     })(
                         <Input addonBefore="Username" placeholder="Github username" />
@@ -98,7 +100,7 @@ const GitHubAuthForm = ({ form: { getFieldDecorator, validateFields } }: FormCom
                             addonBefore="Token"
                             placeholder="Personal access tokens"
                             {...(saveTokenAvailable && { onBlur: handleBlur(setShowSave) })}
-                            {...(cookies.get('githubToken') && { addonAfter: <Icon type="unlock" onClick={handleUnlock(setToken)} /> })}
+                            {...(cookies.get('githubToken') && { onClick: handleUnlock(setToken) })}
                         />
                     )}
                 </Form.Item>
