@@ -1,8 +1,0 @@
-name: 'Test-crawler-crawl'
-inputs:
-  projectId:
-    description: 'Project ID to run'
-    default: ${{ github.event.client_payload.projectId }}
-runs:
-  using: 'node12'
-  main: 'index.js'

@@ -33,7 +33,7 @@ jobs:
         sudo safaridriver --enable
         safaridriver -p 0 &
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
-      uses: apiel/test-crawler/actions/crawl2@master
+      uses: apiel/test-crawler/actions/crawl@master
     - name: Push changes
       uses: apiel/test-crawler/actions/push@master
       with:
@@ -52,7 +52,7 @@ jobs:
         # nuget install Selenium.WebDriver.MicrosoftDriver -Version 17.17134.0
         # nuget install Selenium.WebDriver.MicrosoftWebDriver -Version 10.0.17134
     - name: Run test-crawler \${{ github.event.client_payload.projectId }}
-      uses: apiel/test-crawler/actions/crawl2@master
+      uses: apiel/test-crawler/actions/crawl@master
     - name: Push changes
       uses: apiel/test-crawler/actions/push@master
       with:
