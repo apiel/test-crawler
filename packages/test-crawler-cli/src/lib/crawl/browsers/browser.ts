@@ -1,6 +1,4 @@
 import { Crawler, Browser, Viewport } from 'test-crawler-core';
-import { execSync } from 'child_process';
-import { error, info } from 'logol';
 
 import { startSeleniumFirefox } from './selenium-firefox';
 import { startSeleniumChrome } from './selenium-chrome';

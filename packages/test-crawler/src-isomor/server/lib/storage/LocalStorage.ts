@@ -24,9 +24,9 @@ export class LocalStorage extends Storage {
 
     get browsers(): Browser[] {
         const browsers = [
-            Browser.ChromePuppeteer,
-            Browser.FirefoxSelenium,
             Browser.ChromeSelenium,
+            Browser.FirefoxSelenium,
+            Browser.ChromePuppeteer,
         ];
         if (process.platform == 'darwin') {
             browsers.push(Browser.SafariSelenium);

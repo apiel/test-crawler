@@ -14754,17 +14754,20 @@ terser@^4.3.9, terser@^4.4.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-test-crawler-cli@^3.2.7:
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.2.7.tgz#0cecb5696090f902d336439aaae5379fca25756f"
+test-crawler-cli@^3.2.10:
+  version "3.2.10"
+  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.2.10.tgz#453d3ea3d4916c4a4d07f6429c4903735a3475e3"
   dependencies:
     axios "^0.19.2"
+    chromedriver "^80.0.1"
     fs-extra "^8.1.0"
+    geckodriver "^1.19.1"
     logol "^0.0.3"
     md5 "^2.2.1"
     minimatch "^3.0.4"
     pixdiff-zone "^3.0.1"
     pngjs "^3.3.3"
+    puppeteer "^2.1.1"
     rimraf "^3.0.2"
     selenium-webdriver "^4.0.0-alpha.5"
     test-crawler-core "^3.2.3"

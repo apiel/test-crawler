@@ -21,9 +21,9 @@ class LocalStorage extends Storage_1.Storage {
     }
     get browsers() {
         const browsers = [
-            test_crawler_core_1.Browser.ChromePuppeteer,
-            test_crawler_core_1.Browser.FirefoxSelenium,
             test_crawler_core_1.Browser.ChromeSelenium,
+            test_crawler_core_1.Browser.FirefoxSelenium,
+            test_crawler_core_1.Browser.ChromePuppeteer,
         ];
         if (process.platform == 'darwin') {
             browsers.push(test_crawler_core_1.Browser.SafariSelenium);
