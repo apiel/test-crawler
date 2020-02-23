@@ -10,10 +10,10 @@ async function run() {
         core.info('Run test-crawler');
         const projectId = core.getInput('projectId');
 
-        await exec.exec(`ls node_modules/geckodriver`);
+        // await exec.exec(`ls node_modules/geckodriver`);
 
-        core.info(`Install geckodriver`);
-        await exec.exec(`yarn add geckodriver`);
+        // core.info(`Install geckodriver`);
+        // await exec.exec(`yarn add geckodriver`);
 
         core.info(`Run for project ${projectId}`);
         await exec.exec(`node ${join(__dirname, 'crawl.js')} ${projectId}`);

@@ -2,6 +2,8 @@
 
 - when click on token field open password if githubtoken is set
 
+- diff number seem to be wrong
+
 - update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
 
 - fix ROOT_FOLDER
