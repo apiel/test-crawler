@@ -16,7 +16,7 @@ export async function startPuppeteer(
     id: string,
     url: string,
 ) {
-    await downloadChrome();
+    downloadChrome();
     const browser = await launch({
         // headless: false,
     });
@@ -83,13 +83,21 @@ export async function startPuppeteer(
     }
 }
 
+let chromeChecked = false;
 function downloadChrome() {
-    info('check chome');
-    // need to use execSync else multiple process will run at the same time
-    try {
-        const pptrFolder = dirname(require.resolve('puppeteer-core'));
-        return execSync(`node ${join(pptrFolder, 'install.js')}`, { stdio: 'inherit' });
-    } catch (err) {
-        return execSync(`node ./node_modules/puppeteer-core/install.js`, { stdio: 'inherit' });
+    if (!chromeChecked) {
+        info('check Chrome browser');
+        // need to use execSync else multiple process will run at the same time
+        try {
+            const pptrFolder = dirname(require.resolve('puppeteer-core'));
+            execSync(`node ${join(pptrFolder, 'install.js')}`, {
+                stdio: 'inherit',
+            });
+        } catch (err) {
+            execSync(`node ./node_modules/puppeteer-core/install.js`, {
+                stdio: 'inherit',
+            });
+        }
+        chromeChecked = true;
     }
 }

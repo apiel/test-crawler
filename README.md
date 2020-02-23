@@ -142,7 +142,7 @@ With npx:
 ROOT_FOLDER=/the/target/folder npx -p geckodriver -p test-crawler-cli test-crawler-cli --project the_id_of_the_project
 ```
 
-You might need to include geckodriver, chromedriver or puppeteer depending of the browser you want to test against.
+You might need to include geckodriver or chromedriver depending of the browser you want to test against.
 
 ## Continuous integration
 
@@ -168,7 +168,7 @@ jobs:
       uses: actions/setup-node@v1
     - name: Run test-crawler
       run: |
-        ROOT_FOLDER=`pwd` npx -p test-crawler test-crawler-cli --project ${{ github.event.client_payload.projectId }}
+        ROOT_FOLDER=`pwd` npx -p test-crawler-cli --project ${{ github.event.client_payload.projectId }}
     - name: Commit changes
       run: |
         git config --local user.email "action@github.com"

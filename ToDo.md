@@ -1,11 +1,8 @@
-- improve cli perf
-
-- when click on token field open password if githubtoken is set
+- improve cli perf: should be kind of ok, still have to look at actions cache
 
 - diff number seem to be wrong
 
 - need to make a driver downloader
-  -> by default use firefox-selenium or chrome-selenium? faster than pptr
   -> driver downloader should be able to download on runtime
   -> driver downloader should also be able to download before runtime
 
