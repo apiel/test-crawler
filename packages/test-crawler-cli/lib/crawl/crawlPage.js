@@ -29,7 +29,7 @@ const diff_1 = require("../diff");
 const utils_1 = require("../utils");
 const resultConsumer_1 = require("./resultConsumer");
 const startCrawler_1 = require("./startCrawler");
-const browsers_1 = require("./browsers");
+const browser_1 = require("./browsers/browser");
 const path_1 = require("../path");
 function loadPage(projectId, id, url, timestamp, done, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -39,7 +39,7 @@ function loadPage(projectId, id, url, timestamp, done, retry = 0) {
         const crawler = yield fs_extra_1.readJSON(path_1.pathCrawlerFile(projectId, timestamp));
         const { viewport, url: baseUrl, method, limit, browser } = crawler;
         try {
-            const _a = yield browsers_1.startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url), { links } = _a, output = __rest(_a, ["links"]);
+            const _a = yield browser_1.startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url), { links } = _a, output = __rest(_a, ["links"]);
             yield fs_extra_1.outputJson(jsonFile, Object.assign(Object.assign({}, output), { timestamp }), { spaces: 4 });
             if (method !== test_crawler_core_1.CrawlerMethod.URLs && util_1.isArray(links)) {
                 const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
