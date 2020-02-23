@@ -7,6 +7,7 @@ async function run() {
         core.info('Run test-crawler');
         const projectId = core.getInput('projectId');
 
+        execSync(`yarn add geckodriver --peer`, { stdio: 'inherit' });
         const crawlTarget = {
             projectId,
             timestamp: generateTinestampFolder(),
