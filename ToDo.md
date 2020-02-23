@@ -4,6 +4,8 @@
 
 - diff number seem to be wrong
 
+- need to make a driver downloader
+
 - update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
 
 - fix ROOT_FOLDER
