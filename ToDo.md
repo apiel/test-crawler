@@ -9,6 +9,8 @@
   -> driver downloader should be able to download on runtime
   -> driver downloader should also be able to download before runtime
 
+- should reduce timeout
+
 - update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
 
 - fix ROOT_FOLDER
