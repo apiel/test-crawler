@@ -19,11 +19,11 @@ export function startBrowser(
     url: string,
 ) {
     if (browser === Browser.FirefoxSelenium) {
-        install('geckodriver');
+        // install('geckodriver');
         // prettier-ignore
         return startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     } else if (browser === Browser.ChromePuppeteer) {
-        install('chromedriver');
+        // install('chromedriver');
         // prettier-ignore
         return startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     } else if (browser === Browser.IeSelenium) {
@@ -39,7 +39,7 @@ export function startBrowser(
         return startSeleniumSafari(viewport, pngFile, htmlFile, crawler, projectId, id, url);
     }
 
-    install('puppeteer');
+    // install('puppeteer');
     const { startPuppeteer } = require('./puppeteer');
     // prettier-ignore
     return startPuppeteer(viewport, pngFile, htmlFile, crawler, projectId, id, url);

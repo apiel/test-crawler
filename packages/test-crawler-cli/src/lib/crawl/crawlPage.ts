@@ -11,7 +11,7 @@ import { prepare } from '../diff';
 import { getCodeList } from '../utils';
 import { pushToResultConsumer } from './resultConsumer';
 import { addToQueue } from './startCrawler';
-import { startBrowser } from './browsers';
+import { startBrowser } from './browsers/browser';
 import {
     pathInfoFile,
     pathSourceFile,
