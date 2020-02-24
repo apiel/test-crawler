@@ -2,14 +2,17 @@
 
 import { info } from 'logol';
 
-import { getGeckodriver, Platform, moveFile } from '../lib';
+import { getGeckodriver, Platform, getChromedriver } from '../lib';
 
 async function start() {
     info('Test-crawler driver manager');
-    const driverFile = await getGeckodriver(Platform.win);
-    info('Driver file', driverFile);
-    const dstFile = await moveFile('./drivers', driverFile);
-    info('Move file to', dstFile);
+    // await getGeckodriver(Platform.win);
+    await getGeckodriver(Platform.mac);
+    // info('Driver file', driverFile);
+    // const dstFile = await moveFile('./drivers', driverFile);
+    // info('Move file to', dstFile);
+
+    await getChromedriver(Platform.win);
 }
 
 start();
