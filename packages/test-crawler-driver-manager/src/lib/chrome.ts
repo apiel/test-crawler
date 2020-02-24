@@ -1,32 +1,41 @@
 import axios from 'axios';
 
 import { Platform, Arch, Options } from '.';
-import { downloadZip, mkdir, getFile } from './utils';
+import {
+    downloadZip,
+    mkdir,
+    getFile,
+    getDriver,
+} from './utils';
 
+export const FILE = 'chromedriver';
 export const URL = 'https://chromedriver.storage.googleapis.com';
 
 export async function getChromedriver({
     platform,
     destination = process.cwd(),
     arch = Arch.x64,
+    force = false,
 }: Options) {
+    const file = getFile(platform, destination, FILE);
+    await getDriver(
+        { platform, destination, arch, force },
+        file,
+        downloadChrome,
+    );
+    return file;
+}
+
+export async function downloadChrome(
+    platform: Platform,
+    arch: Arch,
+    destination: string,
+) {
     const assetUrl = await getChromeDownloadUrl(platform, arch);
     await mkdir(destination, { recursive: true });
     await downloadZip(assetUrl, destination);
 
-    return {
-        assetUrl,
-        file: getFile(platform, destination, 'chromedriver'),
-    };
-}
-
-function getName(platform: Platform, arch: Arch = Arch.x64) {
-    if (platform === Platform.mac) {
-        return 'chromedriver_mac64';
-    } else if (platform === Platform.win) {
-        return 'chromedriver_win32';
-    }
-    return 'chromedriver_linux64';
+    return assetUrl;
 }
 
 export async function getChromeDownloadUrl(
@@ -36,4 +45,13 @@ export async function getChromeDownloadUrl(
     const { data: version } = await axios.get(`${URL}/LATEST_RELEASE`);
     const name = getName(platform, arch);
     return `${URL}/${version}/${name}.zip`;
+}
+
+function getName(platform: Platform, arch: Arch = Arch.x64) {
+    if (platform === Platform.mac) {
+        return 'chromedriver_mac64';
+    } else if (platform === Platform.win) {
+        return 'chromedriver_win32';
+    }
+    return 'chromedriver_linux64';
 }

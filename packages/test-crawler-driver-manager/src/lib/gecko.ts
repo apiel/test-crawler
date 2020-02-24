@@ -2,8 +2,9 @@ import axios from 'axios';
 import { extname } from 'path';
 
 import { Platform, Arch, Options } from '.';
-import { downloadTar, downloadZip, mkdir, getFile } from './utils';
+import { downloadTar, downloadZip, mkdir, getFile, getDriver } from './utils';
 
+export const FILE = 'geckodriver';
 export const URL =
     'https://api.github.com/repos/mozilla/geckodriver/releases/latest';
 
@@ -11,7 +12,18 @@ export async function getGeckodriver({
     platform,
     destination = process.cwd(),
     arch = Arch.x64,
+    force = false,
 }: Options) {
+    const file = getFile(platform, destination, FILE);
+    await getDriver({ platform, destination, arch, force }, file, downloadGecko);
+    return file;
+}
+
+export async function downloadGecko(
+    platform: Platform,
+    arch: Arch,
+    destination: string,
+) {
     const assetUrl = await getGeckoDownloadUrl(platform, arch);
     await mkdir(destination, { recursive: true });
     if (extname(assetUrl) === '.zip') {
@@ -20,10 +32,7 @@ export async function getGeckodriver({
         await downloadTar(assetUrl, destination);
     }
 
-    return {
-        assetUrl,
-        file: getFile(platform, destination, 'geckodriver'),
-    }
+    return assetUrl;
 }
 
 function getName(platform: Platform, arch: Arch = Arch.x64) {
