@@ -16,4 +16,6 @@ jobs:
     - name: Setup driver manager
       run: |
         npx test-crawler-driver-manager '[{"type":"Chrome"},{"type":"Gecko"},{"type":"Chrome","options":{"platform":"win"}},{"type":"Gecko","options":{"platform":"win"}},{"type":"IE","options":{"platform":"win"}}]'
+    - name: Ls
+      run: |
         ls
