@@ -97,7 +97,7 @@ test-crawler-cli --project f0258b6685684c113bad94d91b8fa02a
 <p>With npx:</p>
 <pre><code class="language-bash">ROOT_FOLDER=/the/target/folder npx -p geckodriver -p test-crawler-cli test-crawler-cli --project the_id_of_the_project
 </code></pre>
-<p>You might need to include geckodriver, chromedriver or puppeteer depending of the browser you want to test against.</p>
+<p>You might need to include geckodriver or chromedriver depending of the browser you want to test against.</p>
 <h2>Continuous integration</h2>
 <p>As mentioned before, to don’t get false visual differences, you must run your test always on the same environment. The best way to solve this is to include test-crawler in your continue integration, with
 some tools like Travis or GitHub actions. Test-crawler is already supporting out of the box Github
@@ -118,7 +118,7 @@ jobs:
       uses: actions/setup-node@v1
     - name: Run test-crawler
       run: |
-        ROOT_FOLDER=`pwd` npx -p test-crawler test-crawler-cli --project ${{ github.event.client_payload.projectId }}
+        ROOT_FOLDER=`pwd` npx -p test-crawler-cli --project ${{ github.event.client_payload.projectId }}
     - name: Commit changes
       run: |
         git config --local user.email &quot;action@github.com&quot;
