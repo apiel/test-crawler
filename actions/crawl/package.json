@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "download": "npx test-crawler-driver-manager '[{{\"type\":\"Chrome\",\"options\":{\"platform\":\"darwin\"}},{{\"type\":\"Gecko\",\"options\":{\"platform\":\"darwin\"}},{{\"type\":\"IE\",\"options\":{\"arch\":\"x64\"}}]'"
+  },
   "dependencies": {
     "@actions/core": "^1.2.2",
     "test-crawler-cli": "^3.2.11",
