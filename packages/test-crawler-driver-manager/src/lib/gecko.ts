@@ -15,7 +15,11 @@ export async function getGeckodriver({
     force = false,
 }: Options) {
     const file = getFile(platform, destination, FILE);
-    await getDriver({ platform, destination, arch, force }, file, downloadGecko);
+    await getDriver(
+        { platform, destination, arch, force },
+        file,
+        downloadGecko,
+    );
     return file;
 }
 

@@ -25,11 +25,12 @@ export async function downloadTar(url: string, destination: string) {
     const response = await axios.get(url, {
         responseType: 'stream',
     });
-    response.data.pipe(extract({ cwd: destination }));
-
     return new Promise((resolve, reject) => {
-        response.data.on('finish', resolve);
-        response.data.on('error', reject);
+        response.data.pipe(
+            extract({ cwd: destination })
+                .on('finish', resolve)
+                .on('error', reject),
+        );
     });
 }
 
