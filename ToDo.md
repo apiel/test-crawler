@@ -3,7 +3,10 @@
 - need to make a driver downloader
   -> could search for driver in folder, install if not present?
 
-- should reduce timeout
+- should reduce/fix timeout
+- should reduce/fix timeout
+- should reduce/fix timeout
+- should reduce/fix timeout
 
 - update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
 
