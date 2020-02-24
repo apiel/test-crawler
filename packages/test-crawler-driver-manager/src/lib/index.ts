@@ -1,10 +1,11 @@
-export { getChromedriver } from './chrome';
+export { getChromedriver, getChromeDownloadUrl } from './chrome';
 export { getGeckodriver, getGeckoDownloadUrl } from './gecko';
+export { getIedriver, getIeDownloadUrl } from './ie';
 
 export interface Options {
-    platform: Platform,
-    destination?: string,
-    arch?: Arch,
+    platform: Platform;
+    destination?: string;
+    arch?: Arch;
 }
 
 export enum Platform {
