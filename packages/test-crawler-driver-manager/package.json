@@ -5,11 +5,11 @@
   "types": "lib/index.d.ts",
   "bin": {
     "test-crawler-driver-manager": "cli/cli.js",
-    "geckodriver": "geckodriver",
-    "geckodriver.exe": "geckodriver.exe",
-    "chromedriver": "chromedriver",
-    "chromedriver.exe": "chromedriver.exe",
-    "IEDriverServer.exe": "IEDriverServer.exe"
+    "geckodriver": "drivers/geckodriver",
+    "geckodriver.exe": "drivers/geckodriver.exe",
+    "chromedriver": "drivers/chromedriver",
+    "chromedriver.exe": "drivers/chromedriver.exe",
+    "IEDriverServer.exe": "drivers/IEDriverServer.exe"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "rm": "rm -rf cli/ && rm -rf lib/",
     "move": "mv dist/* . && rm -rf dist/",
     "build": "yarn rm && tsc -p tsconfig.json && yarn move && chmod +x cli/cli.js",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build && rm drivers/*"
   },
   "dependencies": {
     "@types/adm-zip": "^0.4.32",

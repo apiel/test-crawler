@@ -14,7 +14,7 @@ export {
 export { getGeckodriver, getGeckoDownloadUrl, downloadGecko } from './gecko';
 export { getIedriver, getIeDownloadUrl, downloadIe } from './ie';
 
-export const defaultDestination = join(__dirname, '..');
+export const defaultDestination = join(__dirname, '..', 'drivers');
 export const defaultPlatform = os.platform() as Platform;
 export const defaultArch = os.arch() as Arch;
 
