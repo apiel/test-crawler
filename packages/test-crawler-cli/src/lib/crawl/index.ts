@@ -114,7 +114,7 @@ export async function crawl(
     await prepareFolders();
     await beforeAll(crawlTarget);
     await setConsumerMaxCount(crawlTarget);
-    crawlTarget && startCrawler(crawlTarget);
+    crawlTarget && await startCrawler(crawlTarget);
     initConsumeResults(consumeTimeout, push);
     initConsumeQueues(consumeTimeout, crawlTarget);
 }

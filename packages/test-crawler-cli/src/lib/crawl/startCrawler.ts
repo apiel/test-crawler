@@ -24,6 +24,7 @@ import {
     pathSnapshotFolder,
     pathProjectFile,
 } from '../path';
+import { installDriver } from './browsers/browser';
 
 export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
     const { crawlerInput } = await readJSON(pathProjectFile(projectId));
@@ -48,6 +49,8 @@ export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
         startAt: Date.now(),
         lastUpdate: Date.now(),
     };
+
+    await installDriver(crawler.browser);
 
     await outputJSON(pathCrawlerFile(projectId, timestamp), crawler, {
         spaces: 4,

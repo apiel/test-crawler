@@ -4,7 +4,12 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "bin": {
-    "test-crawler-cli": "cli/cli.js"
+    "test-crawler-driver-manager": "cli/cli.js",
+    "geckodriver": "geckodriver",
+    "geckodriver.exe": "geckodriver.exe",
+    "chromedriver": "chromedriver",
+    "chromedriver.exe": "chromedriver.exe",
+    "IEDriverServer.exe": "IEDriverServer.exe"
   },
   "repository": {
     "type": "git",

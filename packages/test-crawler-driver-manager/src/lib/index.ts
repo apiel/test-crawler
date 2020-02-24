@@ -1,5 +1,6 @@
-import { warn } from 'logol';
+import { warn, info } from 'logol';
 import * as os from 'os';
+import { join } from 'path';
 
 import { getChromedriver } from './chrome';
 import { getGeckodriver } from './gecko';
@@ -13,7 +14,7 @@ export {
 export { getGeckodriver, getGeckoDownloadUrl, downloadGecko } from './gecko';
 export { getIedriver, getIeDownloadUrl, downloadIe } from './ie';
 
-export const defaultDestination = process.cwd();
+export const defaultDestination = join(__dirname, '..');
 export const defaultPlatform = os.platform() as Platform;
 export const defaultArch = os.arch() as Arch;
 
@@ -43,7 +44,7 @@ export enum Arch {
 
 export async function driver(
     type: DriverType,
-    options: Options,
+    options?: Options,
     destination: string = defaultDestination,
 ) {
     const opt = {
@@ -60,5 +61,7 @@ export async function driver(
         await getIedriver(opt);
     } else {
         warn('Unknown driver', type);
+        return;
     }
+    info('Setup driver done:', type);
 }

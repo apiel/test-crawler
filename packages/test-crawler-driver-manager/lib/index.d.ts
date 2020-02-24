@@ -24,4 +24,4 @@ export declare enum Arch {
     x64 = "x64",
     x32 = "x32"
 }
-export declare function driver(type: DriverType, options: Options, destination?: string): Promise<void>;
+export declare function driver(type: DriverType, options?: Options, destination?: string): Promise<void>;

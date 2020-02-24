@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
 const os = require("os");
+const path_1 = require("path");
 const chrome_1 = require("./chrome");
 const gecko_1 = require("./gecko");
 const ie_1 = require("./ie");
@@ -26,7 +27,7 @@ var ie_2 = require("./ie");
 exports.getIedriver = ie_2.getIedriver;
 exports.getIeDownloadUrl = ie_2.getIeDownloadUrl;
 exports.downloadIe = ie_2.downloadIe;
-exports.defaultDestination = process.cwd();
+exports.defaultDestination = path_1.join(__dirname, '..');
 exports.defaultPlatform = os.platform();
 exports.defaultArch = os.arch();
 var DriverType;
@@ -60,7 +61,9 @@ function driver(type, options, destination = exports.defaultDestination) {
         }
         else {
             logol_1.warn('Unknown driver', type);
+            return;
         }
+        logol_1.info('Setup driver done:', type);
     });
 }
 exports.driver = driver;
