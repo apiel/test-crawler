@@ -1,0 +1,19 @@
+name: CI driver manager
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron:  '0 5 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup driver manager
+      run: |
+        npx test-crawler-driver-manager '[{"type":"Chrome"},{"type":"Gecko"},{"type":"Chrome","options":{"platform":"win"}},{"type":"Gecko","options":{"platform":"win"}},{"type":"IE","options":{"platform":"win"}}]'
+        ls
