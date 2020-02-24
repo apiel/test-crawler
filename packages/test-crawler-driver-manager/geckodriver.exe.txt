@@ -1,5 +1,0 @@
-{
-    "platform": "win",
-    "arch": "64",
-    "assetUrl": "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
-}
