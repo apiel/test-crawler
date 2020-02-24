@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as os from 'os';
 
 import { Platform, Arch, Options } from '.';
 import {
@@ -12,9 +13,9 @@ export const FILE = 'chromedriver';
 export const URL = 'https://chromedriver.storage.googleapis.com';
 
 export async function getChromedriver({
-    platform,
+    platform = os.platform() as Platform,
     destination = process.cwd(),
-    arch = Arch.x64,
+    arch = os.arch() as Arch,
     force = false,
 }: Options) {
     const file = getFile(platform, destination, FILE);

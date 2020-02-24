@@ -11,11 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
 const path_1 = require("path");
+const os = require("os");
 const _1 = require(".");
 const utils_1 = require("./utils");
 exports.FILE = 'geckodriver';
 exports.URL = 'https://api.github.com/repos/mozilla/geckodriver/releases/latest';
-function getGeckodriver({ platform, destination = process.cwd(), arch = _1.Arch.x64, force = false, }) {
+function getGeckodriver({ platform = os.platform(), destination = process.cwd(), arch = os.arch(), force = false, }) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = utils_1.getFile(platform, destination, exports.FILE);
         yield utils_1.getDriver({ platform, destination, arch, force }, file, downloadGecko);
@@ -37,12 +38,6 @@ function downloadGecko(platform, arch, destination) {
     });
 }
 exports.downloadGecko = downloadGecko;
-function getName(platform, arch = _1.Arch.x64) {
-    if (platform === _1.Platform.mac) {
-        return 'macos';
-    }
-    return `${platform}${arch}`;
-}
 function getGeckoDownloadUrl(platform, arch = _1.Arch.x64) {
     return __awaiter(this, void 0, void 0, function* () {
         const assets = yield getAssets();
@@ -52,6 +47,12 @@ function getGeckoDownloadUrl(platform, arch = _1.Arch.x64) {
     });
 }
 exports.getGeckoDownloadUrl = getGeckoDownloadUrl;
+function getName(platform, arch = _1.Arch.x64) {
+    if (platform === _1.Platform.mac) {
+        return 'macos';
+    }
+    return `${platform}${arch === _1.Arch.x32 ? '32' : '64'}`;
+}
 let cacheAssets;
 function getAssets() {
     return __awaiter(this, void 0, void 0, function* () {

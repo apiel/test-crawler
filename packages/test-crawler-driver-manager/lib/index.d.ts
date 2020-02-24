@@ -2,7 +2,7 @@ export { getChromedriver, getChromeDownloadUrl, downloadChrome, } from './chrome
 export { getGeckodriver, getGeckoDownloadUrl, downloadGecko } from './gecko';
 export { getIedriver, getIeDownloadUrl, downloadIe } from './ie';
 export interface Options {
-    platform: Platform;
+    platform?: Platform;
     destination?: string;
     arch?: Arch;
     force?: boolean;
@@ -18,7 +18,7 @@ export declare enum Platform {
     win = "win"
 }
 export declare enum Arch {
-    x64 = "64",
-    x32 = "32"
+    x64 = "x64",
+    x32 = "x32"
 }
 export declare function driver(type: DriverType, options: Options, destination?: string): Promise<void>;

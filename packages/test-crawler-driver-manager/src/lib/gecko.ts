@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { extname } from 'path';
+import * as os from 'os';
 
 import { Platform, Arch, Options } from '.';
 import { downloadTar, downloadZip, mkdir, getFile, getDriver } from './utils';
@@ -9,9 +10,9 @@ export const URL =
     'https://api.github.com/repos/mozilla/geckodriver/releases/latest';
 
 export async function getGeckodriver({
-    platform,
+    platform = os.platform() as Platform,
     destination = process.cwd(),
-    arch = Arch.x64,
+    arch = os.arch() as Arch,
     force = false,
 }: Options) {
     const file = getFile(platform, destination, FILE);
@@ -39,13 +40,6 @@ export async function downloadGecko(
     return assetUrl;
 }
 
-function getName(platform: Platform, arch: Arch = Arch.x64) {
-    if (platform === Platform.mac) {
-        return 'macos';
-    }
-    return `${platform}${arch}`;
-}
-
 export async function getGeckoDownloadUrl(
     platform: Platform,
     arch: Arch = Arch.x64,
@@ -53,8 +47,14 @@ export async function getGeckoDownloadUrl(
     const assets = await getAssets();
     const name = getName(platform, arch);
     const asset = assets.find((asset: any) => asset.name.includes(name));
-
     return asset?.browser_download_url;
+}
+
+function getName(platform: Platform, arch: Arch = Arch.x64) {
+    if (platform === Platform.mac) {
+        return 'macos';
+    }
+    return `${platform}${arch === Arch.x32 ? '32' : '64'}`;
 }
 
 let cacheAssets: any;

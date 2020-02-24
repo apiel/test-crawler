@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
-const process_1 = require("process");
 const os = require("os");
 const chrome_1 = require("./chrome");
 const gecko_1 = require("./gecko");
@@ -41,10 +40,10 @@ var Platform;
 })(Platform = exports.Platform || (exports.Platform = {}));
 var Arch;
 (function (Arch) {
-    Arch["x64"] = "64";
-    Arch["x32"] = "32";
+    Arch["x64"] = "x64";
+    Arch["x32"] = "x32";
 })(Arch = exports.Arch || (exports.Arch = {}));
-function driver(type, options, destination = process_1.cwd()) {
+function driver(type, options, destination = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
         const opt = Object.assign({ platform: os.platform(), arch: os.arch(), destination }, options);
         if (type === DriverType.Chrome) {

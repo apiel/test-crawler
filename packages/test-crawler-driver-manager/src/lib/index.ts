@@ -1,5 +1,4 @@
 import { warn } from 'logol';
-import { cwd } from 'process';
 import * as os from 'os';
 
 import { getChromedriver } from './chrome';
@@ -15,7 +14,7 @@ export { getGeckodriver, getGeckoDownloadUrl, downloadGecko } from './gecko';
 export { getIedriver, getIeDownloadUrl, downloadIe } from './ie';
 
 export interface Options {
-    platform: Platform;
+    platform?: Platform;
     destination?: string;
     arch?: Arch;
     force?: boolean;
@@ -34,17 +33,17 @@ export enum Platform {
 }
 
 export enum Arch {
-    x64 = '64',
-    x32 = '32',
+    x64 = 'x64',
+    x32 = 'x32',
 }
 
 export async function driver(
     type: DriverType,
     options: Options,
-    destination: string = cwd(),
+    destination: string = process.cwd(),
 ) {
     const opt = {
-        platform: os.platform(),
+        platform: os.platform() as Platform,
         arch: os.arch() as Arch,
         destination,
         ...options,

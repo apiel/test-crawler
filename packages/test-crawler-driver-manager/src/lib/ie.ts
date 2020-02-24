@@ -1,4 +1,5 @@
 import { join } from 'path';
+import * as os from 'os';
 
 import { Platform, Arch, Options } from '.';
 import {
@@ -12,9 +13,9 @@ export const URL =
     'https://selenium-release.storage.googleapis.com/3.9/IEDriverServer_%s_3.9.0.zip';
 
 export async function getIedriver({
-    platform,
+    platform = os.platform() as Platform,
     destination = process.cwd(),
-    arch = Arch.x64,
+    arch = os.arch() as Arch,
     force = false,
 }: Options) {
     const file = join(destination, 'IEDriverServer.exe');
