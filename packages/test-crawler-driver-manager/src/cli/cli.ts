@@ -35,7 +35,7 @@ async function start() {
 
     const items: Item[] = JSON.parse(jsonItems);
     for (const { type, options } of items) {
-        await driver(type, options, destination);
+        await driver(type, options, destination || process.cwd());
     }
 }
 

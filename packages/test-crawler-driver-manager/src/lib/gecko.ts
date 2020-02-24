@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { extname } from 'path';
-import * as os from 'os';
 
-import { Platform, Arch, Options } from '.';
+import {
+    Platform,
+    Arch,
+    Options,
+    defaultPlatform,
+    defaultArch,
+    defaultDestination,
+} from '.';
 import { downloadTar, downloadZip, mkdir, getFile, getDriver } from './utils';
 
 export const FILE = 'geckodriver';
@@ -10,9 +16,9 @@ export const URL =
     'https://api.github.com/repos/mozilla/geckodriver/releases/latest';
 
 export async function getGeckodriver({
-    platform = os.platform() as Platform,
-    destination = process.cwd(),
-    arch = os.arch() as Arch,
+    platform = defaultPlatform,
+    destination = defaultDestination,
+    arch = defaultArch,
     force = false,
 }: Options) {
     const file = getFile(platform, destination, FILE);

@@ -1,6 +1,9 @@
 export { getChromedriver, getChromeDownloadUrl, downloadChrome, } from './chrome';
 export { getGeckodriver, getGeckoDownloadUrl, downloadGecko } from './gecko';
 export { getIedriver, getIeDownloadUrl, downloadIe } from './ie';
+export declare const defaultDestination: string;
+export declare const defaultPlatform: Platform;
+export declare const defaultArch: Arch;
 export interface Options {
     platform?: Platform;
     destination?: string;

@@ -13,6 +13,10 @@ export {
 export { getGeckodriver, getGeckoDownloadUrl, downloadGecko } from './gecko';
 export { getIedriver, getIeDownloadUrl, downloadIe } from './ie';
 
+export const defaultDestination = process.cwd();
+export const defaultPlatform = os.platform() as Platform;
+export const defaultArch = os.arch() as Arch;
+
 export interface Options {
     platform?: Platform;
     destination?: string;
@@ -40,11 +44,11 @@ export enum Arch {
 export async function driver(
     type: DriverType,
     options: Options,
-    destination: string = process.cwd(),
+    destination: string = defaultDestination,
 ) {
     const opt = {
-        platform: os.platform() as Platform,
-        arch: os.arch() as Arch,
+        platform: defaultPlatform,
+        arch: defaultArch,
         destination,
         ...options,
     };

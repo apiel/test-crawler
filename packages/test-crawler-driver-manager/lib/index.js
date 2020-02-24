@@ -26,6 +26,9 @@ var ie_2 = require("./ie");
 exports.getIedriver = ie_2.getIedriver;
 exports.getIeDownloadUrl = ie_2.getIeDownloadUrl;
 exports.downloadIe = ie_2.downloadIe;
+exports.defaultDestination = process.cwd();
+exports.defaultPlatform = os.platform();
+exports.defaultArch = os.arch();
 var DriverType;
 (function (DriverType) {
     DriverType["Gecko"] = "Gecko";
@@ -43,9 +46,9 @@ var Arch;
     Arch["x64"] = "x64";
     Arch["x32"] = "x32";
 })(Arch = exports.Arch || (exports.Arch = {}));
-function driver(type, options, destination = process.cwd()) {
+function driver(type, options, destination = exports.defaultDestination) {
     return __awaiter(this, void 0, void 0, function* () {
-        const opt = Object.assign({ platform: os.platform(), arch: os.arch(), destination }, options);
+        const opt = Object.assign({ platform: exports.defaultPlatform, arch: exports.defaultArch, destination }, options);
         if (type === DriverType.Chrome) {
             yield chrome_1.getChromedriver(opt);
         }

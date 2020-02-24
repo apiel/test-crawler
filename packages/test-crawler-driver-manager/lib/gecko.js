@@ -11,12 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
 const path_1 = require("path");
-const os = require("os");
 const _1 = require(".");
 const utils_1 = require("./utils");
 exports.FILE = 'geckodriver';
 exports.URL = 'https://api.github.com/repos/mozilla/geckodriver/releases/latest';
-function getGeckodriver({ platform = os.platform(), destination = process.cwd(), arch = os.arch(), force = false, }) {
+function getGeckodriver({ platform = _1.defaultPlatform, destination = _1.defaultDestination, arch = _1.defaultArch, force = false, }) {
     return __awaiter(this, void 0, void 0, function* () {
         const file = utils_1.getFile(platform, destination, exports.FILE);
         yield utils_1.getDriver({ platform, destination, arch, force }, file, downloadGecko);

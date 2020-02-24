@@ -1,15 +1,11 @@
 - diff number seem to be wrong
 
 - need to make a driver downloader
-  -> driver downloader should be able to download on runtime
-  -> driver downloader should also be able to download before runtime
   -> could search for driver in folder, install if not present?
 
 - should reduce timeout
 
 - update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
-
-- fix ROOT_FOLDER
 
 - new button should not show up if not loggin to github
 

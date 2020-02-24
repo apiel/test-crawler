@@ -28,7 +28,7 @@ function start() {
         }
         const items = JSON.parse(jsonItems);
         for (const { type, options } of items) {
-            yield lib_1.driver(type, options, destination);
+            yield lib_1.driver(type, options, destination || process.cwd());
         }
     });
 }

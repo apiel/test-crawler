@@ -1,21 +1,23 @@
 import { join } from 'path';
-import * as os from 'os';
 
-import { Platform, Arch, Options } from '.';
 import {
-    downloadZip,
-    mkdir,
-    getDriver,
-} from './utils';
+    Platform,
+    Arch,
+    Options,
+    defaultPlatform,
+    defaultArch,
+    defaultDestination,
+} from '.';
+import { downloadZip, mkdir, getDriver } from './utils';
 
 export const FILE = 'IEDriverServer.exe';
 export const URL =
     'https://selenium-release.storage.googleapis.com/3.9/IEDriverServer_%s_3.9.0.zip';
 
 export async function getIedriver({
-    platform = os.platform() as Platform,
-    destination = process.cwd(),
-    arch = os.arch() as Arch,
+    platform = defaultPlatform,
+    destination = defaultDestination,
+    arch = defaultArch,
     force = false,
 }: Options) {
     const file = join(destination, 'IEDriverServer.exe');
