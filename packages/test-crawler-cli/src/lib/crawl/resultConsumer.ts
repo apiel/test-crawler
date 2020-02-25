@@ -1,10 +1,11 @@
 import { info } from 'logol';
 import { readdir, readJSON, writeJSON, pathExists } from 'fs-extra';
 import { extname } from 'path';
-import { Crawler } from 'test-crawler-core';
+import { Crawler, CONSUME_TIMEOUT } from 'test-crawler-core';
 
 import { afterAll } from '.';
 import { pathCrawlerFile, pathQueueFolder, pathResultFolder } from '../path';
+import { isQueuesConsumerRunning } from './queueConsumer';
 
 interface ResultQueue {
     result?: {
@@ -18,27 +19,52 @@ interface ResultQueue {
 let totalDiff = 0;
 let totalError = 0;
 let consumeResultRetry = 0;
+let consumerIsRunning = false;
 const resultsQueue: ResultQueue[] = [];
 
-export function pushToResultConsumer(resultQueue: ResultQueue) {
+export function pushToResultConsumer(
+    resultQueue: ResultQueue,
+    push?: (payload: any) => void,
+) {
     resultsQueue.push(resultQueue);
+    runResultsConsumer(push);
 }
 
-export function initConsumeResults(
-    consumeTimeout: number,
-    push?: (payload: any) => void,
-) {
-    consumeResultRetry = 0;
-    return consumeResults(consumeTimeout, push);
-}
-
-async function consumeResults(
-    consumeTimeout: number,
-    push?: (payload: any) => void,
-) {
-    // console.log('resultsQueue.length', resultsQueue.length, consumeResultRetry, consumeTimeout);
-    if (resultsQueue.length) {
+// push should be shared differently
+// maybe not even there, but more like a central place to subscrib
+// so even multiple push could subscrib
+// we would need to check that push connection is still alive
+// pushToResultConsumer is never using push params
+export function runResultsConsumer(push?: (payload: any) => void) {
+    if (!consumerIsRunning) {
+        consumerIsRunning = true;
+        info('start result consumer');
         consumeResultRetry = 0;
+        consumeResults(push);
+    }
+}
+
+async function consumeResults(push?: (payload: any) => void) {
+    // console.log('resultsQueue.length', resultsQueue.length, consumeResultRetry, consumeTimeout);
+    if (await consumeResult(push)) {
+        consumeResultRetry = 0;
+        consumeResults(push);
+    } else if (!CONSUME_TIMEOUT || consumeResultRetry < CONSUME_TIMEOUT) {
+        consumeResultRetry++;
+        setTimeout(() => consumeResults(push), 1000);
+    } else {
+        consumerIsRunning = false;
+        info('consumeResults timeout');
+
+        // this might be wrong?
+        if (!isQueuesConsumerRunning()) {
+            afterAll(totalDiff, totalError);
+        }
+    }
+}
+
+async function consumeResult(push?: (payload: any) => void) {
+    if (resultsQueue.length) {
         const [{ projectId, timestamp, result, isError }] = resultsQueue.splice(
             0,
             1,
@@ -66,12 +92,7 @@ async function consumeResults(
 
         await writeJSON(crawlerFile, crawler, { spaces: 4 });
         push && push(crawler);
-        consumeResults(consumeTimeout, push);
-    } else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
-        consumeResultRetry++;
-        setTimeout(() => consumeResults(consumeTimeout, push), 1000);
-    } else {
-        info('consumeResults timeout');
-        afterAll(totalDiff, totalError);
+        return true;
     }
+    return false;
 }

@@ -14,6 +14,7 @@ const test_crawler_core_1 = require("test-crawler-core");
 const axios_1 = require("axios");
 const md5 = require("md5");
 const path_1 = require("../path");
+const browser_1 = require("./browsers/browser");
 function startCrawler({ projectId, timestamp }) {
     return __awaiter(this, void 0, void 0, function* () {
         const { crawlerInput } = yield fs_extra_1.readJSON(path_1.pathProjectFile(projectId));
@@ -21,6 +22,7 @@ function startCrawler({ projectId, timestamp }) {
         yield fs_extra_1.mkdirp(path_1.pathSnapshotFolder(projectId));
         const crawler = Object.assign(Object.assign({}, crawlerInput), { timestamp,
             id, diffZoneCount: 0, errorCount: 0, status: 'review', inQueue: 1, urlsCount: 0, startAt: Date.now(), lastUpdate: Date.now() });
+        yield browser_1.installDriver(crawler.browser);
         yield fs_extra_1.outputJSON(path_1.pathCrawlerFile(projectId, timestamp), crawler, {
             spaces: 4,
         });

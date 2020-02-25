@@ -25,6 +25,7 @@ import {
     pathProjectFile,
 } from '../path';
 import { installDriver } from './browsers/browser';
+import { runQueuesConsumer } from './queueConsumer';
 
 export async function startCrawler({ projectId, timestamp }: CrawlTarget) {
     const { crawlerInput } = await readJSON(pathProjectFile(projectId));
@@ -112,6 +113,7 @@ export async function addToQueue(
             (await updateSiblingCount(cleanUrl, projectId, timestamp)) < limit
         ) {
             await outputJSON(queueFile, { url: cleanUrl, id }, { spaces: 4 });
+            // runQueuesConsumer({ projectId, timestamp});
         }
         return true;
     }

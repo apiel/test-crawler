@@ -13,8 +13,8 @@ import {
 import { promisify } from 'util';
 import rimraf = require('rimraf');
 
-import { initConsumeResults } from './resultConsumer';
-import { setConsumerMaxCount, initConsumeQueues } from './queueConsumer';
+import { runResultsConsumer } from './resultConsumer';
+import { setConsumerMaxCount, runQueuesConsumer } from './queueConsumer';
 import { startCrawler } from './startCrawler';
 import { pathSnapshotFolder, pathInfoFile, pathPinInfoFile } from '../path';
 
@@ -108,13 +108,12 @@ async function cleanSnapshot(projectId: string) {
 
 export async function crawl(
     crawlTarget?: CrawlTarget,
-    consumeTimeout = CONSUME_TIMEOUT,
     push?: (payload: any) => void,
 ) {
     await prepareFolders();
     await beforeAll(crawlTarget);
     await setConsumerMaxCount(crawlTarget);
     crawlTarget && await startCrawler(crawlTarget);
-    initConsumeResults(consumeTimeout, push);
-    initConsumeQueues(consumeTimeout, crawlTarget);
+    runResultsConsumer(push);
+    runQueuesConsumer(crawlTarget);
 }

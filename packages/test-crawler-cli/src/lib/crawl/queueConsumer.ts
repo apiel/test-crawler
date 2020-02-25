@@ -7,6 +7,7 @@ import {
     CrawlTarget,
     Browser,
     Project,
+    CONSUME_TIMEOUT,
 } from 'test-crawler-core';
 
 import { loadPage } from './crawlPage';
@@ -82,43 +83,54 @@ async function pickFromQueues(): Promise<ToCrawl> {
     }
 }
 
+let consumerIsRunning = false;
 let consumeQueuesRetry = 0;
 
-export function initConsumeQueues(
-    consumeTimeout: number,
+export function runQueuesConsumer(
     crawlTarget: CrawlTarget,
 ) {
-    consumeQueuesRetry = 0;
-    return consumeQueues(consumeTimeout, crawlTarget);
+    if (!consumerIsRunning) {
+        consumeQueuesRetry = 0;
+        consumeQueues(crawlTarget);
+    }
 }
 
-async function consumeQueues(consumeTimeout: number, crawlTarget: CrawlTarget) {
-    if (consumerRunning < getConsumerMaxCount()) {
-        let toCrawl: ToCrawl;
-        if (crawlTarget) {
-            toCrawl = await pickFromQueue(
-                crawlTarget.projectId,
-                crawlTarget.timestamp,
-            );
-        } else {
-            toCrawl = await pickFromQueues();
-        }
-        // console.log('toCrawl', toCrawl);
-        if (toCrawl) {
-            consumeQueuesRetry = 0;
-            const { projectId, id, url, timestamp } = toCrawl;
-            consumerRunning++;
-            loadPage(projectId, id, url, timestamp, () => consumerRunning--);
-            consumeQueues(consumeTimeout, crawlTarget);
-            return;
-        }
-    }
-    if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
+async function consumeQueues(crawlTarget: CrawlTarget) {
+    consumerIsRunning = true;
+    if (consumerRunning < getConsumerMaxCount() && await consumeQueue(crawlTarget)) {
+        consumeQueuesRetry = 0;
+        consumeQueues(crawlTarget);
+    } else if (!CONSUME_TIMEOUT || consumeQueuesRetry < CONSUME_TIMEOUT) {
         if (consumerRunning < getConsumerMaxCount()) {
             consumeQueuesRetry++;
         }
-        setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
+        setTimeout(() => consumeQueues(crawlTarget), 500);
     } else {
+        consumerIsRunning = false;
         info('consumeQueues timeout');
     }
+}
+
+export function isQueuesConsumerRunning() {
+    return consumerIsRunning;
+}
+
+async function consumeQueue(crawlTarget: CrawlTarget) {
+    let toCrawl: ToCrawl;
+    if (crawlTarget) {
+        toCrawl = await pickFromQueue(
+            crawlTarget.projectId,
+            crawlTarget.timestamp,
+        );
+    } else {
+        toCrawl = await pickFromQueues();
+    }
+    // console.log('toCrawl', toCrawl);
+    if (toCrawl) {
+        const { projectId, id, url, timestamp } = toCrawl;
+        consumerRunning++;
+        loadPage(projectId, id, url, timestamp, () => consumerRunning--);
+        return true;
+    }
+    return false;
 }

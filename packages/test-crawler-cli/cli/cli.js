@@ -26,12 +26,12 @@ function start() {
                     timestamp: test_crawler_core_1.generateTinestampFolder(),
                 };
                 logol_1.info('Start project', crawlTarget);
-                const result = yield lib_1.crawl(crawlTarget, 30);
+                const result = yield lib_1.crawl(crawlTarget);
                 logol_1.info('result', result);
                 return;
             }
         }
-        lib_1.crawl(undefined, 30);
+        lib_1.crawl(undefined);
     });
 }
 start();

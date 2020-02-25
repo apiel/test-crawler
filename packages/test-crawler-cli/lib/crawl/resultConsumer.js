@@ -12,23 +12,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
+const test_crawler_core_1 = require("test-crawler-core");
 const _1 = require(".");
 const path_2 = require("../path");
+const queueConsumer_1 = require("./queueConsumer");
 let totalDiff = 0;
 let totalError = 0;
 let consumeResultRetry = 0;
+let consumerIsRunning = false;
 const resultsQueue = [];
-function pushToResultConsumer(resultQueue) {
+function pushToResultConsumer(resultQueue, push) {
     resultsQueue.push(resultQueue);
+    runResultsConsumer(push);
 }
 exports.pushToResultConsumer = pushToResultConsumer;
-function initConsumeResults(consumeTimeout, push) {
-    consumeResultRetry = 0;
-    return consumeResults(consumeTimeout, push);
+function runResultsConsumer(push) {
+    if (!consumerIsRunning) {
+        consumeResultRetry = 0;
+        consumeResults(push);
+    }
 }
-exports.initConsumeResults = initConsumeResults;
-function consumeResults(consumeTimeout, push) {
+exports.runResultsConsumer = runResultsConsumer;
+function consumeResults(push) {
     return __awaiter(this, void 0, void 0, function* () {
+        consumerIsRunning = true;
         if (resultsQueue.length) {
             consumeResultRetry = 0;
             const [{ projectId, timestamp, result, isError }] = resultsQueue.splice(0, 1);
@@ -51,15 +58,18 @@ function consumeResults(consumeTimeout, push) {
             crawler.lastUpdate = Date.now();
             yield fs_extra_1.writeJSON(crawlerFile, crawler, { spaces: 4 });
             push && push(crawler);
-            consumeResults(consumeTimeout, push);
+            consumeResults(push);
         }
-        else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
+        else if (!test_crawler_core_1.CONSUME_TIMEOUT || consumeResultRetry < test_crawler_core_1.CONSUME_TIMEOUT) {
             consumeResultRetry++;
-            setTimeout(() => consumeResults(consumeTimeout, push), 1000);
+            setTimeout(() => consumeResults(push), 1000);
         }
         else {
+            consumerIsRunning = false;
             logol_1.info('consumeResults timeout');
-            _1.afterAll(totalDiff, totalError);
+            if (!queueConsumer_1.isQueuesConsumerRunning()) {
+                _1.afterAll(totalDiff, totalError);
+            }
         }
     });
 }

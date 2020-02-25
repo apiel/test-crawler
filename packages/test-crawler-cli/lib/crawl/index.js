@@ -105,14 +105,14 @@ function cleanSnapshot(projectId) {
         }
     });
 }
-function crawl(crawlTarget, consumeTimeout = test_crawler_core_1.CONSUME_TIMEOUT, push) {
+function crawl(crawlTarget, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
         yield beforeAll(crawlTarget);
         yield queueConsumer_1.setConsumerMaxCount(crawlTarget);
-        crawlTarget && startCrawler_1.startCrawler(crawlTarget);
-        resultConsumer_1.initConsumeResults(consumeTimeout, push);
-        queueConsumer_1.initConsumeQueues(consumeTimeout, crawlTarget);
+        crawlTarget && (yield startCrawler_1.startCrawler(crawlTarget));
+        resultConsumer_1.runResultsConsumer(push);
+        queueConsumer_1.runQueuesConsumer(crawlTarget);
     });
 }
 exports.crawl = crawl;

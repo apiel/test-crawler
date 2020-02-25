@@ -67,14 +67,18 @@ function pickFromQueues() {
         }
     });
 }
+let consumerIsRunning = false;
 let consumeQueuesRetry = 0;
-function initConsumeQueues(consumeTimeout, crawlTarget) {
-    consumeQueuesRetry = 0;
-    return consumeQueues(consumeTimeout, crawlTarget);
+function runQueuesConsumer(crawlTarget) {
+    if (consumerRunning < getConsumerMaxCount()) {
+        consumeQueuesRetry = 0;
+        return consumeQueues(crawlTarget);
+    }
 }
-exports.initConsumeQueues = initConsumeQueues;
-function consumeQueues(consumeTimeout, crawlTarget) {
+exports.runQueuesConsumer = runQueuesConsumer;
+function consumeQueues(crawlTarget) {
     return __awaiter(this, void 0, void 0, function* () {
+        consumerIsRunning = true;
         if (consumerRunning < getConsumerMaxCount()) {
             let toCrawl;
             if (crawlTarget) {
@@ -88,19 +92,24 @@ function consumeQueues(consumeTimeout, crawlTarget) {
                 const { projectId, id, url, timestamp } = toCrawl;
                 consumerRunning++;
                 crawlPage_1.loadPage(projectId, id, url, timestamp, () => consumerRunning--);
-                consumeQueues(consumeTimeout, crawlTarget);
+                consumeQueues(crawlTarget);
                 return;
             }
         }
-        if (!consumeTimeout || consumeQueuesRetry < consumeTimeout) {
+        if (!test_crawler_core_1.CONSUME_TIMEOUT || consumeQueuesRetry < test_crawler_core_1.CONSUME_TIMEOUT) {
             if (consumerRunning < getConsumerMaxCount()) {
                 consumeQueuesRetry++;
             }
-            setTimeout(() => consumeQueues(consumeTimeout, crawlTarget), 500);
+            setTimeout(() => consumeQueues(crawlTarget), 500);
         }
         else {
+            consumerIsRunning = false;
             logol_1.info('consumeQueues timeout');
         }
     });
 }
+function isQueuesConsumerRunning() {
+    return consumerIsRunning;
+}
+exports.isQueuesConsumerRunning = isQueuesConsumerRunning;
 //# sourceMappingURL=queueConsumer.js.map
