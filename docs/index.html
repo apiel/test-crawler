@@ -176,9 +176,8 @@ module.exports = async function run(page) {
 test-crawler-cli --project f0258b6685684c113bad94d91b8fa02a
 </code></pre>
 <p>With npx:</p>
-<pre><code class="language-bash">ROOT_FOLDER=/the/target/folder npx -p geckodriver -p test-crawler-cli test-crawler-cli --project the_id_of_the_project
+<pre><code class="language-bash">ROOT_FOLDER=/the/target/folder npx test-crawler-cli --project the_id_of_the_project
 </code></pre>
-<p>You might need to include geckodriver or chromedriver depending of the browser you want to test against.</p>
 <h2>Continuous integration</h2>
 <p>As mentioned before, to don’t get false visual differences, you must run your test always on the same environment. The best way to solve this is to include test-crawler in your continue integration, with
 some tools like Travis or GitHub actions. Test-crawler is already supporting out of the box Github
