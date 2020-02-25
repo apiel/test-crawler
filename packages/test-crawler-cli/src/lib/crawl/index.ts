@@ -115,9 +115,9 @@ export async function crawl(
     await beforeAll(crawlTarget);
     crawlTarget && (await setupCrawler(crawlTarget));
 
-    runConsumers(() => {
-        const totalDiff = 0;
-        const totalError = 0;
+    runConsumers((results) => {
+        console.log('results', results);
+        const { totalDiff, totalError } = results['resultConsumer'];
         afterAll(totalDiff, totalError);
     });
 }

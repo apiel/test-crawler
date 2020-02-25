@@ -33,12 +33,12 @@ export function setConsumers(_consumers: Consumers) {
     consumers = _consumers;
 }
 
-export async function runConsumers(afterAll: () => void) {
+export async function runConsumers(afterAll: ({}) => void) {
     if (!consumerLoopRunning) {
         consumerLoopRunning = true;
         await consumerLoop();
         consumerLoopRunning = false;
-        afterAll();
+        afterAll(finish());
     }
 }
 
@@ -69,6 +69,16 @@ async function consume() {
         }
     }
     return ret;
+}
+
+function finish() {
+    const results = {};
+    for (const key in consumers) {
+        if (consumers[key].finish) {
+            results[key] = consumers[key].finish();
+        }
+    }
+    return results;
 }
 
 function isQueueAvailable({ name, maxConcurrent }: QueueProps) {
