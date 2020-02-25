@@ -268,7 +268,6 @@ export class GitHubStorage extends Storage {
 
     async crawl(
         crawlTarget?: CrawlTarget,
-        consumeTimeout?: number,
         push?: (payload: any) => void,
         browser?: Browser,
     ) {

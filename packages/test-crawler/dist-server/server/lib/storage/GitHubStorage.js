@@ -234,7 +234,7 @@ class GitHubStorage extends Storage_1.Storage {
             }
         });
     }
-    crawl(crawlTarget, consumeTimeout, push, browser) {
+    crawl(crawlTarget, push, browser) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if ((_a = crawlTarget) === null || _a === void 0 ? void 0 : _a.projectId) {

@@ -16,4 +16,4 @@ export const USER_AGENT =
     'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 export const CONSUME_TIMEOUT = process.env.CONSUME_TIMEOUT
     ? parseInt(process.env.CONSUME_TIMEOUT, 10)
-    : 0;
+    : 30;

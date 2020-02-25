@@ -88,10 +88,9 @@ export class LocalStorage extends Storage {
 
     async crawl(
         crawlTarget?: CrawlTarget,
-        consumeTimeout?: number,
         push?: (payload: any) => void,
     ) {
-        await crawl(crawlTarget, consumeTimeout, push);
+        await crawl(crawlTarget, push);
         return undefined;
     }
 

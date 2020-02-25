@@ -9,6 +9,10 @@ import {
     SNAPSHOT_FOLDER,
 } from 'test-crawler-core';
 
+export function pathProjectsFolder() {
+    return join(ROOT_FOLDER, PROJECT_FOLDER);
+}
+
 export function pathQueueFolder(projectId: string, timestamp: string) {
     return join(ROOT_FOLDER, PROJECT_FOLDER, projectId, CRAWL_FOLDER, timestamp, QUEUE_FOLDER);
 }

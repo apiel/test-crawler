@@ -38,7 +38,7 @@ class CrawlerProviderStorage extends CrawlerProviderStorageBase_1.CrawlerProvide
     startCrawlers() {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            test_crawler_cli_1.crawl(undefined, 30, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
+            test_crawler_cli_1.crawl(undefined, (_a = this.ctx) === null || _a === void 0 ? void 0 : _a.push);
         });
     }
 }

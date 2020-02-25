@@ -5,12 +5,11 @@ import { readJSON, pathExists, outputJson } from 'fs-extra';
 import * as minimatch from 'minimatch';
 import { WebDriver } from 'selenium-webdriver';
 import { isArray } from 'util';
-import { Crawler, CrawlerMethod, Viewport } from 'test-crawler-core';
+import { Crawler, CrawlerMethod } from 'test-crawler-core';
 
 import { prepare } from '../diff';
 import { getCodeList } from '../utils';
 import { pushToResultConsumer } from './resultConsumer';
-import { addToQueue } from './startCrawler';
 import { startBrowser } from './browsers/browser';
 import {
     pathInfoFile,
@@ -19,13 +18,13 @@ import {
     pathCrawlerFile,
     pathCodeJsFile,
 } from '../path';
+import { pushToCrawl } from './crawlerConsumer';
 
 export async function loadPage(
     projectId: string,
     id: string,
     url: string,
     timestamp: string,
-    done: () => void,
     retry: number = 0,
 ) {
     const jsonFile = pathInfoFile(projectId, timestamp, id);
@@ -52,7 +51,7 @@ export async function loadPage(
 
         if (method !== CrawlerMethod.URLs && isArray(links)) {
             const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
-            await addUrls(siteUrls, viewport, projectId, timestamp, limit);
+            await addUrls(siteUrls, projectId, timestamp, limit);
         }
 
         const result = await prepare(projectId, timestamp, id, crawler);
@@ -66,7 +65,7 @@ export async function loadPage(
         error(`Load page error (attempt ${retry + 1})`, err.toString());
         if (retry < 2) {
             warn('Retry crawl', url);
-            await loadPage(projectId, id, url, timestamp, done, retry + 1);
+            await loadPage(projectId, id, url, timestamp, retry + 1);
         } else {
             await outputJson(
                 jsonFile,
@@ -79,8 +78,6 @@ export async function loadPage(
                 isError: true,
             });
         }
-    } finally {
-        done();
     }
 }
 
@@ -123,14 +120,13 @@ async function injectCode(
 
 async function addUrls(
     urls: string[],
-    viewport: Viewport,
     projectId: string,
     timestamp: string,
     limit: number,
 ) {
     let count = 0;
     for (const url of urls) {
-        if (await addToQueue(url, viewport, projectId, timestamp, limit)) {
+        if (await pushToCrawl(url, projectId, timestamp, limit)) {
             count++;
         }
     }

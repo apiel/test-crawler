@@ -302,7 +302,6 @@ export class CrawlerProvider extends CrawlerProviderStorage {
         const crawlTarget = { projectId, timestamp };
         const redirect = await this.storage.crawl(
             crawlTarget,
-            30,
             (this.ctx as any)?.push,
             browser,
         );

@@ -19,7 +19,6 @@ export abstract class Storage {
     abstract remove(file: string): Promise<void>;
     abstract crawl(
         crawlTarget?: CrawlTarget,
-        consumeTimeout?: number,
         push?: (payload: any) => void,
         browser?: Browser,
     ): Promise<undefined | string>;

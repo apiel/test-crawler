@@ -12,9 +12,12 @@
 
 - new button should not show up if not loggin to github
 
-- generate animated preview automatically:
-  make a system that's could bundle all the screenshot in a gif
-  with some explaination of each screenshot... or video with music? :p
+- e2e test base on screen zone
+    + when page load, wait for a specific zone from page to load by comparing to another image
+    + as soon as image equal this zone, then we apply some action like click or typing
+    + then we again make some screen shot and do the next step
+
+- rework push: packages/test-crawler-cli/src/lib/crawl/resultConsumer.ts
 
 - add test for test-crawler
 
@@ -52,6 +55,9 @@
 
 - **we could track the number of query per page and see if there is some changes...**
 
+- generate animated preview automatically:
+  make a system that's could bundle all the screenshot in a gif
+  with some explaination of each screenshot... or video with music? :p
 
 - improve cli perf: should be kind of ok, still have to look at actions cache
   Dirname /Users/runner/runners/2.165.2/work/_actions/apiel/test-crawler/master/actions/crawl
