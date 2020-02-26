@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const test_crawler_core_1 = require("test-crawler-core");
+function pathProjectsFolder() {
+    return path_1.join(test_crawler_core_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER);
+}
+exports.pathProjectsFolder = pathProjectsFolder;
 function pathQueueFolder(projectId, timestamp) {
     return path_1.join(test_crawler_core_1.ROOT_FOLDER, test_crawler_core_1.PROJECT_FOLDER, projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp, test_crawler_core_1.QUEUE_FOLDER);
 }

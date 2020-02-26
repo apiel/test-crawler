@@ -15,7 +15,8 @@ const axios_1 = require("axios");
 const md5 = require("md5");
 const path_1 = require("../path");
 const browser_1 = require("./browsers/browser");
-function startCrawler({ projectId, timestamp }) {
+const crawlerConsumer_1 = require("./crawlerConsumer");
+function setupCrawler({ projectId, timestamp }) {
     return __awaiter(this, void 0, void 0, function* () {
         const { crawlerInput } = yield fs_extra_1.readJSON(path_1.pathProjectFile(projectId));
         const id = md5(`${timestamp}-${crawlerInput.url}-${JSON.stringify(crawlerInput.viewport)}`);
@@ -34,51 +35,20 @@ function startCrawler({ projectId, timestamp }) {
         }
     });
 }
-exports.startCrawler = startCrawler;
+exports.setupCrawler = setupCrawler;
 function startUrlsCrawling(crawlerInput, projectId, timestamp) {
     return __awaiter(this, void 0, void 0, function* () {
         const { data } = yield axios_1.default.get(crawlerInput.url);
         const urls = data.split(`\n`).filter((url) => url.trim());
-        yield Promise.all(urls.map((url) => addToQueue(url, crawlerInput.viewport, projectId, timestamp)));
+        yield Promise.all(urls.map((url) => crawlerConsumer_1.pushToCrawl(url, projectId, timestamp)));
     });
 }
-function startSpiderBotCrawling({ url, viewport, limit }, projectId, timestamp) {
+function startSpiderBotCrawling({ url, limit }, projectId, timestamp) {
     return __awaiter(this, void 0, void 0, function* () {
-        const addedToqueue = yield addToQueue(url, viewport, projectId, timestamp, limit);
+        const addedToqueue = yield crawlerConsumer_1.pushToCrawl(url, projectId, timestamp, limit);
         if (!addedToqueue) {
             throw new Error('Something went wrong while adding job to queue');
         }
     });
 }
-function addToQueue(url, viewport, projectId, timestamp, limit = 0) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const cleanUrl = url.replace(/(\n\r|\r\n|\n|\r)/gm, '');
-        const id = md5(`${cleanUrl}-${JSON.stringify(viewport)}`);
-        const resultFile = path_1.pathInfoFile(projectId, timestamp, id);
-        const queueFile = path_1.pathQueueFile(projectId, timestamp, id);
-        if (!(yield fs_extra_1.pathExists(queueFile)) && !(yield fs_extra_1.pathExists(resultFile))) {
-            if (!limit ||
-                (yield updateSiblingCount(cleanUrl, projectId, timestamp)) < limit) {
-                yield fs_extra_1.outputJSON(queueFile, { url: cleanUrl, id }, { spaces: 4 });
-            }
-            return true;
-        }
-        return false;
-    });
-}
-exports.addToQueue = addToQueue;
-function updateSiblingCount(url, projectId, timestamp) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const urlPaths = url.split('/').filter(s => s);
-        urlPaths.pop();
-        const id = md5(urlPaths.join('/'));
-        const file = path_1.pathSiblingFile(projectId, timestamp, id);
-        let count = 0;
-        if (yield fs_extra_1.pathExists(file)) {
-            count = parseInt((yield fs_extra_1.readFile(file)).toString(), 10) + 1;
-        }
-        yield fs_extra_1.outputFile(file, count);
-        return count;
-    });
-}
-//# sourceMappingURL=startCrawler.js.map
+//# sourceMappingURL=setupCrawler.js.map

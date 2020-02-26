@@ -1,3 +1,4 @@
+export declare function pathProjectsFolder(): string;
 export declare function pathQueueFolder(projectId: string, timestamp: string): string;
 export declare function pathQueueFile(projectId: string, timestamp: string, id: string): string;
 export declare function pathSiblingFile(projectId: string, timestamp: string, id: string): string;

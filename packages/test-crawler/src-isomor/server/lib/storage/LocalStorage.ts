@@ -1,6 +1,6 @@
 import { WsContext, Context } from 'isomor-server';
 import { CrawlTarget, Browser, ROOT_FOLDER } from 'test-crawler-core';
-import { crawl } from 'test-crawler-cli';
+import { crawl, Push } from 'test-crawler-cli';
 
 import { Storage } from './Storage';
 import {
@@ -88,7 +88,7 @@ export class LocalStorage extends Storage {
 
     async crawl(
         crawlTarget?: CrawlTarget,
-        push?: (payload: any) => void,
+        push?: Push,
     ) {
         await crawl(crawlTarget, push);
         return undefined;

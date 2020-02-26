@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -11,27 +10,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const logol_1 = require("logol");
-const test_crawler_core_1 = require("test-crawler-core");
-const configs = require("test-crawler-core/lib/config");
-const lib_1 = require("../lib");
-function start() {
+let pushList = [];
+function pushPush(push) {
+    pushList.push(push);
+}
+exports.pushPush = pushPush;
+function sendPush(payload) {
     return __awaiter(this, void 0, void 0, function* () {
-        logol_1.info('Test-crawler');
-        logol_1.info('Config', configs);
-        const [, , option, value] = process.argv;
-        if (option && value) {
-            if (option === '--project') {
-                const crawlTarget = {
-                    projectId: value,
-                    timestamp: test_crawler_core_1.generateTinestampFolder(),
-                };
-                logol_1.info('Start project', crawlTarget);
-                yield lib_1.crawl(crawlTarget);
-                return;
+        for (let i = pushList.length - 1; i >= 0; i--) {
+            if (pushList[i]) {
+                const sent = yield pushList[i](payload);
+                if (!sent) {
+                    logol_1.info('Push was not sent, remove from pusher list.');
+                    delete pushList[i];
+                }
             }
         }
-        lib_1.crawl(undefined);
+        pushList = pushList.filter(p => p);
     });
 }
-start();
-//# sourceMappingURL=cli.js.map
+exports.sendPush = sendPush;
+//# sourceMappingURL=pusher.js.map

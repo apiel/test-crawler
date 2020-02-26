@@ -1,3 +1,4 @@
+import { Consumer } from './consumer';
 interface ResultQueue {
     result?: {
         diffZoneCount: number;
@@ -6,6 +7,6 @@ interface ResultQueue {
     timestamp: string;
     isError?: boolean;
 }
-export declare function pushToResultConsumer(resultQueue: ResultQueue, push?: (payload: any) => void): void;
-export declare function runResultsConsumer(push?: (payload: any) => void): void;
+export declare function pushToResultConsumer(resultQueue: ResultQueue): void;
+export declare const consumer: Consumer;
 export {};

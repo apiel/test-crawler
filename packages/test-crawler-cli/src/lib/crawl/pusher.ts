@@ -1,3 +1,5 @@
+import { info } from "logol";
+
 export type Push = (payload: any) => Promise<boolean>;
 
 let pushList: Push[] = [];
@@ -14,7 +16,19 @@ export function pushPush(push: Push) {
  * Send payload to all push socket from pushList
  * @param payload
  */
-export async function push(payload: any) {
+export async function sendPush(payload: any) {
+    for(let i = pushList.length - 1; i >= 0; i--) {
+        if (pushList[i]) {
+            const sent = await pushList[i](payload);
+            if (!sent) {
+                info('Push was not sent, remove from pusher list.');
+                delete pushList[i];
+            }
+        }
+    }
+    pushList = pushList.filter(p => p);
+}
+
     // const result = await Promise.all(
     //     pushList.map(async push => {
     //         const sent = await push(payload);
@@ -22,10 +36,3 @@ export async function push(payload: any) {
     //     }),
     // );
     // pushList = result.filter(p => p);
-    for(let i = pushList.length - 1; i >= 0; i--) {
-        const sent = await pushList[i](payload);
-        if (!sent) {
-            delete pushList[i];
-        }
-    }
-}

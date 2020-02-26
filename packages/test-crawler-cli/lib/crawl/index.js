@@ -16,9 +16,11 @@ const test_crawler_core_1 = require("test-crawler-core");
 const util_1 = require("util");
 const rimraf = require("rimraf");
 const resultConsumer_1 = require("./resultConsumer");
-const queueConsumer_1 = require("./queueConsumer");
-const startCrawler_1 = require("./startCrawler");
+const crawlerConsumer_1 = require("./crawlerConsumer");
+const consumer_1 = require("./consumer");
+const setupCrawler_1 = require("./setupCrawler");
 const path_2 = require("../path");
+const pusher_1 = require("./pusher");
 let projectIdForExit;
 function beforeAll(crawlTarget) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -105,14 +107,18 @@ function cleanSnapshot(projectId) {
         }
     });
 }
+consumer_1.setConsumers({ crawlerConsumer: crawlerConsumer_1.consumer, resultConsumer: resultConsumer_1.consumer });
 function crawl(crawlTarget, push) {
     return __awaiter(this, void 0, void 0, function* () {
         yield prepareFolders();
         yield beforeAll(crawlTarget);
-        yield queueConsumer_1.setConsumerMaxCount(crawlTarget);
-        crawlTarget && (yield startCrawler_1.startCrawler(crawlTarget));
-        resultConsumer_1.runResultsConsumer(push);
-        queueConsumer_1.runQueuesConsumer(crawlTarget);
+        push && pusher_1.pushPush(push);
+        crawlTarget && (yield setupCrawler_1.setupCrawler(crawlTarget));
+        consumer_1.runConsumers((results) => {
+            console.log('results', results);
+            const { totalDiff, totalError } = results['resultConsumer'];
+            afterAll(totalDiff, totalError);
+        });
     });
 }
 exports.crawl = crawl;

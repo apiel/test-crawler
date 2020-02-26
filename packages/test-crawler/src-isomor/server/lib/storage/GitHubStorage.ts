@@ -2,6 +2,7 @@ import { basename, dirname } from 'path';
 import { CrawlTarget, Browser } from 'test-crawler-core';
 import { WsContext, Context } from 'isomor-server';
 import axios, { AxiosRequestConfig } from 'axios';
+import { Push } from 'test-crawler-cli';
 
 import { Storage } from './Storage';
 import { Job } from '../../typing';
@@ -268,7 +269,7 @@ export class GitHubStorage extends Storage {
 
     async crawl(
         crawlTarget?: CrawlTarget,
-        push?: (payload: any) => void,
+        push?: Push,
         browser?: Browser,
     ) {
         if (crawlTarget?.projectId) {

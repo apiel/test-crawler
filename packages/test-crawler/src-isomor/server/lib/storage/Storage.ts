@@ -1,4 +1,5 @@
 import { CrawlTarget, Browser } from 'test-crawler-core';
+import { Push } from 'test-crawler-cli';
 
 import { Job } from '../../typing';
 
@@ -19,7 +20,7 @@ export abstract class Storage {
     abstract remove(file: string): Promise<void>;
     abstract crawl(
         crawlTarget?: CrawlTarget,
-        push?: (payload: any) => void,
+        push?: Push,
         browser?: Browser,
     ): Promise<undefined | string>;
     abstract jobs(projectId: string): Promise<Job[]>;

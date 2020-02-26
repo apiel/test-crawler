@@ -4,7 +4,7 @@ import { Crawler } from 'test-crawler-core';
 
 import { pathCrawlerFile, pathQueueFolder, pathResultFolder } from '../path';
 import { Consumer } from './consumer';
-import { push } from './pusher';
+import { sendPush } from './pusher';
 
 interface ResultQueue {
     result?: {
@@ -57,6 +57,6 @@ export const consumer: Consumer = {
         crawler.lastUpdate = Date.now();
 
         await writeJSON(crawlerFile, crawler, { spaces: 4 });
-        push(crawler);
+        sendPush(crawler);
     },
 };
