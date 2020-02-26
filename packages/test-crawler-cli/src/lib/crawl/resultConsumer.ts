@@ -4,6 +4,7 @@ import { Crawler } from 'test-crawler-core';
 
 import { pathCrawlerFile, pathQueueFolder, pathResultFolder } from '../path';
 import { Consumer } from './consumer';
+import { push } from './pusher';
 
 interface ResultQueue {
     result?: {
@@ -33,7 +34,6 @@ export const consumer: Consumer = {
         },
         queue,
     }),
-    // push?: (payload: any) => void
     runner: async ({ projectId, timestamp, result, isError }: ResultQueue) => {
         const crawlerFile = pathCrawlerFile(projectId, timestamp);
         const crawler: Crawler = await readJSON(crawlerFile);
@@ -57,7 +57,6 @@ export const consumer: Consumer = {
         crawler.lastUpdate = Date.now();
 
         await writeJSON(crawlerFile, crawler, { spaces: 4 });
-        // need to handle push
-        // push && push(crawler);
+        push(crawler);
     },
 };
