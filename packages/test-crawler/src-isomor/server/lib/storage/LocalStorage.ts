@@ -1,6 +1,7 @@
 import { WsContext, Context } from 'isomor-server';
 import { CrawlTarget, Browser, ROOT_FOLDER } from 'test-crawler-core';
-import { crawl, Push } from 'test-crawler-cli';
+import { crawl, Push, setDefaultDriversDestination } from 'test-crawler-cli';
+import { join } from 'path';
 
 import { Storage } from './Storage';
 import {
@@ -15,7 +16,10 @@ import {
     outputFile,
 } from 'fs-extra';
 import { Job } from '../../typing';
-import { join } from 'path';
+
+setDefaultDriversDestination(
+    join(__dirname, '..', '..', '..', '..', 'node_modules', '.bin'),
+);
 
 export class LocalStorage extends Storage {
     constructor(protected ctx?: undefined | WsContext | Context) {
@@ -86,10 +90,7 @@ export class LocalStorage extends Storage {
         return remove(this.root(file));
     }
 
-    async crawl(
-        crawlTarget?: CrawlTarget,
-        push?: Push,
-    ) {
+    async crawl(crawlTarget?: CrawlTarget, push?: Push) {
         await crawl(crawlTarget, push);
         return undefined;
     }

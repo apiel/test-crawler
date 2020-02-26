@@ -1,10 +1,10 @@
 {
   "name": "test-crawler-cli",
   "version": "3.4.0",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "bin": {
-    "test-crawler-cli": "cli/cli.js"
+    "test-crawler-cli": "dist/cli/cli.js"
   },
   "repository": {
     "type": "git",
@@ -12,11 +12,9 @@
   },
   "scripts": {
     "test": "ROOT_FOLDER=../test-crawler yarn cli",
-    "cli": "node cli/cli.js",
+    "cli": "node dist/cli/cli.js",
     "cli-dev": "ROOT_FOLDER=../test-crawler ts-node --project tsconfig.json src/cli/cli.ts",
-    "rm": "rm -rf cli/ && rm -rf lib/",
-    "move": "mv dist/* . && rm -rf dist/",
-    "build": "yarn rm && tsc -p tsconfig.json && yarn move && chmod +x cli/cli.js",
+    "build": "tsc -p tsconfig.json && chmod +x dist/cli/cli.js",
     "prepublishOnly": "yarn build"
   },
   "dependencies": {

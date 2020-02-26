@@ -11,9 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const test_crawler_core_1 = require("test-crawler-core");
 const test_crawler_cli_1 = require("test-crawler-cli");
+const path_1 = require("path");
 const Storage_1 = require("./Storage");
 const fs_extra_1 = require("fs-extra");
-const path_1 = require("path");
+test_crawler_cli_1.setDefaultDriversDestination(path_1.join(__dirname, '..', '..', '..', '..', 'node_modules', '.bin'));
 class LocalStorage extends Storage_1.Storage {
     constructor(ctx) {
         super();

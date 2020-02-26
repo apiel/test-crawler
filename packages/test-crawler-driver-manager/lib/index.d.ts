@@ -1,7 +1,7 @@
 export { getChromedriver, getChromeDownloadUrl, downloadChrome, } from './chrome';
 export { getGeckodriver, getGeckoDownloadUrl, downloadGecko } from './gecko';
 export { getIedriver, getIeDownloadUrl, downloadIe } from './ie';
-export declare const defaultDestination: string;
+export declare let defaultDestination: string;
 export declare const defaultPlatform: Platform;
 export declare const defaultArch: Arch;
 export interface Options {
@@ -24,4 +24,5 @@ export declare enum Arch {
     x64 = "x64",
     x32 = "x32"
 }
+export declare function setDefaultDestination(destination: string): void;
 export declare function driver(type: DriverType, options?: Options, destination?: string): Promise<void>;

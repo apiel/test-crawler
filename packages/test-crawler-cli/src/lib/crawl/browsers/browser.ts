@@ -1,11 +1,18 @@
 import { Crawler, Browser, Viewport } from 'test-crawler-core';
-import { driver, DriverType } from 'test-crawler-driver-manager';
+import {
+    driver,
+    DriverType,
+    setDefaultDestination,
+} from 'test-crawler-driver-manager';
+import { join } from 'path';
 
 import { startSeleniumFirefox } from './selenium-firefox';
 import { startSeleniumChrome } from './selenium-chrome';
 import { startSeleniumIE } from './selenium-ie';
 // import { startSeleniumEdge } from './selenium-edge';
 import { startSeleniumSafari } from './selenium-safari';
+
+setDefaultDestination(join(__dirname, '..', '..', '..', '..', 'node_modules', '.bin'));
 
 export async function startBrowser(
     browser: Browser,

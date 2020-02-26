@@ -11,10 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const test_crawler_core_1 = require("test-crawler-core");
 const test_crawler_driver_manager_1 = require("test-crawler-driver-manager");
+const path_1 = require("path");
 const selenium_firefox_1 = require("./selenium-firefox");
 const selenium_chrome_1 = require("./selenium-chrome");
 const selenium_ie_1 = require("./selenium-ie");
 const selenium_safari_1 = require("./selenium-safari");
+test_crawler_driver_manager_1.setDefaultDestination(path_1.join(__dirname, '..', '..', '..', '..', 'node_modules', '.bin'));
 function startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url) {
     return __awaiter(this, void 0, void 0, function* () {
         if (browser === test_crawler_core_1.Browser.FirefoxSelenium) {

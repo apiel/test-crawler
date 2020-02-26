@@ -47,6 +47,10 @@ var Arch;
     Arch["x64"] = "x64";
     Arch["x32"] = "x32";
 })(Arch = exports.Arch || (exports.Arch = {}));
+function setDefaultDestination(destination) {
+    exports.defaultDestination = destination;
+}
+exports.setDefaultDestination = setDefaultDestination;
 function driver(type, options, destination = exports.defaultDestination) {
     return __awaiter(this, void 0, void 0, function* () {
         const opt = Object.assign({ platform: exports.defaultPlatform, arch: exports.defaultArch, destination }, options);
