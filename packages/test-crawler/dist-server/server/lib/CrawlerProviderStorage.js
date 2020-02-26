@@ -16,8 +16,8 @@ const GitHubStorage_1 = require("./storage/GitHubStorage");
 const storage_typing_1 = require("../storage.typing");
 const CrawlerProviderStorageBase_1 = require("./CrawlerProviderStorageBase");
 function getCookie(key, ctx) {
-    var _a, _b;
-    const cookies = new Cookies((_b = (_a = ctx) === null || _a === void 0 ? void 0 : _a.req) === null || _b === void 0 ? void 0 : _b.headers.cookie);
+    var _a;
+    const cookies = new Cookies((_a = ctx === null || ctx === void 0 ? void 0 : ctx.req) === null || _a === void 0 ? void 0 : _a.headers.cookie);
     return cookies.get(key);
 }
 exports.getCookie = getCookie;
