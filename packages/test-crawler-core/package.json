@@ -1,6 +1,6 @@
 {
   "name": "test-crawler-core",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
