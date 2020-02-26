@@ -27,7 +27,7 @@ var ie_2 = require("./ie");
 exports.getIedriver = ie_2.getIedriver;
 exports.getIeDownloadUrl = ie_2.getIeDownloadUrl;
 exports.downloadIe = ie_2.downloadIe;
-exports.defaultDestination = path_1.join(__dirname, '..', 'drivers');
+exports.defaultDestination = path_1.join(__dirname, '..', 'node_modules', '.bin');
 exports.defaultPlatform = os.platform();
 exports.defaultArch = os.arch();
 var DriverType;
