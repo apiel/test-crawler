@@ -3,8 +3,13 @@
   "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "chromedriver": "drivers/chromedriver",
+    "geckodriver": "drivers/geckodriver",
+    "IEDriverServer.exe": "drivers/IEDriverServer.exe"
+  },
   "scripts": {
-    "download": "npx test-crawler-driver-manager '[{{\"type\":\"Chrome\",\"options\":{\"platform\":\"darwin\"}},{{\"type\":\"Gecko\",\"options\":{\"platform\":\"darwin\"}},{{\"type\":\"IE\",\"options\":{\"arch\":\"x64\"}}]'"
+    "download": "npx test-crawler-driver-manager '[{\"type\":\"Chrome\",\"options\":{\"platform\":\"darwin\"}},{\"type\":\"Gecko\",\"options\":{\"platform\":\"darwin\"}},{\"type\":\"IE\",\"options\":{\"arch\":\"x64\"}}]' ./drivers"
   },
   "dependencies": {
     "@actions/core": "^1.2.2",

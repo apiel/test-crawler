@@ -26,6 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "postinstall": "yarn install:drivers",
+    "install:drivers": "test-crawler-driver-manager '[{\"type\":\"Chrome\"},{\"type\":\"Gecko\"},{\"type\":\"IE\"}]' node_modules/.bin/",
     "github:build:static": "rm -rf src && cp -r src-isomor src && rm src/server/lib/CrawlerProviderStorage.ts && mv src/server/lib/CrawlerProviderGitHubStorage.ts src/server/lib/CrawlerProviderStorage.ts && rm src/server/storage.typing.ts && mv src/server/storageGitHub.typing.ts src/server/storage.typing.ts && rm -rf src/server/lib/crawl  && rm -rf src/server/lib/diff && rm src/server/lib/storage/LocalStorage.ts",
     "github:pub": "yarn github:build:static && PUBLIC_URL=/test-crawler/live yarn build && cp -r build/* ../../docs/live"
   },
@@ -69,6 +71,7 @@
     "rimraf": "^3.0.2",
     "test-crawler-cli": "^3.4.2",
     "test-crawler-core": "^3.4.2",
+    "test-crawler-driver-manager": "^3.4.2",
     "universal-cookie": "^4.0.3"
   },
   "devDependencies": {

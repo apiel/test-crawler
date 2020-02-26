@@ -10174,9 +10174,9 @@ terser@^4.1.2, terser@^4.4.3, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-test-crawler-cli@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.4.0.tgz#17d7a6814001cc819ca8671b56fe8b606d9b79f3"
+test-crawler-cli@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.4.2.tgz#e24d0ecd5be4e8db8055ce149f36ff907e4509b2"
   dependencies:
     axios "^0.19.2"
     fs-extra "^8.1.0"
@@ -10188,16 +10188,16 @@ test-crawler-cli@^3.4.0:
     puppeteer-core "^2.1.1"
     rimraf "^3.0.2"
     selenium-webdriver "^4.0.0-alpha.5"
-    test-crawler-core "^3.4.0"
-    test-crawler-driver-manager "^3.4.0"
+    test-crawler-core "^3.4.2"
+    test-crawler-driver-manager "^3.4.2"
 
-test-crawler-core@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/test-crawler-core/-/test-crawler-core-3.4.0.tgz#24c6ecddec6646080e92a842c69c12632a7c359d"
+test-crawler-core@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/test-crawler-core/-/test-crawler-core-3.4.2.tgz#8ed186acad251f4e794230fb32c32135afa200d7"
 
-test-crawler-driver-manager@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/test-crawler-driver-manager/-/test-crawler-driver-manager-3.4.0.tgz#90e9c68258b28a4ac6db0591f82a20407d53bd3b"
+test-crawler-driver-manager@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/test-crawler-driver-manager/-/test-crawler-driver-manager-3.4.2.tgz#340019c861a20d4915fb554df2ba8971712fc25a"
   dependencies:
     "@types/adm-zip" "^0.4.32"
     "@types/tar" "^4.0.3"

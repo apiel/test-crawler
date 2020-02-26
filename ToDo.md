@@ -1,15 +1,5 @@
-- diff number seem to be wrong
-
 - need to make a driver downloader
-  -> could search for driver in folder, install if not present?
-
-- should reduce/fix timeout
-- should reduce/fix timeout
-- should reduce/fix timeout
-- should reduce/fix timeout
-    + still have push to handle
-
-- update doc might not be necessary: yarn global add test-crawler puppeteer geckodriver chromedriver
+    + need to download driver on test-crawler install?
 
 - new button should not show up if not loggin to github
 
