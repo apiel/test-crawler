@@ -16,7 +16,7 @@
     "rm": "rm -rf cli/ && rm -rf lib/",
     "move": "mv dist/* . && rm -rf dist/",
     "build": "yarn rm && tsc -p tsconfig.json && yarn move && chmod +x cli/cli.js",
-    "prepublishOnly": "yarn build && rm drivers/*"
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "@types/adm-zip": "^0.4.32",
@@ -31,5 +31,5 @@
     "tslint": "^6.0.0",
     "typescript": "3.8.2"
   },
-  "gitHead": "7a0e92cd881f66cec01c76ed2028609752f7c77b"
+  "gitHead": "93bbfe0d37fa2873bd71c907c4ee006c13f103e4"
 }
