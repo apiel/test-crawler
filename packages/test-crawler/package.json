@@ -1,6 +1,6 @@
 {
   "name": "test-crawler",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "bin": {
     "test-crawler": "./test-crawler.js"
   },
