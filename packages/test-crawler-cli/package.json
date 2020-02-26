@@ -1,6 +1,6 @@
 {
   "name": "test-crawler-cli",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "bin": {
@@ -28,8 +28,8 @@
     "puppeteer-core": "^2.1.1",
     "rimraf": "^3.0.2",
     "selenium-webdriver": "^4.0.0-alpha.5",
-    "test-crawler-core": "^3.4.0",
-    "test-crawler-driver-manager": "^3.4.0"
+    "test-crawler-core": "^3.4.1",
+    "test-crawler-driver-manager": "^3.4.1"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
