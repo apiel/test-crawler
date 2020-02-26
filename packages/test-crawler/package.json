@@ -1,6 +1,6 @@
 {
   "name": "test-crawler",
-  "version": "3.3.2",
+  "version": "3.4.0",
   "bin": {
     "test-crawler": "./test-crawler.js"
   },
@@ -26,8 +26,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
     "github:build:static": "rm -rf src && cp -r src-isomor src && rm src/server/lib/CrawlerProviderStorage.ts && mv src/server/lib/CrawlerProviderGitHubStorage.ts src/server/lib/CrawlerProviderStorage.ts && rm src/server/storage.typing.ts && mv src/server/storageGitHub.typing.ts src/server/storage.typing.ts && rm -rf src/server/lib/crawl  && rm -rf src/server/lib/diff && rm src/server/lib/storage/LocalStorage.ts",
     "github:pub": "yarn github:build:static && PUBLIC_URL=/test-crawler/live yarn build && cp -r build/* ../../docs/live"
   },
@@ -74,18 +72,14 @@
     "react-scripts": "3.3.1",
     "rimraf": "^3.0.2",
     "selenium-webdriver": "^4.0.0-alpha.5",
-    "test-crawler-cli": "^3.3.0",
-    "test-crawler-core": "^3.2.3",
+    "test-crawler-cli": "^3.4.0",
+    "test-crawler-core": "^3.4.0",
     "ts-node": "^8.6.2",
     "typescript": "3.7.5",
     "universal-cookie": "^4.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
-    "@storybook/addon-actions": "^5.3.13",
-    "@storybook/addon-links": "^5.3.13",
-    "@storybook/addons": "^5.3.13",
-    "@storybook/react": "^5.3.13",
     "@types/antd": "^1.0.0",
     "@types/axios": "^0.14.0",
     "@types/crypto-js": "^3.1.43",

@@ -18,15 +18,12 @@ const selenium_safari_1 = require("./selenium-safari");
 function startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, id, url) {
     return __awaiter(this, void 0, void 0, function* () {
         if (browser === test_crawler_core_1.Browser.FirefoxSelenium) {
-            yield installDriver(test_crawler_driver_manager_1.DriverType.Gecko);
             return selenium_firefox_1.startSeleniumFirefox(viewport, pngFile, htmlFile, crawler, projectId, id, url);
         }
         else if (browser === test_crawler_core_1.Browser.ChromeSelenium) {
-            yield installDriver(test_crawler_driver_manager_1.DriverType.Chrome);
             return selenium_chrome_1.startSeleniumChrome(viewport, pngFile, htmlFile, crawler, projectId, id, url);
         }
         else if (browser === test_crawler_core_1.Browser.IeSelenium) {
-            yield installDriver(test_crawler_driver_manager_1.DriverType.IE);
             return selenium_ie_1.startSeleniumIE(viewport, pngFile, htmlFile, crawler, projectId, id, url);
         }
         else if (browser === test_crawler_core_1.Browser.SafariSelenium) {
@@ -37,8 +34,20 @@ function startBrowser(browser, viewport, pngFile, htmlFile, crawler, projectId, 
     });
 }
 exports.startBrowser = startBrowser;
+function installDriver(browser) {
+    if (browser === test_crawler_core_1.Browser.FirefoxSelenium) {
+        return installDriverCache(test_crawler_driver_manager_1.DriverType.Gecko);
+    }
+    else if (browser === test_crawler_core_1.Browser.ChromeSelenium) {
+        return installDriverCache(test_crawler_driver_manager_1.DriverType.Chrome);
+    }
+    else if (browser === test_crawler_core_1.Browser.IeSelenium) {
+        return installDriverCache(test_crawler_driver_manager_1.DriverType.IE);
+    }
+}
+exports.installDriver = installDriver;
 const installDriverHistory = [];
-function installDriver(type) {
+function installDriverCache(type) {
     if (!installDriverHistory.includes(type)) {
         installDriverHistory.push(type);
         return test_crawler_driver_manager_1.driver(type);

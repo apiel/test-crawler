@@ -9,58 +9,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const logol_1 = require("logol");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
-const _1 = require(".");
 const path_2 = require("../path");
+const pusher_1 = require("./pusher");
 let totalDiff = 0;
 let totalError = 0;
-let consumeResultRetry = 0;
 const resultsQueue = [];
 function pushToResultConsumer(resultQueue) {
     resultsQueue.push(resultQueue);
 }
 exports.pushToResultConsumer = pushToResultConsumer;
-function initConsumeResults(consumeTimeout, push) {
-    consumeResultRetry = 0;
-    return consumeResults(consumeTimeout, push);
-}
-exports.initConsumeResults = initConsumeResults;
-function consumeResults(consumeTimeout, push) {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (resultsQueue.length) {
-            consumeResultRetry = 0;
-            const [{ projectId, timestamp, result, isError }] = resultsQueue.splice(0, 1);
-            const crawlerFile = path_2.pathCrawlerFile(projectId, timestamp);
-            const crawler = yield fs_extra_1.readJSON(crawlerFile);
-            if (result) {
-                crawler.diffZoneCount += result.diffZoneCount;
-                totalDiff += result.diffZoneCount;
-            }
-            if (isError) {
-                crawler.errorCount++;
-                totalError++;
-            }
-            const queueFolder = path_2.pathQueueFolder(projectId, timestamp);
-            const filesInQueue = (yield fs_extra_1.pathExists(queueFolder))
-                ? yield fs_extra_1.readdir(queueFolder)
-                : [];
-            crawler.inQueue = filesInQueue.length;
-            crawler.urlsCount = (yield fs_extra_1.readdir(path_2.pathResultFolder(projectId, timestamp))).filter(f => path_1.extname(f) === '.json' && f !== '_.json').length;
-            crawler.lastUpdate = Date.now();
-            yield fs_extra_1.writeJSON(crawlerFile, crawler, { spaces: 4 });
-            push && push(crawler);
-            consumeResults(consumeTimeout, push);
+const queue = { name: 'result', maxConcurrent: 1 };
+exports.consumer = {
+    finish: () => ({ totalDiff, totalError }),
+    picker: () => __awaiter(void 0, void 0, void 0, function* () {
+        return !!resultsQueue.length && ({
+            data: resultsQueue[0],
+            apply: () => __awaiter(void 0, void 0, void 0, function* () {
+                resultsQueue.splice(0, 1);
+            }),
+            queue,
+        });
+    }),
+    runner: ({ projectId, timestamp, result, isError }) => __awaiter(void 0, void 0, void 0, function* () {
+        const crawlerFile = path_2.pathCrawlerFile(projectId, timestamp);
+        const crawler = yield fs_extra_1.readJSON(crawlerFile);
+        if (result) {
+            crawler.diffZoneCount += result.diffZoneCount;
+            totalDiff += result.diffZoneCount;
         }
-        else if (!consumeTimeout || consumeResultRetry < consumeTimeout) {
-            consumeResultRetry++;
-            setTimeout(() => consumeResults(consumeTimeout, push), 1000);
+        if (isError) {
+            crawler.errorCount++;
+            totalError++;
         }
-        else {
-            logol_1.info('consumeResults timeout');
-            _1.afterAll(totalDiff, totalError);
-        }
-    });
-}
+        const queueFolder = path_2.pathQueueFolder(projectId, timestamp);
+        const filesInQueue = (yield fs_extra_1.pathExists(queueFolder))
+            ? yield fs_extra_1.readdir(queueFolder)
+            : [];
+        crawler.inQueue = filesInQueue.length;
+        crawler.urlsCount = (yield fs_extra_1.readdir(path_2.pathResultFolder(projectId, timestamp))).filter(f => path_1.extname(f) === '.json' && f !== '_.json').length;
+        crawler.lastUpdate = Date.now();
+        yield fs_extra_1.writeJSON(crawlerFile, crawler, { spaces: 4 });
+        pusher_1.sendPush(crawler);
+    }),
+};
 //# sourceMappingURL=resultConsumer.js.map

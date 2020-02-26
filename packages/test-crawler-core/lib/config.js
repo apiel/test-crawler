@@ -16,5 +16,5 @@ exports.CONSUMER_COUNT = 5;
 exports.USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
 exports.CONSUME_TIMEOUT = process.env.CONSUME_TIMEOUT
     ? parseInt(process.env.CONSUME_TIMEOUT, 10)
-    : 0;
+    : 30;
 //# sourceMappingURL=config.js.map

@@ -34,6 +34,6 @@ export abstract class CrawlerProviderStorage extends CrawlerProviderStorageBase 
     async startCrawlers() {
         // for the moment this would only start locally
         // we will have to make a specific one to start remotely
-        crawl(undefined, 30, (this.ctx as any)?.push);
+        crawl(undefined, (this.ctx as any)?.push);
     }
 }

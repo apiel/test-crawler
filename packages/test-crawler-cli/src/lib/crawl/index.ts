@@ -5,7 +5,6 @@ import {
     CrawlTarget,
     PageData,
     CRAWL_FOLDER,
-    CONSUME_TIMEOUT,
     PROJECT_FOLDER,
     MAX_HISTORY,
     ROOT_FOLDER,
@@ -13,10 +12,12 @@ import {
 import { promisify } from 'util';
 import rimraf = require('rimraf');
 
-import { initConsumeResults } from './resultConsumer';
-import { setConsumerMaxCount, initConsumeQueues } from './queueConsumer';
-import { startCrawler } from './startCrawler';
+import { consumer as resultConsumer } from './resultConsumer';
+import { consumer as crawlerConsumer } from './crawlerConsumer';
+import { runConsumers, setConsumers } from './consumer';
+import { setupCrawler } from './setupCrawler';
 import { pathSnapshotFolder, pathInfoFile, pathPinInfoFile } from '../path';
+import { Push, pushPush } from './pusher';
 
 let projectIdForExit: string;
 
@@ -106,15 +107,19 @@ async function cleanSnapshot(projectId: string) {
     }
 }
 
+setConsumers({ crawlerConsumer, resultConsumer });
 export async function crawl(
     crawlTarget?: CrawlTarget,
-    consumeTimeout = CONSUME_TIMEOUT,
-    push?: (payload: any) => void,
+    push?: Push,
 ) {
     await prepareFolders();
     await beforeAll(crawlTarget);
-    await setConsumerMaxCount(crawlTarget);
-    crawlTarget && await startCrawler(crawlTarget);
-    initConsumeResults(consumeTimeout, push);
-    initConsumeQueues(consumeTimeout, crawlTarget);
+    push && pushPush(push);
+    crawlTarget && (await setupCrawler(crawlTarget));
+
+    runConsumers((results) => {
+        console.log('results', results);
+        const { totalDiff, totalError } = results['resultConsumer'];
+        afterAll(totalDiff, totalError);
+    });
 }

@@ -12,6 +12,8 @@ async function run() {
             timestamp: generateTinestampFolder(),
         };
         console.log('crawlTarget', crawlTarget);
+        // todo
+        console.log('Remove crawl timeout');
         crawl(crawlTarget, 30);
     } catch (error) {
         core.setFailed(error.message);

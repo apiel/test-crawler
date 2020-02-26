@@ -17,12 +17,11 @@ async function start() {
                 timestamp: generateTinestampFolder(),
             };
             info('Start project', crawlTarget);
-            const result = await crawl(crawlTarget, 30);
-            info('result', result);
+            await crawl(crawlTarget);
             return;
         }
     }
-    crawl(undefined, 30);
+    crawl(undefined);
 }
 
 start();

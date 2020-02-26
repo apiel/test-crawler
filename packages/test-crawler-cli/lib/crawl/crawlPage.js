@@ -28,10 +28,10 @@ const test_crawler_core_1 = require("test-crawler-core");
 const diff_1 = require("../diff");
 const utils_1 = require("../utils");
 const resultConsumer_1 = require("./resultConsumer");
-const startCrawler_1 = require("./startCrawler");
 const browser_1 = require("./browsers/browser");
 const path_1 = require("../path");
-function loadPage(projectId, id, url, timestamp, done, retry = 0) {
+const crawlerConsumer_1 = require("./crawlerConsumer");
+function loadPage(projectId, id, url, timestamp, retry = 0) {
     return __awaiter(this, void 0, void 0, function* () {
         const jsonFile = path_1.pathInfoFile(projectId, timestamp, id);
         const pngFile = path_1.pathImageFile(projectId, timestamp, id);
@@ -43,7 +43,7 @@ function loadPage(projectId, id, url, timestamp, done, retry = 0) {
             yield fs_extra_1.outputJson(jsonFile, Object.assign(Object.assign({}, output), { timestamp }), { spaces: 4 });
             if (method !== test_crawler_core_1.CrawlerMethod.URLs && util_1.isArray(links)) {
                 const siteUrls = links.filter(href => href.indexOf(baseUrl) === 0);
-                yield addUrls(siteUrls, viewport, projectId, timestamp, limit);
+                yield addUrls(siteUrls, projectId, timestamp, limit);
             }
             const result = yield diff_1.prepare(projectId, timestamp, id, crawler);
             resultConsumer_1.pushToResultConsumer({
@@ -57,7 +57,7 @@ function loadPage(projectId, id, url, timestamp, done, retry = 0) {
             logol_1.error(`Load page error (attempt ${retry + 1})`, err.toString());
             if (retry < 2) {
                 logol_1.warn('Retry crawl', url);
-                yield loadPage(projectId, id, url, timestamp, done, retry + 1);
+                yield loadPage(projectId, id, url, timestamp, retry + 1);
             }
             else {
                 yield fs_extra_1.outputJson(jsonFile, { url, id, error: err.toString() }, { spaces: 4 });
@@ -67,9 +67,6 @@ function loadPage(projectId, id, url, timestamp, done, retry = 0) {
                     isError: true,
                 });
             }
-        }
-        finally {
-            done();
         }
     });
 }
@@ -100,11 +97,11 @@ function injectCode(jsFile, page, id, url, links, crawler) {
         return links;
     });
 }
-function addUrls(urls, viewport, projectId, timestamp, limit) {
+function addUrls(urls, projectId, timestamp, limit) {
     return __awaiter(this, void 0, void 0, function* () {
         let count = 0;
         for (const url of urls) {
-            if (yield startCrawler_1.addToQueue(url, viewport, projectId, timestamp, limit)) {
+            if (yield crawlerConsumer_1.pushToCrawl(url, projectId, timestamp, limit)) {
                 count++;
             }
         }

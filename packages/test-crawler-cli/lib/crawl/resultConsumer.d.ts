@@ -1,3 +1,4 @@
+import { Consumer } from './consumer';
 interface ResultQueue {
     result?: {
         diffZoneCount: number;
@@ -7,5 +8,5 @@ interface ResultQueue {
     isError?: boolean;
 }
 export declare function pushToResultConsumer(resultQueue: ResultQueue): void;
-export declare function initConsumeResults(consumeTimeout: number, push?: (payload: any) => void): Promise<void>;
+export declare const consumer: Consumer;
 export {};

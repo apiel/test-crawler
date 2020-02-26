@@ -139,10 +139,8 @@ test-crawler-cli --project f0258b6685684c113bad94d91b8fa02a
 With npx:
 
 ```bash
-ROOT_FOLDER=/the/target/folder npx -p geckodriver -p test-crawler-cli test-crawler-cli --project the_id_of_the_project
+ROOT_FOLDER=/the/target/folder npx test-crawler-cli --project the_id_of_the_project
 ```
-
-You might need to include geckodriver or chromedriver depending of the browser you want to test against.
 
 ## Continuous integration
 

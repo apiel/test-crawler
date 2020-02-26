@@ -1,15 +1,10 @@
 {
   "name": "test-crawler-driver-manager",
-  "version": "3.3.2",
+  "version": "3.4.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "bin": {
-    "test-crawler-driver-manager": "cli/cli.js",
-    "geckodriver": "drivers/geckodriver",
-    "geckodriver.exe": "drivers/geckodriver.exe",
-    "chromedriver": "drivers/chromedriver",
-    "chromedriver.exe": "drivers/chromedriver.exe",
-    "IEDriverServer.exe": "drivers/IEDriverServer.exe"
+    "test-crawler-driver-manager": "cli/cli.js"
   },
   "repository": {
     "type": "git",
