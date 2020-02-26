@@ -67,14 +67,14 @@ class GitHubStorage extends Storage_1.Storage {
         return Object.values(test_crawler_core_1.Browser);
     }
     readdir(path) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { data } = yield this.getContents(path);
                 return data.map(({ name }) => name);
             }
             catch (error) {
-                if (((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.status) === 404) {
+                if (((_b = (_a = error) === null || _a === void 0 ? void 0 : _a.response) === null || _b === void 0 ? void 0 : _b.status) === 404) {
                     return [];
                 }
                 throw error;
@@ -198,16 +198,16 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     getSha(file) {
-        var _a;
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { data } = yield this.getContents(file);
-                if (data === null || data === void 0 ? void 0 : data.sha) {
+                if ((_a = data) === null || _a === void 0 ? void 0 : _a.sha) {
                     return data.sha;
                 }
             }
             catch (error) {
-                if (((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.status) !== 404) {
+                if (((_c = (_b = error) === null || _b === void 0 ? void 0 : _b.response) === null || _c === void 0 ? void 0 : _c.status) !== 404) {
                     throw error;
                 }
             }
@@ -235,8 +235,9 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     crawl(crawlTarget, push, browser) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            if (crawlTarget === null || crawlTarget === void 0 ? void 0 : crawlTarget.projectId) {
+            if ((_a = crawlTarget) === null || _a === void 0 ? void 0 : _a.projectId) {
                 yield this.saveFile('.github/workflows/test-crawler.yml', CI_Workflow);
                 const os = browser === test_crawler_core_1.Browser.IeSelenium ? 'win' : 'default';
                 yield this.call({
@@ -304,6 +305,7 @@ class GitHubStorage extends Storage_1.Storage {
                 .filter(({ status }) => status === 'in_progress')
                 .map(({ id }) => id);
             const jobs = progressIds.map((id) => __awaiter(this, void 0, void 0, function* () {
+                var _a, _b;
                 const { data: { jobs }, } = yield this.call({
                     url: `${this.baseRepo}/actions/runs/${id}/jobs`,
                 });
@@ -319,8 +321,8 @@ class GitHubStorage extends Storage_1.Storage {
                         startAt: Math.round(new Date(job.started_at).getTime() / 1000),
                         stepsCount: job.steps.length,
                         stepsDone: job.steps.filter(({ status }) => status === 'completed').length,
-                        currentStep: (step === null || step === void 0 ? void 0 : step.name) || 'unknown',
-                        lastUpdate: Math.round(new Date((step === null || step === void 0 ? void 0 : step.started_at) || job.started_at).getTime() /
+                        currentStep: ((_a = step) === null || _a === void 0 ? void 0 : _a.name) || 'unknown',
+                        lastUpdate: Math.round(new Date(((_b = step) === null || _b === void 0 ? void 0 : _b.started_at) || job.started_at).getTime() /
                             1000),
                     };
                 }
@@ -329,10 +331,11 @@ class GitHubStorage extends Storage_1.Storage {
         });
     }
     call(config) {
+        var _a;
         if (!this.token || !this.user) {
             throw new Error(error_1.ERR.missingGitHubConfig);
         }
-        return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, config === null || config === void 0 ? void 0 : config.headers), { Authorization: `token ${this.token}` }) }));
+        return axios_1.default(Object.assign(Object.assign({}, config), { headers: Object.assign(Object.assign({}, (_a = config) === null || _a === void 0 ? void 0 : _a.headers), { Authorization: `token ${this.token}` }) }));
     }
     getContents(path) {
         return this.call({

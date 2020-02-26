@@ -75,10 +75,11 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         });
     }
     copyToPins(projectId, timestamp, id) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const jsonFile = this.join(projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp, `${id}.json`);
             const data = yield this.storage.readJSON(jsonFile);
-            if (data === null || data === void 0 ? void 0 : data.png) {
+            if ((_a = data) === null || _a === void 0 ? void 0 : _a.png) {
                 data.png.diff = {
                     pixelDiffRatio: 0,
                     zones: [],
@@ -119,13 +120,14 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         return this.storage.saveFile(file, code);
     }
     getBeforeAfterCode(projectId, type) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             if (!Object.values(typing_1.BeforeAfterType).includes(type)) {
                 throw new Error(`Unknown code type ${type}.`);
             }
             try {
                 const buf = yield this.storage.read(this.join(projectId, `${type}.js`));
-                return (buf === null || buf === void 0 ? void 0 : buf.toString()) || '';
+                return ((_a = buf) === null || _a === void 0 ? void 0 : _a.toString()) || '';
             }
             catch (err) { }
             return '';
@@ -197,7 +199,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
         });
     }
     setZoneStatus(projectId, timestamp, id, status, index) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         return __awaiter(this, void 0, void 0, function* () {
             const folder = this.join(projectId, test_crawler_core_1.CRAWL_FOLDER, timestamp);
             const fileJson = path_1.join(folder, `${id}.json`);
@@ -205,7 +207,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
             if (index && status === test_crawler_core_1.ZoneStatus.zonePin) {
                 const pinJsonFile = this.join(projectId, test_crawler_core_1.PIN_FOLDER, `${id}.json`);
                 const pin = yield this.storage.readJSON(pinJsonFile);
-                if (((_b = (_a = pin === null || pin === void 0 ? void 0 : pin.png) === null || _a === void 0 ? void 0 : _a.diff) === null || _b === void 0 ? void 0 : _b.zones) && ((_d = (_c = data === null || data === void 0 ? void 0 : data.png) === null || _c === void 0 ? void 0 : _c.diff) === null || _d === void 0 ? void 0 : _d.zones)) {
+                if (((_c = (_b = (_a = pin) === null || _a === void 0 ? void 0 : _a.png) === null || _b === void 0 ? void 0 : _b.diff) === null || _c === void 0 ? void 0 : _c.zones) && ((_f = (_e = (_d = data) === null || _d === void 0 ? void 0 : _d.png) === null || _e === void 0 ? void 0 : _e.diff) === null || _f === void 0 ? void 0 : _f.zones)) {
                     if (index) {
                         pin.png.diff.zones.push(Object.assign(Object.assign({}, data.png.diff.zones[index]), { status }));
                     }
@@ -219,7 +221,7 @@ class CrawlerProvider extends CrawlerProviderStorage_1.CrawlerProviderStorage {
                 }
                 yield this.storage.saveJSON(pinJsonFile, pin);
             }
-            if ((_f = (_e = data === null || data === void 0 ? void 0 : data.png) === null || _e === void 0 ? void 0 : _e.diff) === null || _f === void 0 ? void 0 : _f.zones) {
+            if ((_j = (_h = (_g = data) === null || _g === void 0 ? void 0 : _g.png) === null || _h === void 0 ? void 0 : _h.diff) === null || _j === void 0 ? void 0 : _j.zones) {
                 if (index) {
                     data.png.diff.zones[index].status = status;
                 }

@@ -94,7 +94,7 @@
     "run-screen": "^0.5.3",
     "ts-node": "^8.6.2",
     "tslint": "^6.0.0",
-    "typescript": "3.8.2"
+    "typescript": "3.7.5"
   },
   "gitHead": "7a0e92cd881f66cec01c76ed2028609752f7c77b"
 }
