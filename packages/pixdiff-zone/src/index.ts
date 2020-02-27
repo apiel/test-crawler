@@ -31,7 +31,7 @@ export function pixdiff(
         throw new Error('Image sizes do not match.');
     }
 
-    const pixelDiff: Array<{ x: number, y: number }> = [];
+    const pixelDiff: { x: number, y: number }[] = [];
     const { width, height } = img1;
     const {
         threshold,

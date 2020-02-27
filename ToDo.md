@@ -8,10 +8,6 @@
 - update doc:
     + code and links
 
-- beforeAll script should be call in CI ?
-  but this would work only for CI
-  or we should make a special one for CI
-
 - if puppeteer not installed, user should not be able to select it.
   but it should be possible to install it from the settings.
 
@@ -23,9 +19,15 @@
 
 - support gitlab
 
-- improve naming with all those crawlers, job, run, project...
-
 - we able to set review as done, maybe we should have as well report
+
+- beforeAll script should be call in CI ?
+        should not be necessary, we can install lib in run time and call it
+        need to verify
+        else this would be useful only for CI
+        so we should make a special one for CI
+
+- improve naming with all those crawlers, job, run, project...
 
 - show affix of job in progress
 
