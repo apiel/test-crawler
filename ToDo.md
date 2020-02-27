@@ -1,5 +1,3 @@
-- new button should not show up if not loggin to github
-
 - e2e test base on screen zone
     + when page load, wait for a specific zone from page to load by comparing to another image
     + as soon as image equal this zone, then we apply some action like click or typing
