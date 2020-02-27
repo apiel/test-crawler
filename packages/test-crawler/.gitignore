@@ -25,3 +25,4 @@ yarn-error.log*
 pages
 test-crawler
 test-crawler.config.js
+.test-crawler.json

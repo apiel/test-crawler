@@ -2,11 +2,18 @@
 
 const { execSync } = require('child_process');
 const { createInterface } = require('readline');
+const { existsSync, writeFileSync } = require('fs');
+const { join } = require('path');
 
 console.log('Start test crawler');
 
-// setup();
-startTestCrawler();
+const testcrawlerJson = join(__dirname, '.test-crawler.json')
+
+if (!existsSync(testcrawlerJson)) {
+    setup();
+} else {
+    startTestCrawler();
+}
 
 function startTestCrawler() {
     const DIST_SERVER_FOLDER = `${__dirname}/../test-crawler/dist-server`;
@@ -33,11 +40,18 @@ function setup() {
             value => {
                 const VALUE = value.toLocaleUpperCase();
                 if (['Y', 'N'].includes(VALUE)) {
-                    console.log('value', VALUE);
+                    if (VALUE === 'Y') {
+                        execSync(
+                            `node ${join(__dirname, 'node_modules', 'puppeteer-core', 'install.js')}`,
+                            { stdio: 'inherit' },
+                        );
+                    }
                     readline.close();
-                    // startTestCrawler();
+                    // create an empty file
+                    writeFileSync(testcrawlerJson, '');
+                    startTestCrawler();
                 } else {
-                    console.warn('\nPlease select Y (yes) or N (no).');
+                    console.warn('\nPlease type Y (yes) or N (no).');
                     askPuppeteer();
                 }
             },

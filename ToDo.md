@@ -1,14 +1,9 @@
-- need to make a driver downloader
-    + need to download driver on test-crawler install?
-
 - new button should not show up if not loggin to github
 
 - e2e test base on screen zone
     + when page load, wait for a specific zone from page to load by comparing to another image
     + as soon as image equal this zone, then we apply some action like click or typing
     + then we again make some screen shot and do the next step
-
-- rework push: packages/test-crawler-cli/src/lib/crawl/resultConsumer.ts
 
 - add test for test-crawler
 
@@ -18,6 +13,9 @@
 - beforeAll script should be call in CI ?
   but this would work only for CI
   or we should make a special one for CI
+
+- if puppeteer not installed, user should not be able to select it.
+  but it should be possible to install it from the settings.
 
 - Improve commit messages by including project name...
 
