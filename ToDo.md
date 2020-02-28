@@ -1,3 +1,5 @@
+- base on history, use AI to identify if diff are normal or not...
+
 - e2e test base on screen zone
     + when page load, wait for a specific zone from page to load by comparing to another image
     + as soon as image equal this zone, then we apply some action like click or typing
@@ -5,21 +7,26 @@
 
 - add test for test-crawler
 
+- we are able to set review as done, maybe we should have as well be able to report it
+- make project name editable with https://ant.design/components/typography/#components-typography-demo-interactive
+- delete project? for github use CI for that
+- delete crawl result
+- give the possibility to keep a note on a crawler result page?
+- make USER_AGENT configurable?
+
 - update doc:
     + code and links
 
 - if puppeteer not installed, user should not be able to select it.
   but it should be possible to install it from the settings.
 
-- Improve commit messages by including project name...
+- show affix of job in progress
 
-- base on history, use AI to identify if diff are normal or not...
+- Improve commit messages by including project name...
 
 - should show performence
 
 - support gitlab
-
-- we able to set review as done, maybe we should have as well report
 
 - beforeAll script should be call in CI ?
         should not be necessary, we can install lib in run time and call it
@@ -29,18 +36,11 @@
 
 - improve naming with all those crawlers, job, run, project...
 
-- show affix of job in progress
-
 - see if we can improve IE, full page? we could scroll till the bottom and make screenshot of each step
     getting link fails, try to find some alternative? like get by tag name, or by loading the html
     in test-crawler and parsin the dom.
 
 - publish action there https://github.com/sdras/awesome-actions
-
-- make project name editable with https://ant.design/components/typography/#components-typography-demo-interactive
-- delete project? for github use CI for that
-- give the possibility to keep a note on a crawler result page?
-- make USER_AGENT configurable?
 
 - **we could track the number of query per page and see if there is some changes...**
 

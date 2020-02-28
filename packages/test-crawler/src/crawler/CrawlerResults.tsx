@@ -1,7 +1,7 @@
 import React from 'react';
 import Spin from 'antd/lib/spin';
 import { RouteComponentProps } from 'react-router-dom';
-import { subscrib, unsubscrib } from 'isomor';
+import { subscribe, unsubscribe } from 'isomor';
 import { Crawler } from 'test-crawler-core';
 
 import { Pages } from '../pages/Pages';
@@ -22,8 +22,8 @@ export const CrawlerResults = ({
         () => getCrawler(storageType, projectId, timestamp)
     );
     React.useEffect(() => {
-        const id = subscrib(setCrawler);
-        return () => unsubscrib(id);
+        const id = subscribe(setCrawler);
+        return () => unsubscribe(id);
     }, [crawler, setCrawler]);
     if (error) {
         return <ErrorHandler description={error.toString()} />;

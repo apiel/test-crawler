@@ -5495,9 +5495,9 @@ isomor-json-schema-generator@^2.0.1:
     json-stable-stringify "^1.0.1"
     typescript "~3.5.1"
 
-isomor-server@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-2.2.1.tgz#27ac3746c96d97dd881edfe525c7c8f0b93dbf8c"
+isomor-server@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-2.3.0.tgz#ccf2248e6a8ac0b80adab3126c9a13434b1082ac"
   dependencies:
     "@types/fs-extra" "^8.0.1"
     "@types/morgan" "^1.7.37"
@@ -5507,7 +5507,7 @@ isomor-server@^2.2.1:
     cookie-parser "^1.4.4"
     express "^4.17.1"
     fs-extra "^8.1.0"
-    isomor "^2.2.1"
+    isomor "^2.3.0"
     isomor-core "^2.1.0"
     logol "^0.0.3"
     morgan "^1.9.1"
@@ -5516,9 +5516,9 @@ isomor-server@^2.2.1:
     typescript "^3.7.5"
     ws "^7.2.1"
 
-isomor-transpiler@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-2.2.0.tgz#ba5f50efa40644f9f7cee4b5e1bd4d9c2daeb0a8"
+isomor-transpiler@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-2.3.0.tgz#93585670c9819fe3100e6350496bbebf8e4f0f13"
   dependencies:
     "@babel/generator" "^7.8.4"
     "@babel/parser" "^7.8.4"
@@ -5528,7 +5528,7 @@ isomor-transpiler@^2.2.0:
     chokidar "^3.3.1"
     debug "^4.1.1"
     fs-extra "^8.1.0"
-    isomor "^2.2.0"
+    isomor "^2.3.0"
     isomor-core "^2.1.0"
     isomor-json-schema-generator "^2.0.1"
     logol "^0.0.3"
@@ -5537,15 +5537,15 @@ isomor-transpiler@^2.2.0:
     ts-node "^8.6.2"
     typescript "^3.7.5"
 
-isomor@^2.1.1, isomor@^2.2.0, isomor@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/isomor/-/isomor-2.2.1.tgz#4a6c5c719eec005c278704d7daa0fb0fb597885b"
+isomor@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-2.3.0.tgz#aa183b36447cf1a775e14b9ab26f9d4e2e34b47b"
   dependencies:
     axios "^0.19.2"
     chalk "^3.0.0"
     inquirer "^7.0.4"
-    isomor-server "^2.2.1"
-    isomor-transpiler "^2.2.0"
+    isomor-server "^2.3.0"
+    isomor-transpiler "^2.3.0"
     typescript "^3.7.5"
 
 isomorphic-fetch@^2.1.1:
@@ -8846,14 +8846,14 @@ react-dev-utils@^10.2.0:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@^16.12.0:
-  version "16.12.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
+react-dom@^16.13.0:
+  version "16.13.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.0.tgz#cdde54b48eb9e8a0ca1b3dc9943d9bb409b81866"
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.18.0"
+    scheduler "^0.19.0"
 
 react-error-overlay@^6.0.6:
   version "6.0.6"
@@ -8987,9 +8987,9 @@ react-slick@~0.25.2:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
-react@^16.12.0:
-  version "16.12.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
+react@^16.13.0:
+  version "16.13.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.13.0.tgz#d046eabcdf64e457bbeed1e792e235e1b9934cf7"
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -9451,9 +9451,9 @@ saxes@^3.1.9:
   dependencies:
     xmlchars "^2.1.1"
 
-scheduler@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.18.0.tgz#5901ad6659bc1d8f3fdaf36eb7a67b0d6746b1c4"
+scheduler@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.0.tgz#a715d56302de403df742f4a9be11975b32f5698d"
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
