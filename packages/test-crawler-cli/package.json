@@ -1,6 +1,6 @@
 {
   "name": "test-crawler-cli",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "bin": {
@@ -23,7 +23,7 @@
     "logol": "^0.0.3",
     "md5": "^2.2.1",
     "minimatch": "^3.0.4",
-    "pixdiff-zone": "^3.5.2",
+    "pixdiff-zone": "^3.5.3",
     "pngjs": "^3.3.3",
     "puppeteer-core": "^2.1.1",
     "rimraf": "^3.0.2",
