@@ -1,6 +1,6 @@
 {
   "name": "test-crawler",
-  "version": "3.5.4",
+  "version": "3.5.5",
   "bin": {
     "test-crawler": "./test-crawler.js"
   },
@@ -69,7 +69,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "rimraf": "^3.0.2",
-    "test-crawler-cli": "^3.5.4",
+    "test-crawler-cli": "^3.5.5",
     "test-crawler-core": "^3.4.2",
     "test-crawler-driver-manager": "^3.4.2",
     "universal-cookie": "^4.0.3"
