@@ -6,11 +6,11 @@
 0 silly argv }
 1 notice cli v3.20.2
 2 verbose rootPath /home/alex/dev/node/pkg/test-crawler
-3 verbose session 2bb03aef9f2a0b28
+3 verbose session 597d1a086235ddd2
 4 verbose user-agent lerna/3.20.2/node@v12.14.1+x64 (linux)
 5 silly argv { _: [ 'publish' ], composed: 'publish', lernaVersion: '3.20.2' }
 6 verbose rootPath /home/alex/dev/node/pkg/test-crawler
-7 info current version 3.5.1
+7 info current version 3.5.3
 8 silly isAnythingCommitted
 9 verbose isAnythingCommitted 1
 10 silly currentBranch
@@ -20,17 +20,25 @@
 14 silly isBehindUpstream master is behind origin/master by 0 commit(s) and ahead by 0
 15 silly hasTags
 16 verbose hasTags true
-17 silly git-describe.sync "v3.5.1-3-gccea44a" => {"lastTagName":"v3.5.1","lastVersion":"v3.5.1","refCount":"3","sha":"ccea44a","isDirty":false}
-18 info Looking for changed packages since v3.5.1
+17 silly git-describe.sync "v3.5.3-2-g0eda332" => {"lastTagName":"v3.5.3","lastVersion":"v3.5.3","refCount":"2","sha":"0eda332","isDirty":false}
+18 info Looking for changed packages since v3.5.3
 19 silly checking diff packages/example-travis
 20 silly no diff found in example-travis
 21 silly checking diff packages/example
 22 silly no diff found in example
 23 silly checking diff packages/pixdiff-zone
-24 silly found diff in packages/pixdiff-zone/src/index.ts
-25 verbose filtered diff [ 'packages/pixdiff-zone/src/index.ts' ]
-26 silly checking diff packages/test-crawler-cli
-27 silly no diff found in test-crawler-cli
+24 silly no diff found in pixdiff-zone
+25 silly checking diff packages/test-crawler-cli
+26 silly found diff in packages/test-crawler-cli/dist/lib/crawl/pusher.d.ts
+26 silly found diff in packages/test-crawler-cli/dist/lib/crawl/pusher.js
+26 silly found diff in packages/test-crawler-cli/dist/lib/crawl/pusher.js.map
+26 silly found diff in packages/test-crawler-cli/src/lib/crawl/pusher.ts
+27 verbose filtered diff [
+27 verbose filtered diff   'packages/test-crawler-cli/dist/lib/crawl/pusher.d.ts',
+27 verbose filtered diff   'packages/test-crawler-cli/dist/lib/crawl/pusher.js',
+27 verbose filtered diff   'packages/test-crawler-cli/dist/lib/crawl/pusher.js.map',
+27 verbose filtered diff   'packages/test-crawler-cli/src/lib/crawl/pusher.ts'
+27 verbose filtered diff ]
 28 silly checking diff packages/test-crawler-core
 29 silly no diff found in test-crawler-core
 30 silly checking diff packages/test-crawler-driver-manager
@@ -38,155 +46,123 @@
 32 silly checking diff packages/test-crawler
 33 silly found diff in packages/test-crawler/build/asset-manifest.json
 33 silly found diff in packages/test-crawler/build/index.html
-33 silly found diff in packages/test-crawler/build/precache-manifest.d6dcc4b2eb0ca66b2ba93b019eee451d.js
+33 silly found diff in packages/test-crawler/build/precache-manifest.10faad98c4f36ab77f5373203b32cf3a.js
 33 silly found diff in packages/test-crawler/build/service-worker.js
-33 silly found diff in packages/test-crawler/build/static/js/2.65c1a3a2.chunk.js.map
-33 silly found diff in packages/test-crawler/build/static/js/2.e0565f48.chunk.js
-33 silly found diff in packages/test-crawler/build/static/js/2.e0565f48.chunk.js.LICENSE.txt
-33 silly found diff in packages/test-crawler/build/static/js/2.e0565f48.chunk.js.map
-33 silly found diff in packages/test-crawler/build/static/js/main.6bf61535.chunk.js
-33 silly found diff in packages/test-crawler/build/static/js/main.6bf61535.chunk.js.map
-33 silly found diff in packages/test-crawler/build/static/js/main.a0e351f7.chunk.js
-33 silly found diff in packages/test-crawler/build/static/js/main.a0e351f7.chunk.js.map
+33 silly found diff in packages/test-crawler/build/static/js/main.b850b6d1.chunk.js
+33 silly found diff in packages/test-crawler/build/static/js/main.b850b6d1.chunk.js.map
+33 silly found diff in packages/test-crawler/dist-server/server/startup/index.js
 33 silly found diff in packages/test-crawler/package.json
-33 silly found diff in packages/test-crawler/src-isomor/crawler/CrawlerResults.tsx
-33 silly found diff in packages/test-crawler/src/crawler/CrawlerResults.tsx
+33 silly found diff in packages/test-crawler/src-isomor/server/startup/index.ts
 33 silly found diff in packages/test-crawler/yarn.lock
 34 verbose filtered diff [
 34 verbose filtered diff   'packages/test-crawler/build/asset-manifest.json',
 34 verbose filtered diff   'packages/test-crawler/build/index.html',
-34 verbose filtered diff   'packages/test-crawler/build/precache-manifest.d6dcc4b2eb0ca66b2ba93b019eee451d.js',
+34 verbose filtered diff   'packages/test-crawler/build/precache-manifest.10faad98c4f36ab77f5373203b32cf3a.js',
 34 verbose filtered diff   'packages/test-crawler/build/service-worker.js',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/2.65c1a3a2.chunk.js.map',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/2.e0565f48.chunk.js',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/2.e0565f48.chunk.js.LICENSE.txt',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/2.e0565f48.chunk.js.map',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/main.6bf61535.chunk.js',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/main.6bf61535.chunk.js.map',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/main.a0e351f7.chunk.js',
-34 verbose filtered diff   'packages/test-crawler/build/static/js/main.a0e351f7.chunk.js.map',
+34 verbose filtered diff   'packages/test-crawler/build/static/js/main.b850b6d1.chunk.js',
+34 verbose filtered diff   'packages/test-crawler/build/static/js/main.b850b6d1.chunk.js.map',
+34 verbose filtered diff   'packages/test-crawler/dist-server/server/startup/index.js',
 34 verbose filtered diff   'packages/test-crawler/package.json',
-34 verbose filtered diff   'packages/test-crawler/src-isomor/crawler/CrawlerResults.tsx',
-34 verbose filtered diff   'packages/test-crawler/src/crawler/CrawlerResults.tsx',
+34 verbose filtered diff   'packages/test-crawler/src-isomor/server/startup/index.ts',
 34 verbose filtered diff   'packages/test-crawler/yarn.lock'
 34 verbose filtered diff ]
 35 verbose updated example-travis
-36 verbose updated pixdiff-zone
-37 verbose updated test-crawler-cli
-38 verbose updated test-crawler
-39 verbose git-describe undefined => "v3.5.1-3-gccea44a"
-40 silly git-describe parsed => {"lastTagName":"v3.5.1","lastVersion":"v3.5.1","refCount":"3","sha":"ccea44a","isDirty":false}
-41 info execute Skipping releases
-42 silly lifecycle No script for "preversion" in "test-crawler-monorepo", continuing
-43 silly lifecycle No script for "preversion" in "pixdiff-zone", continuing
-44 silly lifecycle No script for "version" in "pixdiff-zone", continuing
-45 silly lifecycle No script for "preversion" in "test-crawler-cli", continuing
-46 silly lifecycle No script for "version" in "test-crawler-cli", continuing
-47 silly lifecycle No script for "preversion" in "test-crawler", continuing
-48 silly lifecycle No script for "version" in "test-crawler", continuing
-49 silly lifecycle No script for "preversion" in "example-travis", continuing
-50 silly lifecycle No script for "version" in "example-travis", continuing
-51 silly lifecycle No script for "version" in "test-crawler-monorepo", continuing
-52 silly gitAdd [
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/pixdiff-zone/package.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/pixdiff-zone/package-lock.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/package.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/package-lock.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler/package.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler/package-lock.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/example-travis/package.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/example-travis/package-lock.json',
-52 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/lerna.json'
-52 silly gitAdd ]
-53 silly gitCommit v3.5.2
-54 verbose git [ 'commit', '-m', 'v3.5.2' ]
-55 silly gitTag v3.5.2
-56 verbose git [ 'tag', 'v3.5.2', '-m', 'v3.5.2' ]
-57 silly lifecycle No script for "postversion" in "example-travis", continuing
-58 silly lifecycle No script for "postversion" in "pixdiff-zone", continuing
-59 silly lifecycle No script for "postversion" in "test-crawler-cli", continuing
-60 silly lifecycle No script for "postversion" in "test-crawler", continuing
-61 silly lifecycle No script for "postversion" in "test-crawler-monorepo", continuing
-62 info git Pushing tags...
-63 silly gitPush origin master
-64 info publish Publishing packages to npm...
-65 info Verifying npm credentials
-66 verbose Retrieving npm user profile
-67 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 1053ms
-68 silly npm profile get received {"tfa":false,"name":"apiel","email":"alexandre.piel@gmail.com","email_verified":true,"created":"2016-10-06T13:11:36.503Z","updated":"2018-10-01T15:27:27.089Z","cidr_whitelist":null,"fullname":"Alexandre Piel","twitter":"","github":"apiel"}
-69 silly get npm username received {"username":"apiel","tfa":false,"name":"apiel","email":"alexandre.piel@gmail.com","email_verified":true,"created":"2016-10-06T13:11:36.503Z","updated":"2018-10-01T15:27:27.089Z","cidr_whitelist":null,"fullname":"Alexandre Piel","twitter":"","github":"apiel"}
-70 silly verifyNpmPackageAccess
-71 http fetch GET 200 https://registry.npmjs.org/-/org/apiel/package?format=cli 401ms
-72 info Checking two-factor auth mode
-73 verbose Retrieving npm user profile
-74 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 917ms
-75 silly npm profile get received {"tfa":false,"name":"apiel","email":"alexandre.piel@gmail.com","email_verified":true,"created":"2016-10-06T13:11:36.503Z","updated":"2018-10-01T15:27:27.089Z","cidr_whitelist":null,"fullname":"Alexandre Piel","twitter":"","github":"apiel"}
-76 silly 2FA false
-77 warn ENOLICENSE Packages pixdiff-zone, test-crawler-cli, and test-crawler are missing a license.
-77 warn ENOLICENSE One way to fix this is to add a LICENSE.md file to the root of this repository.
-77 warn ENOLICENSE See https://choosealicense.com for additional guidance.
-78 silly getCurrentSHA
-79 verbose getCurrentSHA 8fe9b3894b56ac2265d1db5775a2b973bfde718d
-80 silly lifecycle No script for "prepublish" in "test-crawler-monorepo", continuing
-81 silly lifecycle No script for "prepare" in "test-crawler-monorepo", continuing
-82 silly lifecycle No script for "prepublishOnly" in "test-crawler-monorepo", continuing
-83 silly lifecycle No script for "prepack" in "test-crawler-monorepo", continuing
-84 verbose pack-directory ../pixdiff-zone
-85 silly lifecycle No script for "prepublish" in "pixdiff-zone", continuing
-86 silly lifecycle No script for "prepare" in "pixdiff-zone", continuing
-87 silly lifecycle "prepublishOnly" starting in "pixdiff-zone"
-88 info lifecycle pixdiff-zone@3.5.2~prepublishOnly: pixdiff-zone@3.5.2
-89 verbose lifecycle pixdiff-zone@3.5.2~prepublishOnly: unsafe-perm in lifecycle true
-90 verbose lifecycle pixdiff-zone@3.5.2~prepublishOnly: PATH: /usr/local/lib/node_modules/lerna/node_modules/npm-lifecycle/node-gyp-bin:/home/alex/dev/node/pkg/test-crawler/packages/pixdiff-zone/node_modules/.bin:/home/alex/.nvm/versions/node/v12.14.1/bin:/home/alex/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alex/dev/esp/esp-open-sdk/xtensa-lx106-elf/bin:/home/alex/dev/esp/esp-open-sdk/esptool:/home/alex/dev/nrf5/gcc-arm-none-eabi-7-2017-q4-major/bin:/home/alex/dev/nrf5/nRF5x-Command-Line-Tools_9_7_2_Linux-x86_64/nrfjprog:/home/alex/dev/flutter2020/flutter/bin:/home/alex/Android/Sdk/tools/:/home/alex/Android/Sdk/platform-tools/
-91 verbose lifecycle pixdiff-zone@3.5.2~prepublishOnly: CWD: /home/alex/dev/node/pkg/test-crawler/packages/pixdiff-zone
-92 silly lifecycle pixdiff-zone@3.5.2~prepublishOnly: Args: [ '-c', 'yarn build' ]
-93 silly lifecycle pixdiff-zone@3.5.2~prepublishOnly: Returned: code: 0  signal: null
-94 silly lifecycle "prepublishOnly" finished in "pixdiff-zone"
-95 silly lifecycle No script for "prepack" in "pixdiff-zone", continuing
-96 silly lifecycle No script for "postpack" in "pixdiff-zone", continuing
-97 verbose packed packages/pixdiff-zone
-98 verbose pack-directory ../test-crawler-cli
-99 silly lifecycle No script for "prepublish" in "test-crawler-cli", continuing
-100 silly lifecycle No script for "prepare" in "test-crawler-cli", continuing
-101 silly lifecycle "prepublishOnly" starting in "test-crawler-cli"
-102 info lifecycle test-crawler-cli@3.5.2~prepublishOnly: test-crawler-cli@3.5.2
-103 verbose lifecycle test-crawler-cli@3.5.2~prepublishOnly: unsafe-perm in lifecycle true
-104 verbose lifecycle test-crawler-cli@3.5.2~prepublishOnly: PATH: /usr/local/lib/node_modules/lerna/node_modules/npm-lifecycle/node-gyp-bin:/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/node_modules/.bin:/home/alex/.nvm/versions/node/v12.14.1/bin:/home/alex/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alex/dev/esp/esp-open-sdk/xtensa-lx106-elf/bin:/home/alex/dev/esp/esp-open-sdk/esptool:/home/alex/dev/nrf5/gcc-arm-none-eabi-7-2017-q4-major/bin:/home/alex/dev/nrf5/nRF5x-Command-Line-Tools_9_7_2_Linux-x86_64/nrfjprog:/home/alex/dev/flutter2020/flutter/bin:/home/alex/Android/Sdk/tools/:/home/alex/Android/Sdk/platform-tools/
-105 verbose lifecycle test-crawler-cli@3.5.2~prepublishOnly: CWD: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli
-106 silly lifecycle test-crawler-cli@3.5.2~prepublishOnly: Args: [ '-c', 'yarn build' ]
-107 silly lifecycle test-crawler-cli@3.5.2~prepublishOnly: Returned: code: 0  signal: null
-108 silly lifecycle "prepublishOnly" finished in "test-crawler-cli"
-109 silly lifecycle No script for "prepack" in "test-crawler-cli", continuing
-110 silly lifecycle No script for "postpack" in "test-crawler-cli", continuing
-111 verbose packed packages/test-crawler-cli
-112 verbose pack-directory
-113 silly lifecycle No script for "prepublish" in "test-crawler", continuing
-114 silly lifecycle No script for "prepare" in "test-crawler", continuing
-115 silly lifecycle "prepublishOnly" starting in "test-crawler"
-116 info lifecycle test-crawler@3.5.2~prepublishOnly: test-crawler@3.5.2
-117 verbose lifecycle test-crawler@3.5.2~prepublishOnly: unsafe-perm in lifecycle true
-118 verbose lifecycle test-crawler@3.5.2~prepublishOnly: PATH: /usr/local/lib/node_modules/lerna/node_modules/npm-lifecycle/node-gyp-bin:/home/alex/dev/node/pkg/test-crawler/packages/test-crawler/node_modules/.bin:/home/alex/.nvm/versions/node/v12.14.1/bin:/home/alex/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alex/dev/esp/esp-open-sdk/xtensa-lx106-elf/bin:/home/alex/dev/esp/esp-open-sdk/esptool:/home/alex/dev/nrf5/gcc-arm-none-eabi-7-2017-q4-major/bin:/home/alex/dev/nrf5/nRF5x-Command-Line-Tools_9_7_2_Linux-x86_64/nrfjprog:/home/alex/dev/flutter2020/flutter/bin:/home/alex/Android/Sdk/tools/:/home/alex/Android/Sdk/platform-tools/
-119 verbose lifecycle test-crawler@3.5.2~prepublishOnly: CWD: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler
-120 silly lifecycle test-crawler@3.5.2~prepublishOnly: Args: [
-120 silly lifecycle   '-c',
-120 silly lifecycle   'cp ../../README.md . && yarn prepublishGithub && yarn prepublishLocal && chmod +x test-crawler.js'
-120 silly lifecycle ]
-121 silly lifecycle test-crawler@3.5.2~prepublishOnly: Returned: code: 0  signal: null
-122 silly lifecycle "prepublishOnly" finished in "test-crawler"
-123 silly lifecycle No script for "prepack" in "test-crawler", continuing
-124 error ZlibError: zlib: invalid code lengths set
-124 error     at Unzip.<anonymous> (/usr/local/lib/node_modules/lerna/node_modules/minizlib/index.js:73:52)
-124 error     at Unzip.emit (events.js:228:7)
-124 error     at Zlib.zlibOnError [as onerror] (zlib.js:173:8)
-124 error     at processChunkSync (zlib.js:416:12)
-124 error     at Unzip.ZlibBase._processChunk (zlib.js:391:12)
-124 error     at Unzip.write (/usr/local/lib/node_modules/lerna/node_modules/minizlib/index.js:140:30)
-124 error     at Object.write (/usr/local/lib/node_modules/lerna/node_modules/tar/lib/parse.js:305:58)
-124 error     at Yallist.<anonymous> (/usr/local/lib/node_modules/lerna/node_modules/minipass/index.js:374:18)
-124 error     at Yallist.forEach (/usr/local/lib/node_modules/lerna/node_modules/yallist/yallist.js:156:8)
-124 error     at ReadStream.emit (/usr/local/lib/node_modules/lerna/node_modules/minipass/index.js:373:20)
-124 error     at ReadStream.emit (/usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:154:22)
-124 error     at ReadStream.write (/usr/local/lib/node_modules/lerna/node_modules/minipass/index.js:163:17)
-124 error     at ReadStream.[_handleChunk] (/usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:131:19)
-124 error     at ReadStream.[_onread] (/usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:109:32)
-124 error     at /usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:101:22
+36 verbose updated test-crawler-cli
+37 verbose updated test-crawler
+38 verbose git-describe undefined => "v3.5.3-2-g0eda332"
+39 silly git-describe parsed => {"lastTagName":"v3.5.3","lastVersion":"v3.5.3","refCount":"2","sha":"0eda332","isDirty":false}
+40 info execute Skipping releases
+41 silly lifecycle No script for "preversion" in "test-crawler-monorepo", continuing
+42 silly lifecycle No script for "preversion" in "test-crawler-cli", continuing
+43 silly lifecycle No script for "version" in "test-crawler-cli", continuing
+44 silly lifecycle No script for "preversion" in "test-crawler", continuing
+45 silly lifecycle No script for "version" in "test-crawler", continuing
+46 silly lifecycle No script for "preversion" in "example-travis", continuing
+47 silly lifecycle No script for "version" in "example-travis", continuing
+48 silly lifecycle No script for "version" in "test-crawler-monorepo", continuing
+49 silly gitAdd [
+49 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/package.json',
+49 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/package-lock.json',
+49 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler/package.json',
+49 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/test-crawler/package-lock.json',
+49 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/example-travis/package.json',
+49 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/packages/example-travis/package-lock.json',
+49 silly gitAdd   '/home/alex/dev/node/pkg/test-crawler/lerna.json'
+49 silly gitAdd ]
+50 silly gitCommit v3.5.4
+51 verbose git [ 'commit', '-m', 'v3.5.4' ]
+52 silly gitTag v3.5.4
+53 verbose git [ 'tag', 'v3.5.4', '-m', 'v3.5.4' ]
+54 silly lifecycle No script for "postversion" in "example-travis", continuing
+55 silly lifecycle No script for "postversion" in "test-crawler-cli", continuing
+56 silly lifecycle No script for "postversion" in "test-crawler", continuing
+57 silly lifecycle No script for "postversion" in "test-crawler-monorepo", continuing
+58 info git Pushing tags...
+59 silly gitPush origin master
+60 info publish Publishing packages to npm...
+61 info Verifying npm credentials
+62 verbose Retrieving npm user profile
+63 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 924ms
+64 silly npm profile get received {"tfa":false,"name":"apiel","email":"alexandre.piel@gmail.com","email_verified":true,"created":"2016-10-06T13:11:36.503Z","updated":"2018-10-01T15:27:27.089Z","cidr_whitelist":null,"fullname":"Alexandre Piel","twitter":"","github":"apiel"}
+65 silly get npm username received {"username":"apiel","tfa":false,"name":"apiel","email":"alexandre.piel@gmail.com","email_verified":true,"created":"2016-10-06T13:11:36.503Z","updated":"2018-10-01T15:27:27.089Z","cidr_whitelist":null,"fullname":"Alexandre Piel","twitter":"","github":"apiel"}
+66 silly verifyNpmPackageAccess
+67 http fetch GET 200 https://registry.npmjs.org/-/org/apiel/package?format=cli 497ms
+68 info Checking two-factor auth mode
+69 verbose Retrieving npm user profile
+70 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 405ms
+71 silly npm profile get received {"tfa":false,"name":"apiel","email":"alexandre.piel@gmail.com","email_verified":true,"created":"2016-10-06T13:11:36.503Z","updated":"2018-10-01T15:27:27.089Z","cidr_whitelist":null,"fullname":"Alexandre Piel","twitter":"","github":"apiel"}
+72 silly 2FA false
+73 warn ENOLICENSE Packages test-crawler-cli and test-crawler are missing a license.
+73 warn ENOLICENSE One way to fix this is to add a LICENSE.md file to the root of this repository.
+73 warn ENOLICENSE See https://choosealicense.com for additional guidance.
+74 silly getCurrentSHA
+75 verbose getCurrentSHA fc9335eeaa2bfd48c164516930609560e0d8935e
+76 silly lifecycle No script for "prepublish" in "test-crawler-monorepo", continuing
+77 silly lifecycle No script for "prepare" in "test-crawler-monorepo", continuing
+78 silly lifecycle No script for "prepublishOnly" in "test-crawler-monorepo", continuing
+79 silly lifecycle No script for "prepack" in "test-crawler-monorepo", continuing
+80 verbose pack-directory
+81 silly lifecycle No script for "prepublish" in "test-crawler-cli", continuing
+82 silly lifecycle No script for "prepare" in "test-crawler-cli", continuing
+83 silly lifecycle "prepublishOnly" starting in "test-crawler-cli"
+84 info lifecycle test-crawler-cli@3.5.4~prepublishOnly: test-crawler-cli@3.5.4
+85 verbose lifecycle test-crawler-cli@3.5.4~prepublishOnly: unsafe-perm in lifecycle true
+86 verbose lifecycle test-crawler-cli@3.5.4~prepublishOnly: PATH: /usr/local/lib/node_modules/lerna/node_modules/npm-lifecycle/node-gyp-bin:/home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli/node_modules/.bin:/home/alex/.nvm/versions/node/v12.14.1/bin:/home/alex/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alex/dev/esp/esp-open-sdk/xtensa-lx106-elf/bin:/home/alex/dev/esp/esp-open-sdk/esptool:/home/alex/dev/nrf5/gcc-arm-none-eabi-7-2017-q4-major/bin:/home/alex/dev/nrf5/nRF5x-Command-Line-Tools_9_7_2_Linux-x86_64/nrfjprog:/home/alex/dev/flutter2020/flutter/bin:/home/alex/Android/Sdk/tools/:/home/alex/Android/Sdk/platform-tools/
+87 verbose lifecycle test-crawler-cli@3.5.4~prepublishOnly: CWD: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler-cli
+88 silly lifecycle test-crawler-cli@3.5.4~prepublishOnly: Args: [ '-c', 'yarn build' ]
+89 silly lifecycle test-crawler-cli@3.5.4~prepublishOnly: Returned: code: 0  signal: null
+90 silly lifecycle "prepublishOnly" finished in "test-crawler-cli"
+91 silly lifecycle No script for "prepack" in "test-crawler-cli", continuing
+92 silly lifecycle No script for "postpack" in "test-crawler-cli", continuing
+93 verbose packed packages/test-crawler-cli
+94 verbose pack-directory ../test-crawler
+95 silly lifecycle No script for "prepublish" in "test-crawler", continuing
+96 silly lifecycle No script for "prepare" in "test-crawler", continuing
+97 silly lifecycle "prepublishOnly" starting in "test-crawler"
+98 info lifecycle test-crawler@3.5.4~prepublishOnly: test-crawler@3.5.4
+99 verbose lifecycle test-crawler@3.5.4~prepublishOnly: unsafe-perm in lifecycle true
+100 verbose lifecycle test-crawler@3.5.4~prepublishOnly: PATH: /usr/local/lib/node_modules/lerna/node_modules/npm-lifecycle/node-gyp-bin:/home/alex/dev/node/pkg/test-crawler/packages/test-crawler/node_modules/.bin:/home/alex/.nvm/versions/node/v12.14.1/bin:/home/alex/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/alex/dev/esp/esp-open-sdk/xtensa-lx106-elf/bin:/home/alex/dev/esp/esp-open-sdk/esptool:/home/alex/dev/nrf5/gcc-arm-none-eabi-7-2017-q4-major/bin:/home/alex/dev/nrf5/nRF5x-Command-Line-Tools_9_7_2_Linux-x86_64/nrfjprog:/home/alex/dev/flutter2020/flutter/bin:/home/alex/Android/Sdk/tools/:/home/alex/Android/Sdk/platform-tools/
+101 verbose lifecycle test-crawler@3.5.4~prepublishOnly: CWD: /home/alex/dev/node/pkg/test-crawler/packages/test-crawler
+102 silly lifecycle test-crawler@3.5.4~prepublishOnly: Args: [
+102 silly lifecycle   '-c',
+102 silly lifecycle   'cp ../../README.md . && yarn prepublishGithub && yarn prepublishLocal && chmod +x test-crawler.js'
+102 silly lifecycle ]
+103 silly lifecycle test-crawler@3.5.4~prepublishOnly: Returned: code: 0  signal: null
+104 silly lifecycle "prepublishOnly" finished in "test-crawler"
+105 silly lifecycle No script for "prepack" in "test-crawler", continuing
+106 error ZlibError: zlib: invalid code lengths set
+106 error     at Unzip.<anonymous> (/usr/local/lib/node_modules/lerna/node_modules/minizlib/index.js:73:52)
+106 error     at Unzip.emit (events.js:228:7)
+106 error     at Zlib.zlibOnError [as onerror] (zlib.js:173:8)
+106 error     at processChunkSync (zlib.js:416:12)
+106 error     at Unzip.ZlibBase._processChunk (zlib.js:391:12)
+106 error     at Unzip.write (/usr/local/lib/node_modules/lerna/node_modules/minizlib/index.js:140:30)
+106 error     at Object.write (/usr/local/lib/node_modules/lerna/node_modules/tar/lib/parse.js:305:58)
+106 error     at Yallist.<anonymous> (/usr/local/lib/node_modules/lerna/node_modules/minipass/index.js:374:18)
+106 error     at Yallist.forEach (/usr/local/lib/node_modules/lerna/node_modules/yallist/yallist.js:156:8)
+106 error     at ReadStream.emit (/usr/local/lib/node_modules/lerna/node_modules/minipass/index.js:373:20)
+106 error     at ReadStream.emit (/usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:154:22)
+106 error     at ReadStream.write (/usr/local/lib/node_modules/lerna/node_modules/minipass/index.js:163:17)
+106 error     at ReadStream.[_handleChunk] (/usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:131:19)
+106 error     at ReadStream.[_onread] (/usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:109:32)
+106 error     at /usr/local/lib/node_modules/lerna/node_modules/fs-minipass/index.js:101:22
