@@ -5495,9 +5495,9 @@ isomor-json-schema-generator@^2.0.1:
     json-stable-stringify "^1.0.1"
     typescript "~3.5.1"
 
-isomor-server@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-2.3.0.tgz#ccf2248e6a8ac0b80adab3126c9a13434b1082ac"
+isomor-server@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/isomor-server/-/isomor-server-2.4.0.tgz#ffefaa23db882683f9e63e685d9364240199a822"
   dependencies:
     "@types/fs-extra" "^8.0.1"
     "@types/morgan" "^1.7.37"
@@ -5507,7 +5507,7 @@ isomor-server@^2.3.0:
     cookie-parser "^1.4.4"
     express "^4.17.1"
     fs-extra "^8.1.0"
-    isomor "^2.3.0"
+    isomor "^2.4.0"
     isomor-core "^2.1.0"
     logol "^0.0.3"
     morgan "^1.9.1"
@@ -5516,9 +5516,9 @@ isomor-server@^2.3.0:
     typescript "^3.7.5"
     ws "^7.2.1"
 
-isomor-transpiler@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-2.3.0.tgz#93585670c9819fe3100e6350496bbebf8e4f0f13"
+isomor-transpiler@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/isomor-transpiler/-/isomor-transpiler-2.4.0.tgz#be9930fe8cf7bb55dc78cce8c21cedaf0fad0e84"
   dependencies:
     "@babel/generator" "^7.8.4"
     "@babel/parser" "^7.8.4"
@@ -5528,7 +5528,7 @@ isomor-transpiler@^2.3.0:
     chokidar "^3.3.1"
     debug "^4.1.1"
     fs-extra "^8.1.0"
-    isomor "^2.3.0"
+    isomor "^2.4.0"
     isomor-core "^2.1.0"
     isomor-json-schema-generator "^2.0.1"
     logol "^0.0.3"
@@ -5537,15 +5537,15 @@ isomor-transpiler@^2.3.0:
     ts-node "^8.6.2"
     typescript "^3.7.5"
 
-isomor@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/isomor/-/isomor-2.3.0.tgz#aa183b36447cf1a775e14b9ab26f9d4e2e34b47b"
+isomor@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/isomor/-/isomor-2.4.0.tgz#59ab3db7b3ff8aafdc89dcfb4a66277c80ebfbff"
   dependencies:
     axios "^0.19.2"
     chalk "^3.0.0"
     inquirer "^7.0.4"
-    isomor-server "^2.3.0"
-    isomor-transpiler "^2.3.0"
+    isomor-server "^2.4.0"
+    isomor-transpiler "^2.4.0"
     typescript "^3.7.5"
 
 isomorphic-fetch@^2.1.1:
@@ -7489,9 +7489,9 @@ pirates@^4.0.1:
   dependencies:
     node-modules-regexp "^1.0.0"
 
-pixdiff-zone@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-3.0.1.tgz#dc22aac996584f1b990e72498ce1c5b8389204ae"
+pixdiff-zone@^3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/pixdiff-zone/-/pixdiff-zone-3.5.3.tgz#2ef1d9cd9d886a0936128bf96e61afbab502e03d"
 
 pkg-dir@^1.0.0:
   version "1.0.0"
@@ -10174,16 +10174,16 @@ terser@^4.1.2, terser@^4.4.3, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-test-crawler-cli@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.4.2.tgz#e24d0ecd5be4e8db8055ce149f36ff907e4509b2"
+test-crawler-cli@^3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/test-crawler-cli/-/test-crawler-cli-3.5.3.tgz#54ce3da105c268dbf51321f5e739bd4c6750ffcc"
   dependencies:
     axios "^0.19.2"
     fs-extra "^8.1.0"
     logol "^0.0.3"
     md5 "^2.2.1"
     minimatch "^3.0.4"
-    pixdiff-zone "^3.0.1"
+    pixdiff-zone "^3.5.3"
     pngjs "^3.3.3"
     puppeteer-core "^2.1.1"
     rimraf "^3.0.2"

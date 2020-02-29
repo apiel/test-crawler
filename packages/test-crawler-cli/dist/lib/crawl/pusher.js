@@ -19,8 +19,10 @@ function sendPush(payload) {
     return __awaiter(this, void 0, void 0, function* () {
         for (let i = pushList.length - 1; i >= 0; i--) {
             if (pushList[i]) {
-                const sent = yield pushList[i](payload);
-                if (!sent) {
+                try {
+                    yield pushList[i](payload);
+                }
+                catch (error) {
                     logol_1.info('Push was not sent, remove from pusher list.');
                     delete pushList[i];
                 }
