@@ -1,3 +1,5 @@
+- use ensureFile from fs-extra
+
 - base on history, use AI to identify if diff are normal or not...
 
 - e2e test base on screen zone

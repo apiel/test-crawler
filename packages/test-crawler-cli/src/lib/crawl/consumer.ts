@@ -33,12 +33,12 @@ export function setConsumers(_consumers: Consumers) {
     consumers = _consumers;
 }
 
-export async function runConsumers(afterAll: ({}) => void) {
+export async function runConsumers(afterAll?: ({}) => void) {
     if (!consumerLoopRunning) {
         consumerLoopRunning = true;
         await consumerLoop();
         consumerLoopRunning = false;
-        afterAll(finish());
+        afterAll && afterAll(finish());
     }
 }
 
